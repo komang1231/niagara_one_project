@@ -1,9 +1,403 @@
-@import 'tailwindcss';
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans:
+        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+/* ============================================
+   COLOR TOKENS (dari branding guideline)
+   ============================================ */
+:root {
+  /* Primary */
+  --primary-25: #F4FAF8;
+  --primary-50: #E9F6F2;
+  --primary-100: #D6F0E8;
+  --primary-200: #BBE7D9;
+  --primary-300: #9ADFC9;
+  --primary-400: #78D8BA;
+  --primary-500: #55D3AB;
+  --primary-600: #30CF9C;
+  --primary-700: #25B185;
+  --primary: #1d9e75;
+  --primary-900: #127254;
+  --primary-950: #0B513B;
+  --primary-1000: #063727;
+
+  /* Accent */
+  --accent-25: #FCF8F3;
+  --accent-50: #FAF2E6;
+  --accent-100: #F6E7D0;
+  --accent-200: #F3D8AF;
+  --accent-300: #F0C789;
+  --accent-400: #EFB761;
+  --accent: #ef9f27;
+  --accent-600: #F3970C;
+  --accent-700: #D17F06;
+  --accent-800: #AD6801;
+  --accent-900: #855000;
+  --accent-950: #5C3700;
+  --accent-1000: #3D2500;
+
+  /* Neutral */
+  --neutral-25: #F6F7F9;
+  --neutral-50: #EDEFF3;
+  --neutral-100: #DDE2E9;
+  --neutral-200: #C8CFDA;
+  --neutral-300: #AFBACA;
+  --neutral-400: #97A5BA;
+  --neutral-500: #7E90A9;
+  --neutral: #718096;
+  --neutral-700: #5A687C;
+  --neutral-800: #485465;
+  --neutral-900: #37404E;
+  --neutral-950: #262C36;
+  --neutral-1000: #191E24;
+
+  /* Text */
+  --color-text-25: #F6F7F9;
+  --color-text-50: #EDEFF3;
+  --color-text-100: #DDE2E9;
+  --color-text-200: #C8CFDA;
+  --color-text-300: #AFBACA;
+  --color-text-400: #97A5BA;
+  --color-text-500: #7D90AA;
+  --color-text-600: #637B9C;
+  --color-text-700: #526785;
+  --color-text-800: #41536C;
+  --color-text-900: #313F54;
+  --color-text: #1f2937;
+  --color-text-1000: #161D28;
+
+  /* Background */
+  --color-bg-25: #F4F6F9;
+  --color-bg-50: #EBEFF4;
+  --color-bg-100: #DAE1EC;
+  --color-bg-200: #C2CEE1;
+  --color-bg-300: #A5B8D4;
+  --color-bg-400: #88A2C8;
+  --color-bg-500: #6B8CBD;
+  --color-bg-600: #4D75B2;
+  --color-bg-700: #3F6297;
+  --color-bg-800: #324F7C;
+  --color-bg-900: #253C60;
+  --color-bg-950: #192A43;
+  --color-bg-1000: #101C2D;
+
+  --sidebar-width: 280px;
+  --row-height: 36px;   /* tinggi 1 baris submenu */
+
+  /* --- Tree line geometry ---
+     tree-x   = posisi x trunk & curve. DIsamakan dgn titik awal
+                TULISAN parent (bukan icon lagi):
+                padding-left nav-link (24px) + lebar icon (20px)
+                + margin-right icon (16px) = 60px.
+     curve-r  = radius lengkungan tiap submenu item.
+     indicator-gap = jarak dari ujung lengkungan ke left-border
+                     (indicator) submenu.
+     label-gap = jarak dari indicator ke teks label.
+  */
+  --tree-x: 60px;
+  --tree-color: var(--neutral-300);
+  --curve-r: 8px;
+  --indicator-gap: 10px;
+  --indicator-w: 3px;
+  --label-gap: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  background-color: var(--color-bg-25);
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ============================================
+   SIDEBAR CONTAINER — full 1 layar
+   ============================================ */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  border-right: 1px solid var(--neutral-50);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.sidebar-header {
+  flex-shrink: 0;
+  padding: 24px 24px 20px 24px;
+  border-bottom: 1px solid var(--neutral-25);
+}
+
+.sidebar-title {
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.sidebar-subtitle {
+  color: var(--neutral);
+  font-size: 15px;
+  margin: 4px 0 0 0;
+}
+
+/* ============================================
+   NAVIGATION - LEVEL 1
+   Cuma area ini yg scroll, header & footer tetap nempel.
+   ============================================ */
+.sidebar-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  color: var(--color-text-800);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  border-left: 4px solid transparent; /* no radius */
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  background-color: var(--neutral-25);
+  color: var(--color-text-800);
+}
+
+.nav-icon {
+  font-size: 18px;
+  margin-right: 16px;
+  color: var(--neutral);
+  line-height: 1;
+  width: 20px;
+  text-align: center;
+}
+
+.nav-link:hover .nav-icon {
+  color: var(--color-text-800);
+}
+
+/* Active parent (mis. "Struktur Organisasi").
+   Dipangkas lagi biar bg & border-left keliatan lebih tipis/pendek
+   dari row biasa: padding vertikal 12px -> 7px (selisih 6px total,
+   sesuai revisi terakhir), margin 2px atas-bawah biar gak mepet
+   item sebelah. */
+.nav-link-active {
+  background-color: var(--primary-50);
+  color: var(--primary);
+  border-left: 4px solid var(--primary); /* no radius */
+  font-weight: 600;
+  padding: 7px 24px 7px 20px; /* 24-4(border) = 20 di kiri */
+  margin: 2px 0;
+}
+
+.nav-link-active .nav-icon {
+  color: var(--primary);
+}
+
+.nav-link-active:hover {
+  background-color: var(--primary-50);
+  color: var(--primary);
+}
+
+/* ============================================
+   CHEVRON
+   Satu sumber kebenaran: class `.collapsed` yang otomatis
+   dikelola Bootstrap saat collapse show/hide.
+   ============================================ */
+.chevron {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--color-text-800);
+  transition: transform 0.2s ease;
+}
+
+.chevron-muted {
+  color: var(--neutral-400);
+}
+
+.nav-link.collapsed .chevron {
+  transform: rotate(180deg);
+  color: var(--neutral-400);
+}
+
+/* ============================================
+   SUBMENU + TREE LINE
+   ============================================
+   Perbaikan revisi ini:
+
+   1. TRUNK KEPANJANGAN DI ITEM TERAKHIR (fix akar masalah):
+      Tiap <li> punya ::before sendiri (straight line lalu
+      melengkung) yang tingginya = 50% row, dgn radius = --curve-r.
+      Artinya bagian LURUS di dalam ::before itu cuma setinggi
+      (50% row - curve-r), sisanya (setinggi curve-r) itu ZONA
+      LENGKUNGAN. Trunk (garis panjang terpisah) sebelumnya
+      berhenti di TENGAH item terakhir (row-height/2) — itu
+      kelewat jauh, nembus sampai ke DALAM zona lengkungan, jadi
+      keliatan ada garis lurus "nyusul" di sebelah lengkungan.
+      Fix: trunk berhenti PAS DI AWAL lengkungan item terakhir:
+      bottom: calc(row-height/2 + curve-r).
+
+   2. Posisi trunk & curve (--tree-x) sekarang 60px, disamakan
+      dengan titik mulai TULISAN parent (bukan titik tengah icon
+      lagi seperti sebelumnya).
+
+   3. Gap antara ujung curve dan indicator (left border submenu)
+      ditambah jadi 10px (sebelumnya 6px).
+
+   4. Teks submenu dipaksa 1 baris (white-space: nowrap).
+*/
+.submenu-tree {
+  list-style: none;
+  margin: 4px 0;   /* jarak ke link di atas/bawah — pakai margin, bukan padding */
+  padding: 0;
+  position: relative;
+}
+
+.submenu-trunk {
+  position: absolute;
+  left: var(--tree-x);
+  top: 0;
+  bottom: calc(var(--row-height) / 2 + var(--curve-r)); /* fix #1 */
+  width: 1px;
+  background-color: var(--tree-color);
+  pointer-events: none;
+}
+
+.submenu-item {
+  position: relative;
+  height: var(--row-height);
+}
+
+.submenu-item a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: calc(var(--tree-x) + var(--curve-r) + var(--indicator-gap) + var(--indicator-w) + var(--label-gap));
+  padding-right: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral);
+  text-decoration: none;
+  white-space: nowrap; /* fix #4: tetap 1 baris */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.submenu-item a:hover {
+  color: var(--color-text-800);
+}
+
+.submenu-item.active a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Curve per item: top:0, height:50% dihitung dari TINGGI LI
+   ITU SENDIRI, jadi selalu presisi di tengah row berapa pun
+   urutannya. */
+.submenu-item::before {
+  content: "";
+  position: absolute;
+  left: var(--tree-x);
+  top: 0;
+  width: var(--curve-r);
+  height: 50%;
+  border-left: 1px solid var(--tree-color);
+  border-bottom: 1px solid var(--tree-color);
+  border-bottom-left-radius: var(--curve-r);
+  pointer-events: none;
+}
+
+/* Indicator: garis pendek vertikal, HANYA muncul saat item
+   .active atau lagi di-hover. Tanpa border-radius. Jarak dari
+   ujung curve diatur via --indicator-gap. */
+.active-indicator {
+  position: absolute;
+  left: calc(var(--tree-x) + var(--curve-r) + var(--indicator-gap));
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--indicator-w);
+  height: 14px;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+.submenu-item.active .active-indicator {
+  background-color: var(--primary);
+}
+
+.submenu-item:hover .active-indicator {
+  background-color: var(--neutral-300);
+}
+
+.submenu-item.active:hover .active-indicator {
+  background-color: var(--primary);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.sidebar-footer {
+  flex-shrink: 0;
+  padding: 20px 24px;
+  border-top: 2px solid var(--primary);
+  background-color: #FFFFFF;
+}
+
+.see-all-link {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.see-all-link:hover {
+  color: var(--accent-700);
+}
+
+/* ============================================
+   MAIN CONTENT (placeholder)
+   ============================================ */
+.main-content {
+  background-color: var(--color-bg-25);
+  padding: 32px;
 }
