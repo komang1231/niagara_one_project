@@ -3,14 +3,14 @@
 
         [
             'label' => 'Dashboard',
-            'icon' => 'bi-grid-1x2',
+            'icon' => 'bi-grid-fill',
             'slug' => 'dashboard',
             'children' => [],
         ],
 
         [
             'label' => 'Karyawan',
-            'icon' => 'bi-people',
+            'icon' => 'bi-people-fill',
             'slug' => 'karyawan',
             'children' => [
                 ['label' => 'Data Karyawan', 'slug' => 'data-karyawan'],
@@ -23,7 +23,7 @@
 
         [
             'label' => 'Kehadiran',
-            'icon' => 'bi-clock',
+            'icon' => 'bi-clock-fill',
             'slug' => 'kehadiran',
             'children' => [
                 ['label' => 'Jadwal Karyawan', 'slug' => 'jadwal-karyawan'],
@@ -36,7 +36,7 @@
 
         [
             'label' => 'Cuti',
-            'icon' => 'bi-calendar3',
+            'icon' => 'bi-calendar-week-fill',
             'slug' => 'cuti',
             'children' => [
                 ['label' => 'Saldo Cuti', 'slug' => 'saldo-cuti'],
@@ -46,7 +46,7 @@
 
         [
             'label' => 'Rekrutmen',
-            'icon' => 'bi-person-plus',
+            'icon' => 'bi-person-fill-add',
             'slug' => 'rekrutmen-menu',
             'children' => [
                 ['label' => 'Rekrutmen', 'slug' => 'rekrutmen'],
@@ -57,7 +57,7 @@
 
         [
             'label' => 'Struktur Organisasi',
-            'icon' => 'bi-diagram-3',
+            'icon' => 'bi-diagram-3-fill',
             'slug' => 'struktur-organisasi',
             'children' => [
                 ['label' => 'Departemen', 'slug' => 'departemen'],
@@ -71,7 +71,7 @@
 
         [
             'label' => 'Master Data',
-            'icon' => 'bi-database',
+            'icon' => 'bi-database-fill-gear',
             'slug' => 'master-data',
             'children' => [
                 ['label' => 'Sumber Pelamar', 'slug' => 'sumber-pelamar'],
@@ -85,7 +85,7 @@
 
         [
             'label' => 'Akses & Pengguna',
-            'icon' => 'bi-shield-check',
+            'icon' => 'bi-shield-lock-fill',
             'slug' => 'akses-pengguna',
             'children' => [
                 ['label' => 'User', 'slug' => 'user'],
@@ -96,118 +96,100 @@
     ];
 @endphp
 
-<div class="app-wrapper">
+<aside class="sidebar">
 
-    <aside class="sidebar">
+    {{-- ===== HEADER ===== --}}
+    <header class="sidebar-header">
+        <h1 class="sidebar-title">Niagara One System</h1>
+        <p class="sidebar-subtitle text-muted">Employee Service</p>
+    </header>
 
-        {{-- ===== HEADER ===== --}}
-        <header class="sidebar-header">
-            <h1 class="sidebar-title">Niagara One System</h1>
-            <p class="sidebar-subtitle">Employee Service</p>
-        </header>
+    {{-- ===== NAVIGASI ===== --}}
+    <nav class="sidebar-nav">
+        <ul class="nav-list">
 
-        {{-- ===== NAVIGASI ===== --}}
-        <nav class="sidebar-nav">
-            <ul class="nav-list">
+            @foreach ($menu as $item)
 
-                @foreach ($menu as $item)
+                @if (count($item['children']) === 0)
 
-                    @if (count($item['children']) === 0)
+                    @php
+                        $routeName = $item['slug'] . '.index';
+                        $isActive = Route::is($routeName);
+                    @endphp
 
-                        @php
-                            $routeName = $item['slug'] . '.index';
-                            $isActive = Route::is($routeName);
-                        @endphp
+                    <li class="nav-item">
+                        <a href="{{ route($routeName) }}"
+                           class="nav-link @if($isActive) nav-link-active @endif">
+                            <i class="bi {{ $item['icon'] }} nav-icon"></i>
+                            <span class="nav-text">{{ $item['label'] }}</span>
+                        </a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route($routeName) }}"
-                               class="nav-link @if($isActive) nav-link-active @endif">
+                @else
+
+                    @php
+                        $collapseId = $item['slug'] . 'Submenu';
+                        $isSectionActive = false;
+
+                        foreach ($item['children'] as $child) {
+                            $childRouteName = $child['slug'] . '.index';
+                            if (Route::is($childRouteName)) {
+                                $isSectionActive = true;
+                            }
+                        }
+                    @endphp
+
+                    <li class="nav-item">
+
+                        <a href="#{{ $collapseId }}"
+                           class="nav-link d-flex justify-content-between align-items-center
+                                  @if($isSectionActive) nav-link-active @else collapsed @endif"
+                           data-bs-toggle="collapse"
+                           role="button"
+                           aria-expanded="{{ $isSectionActive ? 'true' : 'false' }}"
+                           aria-controls="{{ $collapseId }}">
+
+                            <span class="d-flex align-items-center">
                                 <i class="bi {{ $item['icon'] }} nav-icon"></i>
                                 <span class="nav-text">{{ $item['label'] }}</span>
-                            </a>
-                        </li>
+                            </span>
+                            <i class="bi bi-chevron-up chevron"></i>
+                        </a>
 
-                    @else
+                        <ul id="{{ $collapseId }}"
+                            class="submenu-tree collapse @if($isSectionActive) show @endif">
 
-                        @php
-                            $collapseId = $item['slug'] . 'Submenu';
-                            $isSectionActive = false;
+                            {{-- Garis trunk tunggal, panjangnya otomatis berhenti
+                                 tepat sebelum lengkungan item terakhir --}}
+                            <div class="submenu-trunk"></div>
 
-                            foreach ($item['children'] as $child) {
-                                $childRouteName = $child['slug'] . '.index';
-                                if (Route::is($childRouteName)) {
-                                    $isSectionActive = true;
-                                }
-                            }
-                        @endphp
+                            @foreach ($item['children'] as $child)
+                                @php
+                                    $childRouteName = $child['slug'] . '.index';
+                                    $isChildActive = Route::is($childRouteName);
+                                @endphp
 
-                        <li class="nav-item">
+                                <li class="submenu-item @if($isChildActive) active @endif">
+                                    <a href="{{ route($childRouteName) }}">
+                                        <span class="active-indicator"></span>
+                                        <span class="submenu-label">{{ $child['label'] }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
 
-                            {{-- Tombol buka/tutup submenu.
-                                 Class "collapsed" HARUS ditulis manual saat section
-                                 tidak aktif, karena itu satu-satunya penanda arah
-                                 chevron (lihat .nav-link.collapsed .chevron di CSS).
-                                 Bootstrap sendiri yang nambah/hapus class ini pas
-                                 show.bs.collapse / hide.bs.collapse dipicu. --}}
-                            <a href="#{{ $collapseId }}"
-                               class="nav-link d-flex justify-content-between align-items-center
-                                      @if($isSectionActive) nav-link-active @else collapsed @endif"
-                               data-bs-toggle="collapse"
-                               role="button"
-                               aria-expanded="{{ $isSectionActive ? 'true' : 'false' }}"
-                               aria-controls="{{ $collapseId }}">
+                        </ul>
+                    </li>
 
-                                <span class="d-flex align-items-center">
-                                    <i class="bi {{ $item['icon'] }} nav-icon"></i>
-                                    <span class="nav-text">{{ $item['label'] }}</span>
-                                </span>
+                @endif
 
-                                {{-- Cuma 1 icon. Arah panah 100% diatur CSS lewat
-                                     class .collapsed, gak ada swap class via JS lagi. --}}
-                                <i class="bi bi-chevron-up chevron"></i>
-                            </a>
+            @endforeach
 
-                            <ul id="{{ $collapseId }}"
-                                class="submenu-tree collapse @if($isSectionActive) show @endif">
+        </ul>
+    </nav>
 
-                                {{-- Garis trunk tunggal, panjangnya otomatis berhenti
-                                     di tengah item terakhir lewat CSS (lihat sidebar-v2.css) --}}
-                                <div class="submenu-trunk"></div>
+    {{-- ===== FOOTER ===== --}}
+    <footer class="sidebar-footer">
+        <a href="#" class="see-all-link">See All Service</a>
+    </footer>
 
-                                @foreach ($item['children'] as $child)
-                                    @php
-                                        $childRouteName = $child['slug'] . '.index';
-                                        $isChildActive = Route::is($childRouteName);
-                                    @endphp
-
-                                    <li class="submenu-item @if($isChildActive) active @endif">
-                                        <a href="{{ route($childRouteName) }}">
-                                            <span class="active-indicator"></span>
-                                            <span class="submenu-label">{{ $child['label'] }}</span>
-                                        </a>
-                                    </li>
-                                @endforeach
-
-                            </ul>
-                        </li>
-
-                    @endif
-
-                @endforeach
-
-            </ul>
-        </nav>
-
-        {{-- ===== FOOTER ===== --}}
-        <footer class="sidebar-footer">
-            <a href="#" class="see-all-link">See All Service</a>
-        </footer>
-
-    </aside>
-
-    {{-- ===== MAIN CONTENT ===== --}}
-    <main class="main-content flex-grow-1">
-        @yield('content')
-    </main>
-
-</div>
+</aside>

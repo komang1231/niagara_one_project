@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
 
-    @include('layouts.head')
+@include('layouts.head')
 
 <body>
 
-    <x-sidebar></x-sidebar>
+    <x-sidebar />
 
-    {{-- Wrapper konten, margin kiri selebar sidebar (liat app.css) --}}
     <div class="app-content-wrapper">
 
+        <x-topbar {{-- untuk smntara --}}
+            :user-name="auth()->user()->name ?? 'Super Admin'"
+            :user-email="auth()->user()->email ?? 'superadmin@gmail.com'"
+            :user-role="auth()->user()->role_label ?? 'Super Admin'"
+            :user-initials="auth()->user() ? Str::of(auth()->user()->name)->explode(' ')->map(fn ($w) => $w[0])->take(2)->implode('') : 'SA'"
+        />
+
         <main class="app-main">
-            {{-- Ini yg diisi sama masing-masing halaman (dashboard, users, dll) --}}
             @yield('content')
         </main>
+
     </div>
 
 </body>
