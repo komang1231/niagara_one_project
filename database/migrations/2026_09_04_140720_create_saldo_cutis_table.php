@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('saldo_cutis', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('cutis_id');
+            $table->unsignedInteger('cuti_id');
             $table->unsignedBigInteger('karyawan_id');
             $table->unsignedSmallInteger('tahun');
             $table->unsignedInteger('saldo');
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('cutis_id')->references('id')->on('cutis');
+            $table->foreign('cuti_id')->references('id')->on('cutis');
             // $table->foreign('karyawan_id')->references('id')->on('karyawans');
         });
     }
