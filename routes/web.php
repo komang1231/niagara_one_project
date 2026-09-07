@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 // Dashboard
 Route::view('/', 'dashboard')->name('dashboard.index');
 
+Route::view('/login', 'login')->name('login');
 // Karyawan
 Route::view('/data-karyawan', 'data-karyawan.index')->name('data-karyawan.index');
 Route::view('/kontrak-karyawan', 'kontrak-karyawan.index')->name('kontrak-karyawan.index');
