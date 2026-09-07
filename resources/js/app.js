@@ -1,4 +1,6 @@
 import 'bootstrap';
+import './filter';
+
 // Ganti ikon chevron (down <-> up) mengikuti status collapse Bootstrap.
 // Ini murni urusan buka/tutup dropdown - gak ada logic "active" di sini,
 // karena status active/tidaknya menu udah ditentukan dari server (Blade),

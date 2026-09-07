@@ -3,102 +3,116 @@
 
 @import "sidebar.css";
 @import "topbar.css";
+@import "page-header.css";
+@import "button.css";
+@import "badge.css";
+@import "filter.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
 @theme {
     --font-sans:
-        "Inter", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
+        "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 /* ============================================
    COLOR TOKENS (dari branding guideline)
    ============================================ */
 :root {
-  /* Primary */
-  --primary-25: #F4FAF8;
-  --primary-50: #E9F6F2;
-  --primary-100: #D6F0E8;
-  --primary-200: #BBE7D9;
-  --primary-300: #9ADFC9;
-  --primary-400: #78D8BA;
-  --primary-500: #55D3AB;
-  --primary-600: #30CF9C;
-  --primary-700: #25B185;
-  --primary: #1d9e75;
-  --primary-900: #127254;
-  --primary-950: #0B513B;
-  --primary-1000: #063727;
+    /* Primary */
+    --primary-25: #f4faf8;
+    --primary-50: #e9f6f2;
+    --primary-100: #d6f0e8;
+    --primary-200: #bbe7d9;
+    --primary-300: #9adfc9;
+    --primary-400: #78d8ba;
+    --primary-500: #55d3ab;
+    --primary-600: #30cf9c;
+    --primary-700: #25b185;
+    --primary: #1d9e75;
+    --primary-900: #127254;
+    --primary-950: #0b513b;
+    --primary-1000: #063727;
 
-  /* Accent */
-  --accent-25: #FCF8F3;
-  --accent-50: #FAF2E6;
-  --accent-100: #F6E7D0;
-  --accent-200: #F3D8AF;
-  --accent-300: #F0C789;
-  --accent-400: #EFB761;
-  --accent: #ef9f27;
-  --accent-600: #F3970C;
-  --accent-700: #D17F06;
-  --accent-800: #AD6801;
-  --accent-900: #855000;
-  --accent-950: #5C3700;
-  --accent-1000: #3D2500;
+    /* Accent */
+    --accent-25: #fcf8f3;
+    --accent-50: #faf2e6;
+    --accent-100: #f6e7d0;
+    --accent-200: #f3d8af;
+    --accent-300: #f0c789;
+    --accent-400: #efb761;
+    --accent: #ef9f27;
+    --accent-600: #f3970c;
+    --accent-700: #d17f06;
+    --accent-800: #ad6801;
+    --accent-900: #855000;
+    --accent-950: #5c3700;
+    --accent-1000: #3d2500;
 
-  /* Neutral */
-  --neutral-25: #F6F7F9;
-  --neutral-50: #EDEFF3;
-  --neutral-100: #DDE2E9;
-  --neutral-200: #C8CFDA;
-  --neutral-300: #AFBACA;
-  --neutral-400: #97A5BA;
-  --neutral-500: #7E90A9;
-  --neutral: #718096;
-  --neutral-700: #5A687C;
-  --neutral-800: #485465;
-  --neutral-900: #37404E;
-  --neutral-950: #262C36;
-  --neutral-1000: #191E24;
+    /* Neutral */
+    --neutral-25: #f6f7f9;
+    --neutral-50: #edeff3;
+    --neutral-100: #dde2e9;
+    --neutral-200: #c8cfda;
+    --neutral-300: #afbaca;
+    --neutral-400: #97a5ba;
+    --neutral-500: #7e90a9;
+    --neutral: #718096;
+    --neutral-700: #5a687c;
+    --neutral-800: #485465;
+    --neutral-900: #37404e;
+    --neutral-950: #262c36;
+    --neutral-1000: #191e24;
 
-  /* Text */
-  --color-text-25: #F6F7F9;
-  --color-text-50: #EDEFF3;
-  --color-text-100: #DDE2E9;
-  --color-text-200: #C8CFDA;
-  --color-text-300: #AFBACA;
-  --color-text-400: #97A5BA;
-  --color-text-500: #7D90AA;
-  --color-text-600: #637B9C;
-  --color-text-700: #526785;
-  --color-text-800: #41536C;
-  --color-text-900: #313F54;
-  --color-text: #1f2937;
-  --color-text-1000: #161D28;
+    /* Text */
+    --color-text-25: #f6f7f9;
+    --color-text-50: #edeff3;
+    --color-text-100: #dde2e9;
+    --color-text-200: #c8cfda;
+    --color-text-300: #afbaca;
+    --color-text-400: #97a5ba;
+    --color-text-500: #7d90aa;
+    --color-text-600: #637b9c;
+    --color-text-700: #526785;
+    --color-text-800: #41536c;
+    --color-text-900: #313f54;
+    --color-text: #1f2937;
+    --color-text-1000: #161d28;
+    
+    --color-text-muted: #6B7280;
 
-  /* Background */
-  --color-bg-25: #F4F6F9;
-  --color-bg-50: #EBEFF4;
-  --color-bg-100: #DAE1EC;
-  --color-bg-200: #C2CEE1;
-  --color-bg-300: #A5B8D4;
-  --color-bg-400: #88A2C8;
-  --color-bg-500: #6B8CBD;
-  --color-bg-600: #4D75B2;
-  --color-bg-700: #3F6297;
-  --color-bg-800: #324F7C;
-  --color-bg-900: #253C60;
-  --color-bg-950: #192A43;
-  --color-bg-1000: #101C2D;
+    /* Background */
+    --color-bg-25: #f4f6f9;
+    --color-bg-50: #ebeff4;
+    --color-bg-100: #dae1ec;
+    --color-bg-200: #c2cee1;
+    --color-bg-300: #a5b8d4;
+    --color-bg-400: #88a2c8;
+    --color-bg-500: #6b8cbd;
+    --color-bg-600: #4d75b2;
+    --color-bg-700: #3f6297;
+    --color-bg-800: #324f7c;
+    --color-bg-900: #253c60;
+    --color-bg-950: #192a43;
+    --color-bg-1000: #101c2d;
 
-  --sidebar-width: 260px;
-  --topbar-height: 62px;
+    /* Status/Badge */
+    --color-success: #137f3a;
+    --color-success-soft: #dcfce7;
+    --color-success-border: #bbf7d0;
+    
+    --color-danger: #b91c1c;
+    --color-danger-soft: #fee2e2;
+    --color-danger-border: #fecaca;
 
-  --row-height: 36px;  
+    --sidebar-width: 260px;
+    --topbar-height: 62px;
 
-  /* --- Tree line geometry (submenu sidebar) ---
+    --row-height: 36px;
+
+    /* --- Tree line geometry (submenu sidebar) ---
      tree-x   = posisi x trunk & curve, disamakan dgn titik awal
                 TULISAN parent: padding-left nav-link (24px)
                 + lebar icon (20px) + margin-right icon (16px) = 60px.
@@ -107,38 +121,38 @@
                      (indicator) submenu.
      label-gap = jarak dari indicator ke teks label.
   */
-  --tree-x: 50px;
-  --tree-color: var(--primary);
-  --curve-r: 12px;
-  --indicator-gap: 17px;
-  --indicator-w: 3px;
-  --label-gap: 8px;
+    --tree-x: 50px;
+    --tree-color: var(--primary);
+    --curve-r: 12px;
+    --indicator-gap: 17px;
+    --indicator-w: 3px;
+    --label-gap: 8px;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
+html,
+body {
+    height: 100%;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  background-color: var(--color-bg-25);
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    background-color: var(--color-bg-25);
 }
 
-
 .app-content-wrapper {
-  margin-left: var(--sidebar-width);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .app-main {
-  flex: 1 1 auto;
-  padding: 32px;
-  background-color: var(--color-bg-25);
+    flex: 1 1 auto;
+    padding: 32px;
+    background-color: var(--color-bg-25);
 }

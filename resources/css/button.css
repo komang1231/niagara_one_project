@@ -1,0 +1,94 @@
+.btn-app {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid;
+    transition:
+        filter 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.btn-app i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.btn-app:hover {
+    text-decoration: none;
+}
+
+/* Variant: primary (untuk "Tambah Karyawan") */
+.btn-app-primary {
+    color: var(--primary-950);
+    border: 1px solid var(--primary-700);
+
+    background: linear-gradient(
+        180deg,
+        var(--primary-200) 0%,
+        var(--primary-500) 100%
+    );
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+ 
+.btn-app-primary:hover {
+  filter: brightness(1.02);
+  color: var(--primary-950);
+}
+
+/* ---------- Variant: outline (buat "Trash", "Export", dll) ---------- */
+.btn-app-outline {
+    color: var(--color-text-900);
+    background-color: #ffffff;
+    border: 1px solid var(--primary-300);
+}
+
+.btn-app-outline:hover {
+    background-color: var(--neutral-50);
+    color: var(--color-text-900);
+}
+
+/* ---------- Variant: danger (aksi hapus/berbahaya) ---------- */
+.btn-app-danger {
+    color: #ffffff;
+    background-color: #dc3545;
+    border: 1px solid #b02a37;
+}
+
+.btn-app-danger:hover {
+    filter: brightness(1.05);
+    color: #ffffff;
+}
+
+/* ---------- Variant: icon-only, bulat (aksi di baris tabel) ---------- */
+.btn-app-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid var(--neutral-100);
+}
+
+.btn-app-icon-edit {
+    color: var(--primary-700);
+}
+
+.btn-app-icon-edit:hover {
+    background-color: var(--primary-50);
+}
+
+.btn-app-icon-danger {
+    color: #dc3545;
+}
+
+.btn-app-icon-danger:hover {
+    background-color: #fbeaec;
+}

@@ -1,0 +1,85 @@
+/* 
+   Fill   : radial-gradient, primary-200 -> primary-50 -> primary-100
+   Stroke : primary-300, 1px
+   Radius : 12px
+   Shadow : 0 2px 12px rgba(0, 0, 0, 0.08);
+*/
+
+.page-header {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--primary-300);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+
+  background: radial-gradient(
+    circle at top right,
+    var(--primary-200) 0%,
+    var(--primary-50) 29%,
+    var(--primary-100) 57%
+  );
+
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.page-header-content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+
+.page-header-eyebrow {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--primary-900);
+}
+
+.page-header-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.page-header-description {
+  margin: 3px 0 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral);
+}
+
+/* Baris berisi badge + tombol aksi */
+.page-header-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.page-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Icon dekoratif gede transparan di kanan bawah, kayak di figma */
+.page-header-decoration {
+  position: absolute;
+  right: 28px;
+  bottom: -10px;
+  font-size: 90px;
+  color: var(--primary-300);
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
