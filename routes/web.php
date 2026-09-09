@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\DepartemenController;
 
 // Dashboard
 Route::view('/', 'dashboard')->name('dashboard.index');
@@ -31,7 +31,8 @@ Route::view('/lowongan', 'lowongan.index')->name('lowongan.index');
 Route::view('/permintaan-karyawan', 'permintaan-karyawan.index')->name('permintaan-karyawan.index');
 
 // Struktur Organisasi
-Route::view('/departemen', 'departemen.index')->name('departemen.index');
+ Route::get('/departemen', [DepartemenController::class, 'index'])
+                ->name('departemen.index');
 Route::view('/divisi', 'divisi.index')->name('divisi.index');
 Route::view('/section', 'section.index')->name('section.index');
 Route::view('/job-level', 'job-level.index')->name('job-level.index');

@@ -16,7 +16,7 @@
 }
 
 .btn-app i {
-    font-size: 14px;
+    font-size: 1.1rem;
     line-height: 1;
 }
 
@@ -37,10 +37,28 @@
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
 }
- 
+
 .btn-app-primary:hover {
-  filter: brightness(1.02);
-  color: var(--primary-950);
+    filter: brightness(1.02);
+    color: var(--primary-950);
+}
+
+/* ---------- Variant: search (khusus tombol Search di filter bar) ---------- */
+/* CHANGED: sebelumnya ikut border-radius:999px (pill/bulat) dari .btn-app,
+   sekarang di-override jadi kotak & tingginya disamain sama input/dropdown
+   filter (2.625rem / 42px) biar sejajar rapi satu baris. */
+.btn-app-search {
+    background: var(--accent);
+    border: 0.0625rem solid var(--accent);
+    color: #fff;
+    border-radius: 0.5rem;
+    height: 2.625rem;
+    padding: 0 1rem; /* "sedikit panjang" nyesuain lebar tulisan Search */
+    font-size: 0.875rem;
+}
+.btn-app-search:hover {
+    background: var(--accent-700);
+    border-color: var(--accent-700);
 }
 
 /* ---------- Variant: outline (buat "Trash", "Export", dll) ---------- */
@@ -69,12 +87,11 @@
 
 /* ---------- Variant: icon-only, bulat (aksi di baris tabel) ---------- */
 .btn-app-icon {
-    width: 32px;
-    height: 32px;
+    width: 25px;
+    height: 25px;
     padding: 0;
-    border-radius: 50%;
+    border: none;
     background-color: transparent;
-    border: 1px solid var(--neutral-100);
 }
 
 .btn-app-icon-edit {
@@ -92,3 +109,6 @@
 .btn-app-icon-danger:hover {
     background-color: #fbeaec;
 }
+
+.btn-app-icon-view { color: var(--color-text-600); }
+.btn-app-icon-view:hover { background-color: var(--color-bg-50); }

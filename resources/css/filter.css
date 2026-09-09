@@ -1,0 +1,215 @@
+:root {
+    --multiselect-accent: var(--primary); /* default warna centang, bisa di-override per pemanggilan */
+    --filter-select-width: 12.5rem;   /* ~200px, lebar tetap box dropdown (sesuai Figma) */
+    --filter-select-min-width: 9rem;  /* batas paling kecil pas filter-nya banyak & ruang mepet (3 dropdown dalam 1 baris) */
+}
+
+/* === Wrapper form filter === */
+.app-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 1rem;
+    transition: opacity 0.15s ease;
+}
+.app-filter-bar.is-loading { opacity: 0.6; pointer-events: none; }
+
+.app-filter-bar__fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 1rem;
+    flex: 1;
+}
+.app-filter-bar__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.app-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    min-width: 11.25rem;
+}
+
+/* field search: boleh melar ngisi sisa ruang kosong di baris */
+.app-filter-field--search {
+    flex: 2 1 15rem;
+}
+
+/* field dropdown/multiselect: lebar tetap 200px selama muat.
+   Kalau muncul 3 dropdown dalam 1 baris dan gak cukup ruang,
+   dia boleh MENYUSUT (bukan membesar) sampai batas minimalnya,
+   biar tetep 1 baris kayak yang kamu minta. */
+.app-filter-field--select {
+    flex: 0 1 var(--filter-select-width);
+    min-width: var(--filter-select-min-width);
+    max-width: var(--filter-select-width);
+}
+
+.app-filter-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-700);
+}
+
+/* link "Clear All" (bukan tombol, cuma teks + icon) */
+.app-filter-clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-700);
+    text-decoration: underline;
+    white-space: nowrap;
+}
+.app-filter-clear:hover { color: var(--color-text-900); }
+
+/* === Search input === */
+.app-filter-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 0.0625rem solid var(--color-bg-200);
+    border-radius: 0.5rem;
+    padding: 0.5625rem 0.75rem;
+    background: #fff;
+}
+.app-filter-search:focus-within {
+    border-color: var(--primary);
+}
+.app-filter-search i { color: var(--color-text-400); font-size: 0.875rem; }
+.app-filter-search input {
+    border: none;
+    outline: none;
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    background: transparent;
+}
+.app-filter-search input::placeholder { color: var(--color-text-400); }
+
+/* === Multiselect chip dropdown === */
+.app-multiselect { position: relative; }
+
+.app-multiselect__control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-height: 2.625rem;
+    padding: 0.375rem 0.75rem;
+    background: #fff;
+    border: 0.0625rem solid var(--color-bg-200);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+.app-multiselect.is-open .app-multiselect__control {
+    border-color: var(--multiselect-accent);
+}
+
+/* chip-chip di dalam kotak SENGAJA gak wrap ke bawah, tapi discroll
+   ke samping -> ini yang bikin box dropdown-nya tetep rapi 200px
+   walaupun chip yang kepilih banyak banget */
+.app-multiselect__chips {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem; /* dikasih jarak lebih karena sekarang ada tombol "x" yang nongol di pojok chip */
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none; /* firefox: sembunyiin scrollbar biar rapi */
+}
+.app-multiselect__chips::-webkit-scrollbar { display: none; } /* chrome/edge/safari */
+
+.app-multiselect__placeholder { color: var(--color-text-400); font-size: 0.875rem; white-space: nowrap; }
+
+/* chip: dikasih padding kanan ekstra buat "ruang" tombol x nongol di pojok */
+.app-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0; /* biar gak kegencet pas di-scroll horizontal */
+    background: var(--color-bg-25);
+    color: var(--color-text-800);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.25rem 1.125rem 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    white-space: nowrap;
+}
+.app-chip__label { pointer-events: none; }
+
+/* tombol "x" nempel kayak badge di pojok kanan atas chip (bukan inline sejajar teks lagi) */
+.app-chip__remove {
+    position: absolute;
+    top: -0.3125rem;
+    right: -0.3125rem;
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0.0625rem solid var(--color-bg-200);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--color-text-500);
+    font-size: 0.625rem;
+    line-height: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.app-chip__remove:hover { background: var(--color-bg-100, #f3f4f6); color: var(--color-text-900); }
+.app-chip__remove i { font-size: 0.625rem; }
+
+.app-multiselect__caret { color: var(--color-text-400); transition: transform 0.15s ease; font-size: 0.75rem; flex-shrink: 0; }
+.app-multiselect.is-open .app-multiselect__caret { transform: rotate(180deg); }
+
+.app-multiselect__menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.375rem);
+    left: 0; right: 0;
+    z-index: 20;
+    background: #fff;
+    border: 0.0625rem solid var(--color-bg-100);
+    border-radius: 0.625rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(16, 28, 45, 0.08);
+    padding: 0.375rem;
+    max-height: 15rem;
+    overflow-y: auto;
+}
+.app-multiselect.is-open .app-multiselect__menu { display: block; }
+
+.app-multiselect__option {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.625rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+.app-multiselect__option:hover { background: var(--color-bg-25); }
+.app-multiselect__input { display: none; }
+
+.app-multiselect__box {
+    width: 1.125rem; height: 1.125rem;
+    border: 0.09375rem solid var(--color-bg-300);
+    border-radius: 0.25rem;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 0.75rem; flex-shrink: 0;
+}
+/* untuk custom warna, tinggal ganti --multiselect-accent */
+.app-multiselect__input:checked + .app-multiselect__box {
+    background: var(--multiselect-accent);
+    border-color: var(--multiselect-accent);
+}
+
+/* === Loading state pas AJAX lagi jalan (dipasang otomatis sama app-filter.js) === */
+.is-loading { opacity: 0.5; pointer-events: none; transition: opacity 0.15s ease; }

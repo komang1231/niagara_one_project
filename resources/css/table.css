@@ -1,0 +1,201 @@
+:root {
+    --table-header-bg: var(--color-bg-25);
+    --table-border: var(--color-bg-100);
+    --table-row-hover: var(--primary-25);
+}
+
+/* bungkus <table> biar bisa di-scroll horizontal kalau kolomnya kepanjangan */
+.app-table-wrapper {
+    overflow-x: auto;
+}
+
+.app-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.app-table thead th {
+    text-align: left;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-text-500);
+    background: var(--table-header-bg);
+    border-bottom: 0.0625rem solid var(--table-border);
+    white-space: nowrap;
+}
+.app-table thead th:first-child {
+    padding-left: 0.75rem;
+}
+.app-table thead th:last-child {
+    padding-right: 0.75rem;
+}
+
+.app-table tbody td {
+    padding: 0.875rem 0.5rem;
+    border-bottom: 0.0625rem solid var(--table-border);
+    color: var(--color-text-800);
+    vertical-align: middle;
+}
+.app-table tbody td:first-child {
+    padding-left: 0.75rem;
+}
+.app-table tbody td:last-child {
+    padding-right: 0.75rem;
+}
+
+.app-table tbody tr:hover {
+    background: var(--table-row-hover);
+}
+.app-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* kolom NO: sempit, rata tengah */
+.app-table__col-no {
+    width: 3rem;
+    text-align: center;
+    color: var(--color-text-500);
+}
+
+/* kolom AKSI: isinya icon doang, rata tengah, gak boleh turun baris */
+.app-table__actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+.app-table__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* kolom AKSI */
+.app-table thead th.app-table__col-actions,
+.app-table tbody td.app-table__col-actions {
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* === cell-stack: 1 kolom nyimpen beberapa baris info === */
+.app-table-stack {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.app-table-stack__avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--primary-100);
+    color: var(--primary-900);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+.app-table-stack__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+}
+.app-table-stack__line--title {
+    font-weight: 700;
+    color: var(--color-text-900);
+}
+.app-table-stack__line--muted {
+    font-size: 0.8125rem;
+    color: var(--color-text-500);
+}
+
+/* === status toggle (switch ijo) === */
+.app-table-toggle {
+    position: relative;
+    display: inline-block;
+    width: 2.375rem;
+    height: 1.25rem;
+}
+.app-table-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.app-table-toggle__slider {
+    position: absolute;
+    inset: 0;
+    background: var(--color-bg-200);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.app-table-toggle__slider::before {
+    content: "";
+    position: absolute;
+    width: 0.9375rem;
+    height: 0.9375rem;
+    left: 0.1875rem;
+    top: 0.15625rem;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.15s ease;
+}
+.app-table-toggle input:checked + .app-table-toggle__slider {
+    background: var(--primary);
+}
+.app-table-toggle input:checked + .app-table-toggle__slider::before {
+    transform: translateX(1.125rem);
+}
+
+
+/* toogle status di offcanvas */
+.app-form-switch input { display: none; }
+.app-form-switch__slider {
+    display: inline-block;
+    width: 40px; height: 22px;
+    background: #ccc;
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.app-form-switch__slider::before {
+    content: "";
+    position: absolute;
+    width: 18px; height: 18px;
+    left: 2px; top: 2px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+.app-form-switch input:checked + .app-form-switch__slider { background: #22c55e; }
+.app-form-switch input:checked + .app-form-switch__slider::before { transform: translateX(18px); }
+
+
+/* === empty state === */
+.app-table__empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--color-text-400);
+}
+.app-table__empty i {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* === footer info + pagination === */
+.app-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8125rem;
+    color: var(--color-text-500);
+}

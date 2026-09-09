@@ -1,0 +1,26 @@
+:root {
+    --panel-radius: 1rem;         
+    --panel-padding-x: 1.5rem;    
+    --panel-padding-y: 1.5rem; 
+    --panel-section-gap: 1.25rem;  
+    --panel-border: var(--color-bg-100);
+    --panel-shadow: 0 0.0625rem 0.1875rem rgba(16, 24, 40, 0.05);
+}
+
+.app-panel {
+    background: #fff;
+    border: 0.0625rem solid var(--panel-border);
+    border-radius: var(--panel-radius);
+    padding: var(--panel-padding-y) var(--panel-padding-x);
+    box-shadow: var(--panel-shadow);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-section-gap);
+}
+
+.app-panel__divider {
+    border: none;
+    border-top: 0.0625rem solid var(--panel-border);
+    margin-inline: calc(-1 * var(--panel-padding-x));
+}

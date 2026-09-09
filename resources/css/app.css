@@ -7,6 +7,9 @@
 @import "button.css";
 @import "badge.css";
 @import "login.css";
+@import "filter.css";
+@import "panel.css";
+@import "table.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
