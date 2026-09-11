@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Departemen as DepartemenModel;
 use Illuminate\Database\Seeder;
 
 class DepartemenSeeder extends Seeder
@@ -12,6 +12,19 @@ class DepartemenSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $Departemen = [
+            ['kode' => 'HRD', 'nama' => 'Human Resources Department'],
+            ['kode' => 'IT', 'nama' => 'Information Technology'],
+            ['kode' => 'FIN', 'nama' => 'Finance'],
+            ['kode' => 'MKT', 'nama' => 'Marketing'],
+            ['kode' => 'OPS', 'nama' => 'Operations'],
+        ];
+
+        foreach ($Departemen as $dept) {
+            DepartemenModel::firstOrCreate(
+                ['kode' => $dept['kode']],
+                $dept
+            );
+        }
     }
 }

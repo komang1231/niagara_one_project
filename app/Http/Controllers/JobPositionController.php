@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\job_position;
+use App\Models\JobPosition;
 use Illuminate\Http\Request;
 
 class JobPositionController extends Controller
@@ -34,7 +34,7 @@ class JobPositionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(job_position $job_position)
+    public function show(JobPosition $jobPosition)
     {
         //
     }
@@ -42,7 +42,7 @@ class JobPositionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(job_position $job_position)
+    public function edit(JobPosition $jobPosition)
     {
         //
     }
@@ -50,7 +50,7 @@ class JobPositionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, job_position $job_position)
+    public function update(Request $request, JobPosition $jobPosition)
     {
         //
     }
@@ -58,7 +58,7 @@ class JobPositionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(job_position $job_position)
+    public function destroy(JobPosition $jobPosition)
     {
         //
     }

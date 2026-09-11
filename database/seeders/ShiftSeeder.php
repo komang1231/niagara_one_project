@@ -12,6 +12,15 @@ class ShiftSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $shifts = [
+            ['kode' => 'SHIFT_PAGI', 'nama' => 'Pagi'],
+            ['kode' => 'SHIFT_Siang', 'nama' => 'Siang'],
+            ['kode' => 'SHIFT_SORE', 'nama' => 'Sore'],
+            ['kode' => 'SHIFT_MALAM', 'nama' => 'Malam'],
+        ];
+
+        foreach ($shifts as $shift) {
+            \App\Models\Shift::create($shift);
+        }
     }
 }

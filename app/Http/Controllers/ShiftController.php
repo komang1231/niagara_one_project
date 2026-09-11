@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\shift;
+use App\Models\Shift;
 use Illuminate\Http\Request;
 
 class ShiftController extends Controller
@@ -34,7 +34,7 @@ class ShiftController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(shift $shift)
+    public function show(Shift $shift)
     {
         //
     }
@@ -42,7 +42,7 @@ class ShiftController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(shift $shift)
+    public function edit(Shift $shift)
     {
         //
     }
@@ -50,7 +50,7 @@ class ShiftController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, shift $shift)
+    public function update(Request $request, Shift $shift)
     {
         //
     }
@@ -58,7 +58,7 @@ class ShiftController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(shift $shift)
+    public function destroy(Shift $shift)
     {
         //
     }

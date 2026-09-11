@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\closing_periode_absensi;
+use App\Models\ClosingPeriodeAbsensi;
 use Illuminate\Http\Request;
 
 class ClosingPeriodeAbsensiController extends Controller
@@ -34,7 +34,7 @@ class ClosingPeriodeAbsensiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(closing_periode_absensi $closing_periode_absensi)
+    public function show(ClosingPeriodeAbsensi $closingPeriodeAbsensi)
     {
         //
     }
@@ -42,7 +42,7 @@ class ClosingPeriodeAbsensiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(closing_periode_absensi $closing_periode_absensi)
+    public function edit(ClosingPeriodeAbsensi $closingPeriodeAbsensi)
     {
         //
     }
@@ -50,7 +50,7 @@ class ClosingPeriodeAbsensiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, closing_periode_absensi $closing_periode_absensi)
+    public function update(Request $request, ClosingPeriodeAbsensi $closingPeriodeAbsensi)
     {
         //
     }
@@ -58,7 +58,7 @@ class ClosingPeriodeAbsensiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(closing_periode_absensi $closing_periode_absensi)
+    public function destroy(ClosingPeriodeAbsensi $closingPeriodeAbsensi)
     {
         //
     }

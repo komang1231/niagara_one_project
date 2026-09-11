@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\sumber_pelamar;
+use App\Models\SumberPelamar;
 use Illuminate\Http\Request;
 
 class SumberPelamarController extends Controller
@@ -34,7 +34,7 @@ class SumberPelamarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(sumber_pelamar $sumber_pelamar)
+    public function show(SumberPelamar $sumberPelamar)
     {
         //
     }
@@ -42,7 +42,7 @@ class SumberPelamarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(sumber_pelamar $sumber_pelamar)
+    public function edit(SumberPelamar $sumberPelamar)
     {
         //
     }
@@ -50,7 +50,7 @@ class SumberPelamarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, sumber_pelamar $sumber_pelamar)
+    public function update(Request $request, SumberPelamar $sumberPelamar)
     {
         //
     }
@@ -58,7 +58,7 @@ class SumberPelamarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(sumber_pelamar $sumber_pelamar)
+    public function destroy(SumberPelamar $sumberPelamar)
     {
         //
     }

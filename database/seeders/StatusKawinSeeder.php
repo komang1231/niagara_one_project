@@ -12,6 +12,16 @@ class StatusKawinSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $statusKawin = [
+            ['kode' => 'BELUM_KAWIN', 'nama' => 'Belum Kawin'],
+            ['kode' => 'KAWIN_BELUM_TERCATAT', 'nama' => 'Kawin Belum Tercatat'],
+            ['kode' => 'KAWIN_TERCATAT', 'nama' => 'Kawin Tercatat'],
+            ['kode' => 'CERAI_HIDUP', 'nama' => 'Cerai Hidup'],
+            ['kode' => 'CERAI_MATI', 'nama' => 'Cerai Mati'],
+        ];
+
+        foreach ($statusKawin as $status) {
+            \App\Models\StatusKawin::create($status);
+        }
     }
 }

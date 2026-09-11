@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class shift extends Model
-{
-    //
+class Shift extends Model {
+    protected $table = 'shifts';
+    protected $guarded = [];
+
 }

@@ -19,9 +19,8 @@ return new class extends Migration
             $table->date('tanggal_tujuan');
             $table->unsignedInteger('shift_pengaju');
             $table->unsignedInteger('shift_pengganti');
-            $table->unsignedBigInteger('approved_by');
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();
 

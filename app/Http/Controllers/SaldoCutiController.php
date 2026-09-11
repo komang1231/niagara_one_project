@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\saldo_cuti;
+use App\Models\SaldoCuti;
 use Illuminate\Http\Request;
 
 class SaldoCutiController extends Controller
@@ -34,7 +34,7 @@ class SaldoCutiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(saldo_cuti $saldo_cuti)
+    public function show(SaldoCuti $saldoCuti)
     {
         //
     }
@@ -42,7 +42,7 @@ class SaldoCutiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(saldo_cuti $saldo_cuti)
+    public function edit(SaldoCuti $saldoCuti)
     {
         //
     }
@@ -50,7 +50,7 @@ class SaldoCutiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, saldo_cuti $saldo_cuti)
+    public function update(Request $request, SaldoCuti $saldoCuti)
     {
         //
     }
@@ -58,7 +58,7 @@ class SaldoCutiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(saldo_cuti $saldo_cuti)
+    public function destroy(SaldoCuti $saldoCuti)
     {
         //
     }

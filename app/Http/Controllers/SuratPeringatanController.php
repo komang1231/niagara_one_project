@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\surat_peringatan;
+use App\Models\SuratPeringatan;
 use Illuminate\Http\Request;
 
 class SuratPeringatanController extends Controller
@@ -34,7 +34,7 @@ class SuratPeringatanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(surat_peringatan $surat_peringatan)
+    public function show(SuratPeringatan $suratPeringatan)
     {
         //
     }
@@ -42,7 +42,7 @@ class SuratPeringatanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(surat_peringatan $surat_peringatan)
+    public function edit(SuratPeringatan $suratPeringatan)
     {
         //
     }
@@ -50,7 +50,7 @@ class SuratPeringatanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, surat_peringatan $surat_peringatan)
+    public function update(Request $request, SuratPeringatan $suratPeringatan)
     {
         //
     }
@@ -58,7 +58,7 @@ class SuratPeringatanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(surat_peringatan $surat_peringatan)
+    public function destroy(SuratPeringatan $suratPeringatan)
     {
         //
     }

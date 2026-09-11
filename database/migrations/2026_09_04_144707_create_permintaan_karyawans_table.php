@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedInteger('jumlah');
             $table->unsignedBigInteger('approved_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
             $table->timestamp('approved_at')->nullable();
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();
 

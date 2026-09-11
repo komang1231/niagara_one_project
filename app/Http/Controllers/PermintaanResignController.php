@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\permintaan_resign;
+use App\Models\PermintaanResign;
 use Illuminate\Http\Request;
 
 class PermintaanResignController extends Controller
@@ -34,7 +34,7 @@ class PermintaanResignController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(permintaan_resign $permintaan_resign)
+    public function show(PermintaanResign $permintaanResign)
     {
         //
     }
@@ -42,7 +42,7 @@ class PermintaanResignController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(permintaan_resign $permintaan_resign)
+    public function edit(PermintaanResign $permintaanResign)
     {
         //
     }
@@ -50,7 +50,7 @@ class PermintaanResignController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, permintaan_resign $permintaan_resign)
+    public function update(Request $request, PermintaanResign $permintaanResign)
     {
         //
     }
@@ -58,7 +58,7 @@ class PermintaanResignController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(permintaan_resign $permintaan_resign)
+    public function destroy(PermintaanResign $permintaanResign)
     {
         //
     }

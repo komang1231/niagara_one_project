@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\section;
+use App\Models\Section;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
@@ -34,7 +34,7 @@ class SectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(section $section)
+    public function show(Section $section)
     {
         //
     }
@@ -42,7 +42,7 @@ class SectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(section $section)
+    public function edit(Section $section)
     {
         //
     }
@@ -50,7 +50,7 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, section $section)
+    public function update(Request $request, Section $section)
     {
         //
     }
@@ -58,7 +58,7 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(section $section)
+    public function destroy(Section $section)
     {
         //
     }

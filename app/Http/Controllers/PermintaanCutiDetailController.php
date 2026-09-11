@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\desa;
+use App\Models\PermintaanCutiDetail;
 use Illuminate\Http\Request;
 
-class DesaController extends Controller
+class PermintaanCutiDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class DesaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(desa $desa)
+    public function show(PermintaanCutiDetail $permintaanCutiDetail)
     {
         //
     }
@@ -42,7 +42,7 @@ class DesaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(desa $desa)
+    public function edit(PermintaanCutiDetail $permintaanCutiDetail)
     {
         //
     }
@@ -50,7 +50,7 @@ class DesaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, desa $desa)
+    public function update(Request $request, PermintaanCutiDetail $permintaanCutiDetail)
     {
         //
     }
@@ -58,7 +58,7 @@ class DesaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(desa $desa)
+    public function destroy(PermintaanCutiDetail $permintaanCutiDetail)
     {
         //
     }

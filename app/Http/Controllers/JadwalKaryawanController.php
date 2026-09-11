@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\jadwal_karyawan;
+use App\Models\JadwalKaryawan;
 use Illuminate\Http\Request;
 
 class JadwalKaryawanController extends Controller
@@ -34,7 +34,7 @@ class JadwalKaryawanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(jadwal_karyawan $jadwal_karyawan)
+    public function show(JadwalKaryawan $jadwalKaryawan)
     {
         //
     }
@@ -42,7 +42,7 @@ class JadwalKaryawanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(jadwal_karyawan $jadwal_karyawan)
+    public function edit(JadwalKaryawan $jadwalKaryawan)
     {
         //
     }
@@ -50,7 +50,7 @@ class JadwalKaryawanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, jadwal_karyawan $jadwal_karyawan)
+    public function update(Request $request, JadwalKaryawan $jadwalKaryawan)
     {
         //
     }
@@ -58,7 +58,7 @@ class JadwalKaryawanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(jadwal_karyawan $jadwal_karyawan)
+    public function destroy(JadwalKaryawan $jadwalKaryawan)
     {
         //
     }

@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kecamatans', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->unsignedInteger('kota_kabupaten_id')->nullable();
+            $table->string('kode', 50)->unique();
+            $table->string('nama', 100);
+            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('kota_kabupaten_id')->references('id')->on('kota_kabupatens');
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\permintaan_cuti;
+use App\Models\PermintaanCuti;
 use Illuminate\Http\Request;
 
 class PermintaanCutiController extends Controller
@@ -34,7 +34,7 @@ class PermintaanCutiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(permintaan_cuti $permintaan_cuti)
+    public function show(PermintaanCuti $PermintaanCuti)
     {
         //
     }
@@ -42,7 +42,7 @@ class PermintaanCutiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(permintaan_cuti $permintaan_cuti)
+    public function edit(PermintaanCuti $PermintaanCuti)
     {
         //
     }
@@ -50,7 +50,7 @@ class PermintaanCutiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, permintaan_cuti $permintaan_cuti)
+    public function update(Request $request, PermintaanCuti $PermintaanCuti)
     {
         //
     }
@@ -58,7 +58,7 @@ class PermintaanCutiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(permintaan_cuti $permintaan_cuti)
+    public function destroy(PermintaanCuti $PermintaanCuti)
     {
         //
     }

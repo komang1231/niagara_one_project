@@ -20,15 +20,15 @@ return new class extends Migration
             $table->date('tanggal_selesai');
             $table->text('alasan')->nullable();
             $table->string('lampiran', 255)->nullable();
-            $table->unsignedBigInteger('karyawan_pengganti');
-            $table->unsignedBigInteger('approved_by');
+            $table->unsignedBigInteger('pengganti_karyawan_id')->nullable();
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('cuti_id')->references('id')->on('cutis');
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
+            $table->foreign('pengganti_karyawan_id')->references('id')->on('karyawans');
             $table->foreign('approved_by')->references('id')->on('users');
         });
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\hari_libur;
+use App\Models\HariLibur;
 use Illuminate\Http\Request;
 
 class HariLiburController extends Controller
@@ -34,7 +34,7 @@ class HariLiburController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(hari_libur $hari_libur)
+    public function show(HariLibur $hariLibur)
     {
         //
     }
@@ -42,7 +42,7 @@ class HariLiburController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(hari_libur $hari_libur)
+    public function edit(HariLibur $hariLibur)
     {
         //
     }
@@ -50,7 +50,7 @@ class HariLiburController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, hari_libur $hari_libur)
+    public function update(Request $request, HariLibur $hariLibur)
     {
         //
     }
@@ -58,7 +58,7 @@ class HariLiburController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(hari_libur $hari_libur)
+    public function destroy(HariLibur $hariLibur)
     {
         //
     }

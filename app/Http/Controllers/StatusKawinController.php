@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\status_kawin;
+use App\Models\StatusKawin;
 use Illuminate\Http\Request;
 
 class StatusKawinController extends Controller
@@ -34,7 +34,7 @@ class StatusKawinController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(status_kawin $status_kawin)
+    public function show(StatusKawin $statusKawin)
     {
         //
     }
@@ -42,7 +42,7 @@ class StatusKawinController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(status_kawin $status_kawin)
+    public function edit(StatusKawin $statusKawin)
     {
         //
     }
@@ -50,7 +50,7 @@ class StatusKawinController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, status_kawin $status_kawin)
+    public function update(Request $request, StatusKawin $statusKawin)
     {
         //
     }
@@ -58,7 +58,7 @@ class StatusKawinController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(status_kawin $status_kawin)
+    public function destroy(StatusKawin $statusKawin)
     {
         //
     }

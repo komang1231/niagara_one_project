@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kota_kabupaten;
+use App\Models\KotaKabupaten;
 use Illuminate\Http\Request;
 
 class KotaKabupatenController extends Controller
@@ -34,7 +34,7 @@ class KotaKabupatenController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(kota_kabupaten $kota_kabupaten)
+    public function show(KotaKabupaten $kotaKabupaten)
     {
         //
     }
@@ -42,7 +42,7 @@ class KotaKabupatenController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(kota_kabupaten $kota_kabupaten)
+    public function edit(KotaKabupaten $kotaKabupaten)
     {
         //
     }
@@ -50,7 +50,7 @@ class KotaKabupatenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, kota_kabupaten $kota_kabupaten)
+    public function update(Request $request, KotaKabupaten $kotaKabupaten)
     {
         //
     }
@@ -58,7 +58,7 @@ class KotaKabupatenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(kota_kabupaten $kota_kabupaten)
+    public function destroy(KotaKabupaten $kotaKabupaten)
     {
         //
     }

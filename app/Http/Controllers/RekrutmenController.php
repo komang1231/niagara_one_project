@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\rekrutmen;
+use App\Models\Rekrutmen;
 use Illuminate\Http\Request;
 
 class RekrutmenController extends Controller
@@ -34,7 +34,7 @@ class RekrutmenController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(rekrutmen $rekrutmen)
+    public function show(Rekrutmen $rekrutmen)
     {
         //
     }
@@ -42,7 +42,7 @@ class RekrutmenController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(rekrutmen $rekrutmen)
+    public function edit(Rekrutmen $rekrutmen)
     {
         //
     }
@@ -50,7 +50,7 @@ class RekrutmenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, rekrutmen $rekrutmen)
+    public function update(Request $request, Rekrutmen $rekrutmen)
     {
         //
     }
@@ -58,7 +58,7 @@ class RekrutmenController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(rekrutmen $rekrutmen)
+    public function destroy(Rekrutmen $rekrutmen)
     {
         //
     }

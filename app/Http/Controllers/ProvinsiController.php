@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\provinsi;
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 
 class ProvinsiController extends Controller
@@ -34,7 +34,7 @@ class ProvinsiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(provinsi $provinsi)
+    public function show(Provinsi $provinsi)
     {
         //
     }
@@ -42,7 +42,7 @@ class ProvinsiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(provinsi $provinsi)
+    public function edit(Provinsi $provinsi)
     {
         //
     }
@@ -50,7 +50,7 @@ class ProvinsiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, provinsi $provinsi)
+    public function update(Request $request, Provinsi $provinsi)
     {
         //
     }
@@ -58,7 +58,7 @@ class ProvinsiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(provinsi $provinsi)
+    public function destroy(Provinsi $provinsi)
     {
         //
     }

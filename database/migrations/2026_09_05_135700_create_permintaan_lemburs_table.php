@@ -20,9 +20,8 @@ return new class extends Migration
             $table->time('jam_selesai');
             $table->text('alasan');
             $table->decimal('pengali', 2, 1);
-            $table->unsignedBigInteger('approved_by');
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();
 

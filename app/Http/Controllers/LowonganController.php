@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\lowongan;
+use App\Models\Lowongan;
 use Illuminate\Http\Request;
 
 class LowonganController extends Controller
@@ -34,7 +34,7 @@ class LowonganController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(lowongan $lowongan)
+    public function show(Lowongan $lowongan)
     {
         //
     }
@@ -42,7 +42,7 @@ class LowonganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(lowongan $lowongan)
+    public function edit(Lowongan $lowongan)
     {
         //
     }
@@ -50,7 +50,7 @@ class LowonganController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, lowongan $lowongan)
+    public function update(Request $request, Lowongan $lowongan)
     {
         //
     }
@@ -58,7 +58,7 @@ class LowonganController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(lowongan $lowongan)
+    public function destroy(Lowongan $lowongan)
     {
         //
     }

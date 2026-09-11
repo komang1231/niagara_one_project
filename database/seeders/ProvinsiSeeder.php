@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Provinsi as ProvinsiModel;
 use Illuminate\Database\Seeder;
+use Laravolt\Indonesia\Models\Province as IndonesiaProvince;
 
 class ProvinsiSeeder extends Seeder
 {
@@ -12,6 +13,15 @@ class ProvinsiSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        foreach (IndonesiaProvince::all() as $province) {
+            ProvinsiModel::firstOrCreate(
+                ['kode' => $province->code],
+                [
+                    'kode' => $province->code,
+                    'nama' => $province->name,
+                    'status' => 'aktif',
+                ]
+            );
+        }
     }
 }

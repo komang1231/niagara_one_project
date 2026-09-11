@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\permintaan_lembur;
+use App\Models\PermintaanLembur;
 use Illuminate\Http\Request;
 
 class PermintaanLemburController extends Controller
@@ -34,7 +34,7 @@ class PermintaanLemburController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(permintaan_lembur $permintaan_lembur)
+    public function show(PermintaanLembur $permintaanLembur)
     {
         //
     }
@@ -42,7 +42,7 @@ class PermintaanLemburController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(permintaan_lembur $permintaan_lembur)
+    public function edit(PermintaanLembur $permintaanLembur)
     {
         //
     }
@@ -50,7 +50,7 @@ class PermintaanLemburController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, permintaan_lembur $permintaan_lembur)
+    public function update(Request $request, PermintaanLembur $permintaanLembur)
     {
         //
     }
@@ -58,7 +58,7 @@ class PermintaanLemburController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(permintaan_lembur $permintaan_lembur)
+    public function destroy(PermintaanLembur $permintaanLembur)
     {
         //
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\jenjang_pendidikan;
+use App\Models\JenjangPendidikan;
 use Illuminate\Http\Request;
 
 class JenjangPendidikanController extends Controller
@@ -34,7 +34,7 @@ class JenjangPendidikanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(jenjang_pendidikan $jenjang_pendidikan)
+    public function show(JenjangPendidikan $jenjangPendidikan)
     {
         //
     }
@@ -42,7 +42,7 @@ class JenjangPendidikanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(jenjang_pendidikan $jenjang_pendidikan)
+    public function edit(JenjangPendidikan $jenjangPendidikan)
     {
         //
     }
@@ -50,7 +50,7 @@ class JenjangPendidikanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, jenjang_pendidikan $jenjang_pendidikan)
+    public function update(Request $request, JenjangPendidikan $jenjangPendidikan)
     {
         //
     }
@@ -58,7 +58,7 @@ class JenjangPendidikanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(jenjang_pendidikan $jenjang_pendidikan)
+    public function destroy(JenjangPendidikan $jenjangPendidikan)
     {
         //
     }

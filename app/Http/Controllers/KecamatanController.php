@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kecamatan;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 
 class KecamatanController extends Controller
@@ -34,7 +34,7 @@ class KecamatanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(kecamatan $kecamatan)
+    public function show(Kecamatan $kecamatan)
     {
         //
     }
@@ -42,7 +42,7 @@ class KecamatanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(kecamatan $kecamatan)
+    public function edit(Kecamatan $kecamatan)
     {
         //
     }
@@ -50,7 +50,7 @@ class KecamatanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, kecamatan $kecamatan)
+    public function update(Request $request, Kecamatan $kecamatan)
     {
         //
     }
@@ -58,7 +58,7 @@ class KecamatanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(kecamatan $kecamatan)
+    public function destroy(Kecamatan $kecamatan)
     {
         //
     }

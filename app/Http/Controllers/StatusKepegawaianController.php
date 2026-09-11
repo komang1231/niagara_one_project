@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\status_kepegawaian;
+use App\Models\StatusKepegawaian;
 use Illuminate\Http\Request;
 
 class StatusKepegawaianController extends Controller
@@ -34,7 +34,7 @@ class StatusKepegawaianController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(status_kepegawaian $status_kepegawaian)
+    public function show(StatusKepegawaian $statusKepegawaian)
     {
         //
     }
@@ -42,7 +42,7 @@ class StatusKepegawaianController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(status_kepegawaian $status_kepegawaian)
+    public function edit(StatusKepegawaian $statusKepegawaian)
     {
         //
     }
@@ -50,7 +50,7 @@ class StatusKepegawaianController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, status_kepegawaian $status_kepegawaian)
+    public function update(Request $request, StatusKepegawaian $statusKepegawaian)
     {
         //
     }
@@ -58,7 +58,7 @@ class StatusKepegawaianController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(status_kepegawaian $status_kepegawaian)
+    public function destroy(StatusKepegawaian $statusKepegawaian)
     {
         //
     }

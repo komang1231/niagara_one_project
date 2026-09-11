@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\agama;
+use App\Models\Agama;
 use Illuminate\Http\Request;
 
 class AgamaController extends Controller
@@ -34,7 +34,7 @@ class AgamaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(agama $agama)
+    public function show(Agama $agama)
     {
         //
     }
@@ -42,7 +42,7 @@ class AgamaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(agama $agama)
+    public function edit(Agama $agama)
     {
         //
     }
@@ -50,7 +50,7 @@ class AgamaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, agama $agama)
+    public function update(Request $request, Agama $agama)
     {
         //
     }
@@ -58,7 +58,7 @@ class AgamaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(agama $agama)
+    public function destroy(Agama $agama)
     {
         //
     }

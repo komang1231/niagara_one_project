@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\cabang_kantor;
+use App\Models\CabangKantor;
 use Illuminate\Http\Request;
 
 class CabangKantorController extends Controller
@@ -34,7 +34,7 @@ class CabangKantorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(cabang_kantor $cabang_kantor)
+    public function show(CabangKantor $cabangKantor)
     {
         //
     }
@@ -42,7 +42,7 @@ class CabangKantorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(cabang_kantor $cabang_kantor)
+    public function edit(CabangKantor $cabangKantor)
     {
         //
     }
@@ -50,7 +50,7 @@ class CabangKantorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, cabang_kantor $cabang_kantor)
+    public function update(Request $request, CabangKantor $cabangKantor)
     {
         //
     }
@@ -58,7 +58,7 @@ class CabangKantorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(cabang_kantor $cabang_kantor)
+    public function destroy(CabangKantor $cabangKantor)
     {
         //
     }

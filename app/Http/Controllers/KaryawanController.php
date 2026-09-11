@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\karyawan;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -34,7 +34,7 @@ class KaryawanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(karyawan $karyawan)
+    public function show(Karyawan $karyawan)
     {
         //
     }
@@ -42,7 +42,7 @@ class KaryawanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(karyawan $karyawan)
+    public function edit(Karyawan $karyawan)
     {
         //
     }
@@ -50,7 +50,7 @@ class KaryawanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, karyawan $karyawan)
+    public function update(Request $request, Karyawan $karyawan)
     {
         //
     }
@@ -58,7 +58,7 @@ class KaryawanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(karyawan $karyawan)
+    public function destroy(Karyawan $karyawan)
     {
         //
     }

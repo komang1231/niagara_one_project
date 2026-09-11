@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\dokumen_karyawan;
+use App\Models\DokumenKaryawan;
 use Illuminate\Http\Request;
 
 class DokumenKaryawanController extends Controller
@@ -34,7 +34,7 @@ class DokumenKaryawanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(dokumen_karyawan $dokumen_karyawan)
+    public function show(DokumenKaryawan $dokumenKaryawan)
     {
         //
     }
@@ -42,7 +42,7 @@ class DokumenKaryawanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(dokumen_karyawan $dokumen_karyawan)
+    public function edit(DokumenKaryawan $dokumenKaryawan)
     {
         //
     }
@@ -50,7 +50,7 @@ class DokumenKaryawanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, dokumen_karyawan $dokumen_karyawan)
+    public function update(Request $request, DokumenKaryawan $dokumenKaryawan)
     {
         //
     }
@@ -58,7 +58,7 @@ class DokumenKaryawanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(dokumen_karyawan $dokumen_karyawan)
+    public function destroy(DokumenKaryawan $dokumenKaryawan)
     {
         //
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\permintaan_karyawan;
+use App\Models\PermintaanKaryawan;
 use Illuminate\Http\Request;
 
 class PermintaanKaryawanController extends Controller
@@ -34,7 +34,7 @@ class PermintaanKaryawanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(permintaan_karyawan $permintaan_karyawan)
+    public function show(PermintaanKaryawan $permintaanKaryawan)
     {
         //
     }
@@ -42,7 +42,7 @@ class PermintaanKaryawanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(permintaan_karyawan $permintaan_karyawan)
+    public function edit(PermintaanKaryawan $permintaanKaryawan)
     {
         //
     }
@@ -50,7 +50,7 @@ class PermintaanKaryawanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, permintaan_karyawan $permintaan_karyawan)
+    public function update(Request $request, PermintaanKaryawan $permintaanKaryawan)
     {
         //
     }
@@ -58,7 +58,7 @@ class PermintaanKaryawanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(permintaan_karyawan $permintaan_karyawan)
+    public function destroy(PermintaanKaryawan $permintaanKaryawan)
     {
         //
     }

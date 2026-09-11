@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\KotaKabupaten as KotaKabupatenModel;
+use App\Models\Provinsi as ProvinsiModel;
 use Illuminate\Database\Seeder;
+use Laravolt\Indonesia\Models\City as IndonesiaCity;
 
 class KotaKabupatenSeeder extends Seeder
 {
@@ -12,6 +14,24 @@ class KotaKabupatenSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $provinsiMap = ProvinsiModel::pluck('id', 'kode');
+
+        foreach (IndonesiaCity::all() as $city) {
+            $provinsiId = $provinsiMap[$city->province_code] ?? null;
+
+            if (empty($provinsiId)) {
+                continue;
+            }
+
+            KotaKabupatenModel::firstOrCreate(
+                ['kode' => $city->code],
+                [
+                    'provinsi_id' => $provinsiId,
+                    'kode' => $city->code,
+                    'nama' => $city->name,
+                    'status' => 'aktif',
+                ]
+            );
+        }
     }
 }

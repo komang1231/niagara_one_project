@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\permintaan_tukar_shift;
+use App\Models\PermintaanTukarShift;
 use Illuminate\Http\Request;
 
 class PermintaanTukarShiftController extends Controller
@@ -34,7 +34,7 @@ class PermintaanTukarShiftController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(permintaan_tukar_shift $permintaan_tukar_shift)
+    public function show(PermintaanTukarShift $permintaanTukarShift)
     {
         //
     }
@@ -42,7 +42,7 @@ class PermintaanTukarShiftController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(permintaan_tukar_shift $permintaan_tukar_shift)
+    public function edit(PermintaanTukarShift $permintaanTukarShift)
     {
         //
     }
@@ -50,7 +50,7 @@ class PermintaanTukarShiftController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, permintaan_tukar_shift $permintaan_tukar_shift)
+    public function update(Request $request, PermintaanTukarShift $permintaanTukarShift)
     {
         //
     }
@@ -58,7 +58,7 @@ class PermintaanTukarShiftController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(permintaan_tukar_shift $permintaan_tukar_shift)
+    public function destroy(PermintaanTukarShift $permintaanTukarShift)
     {
         //
     }

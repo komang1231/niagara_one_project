@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\history_karyawans;
+use App\Models\HistoryKaryawans;
 use Illuminate\Http\Request;
 
 class HistoryKaryawansController extends Controller

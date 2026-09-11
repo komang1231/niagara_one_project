@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kontrak_karyawan;
+use App\Models\KontrakKaryawan;
 use Illuminate\Http\Request;
 
 class KontrakKaryawanController extends Controller
@@ -34,7 +34,7 @@ class KontrakKaryawanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(kontrak_karyawan $kontrak_karyawan)
+    public function show(KontrakKaryawan $kontrakKaryawan)
     {
         //
     }
@@ -42,7 +42,7 @@ class KontrakKaryawanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(kontrak_karyawan $kontrak_karyawan)
+    public function edit(KontrakKaryawan $kontrakKaryawan)
     {
         //
     }
@@ -50,7 +50,7 @@ class KontrakKaryawanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, kontrak_karyawan $kontrak_karyawan)
+    public function update(Request $request, KontrakKaryawan $kontrakKaryawan)
     {
         //
     }
@@ -58,7 +58,7 @@ class KontrakKaryawanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(kontrak_karyawan $kontrak_karyawan)
+    public function destroy(KontrakKaryawan $kontrakKaryawan)
     {
         //
     }
