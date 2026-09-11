@@ -15,7 +15,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            AgamaSeeder::class,
+            BankSeeder::class,
+            RoleSeeder::class,
+            ShiftSeeder::class,
+            JenjangPendidikanSeeder::class,
+            StatusKawinSeeder::class,
+            StatusKepegawaianSeeder::class,
+            SumberPelamarSeeder::class,
+            JobLevelSeeder::class,
+            JobPositionSeeder::class,
+            DepartemenSeeder::class,
+            DivisiSeeder::class,
+            SectionSeeder::class,
+            ProvinsiSeeder::class,
+            KotaKabupatenSeeder::class,
+            KecamatanSeeder::class,
+            CabangKantorSeeder::class,
+            HariLiburSeeder::class,
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',
