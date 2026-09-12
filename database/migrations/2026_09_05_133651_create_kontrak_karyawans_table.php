@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('nomor_kontrak', 20)->unique();
             $table->unsignedBigInteger('karyawan_id');
-            $table->unsignedBigInteger('status_kepegawaian_id');
+            $table->unsignedInteger('status_kepegawaian_id');
             $table->date('tanggal_mulai');
             $table->date('tanggal_berakhir');
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');

@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('kode', 20)->unique();
             $table->unsignedInteger('role_id');
-            $table->unsignedBigInteger('karyawan_id');
-            $table->string('nama_karyawan', 100);
+            $table->unsignedBigInteger('karyawan_id')->nullable();
+            $table->string('nama', 100);
             $table->string('no_tlp', 20);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

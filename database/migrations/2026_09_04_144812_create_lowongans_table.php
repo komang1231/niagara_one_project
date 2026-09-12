@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('kode', 20)->unique();
             $table->string('judul', 100);
             $table->unsignedInteger('permintaan_karyawan_id');
-            $table->unsignedBigInteger('cabang_kantor_id');
+            $table->unsignedInteger('cabang_kantor_id');
             $table->unsignedInteger('job_position_id');
             $table->unsignedInteger('job_level_id');
             $table->unsignedInteger('kuota');

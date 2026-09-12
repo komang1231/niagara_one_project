@@ -13,10 +13,10 @@ class JobLevelSeeder extends Seeder
     public function run(): void
     {
         $jobLevels = [
-            ['kode' => 'JABATAN_PIMPINAN_TINGGI', 'nama' => 'Jabatan Pimpinan Tinggi'],
-            ['kode' => 'JABATAN_ADMINISTRATOR', 'nama' => 'Jabatan Administrator'],
-            ['kode' => 'JABATAN_PENGAWAS', 'nama' => 'Jabatan Pengawas'],
-            ['kode' => 'JABATAN_PELAKSANA', 'nama' => 'Jabatan Pelaksana'],
+            ['kode' => 'JBT_01', 'nama' => 'Jabatan Pimpinan Tinggi'],
+            ['kode' => 'JBT_02', 'nama' => 'Jabatan Administrator'],
+            ['kode' => 'JBT_03', 'nama' => 'Jabatan Pengawas'],
+            ['kode' => 'JBT_04', 'nama' => 'Jabatan Pelaksana'],
         ];
 
         foreach ($jobLevels as $jobLevel) {

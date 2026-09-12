@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -25,20 +24,23 @@ class DatabaseSeeder extends Seeder
             StatusKepegawaianSeeder::class,
             SumberPelamarSeeder::class,
             JobLevelSeeder::class,
-            JobPositionSeeder::class,
             DepartemenSeeder::class,
             DivisiSeeder::class,
             SectionSeeder::class,
+            JobPositionSeeder::class,
             ProvinsiSeeder::class,
             KotaKabupatenSeeder::class,
             KecamatanSeeder::class,
             CabangKantorSeeder::class,
             HariLiburSeeder::class,
-        ]);
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            CutiSeeder::class,
+            SaldoCutiSeeder::class,
+            LowonganSeeder::class,
+            RekrutmenSeeder::class,
+            KaryawanSeeder::class,
+            KontrakKaryawanSeeder::class,
+            JadwalKaryawanSeeder::class,
+            User::class,
         ]);
     }
 }

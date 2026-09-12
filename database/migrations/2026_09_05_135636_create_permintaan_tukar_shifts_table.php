@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('permintaan_tukar_shifts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kode', 20)->unique();
-            $table->unsignedInteger('karyawan_pengaju');
-            $table->unsignedInteger('karyawan_pengganti');
+            $table->unsignedBigInteger('karyawan_pengaju');
+            $table->unsignedBigInteger('karyawan_pengganti');
             $table->date('tanggal_tujuan');
             $table->unsignedInteger('shift_pengaju');
             $table->unsignedInteger('shift_pengganti');
