@@ -12,16 +12,15 @@ return new class extends Migration
         Schema::create('karyawans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nip', 20)->unique();
-            $table->unsignedBigInteger('rekrutmen_id');
-            // $table->unsignedInteger('rekrutmen_id')->nullable();
-            // $table->unsignedInteger('lowongan_id');
+            $table->unsignedBigInteger('rekrutmen_id')->nullable();
+            $table->unsignedInteger('lowongan_id')->nullable();
             $table->unsignedInteger('job_position_id');
             $table->unsignedInteger('job_level_id');    
             $table->unsignedInteger('cabang_kantor_id');
             $table->decimal('gaji', 20, 4);
             $table->string('nama', 100);
             $table->string('email', 150)->unique();
-            $table->string('no_hp', 20)->unique();
+            $table->string('no_tlp', 20)->unique();
             $table->char('nik', 16)->unique();
             $table->char('no_bpjs_ketenagakerjaan', 11)->unique();
             $table->char('no_bpjs_kesehatan', 13)->unique();
@@ -38,7 +37,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('rekrutmen_id')->references('id')->on('rekrutmens');
-            // $table->foreign('lowongan_id')->references('id')->on('lowongans');
+            $table->foreign('lowongan_id')->references('id')->on('lowongans');
             $table->foreign('job_position_id')->references('id')->on('job_positions');
             $table->foreign('job_level_id')->references('id')->on('job_levels');
             $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantor');

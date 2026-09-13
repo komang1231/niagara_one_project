@@ -26,15 +26,19 @@
                         <p class="subtitle">Please sign in your account below here!</p>
                     </header>
 
-     
-                    <form method="POST" action="#">
-                        {{-- @csrf --}}
+                    @error('email')
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <form method="POST" action="{{ route('login.authenticate') }}">
+                        @csrf
 
                         <!-- Email Input -->
                         <div class="mb-3">
                             <label class="form-label" for="emailInput">Email / Username</label>
-                            <input class="form-control" id="emailInput" name="email" type="text"
-                                autocomplete="username" placeholder="Masukkan email atau username" required />
+                            <input class="form-control" id="emailInput" name="email" type="email"
+                                autocomplete="username" placeholder="Masukkan email" required />
                         </div>
 
                         <!-- Password Input -->
@@ -48,7 +52,7 @@
                             </div>
                         </div>
 
- 
+
                         <div class="d-flex justify-content-between align-items-center mb-3 mt-2">
                             <div class="form-check">
                                 <input class="form-check-input" id="rememberCheck" name="remember" type="checkbox"

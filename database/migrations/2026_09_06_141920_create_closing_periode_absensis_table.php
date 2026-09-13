@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('closing_periode_absensis', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kode', 20)->unique(); // bulan + tahun, biar gaada duplicate
             $table->integer('bulan');
             $table->integer('tahun');
             $table->unsignedBigInteger('closed_by');

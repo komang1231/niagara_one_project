@@ -62,7 +62,7 @@
                    onclick="event.preventDefault(); document.getElementById('topbar-logout-form').submit();">
                     <i class="bi bi-box-arrow-right"></i> Logout
                 </a>
-                <form id="topbar-logout-form" action="#" method="POST" class="d-none">
+                <form id="topbar-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
 

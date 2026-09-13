@@ -10,10 +10,10 @@
     <div class="app-content-wrapper">
 
         <x-topbar {{-- untuk smntara --}}
-            :user-name="auth()->user()->name ?? 'Super Admin'"
+            :user-name="auth()->user()->nama ?? 'Super Admin'"
             :user-email="auth()->user()->email ?? 'superadmin@gmail.com'"
             :user-role="auth()->user()->role_label ?? 'Super Admin'"
-            :user-initials="auth()->user() ? Str::of(auth()->user()->name)->explode(' ')->map(fn ($w) => $w[0])->take(2)->implode('') : 'SA'"
+            :user-initials="auth()->user() ? Str::of(auth()->user()->nama)->explode(' ')->map(fn ($w) => $w[0])->take(2)->implode('') : 'SA'"
         />
 
         <main class="app-main">

@@ -11,17 +11,17 @@ return new class extends Migration
         Schema::create('rekrutmens', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kode', 20)->unique();
-            $table->unsignedInteger('lowongan_id');
-            // $table->unsignedInteger('lowongan_id')->nullable();
+            $table->unsignedInteger('lowongan_id')->nullable();
             $table->unsignedInteger('job_position_id');
             $table->unsignedInteger('job_level_id');    
             $table->unsignedInteger('cabang_kantor_id');
             $table->string('nama', 100);
             $table->string('email', 150)->unique();
-            $table->string('no_hp', 20)->unique();
+            $table->string('no_tlp', 20)->unique();
             $table->string('file_cv', 255);
             $table->unsignedInteger('jenjang_pendidikan_id');
             $table->unsignedInteger('sumber_pelamar_id');
+            $table->enum('status_rekrutmen', ['pelamar', 'screening', 'interview', 'offering', 'diterima','ditolak'])->default('pelamar');
             $table->enum('pool_talent', ['rehire', 'blacklist'])->nullable();
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();

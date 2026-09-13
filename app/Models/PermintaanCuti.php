@@ -3,13 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasGeneratedCode;
 
-class PermintaanCuti extends Model {
+class PermintaanCuti extends Model
+{
+    use HasGeneratedCode;
+
+    protected function getCodePrefix(): string
+    {
+        return 'PMC';
+    }
+
     protected $table = 'permintaan_cutis';
     protected $fillable = ['kode', 'cuti_id', 'karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'alasan', 'lampiran', 'pengganti_karyawan_id'];
-// approved_by & approved_at DIKELUARKAN dari fillable
+    // approved_by & approved_at DIKELUARKAN dari fillable
 
-public function details()
+    public function details()
     {
         return $this->hasMany(PermintaanCutiDetail::class, 'permintaan_cuti_id', 'id');
     }
