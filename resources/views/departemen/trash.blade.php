@@ -1,37 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
-    <x-page-header
-        eyebrow="Struktur Karyawan"
-        title="Departemen"
-        description="Kelola data departemen dan status departemen perusahaan."
-        icon="bi-diagram-3-fill"
-    >
-        <x-slot:badges>
-            <x-badge>{{ $departemen->count() }} departemen</x-badge>
-        </x-slot:badges>
-
-        <x-slot:actions>
-            <x-button
-                variant="outline"
-                icon="bi-trash"
-                href="{{ route('departemen.trash') }}"
-            >
-                Trash
-            </x-button>
-
-             <x-button
-                variant="primary"
-                icon="bi-plus-lg"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvas-departemen"
-            >
-                Tambah Departemen
-            </x-button>
-        </x-slot:actions>
-    </x-page-header>
-
-    <x-panel>
+<x-panel>
         <div>
             <x-filter.bar
                 :clearable="['search', 'status']"
@@ -67,13 +34,6 @@
                             <td class="app-table__col-no">
                                 {{ $i + 1 }}
                             </td>
-{{-- 
-                            <td>
-    <div class="app-table__cell-stack">
-        <span class="app-table__cell-primary">{{ $row['nama'] }}</span>
-        <span class="app-table__cell-secondary">{{ $row['kode'] }}</span>
-    </div>
-</td> --}}
 
                             <td>
                                 {{ $row['kode'] }}
@@ -129,7 +89,3 @@
             </div>
         </div>
     </x-panel>
-
-       @include('departemen.form-create')
-       @include('departemen.form-edit')
-@endsection

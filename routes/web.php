@@ -35,6 +35,20 @@ Route::middleware('auth')->group(function () {
     Route::view('/saldo-cuti', 'saldo-cuti.index')->name('saldo-cuti.index');
     Route::view('/permintaan-cuti', 'permintaan-cuti.index')->name('permintaan-cuti.index');
 
+    // Struktur Organisasi
+    Route::get('/departemen', [DepartemenController::class, 'index'])
+        ->name('departemen.index');
+
+    // test front end
+    Route::get('/departemen/{departemen}/edit', [DepartemenController::class, 'edit']);
+    Route::view('/departemen/trash', 'departemen.trash')->name('departemen.trash');
+
+    Route::view('/divisi', 'divisi.index')->name('divisi.index');
+    Route::view('/section', 'section.index')->name('section.index');
+    Route::view('/job-level', 'job-level.index')->name('job-level.index');
+    Route::view('/job-position', 'job-position.index')->name('job-position.index');
+    Route::view('/cabang-kantor', 'cabang-kantor.index')->name('cabang-kantor.index');
+
     // Rekrutmen
     Route::view('/rekrutmen', 'rekrutmen.index')->name('rekrutmen.index');
     Route::view('/lowongan', 'lowongan.index')->name('lowongan.index');

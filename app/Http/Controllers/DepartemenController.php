@@ -20,51 +20,61 @@ class DepartemenController extends Controller
         // Dummy data departemen
         $departemen = collect([
             [
+                'id' => 1,
                 'kode' => 'DEPT001',
                 'nama' => 'Human Resources',
                 'status' => 'aktif',
             ],
             [
+                'id' => 2,
                 'kode' => 'DEPT002',
                 'nama' => 'Finance & Accounting',
                 'status' => 'aktif',
             ],
             [
+                'id' => 3,
                 'kode' => 'DEPT003',
                 'nama' => 'Information Technology',
                 'status' => 'aktif',
             ],
             [
+                'id' => 4,
                 'kode' => 'DEPT004',
                 'nama' => 'Marketing',
                 'status' => 'aktif',
             ],
             [
+                'id' => 5,
                 'kode' => 'DEPT005',
                 'nama' => 'Sales',
                 'status' => 'aktif',
             ],
             [
+                'id' => 6,
                 'kode' => 'DEPT006',
                 'nama' => 'Operations',
                 'status' => 'aktif',
             ],
             [
+                'id' => 7,
                 'kode' => 'DEPT007',
                 'nama' => 'Procurement',
                 'status' => 'aktif',
             ],
             [
+                'id' => 8,
                 'kode' => 'DEPT008',
                 'nama' => 'Legal & Compliance',
                 'status' => 'nonaktif',
             ],
             [
+                'id' => 9,
                 'kode' => 'DEPT009',
                 'nama' => 'Customer Service',
                 'status' => 'aktif',
             ],
             [
+                'id' => 10,
                 'kode' => 'DEPT010',
                 'nama' => 'Research & Development',
                 'status' => 'nonaktif',
@@ -84,11 +94,7 @@ class DepartemenController extends Controller
         ));
     }
 
-    /**
-     * Filter dummy data sesuai query string.
-     * Nanti kalau udah pake DB, logic "status_state"/"role_state" ini
-     * tinggal dipindah ke query builder (lihat contoh komentar di atas).
-     */
+   
     private function filterDummy($departemen, Request $request)
     {
         $search = $request->query('search');
@@ -133,12 +139,15 @@ class DepartemenController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Departemen $departemen)
     {
-        //
+        return response()->json([
+            'id'               => $departemen->id,
+            'kode_departemen'  => $departemen->kode_departemen,
+            'nama_departemen'  => $departemen->nama_departemen,
+            'status'           => $departemen->status,
+        ]);
     }
 
     /**

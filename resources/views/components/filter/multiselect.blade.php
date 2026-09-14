@@ -1,9 +1,3 @@
-{{--
-    Dropdown checkbox + tampilan chip (Status & Role di Figma).
-
-    Prop 'accent' opsional buat ganti warna kotak centang per halaman:
-    <x-filter.multiselect accent="var(--accent)" ... />
---}}
 @props([
     'name',
     'label',
@@ -13,17 +7,6 @@
 ])
 
 @php
-    /*
-     * Cara bedain "halaman baru pertama dibuka" vs "user submit tapi
-     * semua opsi di-uncheck": checkbox yang ke-uncheck itu GA IKUT
-     * kekirim di query string, jadi keduanya sama-sama "request($name)
-     * kosong" kalau cuma ngecek itu doang.
-     *
-     * Makanya dipasang hidden input "{name}_state" yang SELALU ikut
-     * kekirim tiap submit. Kalau penanda ini belum ada di query string
-     * => halaman baru dibuka => default: semua opsi kecentang (karena
-     * data yang ditampilin emang semua status/role).
-     */
     $isTouched = request()->has("{$name}_state");
 
     $selected = $isTouched
@@ -38,7 +21,6 @@
 >
     <label class="app-filter-label">{{ $label }}</label>
 
-    {{-- penanda "filter ini udah pernah disubmit user", jangan dihapus --}}
     <input type="hidden" name="{{ $name }}_state" value="1">
 
     <button type="button" class="app-multiselect__control" data-multiselect-toggle aria-expanded="false">

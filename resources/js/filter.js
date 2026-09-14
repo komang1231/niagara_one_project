@@ -4,14 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ============================================================
-   BAGIAN 1: dropdown multiselect (buka/tutup dropdown + render chip)
+   BAGIAN 1: dropdown multiselect
+   Centang/uncentang/hapus chip CUMA ubah tampilan doang.
+   Gak ada submit di sini sama sekali — nunggu tombol Search diklik.
    ============================================================ */
 function initMultiselect(root) {
     const toggle = root.querySelector('[data-multiselect-toggle]');
     const chipsWrap = root.querySelector('[data-multiselect-chips]');
     const placeholder = root.querySelector('[data-multiselect-placeholder]');
     const inputs = root.querySelectorAll('[data-multiselect-input]');
-    const form = root.closest('form');
 
     function renderChips() {
         const checked = Array.from(inputs).filter((i) => i.checked);
@@ -27,26 +28,21 @@ function initMultiselect(root) {
             chip.className = 'app-chip';
             chip.innerHTML = `
                 <span class="app-chip__label">${input.dataset.label}</span>
-                <button type="button" class="app-chip__remove" aria-label="Hapus ${input.dataset.label}">
-                    <i class="bi bi-x"></i>
-                </button>
+                <button type="button" class="app-chip__remove" aria-label="Hapus ${input.dataset.label}">×</button>
             `;
 
             chip.querySelector('.app-chip__remove').addEventListener('click', (e) => {
                 e.stopPropagation(); // biar dropdown gak ke-toggle pas klik x
                 input.checked = false;
                 renderChips();
-                if (form) submitFilterForm(form); // sesuai request: hapus chip -> langsung update data
+                // sengaja gak submit di sini, nunggu tombol Search
             });
 
             chipsWrap.appendChild(chip);
         });
     }
 
-    inputs.forEach((input) => input.addEventListener('change', () => {
-        renderChips();
-        if (form) submitFilterForm(form); // sesuai request: centang/uncentang -> langsung update data
-    }));
+    inputs.forEach((input) => input.addEventListener('change', renderChips));
 
     toggle.addEventListener('click', () => {
         const isOpen = root.classList.toggle('is-open');
@@ -60,38 +56,23 @@ function initMultiselect(root) {
         }
     });
 
-    renderChips(); // render pertama kali dari state awal (default: semua kecentang)
+    renderChips(); // render state awal (default: semua kecentang)
 }
 
 /* ============================================================
-   BAGIAN 2: submit form filter — AJAX kalau ada ajax-target,
-   fallback submit biasa (reload) kalau enggak ada.
-   Ini generic, jadi cuma perlu ditulis SEKALI, dipake di semua halaman
-   yang pake komponen <x-filter.bar>.
+   BAGIAN 2: submit form — CUMA jalan pas tombol Search diklik
+   (atau tekan Enter di kolom search, itu perilaku bawaan form HTML).
    ============================================================ */
 function initFilterForm(form) {
-    // tombol "Search" -> submit manual (buat trigger kolom text)
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         submitFilterForm(form);
-    });
-
-    // enter di kolom text search -> submit juga
-    form.querySelectorAll('[data-filter-search-input]').forEach((input) => {
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                submitFilterForm(form);
-            }
-        });
     });
 }
 
 function submitFilterForm(form) {
     const targetSelector = form.dataset.filterAjaxTarget;
 
-    // kalau prop ajax-target gak di-set di <x-filter.bar>, jatuhin ke
-    // submit form biasa (reload full page) — tetep jalan tanpa AJAX.
     if (!targetSelector) {
         form.submit();
         return;
@@ -111,11 +92,9 @@ function submitFilterForm(form) {
         })
         .then((html) => {
             if (target) target.innerHTML = html;
-            // biar URL ikut kesinkron, refresh manual & tombol back browser tetep bener
             window.history.pushState({}, '', url);
         })
         .catch(() => {
-            // fallback kalau fetch gagal (network/server error): reload biasa aja
             form.submit();
         })
         .finally(() => {

@@ -52,9 +52,9 @@
     border: 0.0625rem solid var(--accent);
     color: #fff;
     border-radius: 0.5rem;
-    height: 2.625rem;
-    padding: 0 1rem; /* "sedikit panjang" nyesuain lebar tulisan Search */
-    font-size: 0.875rem;
+    height: 2.2rem;
+    padding: 0 0.800rem; 
+    font-size: 12px;
 }
 .btn-app-search:hover {
     background: var(--accent-700);

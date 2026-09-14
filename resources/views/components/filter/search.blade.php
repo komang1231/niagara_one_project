@@ -13,7 +13,6 @@
             name="{{ $name }}"
             value="{{ request($name) }}"
             placeholder="{{ $placeholder }}"
-            data-filter-search-input
         >
     </div>
 </div>
