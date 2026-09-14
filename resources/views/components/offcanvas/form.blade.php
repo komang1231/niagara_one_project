@@ -7,8 +7,6 @@
 ])
 
 @php
-    // Mapping nama size ke lebar pixel asli.
-    // Kalau nanti mau ubah lebar, cukup ubah di sini, tidak perlu cari-cari ke tiap halaman.
     $widthMap = [
         'sm' => '400px',
         'md' => '500px',
@@ -17,12 +15,6 @@
     ];
 
     $width = $widthMap[$size] ?? $widthMap['md'];
-
-    // Konvensi: form yang ada di dalam slot WAJIB diberi id "{id-offcanvas}-form".
-    // Kenapa? karena tombol Simpan ada di footer, di LUAR <form> itu (lihat penjelasan
-    // di bawah), jadi dia butuh atribut HTML "form" untuk tahu form mana yang harus
-    // disubmit. Ini bikin komponen ini tetap generic — dia tidak perlu tahu field
-    // apa saja yang ada di dalamnya.
     $formId = $id . '-form';
 @endphp
 
@@ -53,11 +45,7 @@
         ></button>
     </div>
 
-    {{--
-        BODY: di sinilah field form tiap menu disisipkan (lewat $slot).
-        <form> dibuat DI DALAM masing-masing file _form-create.blade.php,
-        bukan di sini, supaya component ini tidak ikut campur soal field.
-    --}}
+ 
     <div class="offcanvas-body">
         {{ $slot }}
     </div>

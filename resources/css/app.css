@@ -136,6 +136,10 @@
     box-sizing: border-box;
 }
 
+#offcanvas-departemen {
+    width: px;
+}
+
 html,
 body {
     height: 100%;
