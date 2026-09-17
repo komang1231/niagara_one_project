@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kode', 20)->unique();
-            $table->unsignedInteger('divisi_id');
+            $table->unsignedInteger('divisi_id')->nullable();
             $table->string('nama', 100);
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();

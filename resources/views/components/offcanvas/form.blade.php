@@ -65,5 +65,5 @@
         <button type="submit" form="{{ $formId }}" class="btn btn-success">
             Simpan
         </button>
-    </div>
+    </div> 
 </div>

@@ -35,13 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::view('/saldo-cuti', 'saldo-cuti.index')->name('saldo-cuti.index');
     Route::view('/permintaan-cuti', 'permintaan-cuti.index')->name('permintaan-cuti.index');
 
-    // Struktur Organisasi
-    Route::get('/departemen', [DepartemenController::class, 'index'])
-        ->name('departemen.index');
-
     // test front end
-    Route::get('/departemen/{departemen}/edit', [DepartemenController::class, 'edit']);
-    Route::view('/departemen/trash', 'departemen.trash')->name('departemen.trash');
+    // Route::get('/departemen/{departemen}/edit', [DepartemenController::class, 'edit']);
+    // Route::view('/departemen/trash', 'departemen.trash')->name('departemen.trash');
 
     Route::view('/divisi', 'divisi.index')->name('divisi.index');
     Route::view('/section', 'section.index')->name('section.index');
@@ -55,8 +51,10 @@ Route::middleware('auth')->group(function () {
     Route::view('/permintaan-karyawan', 'permintaan-karyawan.index')->name('permintaan-karyawan.index');
 
     // Struktur Organisasi
-    Route::get('/departemen', [DepartemenController::class, 'index'])
-        ->name('departemen.index');
+    Route::resource('departemen', DepartemenController::class);
+    Route::get('departemen/{id}/edit-data', [DepartemenController::class, 'editData'])->name('departemen.edit-data');
+    Route::get('departemen-trash', [DepartemenController::class, 'trash'])->name('departemen.trash');
+    Route::patch('departemen/{id}/restore', [DepartemenController::class, 'restore'])->name('departemen.restore');
     Route::view('/divisi', 'divisi.index')->name('divisi.index');
     Route::view('/section', 'section.index')->name('section.index');
     Route::view('/job-level', 'job-level.index')->name('job-level.index');

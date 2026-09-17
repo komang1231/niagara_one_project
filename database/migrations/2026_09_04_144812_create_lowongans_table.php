@@ -12,9 +12,12 @@ return new class extends Migration
             $table->increments('id');
             $table->string('kode', 20)->unique();
             $table->string('judul', 100);
-            $table->unsignedInteger('permintaan_karyawan_id');
+            $table->unsignedInteger('permintaan_karyawan_id')->nullable();
             $table->unsignedInteger('cabang_kantor_id');
-            $table->unsignedInteger('job_position_id');
+            $table->unsignedInteger('departemen_id');
+            $table->unsignedInteger('divisi_id')->nullable();
+            $table->unsignedInteger('section_id')->nullable();
+            $table->unsignedInteger('job_position_id')->nullable();
             $table->unsignedInteger('job_level_id');
             $table->unsignedInteger('kuota');
             $table->text('kualifikasi');
@@ -29,6 +32,9 @@ return new class extends Migration
 
             $table->foreign('permintaan_karyawan_id')->references('id')->on('permintaan_karyawans');
             $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantor');
+            $table->foreign('departemen_id')->references('id')->on('departemens');
+            $table->foreign('divisi_id')->references('id')->on('divisis');
+            $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('job_position_id')->references('id')->on('job_positions');
             $table->foreign('job_level_id')->references('id')->on('job_levels');
         });

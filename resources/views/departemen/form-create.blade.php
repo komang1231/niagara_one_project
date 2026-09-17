@@ -1,22 +1,20 @@
 <x-offcanvas.form id="offcanvas-departemen" title="Tambah Departemen" description="Tambahkan departemen baru ke sistem."
-    size="xl">
-    <form id="offcanvas-departemen-form">
+    size="md">
+    {{-- <form id="offcanvas-departemen-form">
         @csrf
 
-        <x-form.input name="kode_departemen" label="Kode Departemen" value="BRND0010" readonly />
+        <x-form.input name="kode" label="Kode Departemen" value="BRND0010" readonly />
 
-        <x-form.input name="nama_departemen" label="Nama Departemen" placeholder="Contoh: Human Resources" required />
+        <x-form.input name="nama" label="Nama Departemen" placeholder="Contoh: Human Resources" required />
         
-        <div class="row">
-            <div class="col-6">
-                <x-form.input name="kode_departemen" label="Kode Departemen" value="BRND0010" readonly />
-            </div>
+        <x-form.switch name="status" label="Status Aktif" :checked="true" />
+    </form> --}}
+    <form id="offcanvas-departemen-form" action="{{ route('departemen.store') }}" method="POST">
+        @csrf
+        {{-- <x-form.input name="kode_preview" label="Kode Departemen" value="{{ $previewKode }}" readonly />
+        <p class="text-xs text-gray-400 mt-1">*Kode final digenerate otomatis saat data disimpan.</p> --}}
 
-            <div class="col-6">
-                <x-form.input name="nama_departemen" label="Nama Departemen" placeholder="Contoh: Human Resources"
-                    required />
-            </div>
-        </div>
+        <x-form.input name="nama" label="Nama Departemen" placeholder="Contoh: Human Resources" required />
 
         <x-form.switch name="status" label="Status Aktif" :checked="true" />
     </form>
