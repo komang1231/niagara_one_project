@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\AuthController;
+Route::get('/test-laravel', function () {
+    return 'Laravel OK';
+});
 
 // LOGIN
 Route::get('/login', function () {
