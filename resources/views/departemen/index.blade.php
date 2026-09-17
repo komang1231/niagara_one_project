@@ -108,7 +108,11 @@
                                         icon="bi-trash"
                                         href="#"
                                     />
-                                      <x-table.status-toggle :checked="$row['status'] === 'aktif'" />
+                                    <x-table.status-toggle
+                                        :checked="$row['status'] === 'aktif'"
+                                        id="status-toggle-{{ $row['id'] }}"
+                                        data-id="{{ $row['id'] }}"
+                                    />
                                 </div>
                             </td>
                         </tr>
@@ -132,4 +136,37 @@
 
        @include('departemen.form-create')
        @include('departemen.form-edit')
+       <script>
+    document.addEventListener('change', function (e) {
+        const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');
+
+        if (!toggle) return;
+
+        const id = toggle.dataset.id;
+
+        fetch(`/departemen/${id}/toggle-status`, {
+            method: 'PATCH',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Gagal mengubah status.');
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            console.log('Status berhasil diubah:', data.status);
+        })
+        .catch(error => {
+            console.error(error);
+
+            // Kembalikan switch jika request gagal
+            toggle.checked = !toggle.checked;
+        });
+    });
+</script>
 @endsection

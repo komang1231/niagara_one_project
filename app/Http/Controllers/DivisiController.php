@@ -102,6 +102,18 @@ class DivisiController extends Controller
         return redirect()->route('divisi.index')->with('success', 'Divisi berhasil diperbarui.');
     }
 
+    public function toggleStatus(Divisi $divisi)
+    {
+        $divisi->update([
+            'status' => $divisi->status === 'aktif' ? 'nonaktif' : 'aktif',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'status' => $divisi->status,
+        ]);
+    }
+
     public function destroy(Divisi $divisi)
     {
         $divisi->delete();

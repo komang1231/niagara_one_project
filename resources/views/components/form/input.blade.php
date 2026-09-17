@@ -6,6 +6,7 @@
     'placeholder' => null,
     'required' => false,
     'readonly' => false,
+    'id' => null,
 ])
 
 <div class="mb-3">
@@ -21,7 +22,7 @@
     <input
         type="{{ $type }}"
         name="{{ $name }}"
-        id="{{ $name }}"
+        id="{{ $id ?? $name }}"
         value="{{ old($name, $value) }}"
         @if ($placeholder) placeholder="{{ $placeholder }}" @endif
         @if ($readonly) readonly @endif
