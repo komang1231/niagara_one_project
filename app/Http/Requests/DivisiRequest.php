@@ -24,6 +24,7 @@ class DivisiRequest extends FormRequest
     {
         return [
             'nama' => 'required|string|max:100',
+            'departemen_id' => 'nullable|exists:departemens,id',
             // Terima nilai dari UI (switch) sebagai 0/1, mapping dilakukan di controller
             'status' => 'required|in:0,1',
         ];

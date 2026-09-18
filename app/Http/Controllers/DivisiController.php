@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DivisiRequest;
 use App\Models\Divisi;
+use App\Models\Departemen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Services\CodeGenerator;
@@ -29,7 +30,11 @@ class DivisiController extends Controller
         }
 
         Log::debug('Divisi index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-        return view('divisi.index', compact('statusOptions', 'divisi'));
+        $departemens = Departemen::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        return view('divisi.index', compact('statusOptions', 'divisi', 'departemens'));
     }
 
     private function filter(Request $request)
@@ -52,14 +57,22 @@ class DivisiController extends Controller
      */
     public function create()
     {
-        $previewKode = \App\Services\CodeGenerator::generate(\App\Models\Divisi::class, 'DIV');
-        return view('divisi.form-create', compact('previewKode'));
+        $previewKode = CodeGenerator::generate(Divisi::class, 'DIV');
+
+        $departemens = Departemen::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        return view('divisi.form-create', compact(
+            'previewKode',
+            'departemens'
+        ));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DivisiRequest $request)
     {
         $start = microtime(true);
         $data = $request->validated();
@@ -88,6 +101,7 @@ class DivisiController extends Controller
         return response()->json([
             'id' => $divisi->id,
             'kode' => $divisi->kode,
+            'departemen_id' => $divisi->departemen_id,
             'nama' => $divisi->nama,
             'status' => $divisi->status,
         ]);

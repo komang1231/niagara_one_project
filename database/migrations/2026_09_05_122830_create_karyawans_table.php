@@ -14,8 +14,11 @@ return new class extends Migration
             $table->string('nip', 20)->unique();
             $table->unsignedBigInteger('rekrutmen_id')->nullable();
             $table->unsignedInteger('lowongan_id')->nullable();
-            $table->unsignedInteger('job_position_id');
-            $table->unsignedInteger('job_level_id');    
+            $table->unsignedInteger('departemen_id');
+            $table->unsignedInteger('divisi_id')->nullable();
+            $table->unsignedInteger('section_id')->nullable();
+            $table->unsignedInteger('job_position_id')->nullable();
+            $table->unsignedInteger('job_level_id');
             $table->unsignedInteger('cabang_kantor_id');
             $table->decimal('gaji', 20, 4);
             $table->string('nama', 100);
@@ -38,6 +41,9 @@ return new class extends Migration
 
             $table->foreign('rekrutmen_id')->references('id')->on('rekrutmens');
             $table->foreign('lowongan_id')->references('id')->on('lowongans');
+            $table->foreign('departemen_id')->references('id')->on('departemens');
+            $table->foreign('divisi_id')->references('id')->on('divisis');
+            $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('job_position_id')->references('id')->on('job_positions');
             $table->foreign('job_level_id')->references('id')->on('job_levels');
             $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantor');

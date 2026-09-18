@@ -23,7 +23,9 @@ class SectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:100',
+            'divisi_id' => 'nullable|exists:divisis,id',
+            'status' => 'required|in:0,1',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SectionRequest;
 use App\Models\Section;
+use App\Models\Divisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Services\CodeGenerator;
@@ -29,7 +30,11 @@ class SectionController extends Controller
         }
 
         Log::debug('Section index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-        return view('section.index', compact('statusOptions', 'section'));
+        $divisis = Divisi::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        return view('section.index', compact('statusOptions', 'section', 'divisis'));
     }
 
     private function filter(Request $request)
@@ -52,14 +57,22 @@ class SectionController extends Controller
      */
     public function create()
     {
-        $previewKode = \App\Services\CodeGenerator::generate(\App\Models\Section::class, 'SEC');
-        return view('section.form-create', compact('previewKode'));
+        $previewKode = CodeGenerator::generate(Section::class, 'SEC');
+
+        $divisis = Divisi::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        return view('section.form-create', compact(
+            'previewKode',
+            'divisis'
+        ));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SectionRequest $request)
     {
         $start = microtime(true);
         $data = $request->validated();
@@ -80,7 +93,11 @@ class SectionController extends Controller
 
     public function edit(Section $section)
     {
-        return view('section.form-edit', compact('section'));
+        $divisis = Divisi::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        return view('section.form-edit', compact('section', 'divisis'));
     }
     public function editData($id)
     {
@@ -88,6 +105,7 @@ class SectionController extends Controller
         return response()->json([
             'id' => $section->id,
             'kode' => $section->kode,
+            'divisi_id' => $section->divisi_id,
             'nama' => $section->nama,
             'status' => $section->status,
         ]);

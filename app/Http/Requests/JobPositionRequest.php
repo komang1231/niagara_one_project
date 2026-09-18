@@ -23,7 +23,9 @@ class JobPositionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:100',
+            'section_id' => 'nullable|exists:sections,id',
+            'status' => 'required|in:0,1',
         ];
     }
 }

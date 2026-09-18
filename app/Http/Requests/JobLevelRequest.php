@@ -23,7 +23,8 @@ class JobLevelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:100',
+            'status' => 'required|in:0,1',
         ];
     }
 }
