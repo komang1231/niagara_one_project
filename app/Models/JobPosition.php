@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasGeneratedCode;
 
 class JobPosition extends Model {
-    use HasGeneratedCode;
+    use HasGeneratedCode, SoftDeletes;
     protected function getCodePrefix(): string
     {
         return 'JOBP';

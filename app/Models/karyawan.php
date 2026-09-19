@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasGeneratedCode;
 use App\Models\Rekrutmen;
 use App\Models\Lowongan;
@@ -20,7 +21,7 @@ use App\Models\Bank;
 
 class Karyawan extends Model
 {
-    use HasGeneratedCode;
+    use HasGeneratedCode, SoftDeletes;
 
     protected function getCodePrefix(): string
     {
@@ -98,6 +99,33 @@ class Karyawan extends Model
     }
 
     protected $table = 'karyawans';
-    protected $fillable = ['nip', 'rekrutmen_id', 'lowongan_id', 'departemen_id', 'divisi_id', 'section_id', 'job_position_id', 'job_level_id', 'cabang_kantor_id', 'gaji', 'nama', 'email', 'no_tlp', 'nik', 'no_bpjs_ketenagakerjaan', 'no_bpjs_kesehatan', 'no_npwp', 'jenjang_pendidikan_id', 'status_kawin_id', 'agama_id', 'status_kepegawaian_id', 'bank_id', 'nama_bank', 'no_rekening'];
+
+    protected $fillable = [
+        'nip',
+        'rekrutmen_id',
+        'lowongan_id',
+        'departemen_id',
+        'divisi_id',
+        'section_id',
+        'job_position_id',
+        'job_level_id',
+        'cabang_kantor_id',
+        'gaji',
+        'nama',
+        'email',
+        'no_tlp',
+        'nik',
+        'no_bpjs_ketenagakerjaan',
+        'no_bpjs_kesehatan',
+        'no_npwp',
+        'jenjang_pendidikan_id',
+        'status_kawin_id',
+        'agama_id',
+        'status_kepegawaian_id',
+        'bank_id',
+        'nama_bank',
+        'no_rekening',
+    ];
+
     // 'status' DIKELUARKAN
 }

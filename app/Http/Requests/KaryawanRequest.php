@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Divisi;
 use App\Models\Section;
+use App\Models\JobPosition;
 
 class KaryawanRequest extends FormRequest
 {
@@ -99,13 +100,19 @@ class KaryawanRequest extends FormRequest
             'no_bpjs_ketenagakerjaan' => [
                 'required',
                 'digits:11',
-                Rule::unique('karyawans', 'no_bpjs_ketenagakerjaan')->ignore($this->karyawan),
+                Rule::unique(
+                    'karyawans',
+                    'no_bpjs_ketenagakerjaan'
+                )->ignore($this->karyawan),
             ],
 
             'no_bpjs_kesehatan' => [
                 'required',
                 'digits:13',
-                Rule::unique('karyawans', 'no_bpjs_kesehatan')->ignore($this->karyawan),
+                Rule::unique(
+                    'karyawans',
+                    'no_bpjs_kesehatan'
+                )->ignore($this->karyawan),
             ],
 
             'no_npwp' => [
@@ -157,10 +164,15 @@ class KaryawanRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+
+            // Divisi harus berasal dari Departemen yang dipilih.
             if ($this->filled('divisi_id')) {
                 $divisi = Divisi::find($this->divisi_id);
 
-                if (!$divisi || $divisi->departemen_id != $this->departemen_id) {
+                if (
+                    !$divisi ||
+                    $divisi->departemen_id != $this->departemen_id
+                ) {
                     $validator->errors()->add(
                         'divisi_id',
                         'Divisi tidak sesuai dengan departemen yang dipilih.'
@@ -168,13 +180,32 @@ class KaryawanRequest extends FormRequest
                 }
             }
 
+            // Section harus berasal dari Divisi yang dipilih.
             if ($this->filled('section_id')) {
                 $section = Section::find($this->section_id);
 
-                if (!$section || $section->divisi_id != $this->divisi_id) {
+                if (
+                    !$section ||
+                    $section->divisi_id != $this->divisi_id
+                ) {
                     $validator->errors()->add(
                         'section_id',
                         'Section tidak sesuai dengan divisi yang dipilih.'
+                    );
+                }
+            }
+
+            // Job Position harus berasal dari Section yang dipilih.
+            if ($this->filled('job_position_id')) {
+                $jobPosition = JobPosition::find($this->job_position_id);
+
+                if (
+                    !$jobPosition ||
+                    $jobPosition->section_id != $this->section_id
+                ) {
+                    $validator->errors()->add(
+                        'job_position_id',
+                        'Job Position tidak sesuai dengan section yang dipilih.'
                     );
                 }
             }

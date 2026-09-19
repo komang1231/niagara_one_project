@@ -285,9 +285,9 @@ class KaryawanController extends Controller
     public function getDivisi($departemenId)
     {
         $divisis = Divisi::where(
-                'departemen_id',
-                $departemenId
-            )
+            'departemen_id',
+            $departemenId
+        )
             ->where('status', 'aktif')
             ->orderBy('nama')
             ->get([
@@ -301,9 +301,9 @@ class KaryawanController extends Controller
     public function getSection($divisiId)
     {
         $sections = Section::where(
-                'divisi_id',
-                $divisiId
-            )
+            'divisi_id',
+            $divisiId
+        )
             ->where('status', 'aktif')
             ->orderBy('nama')
             ->get([
@@ -312,5 +312,21 @@ class KaryawanController extends Controller
             ]);
 
         return response()->json($sections);
+    }
+    
+    public function getJobPosition($sectionId)
+    {
+        $jobPositions = JobPosition::where(
+            'section_id',
+            $sectionId
+        )
+            ->where('status', 'aktif')
+            ->orderBy('nama')
+            ->get([
+                'id',
+                'nama',
+            ]);
+
+        return response()->json($jobPositions);
     }
 }
