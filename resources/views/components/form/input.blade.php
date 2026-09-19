@@ -1,31 +1,24 @@
-@props([
-    'name',
-    'label' => null,
-    'type' => 'text',
-    'value' => null,
-    'placeholder' => null,
-    'required' => false,
-    'readonly' => false,
-    'id' => null,
-])
+@props(['name', 'label' => null, 'placeholder' => '', 'value' => null, 'required' => false, 'readonly' => false, 'type' => 'text'])
 
 <div class="mb-3">
-    @if ($label)
-        <label for="{{ $name }}" class="form-label">
+    @if($label)
+        <label for="{{ $attributes->get('id', $name) }}" class="form-label fw-semibold">
             {{ $label }}
-            @if ($required)
-                <span class="text-danger">*</span>
-            @endif
+            @if($required) <span class="text-danger">*</span> @endif
         </label>
     @endif
 
-    <input
-        type="{{ $type }}"
-        name="{{ $name }}"
-        id="{{ $id ?? $name }}"
+    <input 
+        type="{{ $type }}" 
+        name="{{ $name }}" 
         value="{{ old($name, $value) }}"
-        @if ($placeholder) placeholder="{{ $placeholder }}" @endif
-        @if ($readonly) readonly @endif
-        {{ $attributes->merge(['class' => 'form-control' . ($readonly ? ' bg-light' : '')]) }}
+        placeholder="{{ $placeholder }}"
+        {{ $required ? 'required' : '' }}
+        {{ $readonly ? 'readonly' : '' }}
+        {{ $attributes->merge(['id' => $name, 'class' => 'form-control' . ($errors->has($name) ? ' is-invalid' : '')]) }}
     >
+
+    @error($name)
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
 </div>

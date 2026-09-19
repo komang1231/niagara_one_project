@@ -1,91 +1,82 @@
-<x-panel>
-        <div>
-            <x-filter.bar
-                :clearable="['search', 'status']"
-                ajax-target="#departemen-table"
-            >
-                <x-filter.search />
+@extends('layouts.app')
 
-                <x-filter.multiselect
-                    name="status"
-                    label="Status"
-                    :options="$statusOptions"
-                />
-            </x-filter.bar>
-        </div>
+@section('content')
+    <x-page-header eyebrow="Struktur Karyawan" title="Trash Departemen"
+        description="Departemen yang telah dihapus. Pulihkan atau hapus permanen di sini." icon="bi-trash-fill">
+        <x-slot:badges>
+            <x-badge>{{ $departemens->total() }} departemen</x-badge>
+        </x-slot:badges>
 
-        <hr class="app-panel__divider">
+        <x-slot:actions>
+            <x-button variant="outline" icon="bi-arrow-left" href="{{ route('departemen.index') }}">
+                Kembali
+            </x-button>
+        </x-slot:actions>
+    </x-page-header>
 
-        <div id="departemen-table">
-            <x-table>
-                <thead>
+    <x-panel>
+        <x-table>
+            <thead>
+                <tr>
+                    <th class="app-table__col-no">NO</th>
+                    <th>Kode</th>
+                    <th>Nama Departemen</th>
+                    <th>Status</th>
+                    <th class="app-table__col-actions">Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse ($departemens as $i => $row)
                     <tr>
-                        <th class="app-table__col-no">NO</th>
-                        <th>Kode</th>
-                        <th>Nama Departemen</th>
-                        <th>Status</th>
-                        <th class="app-table__col-actions">Aksi</th>
+                        <td class="app-table__col-no">
+                            {{ $departemens->firstItem() + $i }}
+                        </td>
+
+                        <td class="fw-semibold">{{ $row->kode }}</td>
+                        <td>{{ $row->nama }}</td>
+
+                        <td>
+                            <x-badge :variant="$row->status === 'aktif' ? 'success' : 'neutral'">
+                                {{ ucfirst($row->status) }}
+                            </x-badge>
+                        </td>
+
+                        <td class="app-table__col-actions">
+                            <div class="app-table__actions">
+                                {{-- Restore --}}
+                                <form action="{{ route('departemen.restore', $row->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <x-button type="submit" variant="icon-success" icon="bi-arrow-counterclockwise"
+                                        onclick="return confirm('Pulihkan departemen ini?')" />
+                                </form>
+
+                                {{-- Hapus permanen --}}
+                                @if (Route::has('departemen.force-delete'))
+                                    <form action="{{ route('departemen.force-delete', $row->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-button type="submit" variant="icon-danger" icon="bi-trash"
+                                            onclick="return confirm('Departemen akan dihapus permanen. Lanjutkan?')" />
+                                    </form>
+                                @endif
+                            </div>
+                        </td>
                     </tr>
-                </thead>
+                @empty
+                    <x-table.empty-row colspan="5" />
+                @endforelse
+            </tbody>
+        </x-table>
 
-                <tbody>
-                    @forelse ($departemen as $i => $row)
-                        <tr>
-                            <td class="app-table__col-no">
-                                {{ $i + 1 }}
-                            </td>
+        <div class="app-table-footer">
+            <span>
+                Menampilkan {{ $departemens->firstItem() ?? 0 }}–{{ $departemens->lastItem() ?? 0 }}
+                dari {{ $departemens->total() }} entri
+            </span>
 
-                            <td>
-                                {{ $row['kode'] }}
-                            </td>
 
-                            <td>
-                                {{ $row['nama'] }}
-                            </td>
-
-                            <td>
-                                <x-badge
-                                    :variant="$row['status'] === 'aktif'
-                                        ? 'success'
-                                        : 'neutral'"
-                                >
-                                    {{ ucfirst($row['status']) }}
-                                </x-badge>
-                            </td>
-
-                            <td class="app-table__col-actions">
-                                <div class="app-table__actions">
-                                  <x-button
-                                    variant="icon-edit"
-                                    icon="bi-pencil"
-                                    data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvas-departemen-edit"
-                                    data-id="{{ $row['id'] }}"
-                                   />
-
-                                    <x-button
-                                        variant="icon-danger"
-                                        icon="bi-trash"
-                                        href="#"
-                                    />
-                                      <x-table.status-toggle :checked="$row['status'] === 'aktif'" />
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <x-table.empty-row colspan="5" />
-                    @endforelse
-                </tbody>
-            </x-table>
-
-            <div class="app-table-footer">
-                <span>
-                    Menampilkan
-                    {{ $departemen->count() }}
-                    dari
-                    {{ $departemen->count() }}
-                    entri
-                </span>
-            </div>
         </div>
     </x-panel>
+@endsection

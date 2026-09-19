@@ -1,3 +1,4 @@
+@props(['checked' => false, 'name' => null])
 @props([
     'checked' => false,
     'name' => null,

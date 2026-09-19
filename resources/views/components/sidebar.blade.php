@@ -1,6 +1,5 @@
 @php
     $menu = [
-
         [
             'label' => 'Dashboard',
             'icon' => 'bi-grid-fill',
@@ -13,7 +12,7 @@
             'icon' => 'bi-people-fill',
             'slug' => 'karyawan',
             'children' => [
-                ['label' => 'Data Karyawan', 'slug' => 'data-karyawan'],
+                ['label' => 'Data Karyawan', 'slug' => 'karyawan'],
                 ['label' => 'Kontrak Karyawan', 'slug' => 'kontrak-karyawan'],
                 ['label' => 'Perubahan Karyawan', 'slug' => 'perubahan-karyawan'],
                 ['label' => 'Permintaan Resign', 'slug' => 'permintaan-resign'],
@@ -87,12 +86,8 @@
             'label' => 'Akses & Pengguna',
             'icon' => 'bi-shield-lock-fill',
             'slug' => 'akses-pengguna',
-            'children' => [
-                ['label' => 'User', 'slug' => 'user'],
-                ['label' => 'Role', 'slug' => 'role'],
-            ],
+            'children' => [['label' => 'User', 'slug' => 'user'], ['label' => 'Role', 'slug' => 'role']],
         ],
-
     ];
 @endphp
 
@@ -109,9 +104,7 @@
         <ul class="nav-list">
 
             @foreach ($menu as $item)
-
                 @if (count($item['children']) === 0)
-
                     @php
                         $routeName = $item['slug'] . '.index';
                         $isActive = Route::is($routeName);
@@ -119,14 +112,12 @@
 
                     <li class="nav-item">
                         <a href="{{ route($routeName) }}"
-                           class="nav-link @if($isActive) nav-link-active @endif">
+                            class="nav-link @if ($isActive) nav-link-active @endif">
                             <i class="bi {{ $item['icon'] }} nav-icon"></i>
                             <span class="nav-text">{{ $item['label'] }}</span>
                         </a>
                     </li>
-
                 @else
-
                     @php
                         $collapseId = $item['slug'] . 'Submenu';
                         $isSectionActive = false;
@@ -142,12 +133,11 @@
                     <li class="nav-item">
 
                         <a href="#{{ $collapseId }}"
-                           class="nav-link d-flex justify-content-between align-items-center
-                                  @if($isSectionActive) nav-link-active @else collapsed @endif"
-                           data-bs-toggle="collapse"
-                           role="button"
-                           aria-expanded="{{ $isSectionActive ? 'true' : 'false' }}"
-                           aria-controls="{{ $collapseId }}">
+                            class="nav-link d-flex justify-content-between align-items-center
+                                  @if ($isSectionActive) nav-link-active @else collapsed @endif"
+                            data-bs-toggle="collapse" role="button"
+                            aria-expanded="{{ $isSectionActive ? 'true' : 'false' }}"
+                            aria-controls="{{ $collapseId }}">
 
                             <span class="d-flex align-items-center">
                                 <i class="bi {{ $item['icon'] }} nav-icon"></i>
@@ -157,7 +147,7 @@
                         </a>
 
                         <ul id="{{ $collapseId }}"
-                            class="submenu-tree collapse @if($isSectionActive) show @endif">
+                            class="submenu-tree collapse @if ($isSectionActive) show @endif">
 
                             {{-- Garis trunk tunggal, panjangnya otomatis berhenti
                                  tepat sebelum lengkungan item terakhir --}}
@@ -169,7 +159,7 @@
                                     $isChildActive = Route::is($childRouteName);
                                 @endphp
 
-                                <li class="submenu-item @if($isChildActive) active @endif">
+                                <li class="submenu-item @if ($isChildActive) active @endif">
                                     <a href="{{ route($childRouteName) }}">
                                         <span class="active-indicator"></span>
                                         <span class="submenu-label">{{ $child['label'] }}</span>
@@ -179,9 +169,7 @@
 
                         </ul>
                     </li>
-
                 @endif
-
             @endforeach
 
         </ul>

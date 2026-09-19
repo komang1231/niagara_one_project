@@ -1,7 +1,7 @@
 :root {
-    --table-header-bg: var(--color-bg-25);
-    --table-border: var(--color-bg-100);
-    --table-row-hover: var(--primary-25);
+    --table-header-bg: var(--color-bg-th);
+    --table-border: var(--color-bg-25);
+    --table-row-hover: var(--color-bg-25);
 }
 
 /* bungkus <table> biar bisa di-scroll horizontal kalau kolomnya kepanjangan */
@@ -22,7 +22,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    color: var(--color-text-500);
+    color: var(--color-text-900);
     background: var(--table-header-bg);
     border-bottom: 0.0625rem solid var(--table-border);
     white-space: nowrap;
@@ -37,7 +37,7 @@
 .app-table tbody td {
     padding: 0.875rem 0.5rem;
     border-bottom: 0.0625rem solid var(--table-border);
-    color: var(--color-text-800);
+    color: var(--color-text);
     vertical-align: middle;
 }
 .app-table tbody td:first-child {
@@ -54,7 +54,6 @@
     border-bottom: none;
 }
 
-/* kolom NO: sempit, rata tengah */
 .app-table__col-no {
     width: 3rem;
     text-align: center;

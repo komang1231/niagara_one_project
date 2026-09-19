@@ -1,6 +1,8 @@
 import 'bootstrap';
 import './login';
 import './filter';
+import './rich-text-editor';
+import './offcanvas-edit';
 
 // Ganti ikon chevron (down <-> up) mengikuti status collapse Bootstrap.
 // Ini murni urusan buka/tutup dropdown - gak ada logic "active" di sini,

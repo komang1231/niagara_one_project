@@ -1,0 +1,113 @@
+.rte {
+    --rte-primary: #16a34a;
+    --rte-primary-soft: #f0fdf4;
+    --rte-border: #e2e8f0;
+    --rte-text-muted: #64748b;
+}
+
+.rte-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 8px 10px;
+    background: #fafbfc;
+    border: 1px solid var(--rte-border);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.rte-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: #475569;
+    font-size: 0.95rem;
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.rte-btn:hover {
+    background: #eef2f7;
+    color: #1e293b;
+}
+
+.rte-btn.is-active {
+    background: var(--rte-primary-soft);
+    color: var(--rte-primary);
+    border-color: #bbf7d0;
+}
+
+.rte-heading-select {
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid var(--rte-border);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 0.85rem;
+    color: #334155;
+    cursor: pointer;
+}
+
+.rte-divider {
+    width: 1px;
+    height: 22px;
+    background: var(--rte-border);
+    margin: 0 4px;
+}
+
+.rte-container {
+    min-height: 160px;
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1px solid var(--rte-border);
+    border-radius: 0 0 10px 10px;
+    font-size: 0.925rem;
+    line-height: 1.65;
+    color: #1e293b;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rte-container:focus-within {
+    border-color: var(--rte-primary);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+.rte-container .ProseMirror {
+    outline: none;
+}
+
+.rte-container .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: #94a3b8;
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+.rte-container ul,
+.rte-container ol {
+    padding-left: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.rte-container blockquote {
+    border-left: 3px solid var(--rte-primary);
+    padding-left: 12px;
+    margin-left: 0;
+    color: var(--rte-text-muted);
+    font-style: italic;
+}
+
+.rte-container h1, .rte-container h2, .rte-container h3 {
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
+}

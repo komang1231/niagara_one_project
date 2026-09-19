@@ -10,6 +10,8 @@
 @import "filter.css";
 @import "panel.css";
 @import "table.css";
+@import "rich-text-editor.css";
+@import "pagination.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -81,7 +83,7 @@
     --color-text-700: #526785;
     --color-text-800: #41536c;
     --color-text-900: #313f54;
-    --color-text: #1f2937;
+    --color-text: #000000;
     --color-text-1000: #161d28;
     
     --color-text-muted: #6B7280;
@@ -101,6 +103,8 @@
     --color-bg-950: #192a43;
     --color-bg-1000: #101c2d;
 
+    --color-bg-th: #F9F9FC;
+
     /* Status/Badge */
     --color-success: #137f3a;
     --color-success-soft: #dcfce7;
@@ -109,6 +113,8 @@
     --color-danger: #b91c1c;
     --color-danger-soft: #fee2e2;
     --color-danger-border: #fecaca;
+
+    --color-chip: #F0F1F3;
 
     --sidebar-width: 260px;
     --topbar-height: 62px;
@@ -136,9 +142,6 @@
     box-sizing: border-box;
 }
 
-#offcanvas-departemen {
-    width: px;
-}
 
 html,
 body {
