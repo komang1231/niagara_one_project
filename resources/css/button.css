@@ -57,7 +57,7 @@
        (didefinisiin di filter.css) -> tiga-tiganya JAMINAN sama tinggi.
        Fallback 2.2rem cuma buat jaga-jaga kalau filter.css kebetulan belum ke-load. */
     height: var(--filter-control-height, 2.2rem);
-    padding: 0 0.800rem; 
+    padding: 0 0.8rem;
     font-size: 12px;
 }
 .btn-app-search:hover {
@@ -114,5 +114,18 @@
     background-color: #fbeaec;
 }
 
-.btn-app-icon-view { color: var(--color-text-600); }
-.btn-app-icon-view:hover { background-color: var(--color-bg-50); }
+.btn-app-icon-view {
+    color: var(--color-text-600);
+}
+.btn-app-icon-view:hover {
+    background-color: var(--color-bg-50);
+}
+
+.btn-app-icon-success {
+    color: #16a34a;
+}
+
+.btn-app-icon-success:hover {
+    background-color: #f0fdf4;
+}
+

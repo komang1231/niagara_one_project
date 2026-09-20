@@ -2,7 +2,7 @@
     <form id="offcanvas-role-form" action="{{ route('role.store') }}" method="POST">
         @csrf
 
-        {{-- <x-form.input name="kode_preview" label="Kode Role" value="{{ $previewKode }}" readonly /> --}}
+        <x-form.input name="kode_preview" label="Kode Role" value="{{ $previewKode }}" readonly />
 
         <x-form.input name="nama" label="Nama Role" placeholder="Contoh: Administrator" required />
 

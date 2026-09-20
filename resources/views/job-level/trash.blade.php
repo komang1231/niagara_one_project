@@ -53,14 +53,12 @@
                                 </form>
 
                                 {{-- Hapus permanen --}}
-                                @if (Route::has('job-level.force-delete'))
                                     <form action="{{ route('job-level.force-delete', $row->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash"
                                             onclick="return confirm('Job level akan dihapus permanen. Lanjutkan?')" />
                                     </form>
-                                @endif
                             </div>
                         </td>
                     </tr>
@@ -72,10 +70,11 @@
 
         <div class="app-table-footer">
             <span>
-                Menampilkan {{ $jobLevels->firstItem() ?? 0 }}–{{ $jobLevels->lastItem() ?? 0 }}
+                Menampilkan
+                 {{ $jobLevels->firstItem() ?? 0 }}–{{ $jobLevels->lastItem() ?? 0 }}
                 dari {{ $jobLevels->total() }} entri
             </span>
-
+            <x-pagination :paginator="$jobLevels" />
 
         </div>
     </x-panel>

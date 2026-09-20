@@ -2,7 +2,7 @@
     <form id="offcanvas-divisi-form" action="{{ route('divisi.store') }}" method="POST">
         @csrf
 
-        
+          <x-form.input name="kode_preview" label="Kode Divisi" value="{{ $previewKode }}" readonly />
 
         <div class="row">
             <div class="col-md-6">

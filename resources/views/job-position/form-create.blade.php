@@ -3,7 +3,7 @@
     <form id="offcanvas-job-position-form" action="{{ route('job-position.store') }}" method="POST">
         @csrf
 
-        {{-- <x-form.input name="kode_preview" label="Kode Job Position" value="{{ $previewKode }}" readonly /> --}}
+        <x-form.input name="kode_preview" label="Kode Job Position" value="{{ $previewKode }}" readonly />
 
         <div class="row">
             <div class="col-md-6">

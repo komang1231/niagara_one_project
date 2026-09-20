@@ -84,6 +84,8 @@ Route::middleware('auth')->group(function () {
         ->name('departemen.trash');
     Route::patch('departemen/{id}/restore', [DepartemenController::class, 'restore'])
         ->name('departemen.restore');
+    Route::delete('departemen/{id}/force-delete', [DepartemenController::class, 'forceDelete'])
+        ->name('departemen.force-delete');
     Route::patch('departemen/{departemen}/toggle-status', [DepartemenController::class, 'toggleStatus'])
         ->name('departemen.toggle-status');
 
@@ -96,6 +98,8 @@ Route::middleware('auth')->group(function () {
         ->name('divisi.trash');
     Route::patch('divisi/{id}/restore', [DivisiController::class, 'restore'])
         ->name('divisi.restore');
+    Route::delete('divisi/{id}/force-delete', [DivisiController::class, 'forceDelete'])
+        ->name('divisi.force-delete');
     Route::patch('divisi/{divisi}/toggle-status', [DivisiController::class, 'toggleStatus'])
         ->name('divisi.toggle-status');
 
@@ -108,6 +112,8 @@ Route::middleware('auth')->group(function () {
         ->name('section.trash');
     Route::patch('section/{id}/restore', [SectionController::class, 'restore'])
         ->name('section.restore');
+    Route::delete('section/{id}/force-delete', [SectionController::class, 'forceDelete'])
+        ->name('section.force-delete');
     Route::patch('section/{section}/toggle-status', [SectionController::class, 'toggleStatus'])
         ->name('section.toggle-status');
 
@@ -120,6 +126,8 @@ Route::middleware('auth')->group(function () {
         ->name('job-level.trash');
     Route::patch('job-level/{id}/restore', [JobLevelController::class, 'restore'])
         ->name('job-level.restore');
+    Route::delete('job-level/{id}/force-delete', [JobLevelController::class, 'forceDelete'])
+        ->name('job-level.force-delete');
     Route::patch('job-level/{jobLevel}/toggle-status', [JobLevelController::class, 'toggleStatus'])
         ->name('job-level.toggle-status');
 
@@ -132,6 +140,8 @@ Route::middleware('auth')->group(function () {
         ->name('job-position.trash');
     Route::patch('job-position/{id}/restore', [JobPositionController::class, 'restore'])
         ->name('job-position.restore');
+    Route::delete('job-position/{id}/force-delete', [JobPositionController::class, 'forceDelete'])
+        ->name('job-position.force-delete');
     Route::patch('job-position/{jobPosition}/toggle-status', [JobPositionController::class, 'toggleStatus'])
         ->name('job-position.toggle-status');
 
@@ -157,6 +167,8 @@ Route::middleware('auth')->group(function () {
         ->name('status-kepegawaian.trash');
     Route::patch('status-kepegawaian/{id}/restore', [StatusKepegawaianController::class, 'restore'])
         ->name('status-kepegawaian.restore');
+    Route::delete('status-kepegawaian/{id}/force-delete', [StatusKepegawaianController::class, 'forceDelete'])
+        ->name('status-kepegawaian.force-delete');
     Route::patch('status-kepegawaian/{statusKepegawaian}/toggle-status', [StatusKepegawaianController::class, 'toggleStatus'])
         ->name('status-kepegawaian.toggle-status');
 
@@ -178,6 +190,8 @@ Route::middleware('auth')->group(function () {
         ->name('role.trash');
     Route::patch('role/{id}/restore', [RoleController::class, 'restore'])
         ->name('role.restore');
+    Route::delete('role/{id}/force-delete', [RoleController::class, 'forceDelete'])
+        ->name('role.force-delete');
     Route::patch('role/{role}/toggle-status', [RoleController::class, 'toggleStatus'])
         ->name('role.toggle-status');
 });

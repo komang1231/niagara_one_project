@@ -6,8 +6,6 @@
 ])
 
 @php
-    // Class warna berdasarkan variant - tinggal nambah 1 blok elseif
-    // kalau nanti butuh variant baru.
     if ($variant === 'primary') {
         $variantClass = 'btn-app-primary';
     } elseif ($variant === 'search') {
@@ -16,15 +14,16 @@
         $variantClass = 'btn-app-danger';
     } elseif ($variant === 'icon-edit') {
         $variantClass = 'btn-app-icon btn-app-icon-edit';
-    } elseif ($variant === 'icon-view') {//untuk icon mata
+    } elseif ($variant === 'icon-view') {
         $variantClass = 'btn-app-icon btn-app-icon-view';
     } elseif ($variant === 'icon-danger') {
         $variantClass = 'btn-app-icon btn-app-icon-danger';
+    } elseif ($variant === 'icon-success') {
+        $variantClass = 'btn-app-icon btn-app-icon-success';
     } else {
         $variantClass = 'btn-app-outline';
     }
 
-    // Icon-only button (buat aksi tabel) gak butuh teks di slot.
     $isIconOnly = str_starts_with($variant, 'icon-');
 @endphp
 

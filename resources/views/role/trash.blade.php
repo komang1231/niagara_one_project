@@ -54,14 +54,12 @@
                                 </form>
 
                                 {{-- Hapus permanen --}}
-                                @if (Route::has('role.force-delete'))
                                     <form action="{{ route('role.force-delete', $row->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash"
                                             onclick="return confirm('Role akan dihapus permanen. Lanjutkan?')" />
                                     </form>
-                                @endif
                             </div>
                         </td>
                     </tr>
@@ -76,7 +74,7 @@
                 Menampilkan {{ $roles->firstItem() ?? 0 }}–{{ $roles->lastItem() ?? 0 }}
                 dari {{ $roles->total() }} entri
             </span>
-
+            <x-pagination :paginator="$roles" />
 
         </div>
     </x-panel>

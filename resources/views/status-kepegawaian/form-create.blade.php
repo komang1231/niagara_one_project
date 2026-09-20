@@ -2,7 +2,7 @@
     <form id="offcanvas-status-kepegawaian-form" action="{{ route('status-kepegawaian.store') }}" method="POST">
         @csrf
 
-        {{-- <x-form.input name="kode_preview" label="Kode Status" value="{{ $previewKode }}" readonly /> --}}
+        <x-form.input name="kode_preview" label="Kode Status" value="{{ $previewKode }}" readonly />
 
         <x-form.input name="nama" label="Nama Status" placeholder="Contoh: Aktif" required />
 

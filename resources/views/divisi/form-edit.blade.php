@@ -14,8 +14,6 @@
             </div>
         </div>
 
-        <x-form.select name="departemen_id" label="Departemen" :options="$departemens" nullable />
-
         <x-form.switch name="status" label="Status Aktif" />
     </form>
 </x-offcanvas.form>

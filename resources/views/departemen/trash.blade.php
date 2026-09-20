@@ -53,14 +53,12 @@
                                 </form>
 
                                 {{-- Hapus permanen --}}
-                                @if (Route::has('departemen.force-delete'))
-                                    <form action="{{ route('departemen.force-delete', $row->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <x-button type="submit" variant="icon-danger" icon="bi-trash"
-                                            onclick="return confirm('Departemen akan dihapus permanen. Lanjutkan?')" />
-                                    </form>
-                                @endif
+                                <form action="{{ route('departemen.force-delete', $row->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button type="submit" variant="icon-danger" icon="bi-trash"
+                                        onclick="return confirm('Departemen akan dihapus permanen. Lanjutkan?')" />
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -75,7 +73,7 @@
                 Menampilkan {{ $departemens->firstItem() ?? 0 }}–{{ $departemens->lastItem() ?? 0 }}
                 dari {{ $departemens->total() }} entri
             </span>
-
+            <x-pagination :paginator="$departemens" />
 
         </div>
     </x-panel>

@@ -54,14 +54,12 @@
                                 </form>
 
                                 {{-- Hapus permanen --}}
-                                @if (Route::has('status-kepegawaian.force-delete'))
-                                    <form action="{{ route('status-kepegawaian.force-delete', $row->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <x-button type="submit" variant="icon-danger" icon="bi-trash"
-                                            onclick="return confirm('Status kepegawaian akan dihapus permanen. Lanjutkan?')" />
-                                    </form>
-                                @endif
+                                <form action="{{ route('status-kepegawaian.force-delete', $row->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button type="submit" variant="icon-danger" icon="bi-trash"
+                                        onclick="return confirm('Status kepegawaian akan dihapus permanen. Lanjutkan?')" />
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -77,7 +75,7 @@
                 dari {{ $statusKepegawaians->total() }} entri
             </span>
 
-
+            <x-pagination :paginator="$statusKepegawaians" />
         </div>
     </x-panel>
 @endsection

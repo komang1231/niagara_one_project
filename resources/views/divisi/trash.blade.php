@@ -56,35 +56,21 @@
 
                         <td class="app-table__col-actions">
                             <div class="app-table__actions">
-
                                 {{-- Restore --}}
                                 <form action="{{ route('divisi.restore', $row->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-
-                                    <x-button
-                                        type="submit"
-                                        variant="icon-success"
-                                        icon="bi-arrow-counterclockwise"
-                                        onclick="return confirm('Pulihkan divisi ini?')"
-                                    />
+                                    <x-button type="submit" variant="icon-success" icon="bi-arrow-counterclockwise"
+                                        onclick="return confirm('Pulihkan divisi ini?')" />
                                 </form>
 
                                 {{-- Hapus permanen --}}
-                                @if (Route::has('divisi.force-delete'))
-                                    <form action="{{ route('divisi.force-delete', $row->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <x-button
-                                            type="submit"
-                                            variant="icon-danger"
-                                            icon="bi-trash"
-                                            onclick="return confirm('Divisi akan dihapus permanen. Lanjutkan?')"
-                                        />
-                                    </form>
-                                @endif
-
+                                <form action="{{ route('divisi.force-delete', $row->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button type="submit" variant="icon-danger" icon="bi-trash3-fill"
+                                        onclick="return confirm('Divisi akan dihapus permanen dan tidak bisa dikembalikan lagi. Lanjutkan?')" />
+                                </form>
                             </div>
                         </td>
                     </tr>
