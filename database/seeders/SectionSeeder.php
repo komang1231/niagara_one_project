@@ -17,14 +17,14 @@ class SectionSeeder extends Seeder
             ->pluck('id', 'kode');
 
         $Section = [
-            ['kode' => 'IT-BE', 'nama' => 'Backend', 'divisi_id' => $divisiMap['IT-WEB'] ?? null],
-            ['kode' => 'IT-FE', 'nama' => 'Frontend', 'divisi_id' => $divisiMap['IT-WEB'] ?? null],
-            ['kode' => 'IT-QA', 'nama' => 'Quality Assurance', 'divisi_id' => $divisiMap['IT-WEB'] ?? null],
-            ['kode' => 'HRD-TA', 'nama' => 'Talent Acquisition', 'divisi_id' => $divisiMap['HRD-RECRUIT'] ?? null],
-            ['kode' => 'MKT-SEO', 'nama' => 'SEO', 'divisi_id' => $divisiMap['MKT-DIGITAL'] ?? null],
-            ['kode' => 'MKT-SOCMED', 'nama' => 'Social Media', 'divisi_id' => $divisiMap['MKT-DIGITAL'] ?? null],
-            ['kode' => 'OPS-FO', 'nama' => 'Front Office', 'divisi_id' => $divisiMap['OPS-HOTEL'] ?? null],
-            ['kode' => 'OPS-HK', 'nama' => 'Housekeeping', 'divisi_id' => $divisiMap['OPS-HOTEL'] ?? null],
+            ['nama' => 'Backend', 'divisi_id' => $divisiMap['IT-WEB'] ?? null],
+            ['nama' => 'Frontend', 'divisi_id' => $divisiMap['IT-WEB'] ?? null],
+            ['nama' => 'Quality Assurance', 'divisi_id' => $divisiMap['IT-WEB'] ?? null],
+            ['nama' => 'Talent Acquisition', 'divisi_id' => $divisiMap['HRD-RECRUIT'] ?? null],
+            ['nama' => 'SEO', 'divisi_id' => $divisiMap['MKT-DIGITAL'] ?? null],
+            ['nama' => 'Social Media', 'divisi_id' => $divisiMap['MKT-DIGITAL'] ?? null],
+            ['nama' => 'Front Office', 'divisi_id' => $divisiMap['OPS-HOTEL'] ?? null],
+            ['nama' => 'Housekeeping', 'divisi_id' => $divisiMap['OPS-HOTEL'] ?? null],
         ];
 
         foreach ($Section as $item) {

@@ -17,13 +17,13 @@ class JobPositionSeeder extends Seeder
             ->pluck('id', 'kode');
 
         $jobPositions = [
-            ['kode' => 'JP-BE-01', 'nama' => 'Backend Developer', 'section_id' => $sectionMap['IT-BE'] ?? null],
-            ['kode' => 'JP-FE-01', 'nama' => 'Frontend Developer', 'section_id' => $sectionMap['IT-FE'] ?? null],
-            ['kode' => 'JP-QA-01', 'nama' => 'QA Engineer', 'section_id' => $sectionMap['IT-QA'] ?? null],
-            ['kode' => 'JP-HRD-01', 'nama' => 'Recruitment Specialist', 'section_id' => $sectionMap['HRD-TA'] ?? null],
-            ['kode' => 'JP-MKT-01', 'nama' => 'SEO Specialist', 'section_id' => $sectionMap['MKT-SEO'] ?? null],
-            ['kode' => 'JP-OPS-01', 'nama' => 'Front Office Staff', 'section_id' => $sectionMap['OPS-FO'] ?? null],
-            ['kode' => 'JP-OPS-02', 'nama' => 'Housekeeping Staff', 'section_id' => $sectionMap['OPS-HK'] ?? null],
+            ['nama' => 'Backend Developer', 'section_id' => $sectionMap['IT-BE'] ?? null],
+            ['nama' => 'Frontend Developer', 'section_id' => $sectionMap['IT-FE'] ?? null],
+            ['nama' => 'QA Engineer', 'section_id' => $sectionMap['IT-QA'] ?? null],
+            ['nama' => 'Recruitment Specialist', 'section_id' => $sectionMap['HRD-TA'] ?? null],
+            ['nama' => 'SEO Specialist', 'section_id' => $sectionMap['MKT-SEO'] ?? null],
+            ['nama' => 'Front Office Staff', 'section_id' => $sectionMap['OPS-FO'] ?? null],
+            ['nama' => 'Housekeeping Staff', 'section_id' => $sectionMap['OPS-HK'] ?? null],
         ];
 
         foreach ($jobPositions as $jobPosition) {
