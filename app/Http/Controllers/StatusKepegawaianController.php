@@ -13,23 +13,57 @@ class StatusKepegawaianController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         $startIndex = microtime(true);
+
+        $previewKode = CodeGenerator::generate(
+            StatusKepegawaian::class,
+            'SKP'
+        );
+
         $statusOptions = [
             'aktif' => 'Aktif',
             'nonaktif' => 'Nonaktif',
         ];
 
-        $statusKepegawaian = $this->filter($request)->latest()->paginate(10)->withQueryString();
+        $statusKepegawaian = $this->filter($request)
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax() || $request->wantsJson()) {
-            Log::debug('StatusKepegawaian index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-            return view('components.table.table', compact('statusKepegawaian'));
+            Log::debug('StatusKepegawaian index timings', [
+                'ajax' => true,
+                'ms' => round(
+                    (microtime(true) - $startIndex) * 1000,
+                    2
+                )
+            ]);
+
+            return view(
+                'components.table.table',
+                compact('statusKepegawaian')
+            );
         }
 
-        Log::debug('StatusKepegawaian index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-        return view('status-kepegawaian.index', compact('statusOptions', 'statusKepegawaian'));
+        Log::debug('StatusKepegawaian index timings', [
+            'ajax' => false,
+            'ms' => round(
+                (microtime(true) - $startIndex) * 1000,
+                2
+            )
+        ]);
+
+        return view(
+            'status-kepegawaian.index',
+            compact(
+                'statusOptions',
+                'statusKepegawaian',
+                'previewKode'
+            )
+        );
     }
 
     private function filter(Request $request)
@@ -52,8 +86,7 @@ class StatusKepegawaianController extends Controller
      */
     public function create()
     {
-        $previewKode = \App\Services\CodeGenerator::generate(\App\Models\StatusKepegawaian::class, 'STK');
-        return view('status-kepegawaian.form-create', compact('previewKode'));
+        //
     }
 
     /**
@@ -129,5 +162,16 @@ class StatusKepegawaianController extends Controller
     {
         StatusKepegawaian::onlyTrashed()->findOrFail($id)->restore();
         return redirect()->route('status-kepegawaian.index')->with('success', 'Status Kepegawaian berhasil dipulihkan.');
+    }
+
+    public function forceDelete($id)
+    {
+        StatusKepegawaian::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('status-kepegawaian.index')
+            ->with('success', 'Status Kepegawaian berhasil dihapus permanen.');
     }
 }

@@ -131,4 +131,15 @@ class DepartemenController extends Controller
         Departemen::onlyTrashed()->findOrFail($id)->restore();
         return redirect()->route('departemen.index')->with('success', 'Departemen berhasil dipulihkan.');
     }
+
+    public function forceDelete($id)
+    {
+        Departemen::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('departemen.index')
+            ->with('success', 'Departemen berhasil dihapus permanen.');
+    }
 }

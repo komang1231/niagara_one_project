@@ -14,28 +14,65 @@ class JobPositionController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         $startIndex = microtime(true);
+
+        $previewKode = CodeGenerator::generate(
+            JobPosition::class,
+            'JPOS'
+        );
+
         $statusOptions = [
             'aktif' => 'Aktif',
             'nonaktif' => 'Nonaktif',
         ];
 
-        $jobPosition = $this->filter($request)->latest()->paginate(10)->withQueryString();
+        $jobPosition = $this->filter($request)
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax() || $request->wantsJson()) {
-            Log::debug('JobPosition index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-            return view('components.table.table', compact('jobPosition'));
+            Log::debug('JobPosition index timings', [
+                'ajax' => true,
+                'ms' => round(
+                    (microtime(true) - $startIndex) * 1000,
+                    2
+                )
+            ]);
+
+            return view(
+                'components.table.table',
+                compact('jobPosition')
+            );
         }
 
-        Log::debug('JobPosition index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
+        Log::debug('JobPosition index timings', [
+            'ajax' => false,
+            'ms' => round(
+                (microtime(true) - $startIndex) * 1000,
+                2
+            )
+        ]);
+
         $sections = Section::where('status', 'aktif')
             ->orderBy('nama')
             ->get();
 
-        return view('job-position.index', compact('statusOptions', 'jobPosition', 'sections'));
+        return view(
+            'job-position.index',
+            compact(
+                'statusOptions',
+                'jobPosition',
+                'sections',
+                'previewKode'
+            )
+        );
     }
+
+
 
     private function filter(Request $request)
     {
@@ -148,5 +185,16 @@ class JobPositionController extends Controller
     {
         JobPosition::onlyTrashed()->findOrFail($id)->restore();
         return redirect()->route('job-position.index')->with('success', 'Job Position berhasil dipulihkan.');
+    }
+
+    public function forceDelete($id)
+    {
+        JobPosition::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('job-position.index')
+            ->with('success', 'Job Position berhasil dihapus permanen.');
     }
 }

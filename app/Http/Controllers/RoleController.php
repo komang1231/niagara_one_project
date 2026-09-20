@@ -13,24 +13,59 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         $startIndex = microtime(true);
+
+        $previewKode = CodeGenerator::generate(
+            Role::class,
+            'ROLE'
+        );
+
         $statusOptions = [
             'aktif' => 'Aktif',
             'nonaktif' => 'Nonaktif',
         ];
 
-        $role = $this->filter($request)->latest()->paginate(10)->withQueryString();
+        $role = $this->filter($request)
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax() || $request->wantsJson()) {
-            Log::debug('Role index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-            return view('components.table.table', compact('role'));
+            Log::debug('Role index timings', [
+                'ajax' => true,
+                'ms' => round(
+                    (microtime(true) - $startIndex) * 1000,
+                    2
+                )
+            ]);
+
+            return view(
+                'components.table.table',
+                compact('role')
+            );
         }
 
-        Log::debug('Role index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-        return view('role.index', compact('statusOptions', 'role'));
+        Log::debug('Role index timings', [
+            'ajax' => false,
+            'ms' => round(
+                (microtime(true) - $startIndex) * 1000,
+                2
+            )
+        ]);
+
+        return view(
+            'role.index',
+            compact(
+                'statusOptions',
+                'role',
+                'previewKode'
+            )
+        );
     }
+
 
     private function filter(Request $request)
     {
@@ -52,8 +87,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $previewKode = \App\Services\CodeGenerator::generate(\App\Models\Role::class, 'ROL');
-        return view('role.form-create', compact('previewKode'));
+        //
     }
 
     /**
@@ -130,5 +164,16 @@ class RoleController extends Controller
     {
         Role::onlyTrashed()->findOrFail($id)->restore();
         return redirect()->route('role.index')->with('success', 'Role berhasil dipulihkan.');
+    }
+
+    public function forceDelete($id)
+    {
+        Role::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('role.index')
+            ->with('success', 'Role berhasil dihapus permanen.');
     }
 }

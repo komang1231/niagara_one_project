@@ -14,28 +14,65 @@ class SectionController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         $startIndex = microtime(true);
+
+        $previewKode = CodeGenerator::generate(
+            Section::class,
+            'SEC'
+        );
+
         $statusOptions = [
             'aktif' => 'Aktif',
             'nonaktif' => 'Nonaktif',
         ];
 
-        $section = $this->filter($request)->latest()->paginate(10)->withQueryString();
+        $section = $this->filter($request)
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax() || $request->wantsJson()) {
-            Log::debug('Section index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-            return view('components.table.table', compact('section'));
+            Log::debug('Section index timings', [
+                'ajax' => true,
+                'ms' => round(
+                    (microtime(true) - $startIndex) * 1000,
+                    2
+                )
+            ]);
+
+            return view(
+                'components.table.table',
+                compact('section')
+            );
         }
 
-        Log::debug('Section index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
+        Log::debug('Section index timings', [
+            'ajax' => false,
+            'ms' => round(
+                (microtime(true) - $startIndex) * 1000,
+                2
+            )
+        ]);
+
         $divisis = Divisi::where('status', 'aktif')
             ->orderBy('nama')
             ->get();
 
-        return view('section.index', compact('statusOptions', 'section', 'divisis'));
+        return view(
+            'section.index',
+            compact(
+                'statusOptions',
+                'section',
+                'divisis',
+                'previewKode'
+            )
+        );
     }
+
+
 
     private function filter(Request $request)
     {
@@ -57,16 +94,7 @@ class SectionController extends Controller
      */
     public function create()
     {
-        $previewKode = CodeGenerator::generate(Section::class, 'SEC');
-
-        $divisis = Divisi::where('status', 'aktif')
-            ->orderBy('nama')
-            ->get();
-
-        return view('section.form-create', compact(
-            'previewKode',
-            'divisis'
-        ));
+        //
     }
 
     /**
@@ -148,5 +176,16 @@ class SectionController extends Controller
     {
         Section::onlyTrashed()->findOrFail($id)->restore();
         return redirect()->route('section.index')->with('success', 'Section berhasil dipulihkan.');
+    }
+
+    public function forceDelete($id)
+    {
+        Section::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('section.index')
+            ->with('success', 'Section berhasil dihapus permanen.');
     }
 }

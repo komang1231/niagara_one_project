@@ -282,6 +282,17 @@ class KaryawanController extends Controller
             );
     }
 
+    public function forceDelete($id)
+    {
+        Karyawan::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('karyawan.index')
+            ->with('success', 'Karyawan berhasil dihapus permanen.');
+    }
+
     public function getDivisi($departemenId)
     {
         $divisis = Divisi::where(
@@ -313,7 +324,7 @@ class KaryawanController extends Controller
 
         return response()->json($sections);
     }
-    
+
     public function getJobPosition($sectionId)
     {
         $jobPositions = JobPosition::where(

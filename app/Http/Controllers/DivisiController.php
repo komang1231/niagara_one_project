@@ -14,28 +14,64 @@ class DivisiController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         $startIndex = microtime(true);
+
+        $previewKode = CodeGenerator::generate(
+            Divisi::class,
+            'DIV'
+        );
+
         $statusOptions = [
             'aktif' => 'Aktif',
             'nonaktif' => 'Nonaktif',
         ];
 
-        $divisi = $this->filter($request)->latest()->paginate(10)->withQueryString();
+        $divisi = $this->filter($request)
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax() || $request->wantsJson()) {
-            Log::debug('Divisi index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-            return view('components.table.table', compact('divisi'));
+            Log::debug('Divisi index timings', [
+                'ajax' => true,
+                'ms' => round(
+                    (microtime(true) - $startIndex) * 1000,
+                    2
+                )
+            ]);
+
+            return view(
+                'components.table.table',
+                compact('divisi')
+            );
         }
 
-        Log::debug('Divisi index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
+        Log::debug('Divisi index timings', [
+            'ajax' => false,
+            'ms' => round(
+                (microtime(true) - $startIndex) * 1000,
+                2
+            )
+        ]);
+
         $departemens = Departemen::where('status', 'aktif')
             ->orderBy('nama')
             ->get();
 
-        return view('divisi.index', compact('statusOptions', 'divisi', 'departemens'));
+        return view(
+            'divisi.index',
+            compact(
+                'statusOptions',
+                'divisi',
+                'departemens',
+                'previewKode'
+            )
+        );
     }
+
 
     private function filter(Request $request)
     {
@@ -57,16 +93,7 @@ class DivisiController extends Controller
      */
     public function create()
     {
-        $previewKode = CodeGenerator::generate(Divisi::class, 'DIV');
-
-        $departemens = Departemen::where('status', 'aktif')
-            ->orderBy('nama')
-            ->get();
-
-        return view('divisi.form-create', compact(
-            'previewKode',
-            'departemens'
-        ));
+        //
     }
 
     /**
@@ -144,5 +171,16 @@ class DivisiController extends Controller
     {
         Divisi::onlyTrashed()->findOrFail($id)->restore();
         return redirect()->route('divisi.index')->with('success', 'Divisi berhasil dipulihkan.');
+    }
+
+    public function forceDelete($id)
+    {
+        Divisi::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('divisi.index')
+            ->with('success', 'Divisi berhasil dihapus permanen.');
     }
 }

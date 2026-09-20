@@ -47,11 +47,7 @@ class JobLevelController extends Controller
 
     public function create()
     {
-        // $previewKode = \App\Services\CodeGenerator::generate(\App\Models\JobLevel::class, 'JLEV');
-        return view(
-            'job-level.form-create'
-            // ,compact('previewKode')
-        );
+        //
     }
 
     public function store(JobLevelRequest $request)
@@ -130,5 +126,16 @@ class JobLevelController extends Controller
     {
         JobLevel::onlyTrashed()->findOrFail($id)->restore();
         return redirect()->route('job-level.index')->with('success', 'Level Pekerjaan berhasil dipulihkan.');
+    }
+
+    public function forceDelete($id)
+    {
+        JobLevel::onlyTrashed()
+            ->findOrFail($id)
+            ->forceDelete();
+
+        return redirect()
+            ->route('job-level.index')
+            ->with('success', 'Job Level berhasil dihapus permanen.');
     }
 }
