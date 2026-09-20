@@ -1,9 +1,9 @@
 :root {
-    --panel-radius: 1rem;         
+    --panel-radius: 0.75rem;         
     --panel-padding-x: 1.5rem;    
     --panel-padding-y: 1.5rem; 
-    --panel-section-gap: 1.25rem;  
-    --panel-border: var(--color-bg-100);
+    --panel-section-gap: 0.70rem;  
+    --panel-border: #fff;
     --panel-shadow: 0 0.0625rem 0.1875rem rgba(16, 24, 40, 0.05);
 }
 

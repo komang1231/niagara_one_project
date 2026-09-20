@@ -1,31 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <x-page-header
-        eyebrow="Struktur Karyawan"
-        title="Departemen"
-        description="Kelola data departemen dan status departemen perusahaan."
-        icon="bi-diagram-3-fill"
-    >
+    <x-page-header eyebrow="Struktur Karyawan" title="Departemen"
+        description="Kelola data departemen dan status departemen perusahaan." icon="bi-diagram-3-fill">
         <x-slot:badges>
-            <x-badge>{{ $departemen->count() }} departemen</x-badge>
+            <x-badge>{{ $departemen->total() }} departemen</x-badge>
         </x-slot:badges>
 
         <x-slot:actions>
-            <x-button
-                variant="outline"
-                icon="bi-trash"
-                href="{{ route('departemen.trash') }}"
-            >
+            <x-button variant="outline" icon="bi-trash" href="{{ route('departemen.trash') }}">
                 Trash
             </x-button>
 
-             <x-button
-                variant="primary"
-                icon="bi-plus-lg"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvas-departemen"
-            >
+            <x-button variant="primary" icon="bi-plus-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-departemen">
                 Tambah Departemen
             </x-button>
         </x-slot:actions>
@@ -33,17 +20,10 @@
 
     <x-panel>
         <div>
-            <x-filter.bar
-                :clearable="['search', 'status']"
-                ajax-target="#departemen-table"
-            >
+            <x-filter.bar :clearable="['search', 'status']" ajax-target="#departemen-table">
                 <x-filter.search />
 
-                <x-filter.multiselect
-                    name="status"
-                    label="Status"
-                    :options="$statusOptions"
-                />
+                <x-filter.multiselect name="status" label="Status" :options="$statusOptions" />
             </x-filter.bar>
         </div>
 
@@ -65,54 +45,42 @@
                     @forelse ($departemen as $i => $row)
                         <tr>
                             <td class="app-table__col-no">
-                                {{ $i + 1 }}
+                                {{ $departemen->firstItem() + $i }}
                             </td>
-{{-- 
-                            <td>
-    <div class="app-table__cell-stack">
-        <span class="app-table__cell-primary">{{ $row['nama'] }}</span>
-        <span class="app-table__cell-secondary">{{ $row['kode'] }}</span>
-    </div>
-</td> --}}
 
-                            <td>
-                                {{ $row['kode'] }}
+                            <td class="fw-semibold">
+                                {{ $row->kode }}
                             </td>
 
                             <td>
-                                {{ $row['nama'] }}
+                                {{ $row->nama }}
                             </td>
 
                             <td>
-                                <x-badge
-                                    :variant="$row['status'] === 'aktif'
-                                        ? 'success'
-                                        : 'neutral'"
-                                >
-                                    {{ ucfirst($row['status']) }}
+                                <x-badge :variant="$row->status === 'aktif' ? 'success' : 'neutral'">
+                                    {{ ucfirst($row->status) }}
                                 </x-badge>
                             </td>
 
                             <td class="app-table__col-actions">
                                 <div class="app-table__actions">
-                                  <x-button
-                                    variant="icon-edit"
-                                    icon="bi-pencil"
-                                    data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvas-departemen-edit"
-                                    data-id="{{ $row['id'] }}"
-                                   />
+                                    {{-- Edit --}}
+                                    <x-button variant="icon-edit" icon="bi-pencil" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvas-departemen-edit"
+                                        data-edit-url="{{ url('departemen/' . $row['id'] . '/edit-data') }}"
+                                        data-update-url="{{ route('departemen.update', $row['id']) }}" />
 
-                                    <x-button
-                                        variant="icon-danger"
-                                        icon="bi-trash"
-                                        href="#"
-                                    />
-                                    <x-table.status-toggle
-                                        :checked="$row['status'] === 'aktif'"
-                                        id="status-toggle-{{ $row['id'] }}"
-                                        data-id="{{ $row['id'] }}"
-                                    />
+                                    {{-- Hapus (soft delete) --}}
+                                    <form action="{{ route('departemen.destroy', $row->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-button type="submit" variant="icon-danger" icon="bi-trash"
+                                            onclick="return confirm('Hapus departemen ini?')" />
+                                    </form>
+
+                                    {{-- Status --}}
+                                    <x-table.status-toggle :checked="$row->status === 'aktif'" id="status-toggle-{{ $row->id }}"
+                                        data-id="{{ $row->id }}" />
                                 </div>
                             </td>
                         </tr>
@@ -125,48 +93,48 @@
             <div class="app-table-footer">
                 <span>
                     Menampilkan
-                    {{ $departemen->count() }}
+                    {{ $departemen->firstItem() ?? 0 }}–{{ $departemen->lastItem() ?? 0 }}
                     dari
-                    {{ $departemen->count() }}
+                    {{ $departemen->total() }}
                     entri
                 </span>
+
+                <x-pagination :paginator="$departemen" />
             </div>
         </div>
     </x-panel>
 
-       @include('departemen.form-create')
-       @include('departemen.form-edit')
-       <script>
-    document.addEventListener('change', function (e) {
-        const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');
+    @include('departemen.form-create')
+    @include('departemen.form-edit')
+    <script>
+        document.addEventListener('change', function(e) {
+            const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');
 
-        if (!toggle) return;
+            if (!toggle) return;
 
-        const id = toggle.dataset.id;
+            const id = toggle.dataset.id;
 
-        fetch(`/departemen/${id}/toggle-status`, {
-            method: 'PATCH',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json',
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Gagal mengubah status.');
-            }
+            fetch(`/departemen/${id}/toggle-status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengubah status.');
+                    }
 
-            return response.json();
-        })
-        .then(data => {
-            console.log('Status berhasil diubah:', data.status);
-        })
-        .catch(error => {
-            console.error(error);
+                    return response.json();
+                })
+                .then(() => window.location.reload())
+                .catch(error => {
+                    console.error(error);
 
-            // Kembalikan switch jika request gagal
-            toggle.checked = !toggle.checked;
+                    // Kembalikan switch jika request gagal
+                    toggle.checked = !toggle.checked;
+                });
         });
-    });
-</script>
+    </script>
 @endsection

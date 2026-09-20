@@ -1,0 +1,44 @@
+/* Pagination - hangat, modern, minimalis */
+.app-pagination__list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.app-pagination__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.18s ease;
+}
+
+.app-pagination__link:hover {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.app-pagination__link.is-active {
+    background: #16a34a;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(22, 163, 74, 0.35);
+}
+
+.app-pagination__item.is-disabled .app-pagination__link {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.app-pagination__link--nav {
+    background: #f9fafb;
+}

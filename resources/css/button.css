@@ -52,7 +52,11 @@
     border: 0.0625rem solid var(--accent);
     color: #fff;
     border-radius: 0.5rem;
-    height: 2.2rem;
+    box-sizing: border-box;
+    /* CHANGED: pakai var yang sama kayak .app-filter-search & .app-multiselect__control
+       (didefinisiin di filter.css) -> tiga-tiganya JAMINAN sama tinggi.
+       Fallback 2.2rem cuma buat jaga-jaga kalau filter.css kebetulan belum ke-load. */
+    height: var(--filter-control-height, 2.2rem);
     padding: 0 0.800rem; 
     font-size: 12px;
 }

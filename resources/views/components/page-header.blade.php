@@ -5,6 +5,11 @@
     'icon' => 'bi-grid-1x2-fill',
 ])
 
+@php
+    $badges = $badges ?? null;
+    $actions = $actions ?? null;
+@endphp
+
 <div class="page-header">
 
     <div class="page-header-content">
@@ -18,20 +23,21 @@
             <p class="page-header-description">{{ $description }}</p>
         @endif
 
-        {{-- Baris badge + tombol, cuma muncul kalau slot-nya diisi --}}
-        @if ($badges->isNotEmpty() || $actions->isNotEmpty())
+        @if (($badges && $badges->isNotEmpty()) || ($actions && $actions->isNotEmpty()))
             <div class="page-header-row">
-                @if ($badges->isNotEmpty())
+
+                @if ($badges && $badges->isNotEmpty())
                     <div class="page-header-badges">
                         {{ $badges }}
                     </div>
                 @endif
 
-                @if ($actions->isNotEmpty())
+                @if ($actions && $actions->isNotEmpty())
                     <div class="page-header-actions">
                         {{ $actions }}
                     </div>
                 @endif
+
             </div>
         @endif
     </div>
