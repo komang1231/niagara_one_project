@@ -28,7 +28,7 @@ class KaryawanController extends Controller
 
         $previewNip = CodeGenerator::generate(
             Karyawan::class,
-            'NIP'
+            'NIP', 'nip'
         );
 
         $statusOptions = [

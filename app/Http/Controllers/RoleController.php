@@ -93,7 +93,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         $start = microtime(true);
         $data = $request->validated();

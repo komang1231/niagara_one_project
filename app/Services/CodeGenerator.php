@@ -20,7 +20,7 @@ class CodeGenerator
         $lastCode = $modelClass::withTrashed()
             ->where($field, 'like', $likePrefix)
             ->whereRaw(
-                "SUBSTRING($field, " . (strlen($prefix) + 4) . ", 2) = ?",
+                "SUBSTRING($field, " . (strlen($prefix) + 8) . ", 2) = ?",
                 [$bulan]
             )
             ->orderByDesc($field)

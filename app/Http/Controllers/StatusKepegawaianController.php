@@ -92,7 +92,7 @@ class StatusKepegawaianController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StatusKepegawaianRequest $request)
     {
         $start = microtime(true);
         $data = $request->validated();

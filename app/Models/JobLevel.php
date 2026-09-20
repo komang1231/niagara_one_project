@@ -6,14 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasGeneratedCode;
 
-class JobLevel extends Model {
+class JobLevel extends Model
+{
     use HasGeneratedCode, SoftDeletes;
     protected function getCodePrefix(): string
     {
         return 'JOBL';
     }
+    protected function getCodeField(): string
+    {
+        return 'kode';
+    }
 
     protected $table = 'job_levels';
     protected $guarded = [];
-
 }

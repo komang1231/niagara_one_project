@@ -13,6 +13,10 @@ class Departemen extends Model
     {
         return 'DEP';
     }
+    protected function getCodeField(): string
+    {
+        return 'kode';
+    }
 
     protected $table = 'departemens';
     protected $guarded = [];

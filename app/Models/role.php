@@ -13,6 +13,10 @@ class Role extends Model
     {
         return 'ROLE';
     }
+    protected function getCodeField(): string
+    {
+        return 'kode';
+    }
 
     protected $table = 'roles';
     protected $guarded = [];

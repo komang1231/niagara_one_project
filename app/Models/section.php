@@ -15,6 +15,10 @@ class Section extends Model
     {
         return 'SEC';
     }
+    protected function getCodeField(): string
+    {
+        return 'kode';
+    }
 
     protected $table = 'sections';
     protected $guarded = [];

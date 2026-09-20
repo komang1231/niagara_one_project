@@ -15,6 +15,10 @@ class Divisi extends Model
     {
         return 'DIV';
     }
+    protected function getCodeField(): string
+    {
+        return 'kode';
+    }
 
     protected $table = 'divisis';
     protected $guarded = [];
