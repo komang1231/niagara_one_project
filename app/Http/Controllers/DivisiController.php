@@ -155,10 +155,27 @@ class DivisiController extends Controller
         ]);
     }
 
-    public function destroy(Divisi $divisi)
+    public function destroy($id)
     {
+        $divisi = Divisi::findOrFail($id);
+
+        if ($divisi->section()->exists()) {
+            return redirect()
+                ->route('divisi.index')
+                ->with(
+                    'error',
+                    'Divisi tidak dapat dihapus karena masih digunakan oleh data Section.'
+                );
+        }
+
         $divisi->delete();
-        return redirect()->route('divisi.index')->with('success', 'Divisi berhasil dihapus.');
+
+        return redirect()
+            ->route('divisi.index')
+            ->with(
+                'success',
+                'Divisi berhasil dipindahkan ke Trash.'
+            );
     }
 
     public function trash()
@@ -170,7 +187,7 @@ class DivisiController extends Controller
     public function restore($id)
     {
         Divisi::onlyTrashed()->findOrFail($id)->restore();
-        return redirect()->route('divisi.index')->with('success', 'Divisi berhasil dipulihkan.');
+        return redirect()->route('divisi.trash')->with('success', 'Divisi berhasil dipulihkan.');
     }
 
     public function forceDelete($id)
@@ -180,7 +197,7 @@ class DivisiController extends Controller
             ->forceDelete();
 
         return redirect()
-            ->route('divisi.index')
+            ->route('divisi.trash')
             ->with('success', 'Divisi berhasil dihapus permanen.');
     }
 }

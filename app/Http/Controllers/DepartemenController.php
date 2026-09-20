@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DepartemenRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
 use App\Models\Departemen;
 use App\Services\CodeGenerator;
 
@@ -114,11 +115,29 @@ class DepartemenController extends Controller
         ]);
     }
 
-    public function destroy(Departemen $departemen)
+    public function destroy($id)
     {
+        $departemen = Departemen::findOrFail($id);
+
+        if ($departemen->divisi()->exists()) {
+            return redirect()
+                ->route('departemen.index')
+                ->with(
+                    'error',
+                    'Departemen tidak dapat dihapus karena masih digunakan oleh data Divisi.'
+                );
+        }
+
         $departemen->delete();
-        return redirect()->route('departemen.index')->with('success', 'Departemen berhasil dihapus.');
+
+        return redirect()
+            ->route('departemen.index')
+            ->with(
+                'success',
+                'Departemen berhasil dipindahkan ke Trash.'
+            );
     }
+
 
     public function trash()
     {
@@ -139,7 +158,7 @@ class DepartemenController extends Controller
             ->forceDelete();
 
         return redirect()
-            ->route('departemen.index')
+            ->route('departemen.trash')
             ->with('success', 'Departemen berhasil dihapus permanen.');
     }
 }

@@ -27,4 +27,8 @@ class Divisi extends Model
     {
         return $this->belongsTo(Departemen::class, 'departemen_id');
     }
+    public function section()
+    {
+        return $this->hasMany(Section::class, 'divisi_id');
+    }
 }

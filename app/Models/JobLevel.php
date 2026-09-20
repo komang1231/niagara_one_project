@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasGeneratedCode;
+use App\Models\Section;
 
 class JobLevel extends Model
 {
@@ -20,4 +21,9 @@ class JobLevel extends Model
 
     protected $table = 'job_levels';
     protected $guarded = [];
+
+    public function karyawan()
+    {
+        return $this->hasMany(Karyawan::class, 'job_level_id');
+    }
 }

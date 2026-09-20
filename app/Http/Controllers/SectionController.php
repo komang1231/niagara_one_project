@@ -160,10 +160,27 @@ class SectionController extends Controller
         ]);
     }
 
-    public function destroy(Section $section)
+    public function destroy($id)
     {
+        $section = Section::findOrFail($id);
+
+        if ($section->jobPosition()->exists()) {
+            return redirect()
+                ->route('section.index')
+                ->with(
+                    'error',
+                    'Section tidak dapat dihapus karena masih digunakan oleh data Job Position.'
+                );
+        }
+
         $section->delete();
-        return redirect()->route('section.index')->with('success', 'Section berhasil dihapus.');
+
+        return redirect()
+            ->route('section.index')
+            ->with(
+                'success',
+                'Section berhasil dipindahkan ke Trash.'
+            );
     }
 
     public function trash()
@@ -175,7 +192,7 @@ class SectionController extends Controller
     public function restore($id)
     {
         Section::onlyTrashed()->findOrFail($id)->restore();
-        return redirect()->route('section.index')->with('success', 'Section berhasil dipulihkan.');
+        return redirect()->route('section.trash')->with('success', 'Section berhasil dipulihkan.');
     }
 
     public function forceDelete($id)
@@ -185,7 +202,7 @@ class SectionController extends Controller
             ->forceDelete();
 
         return redirect()
-            ->route('section.index')
+            ->route('section.trash')
             ->with('success', 'Section berhasil dihapus permanen.');
     }
 }

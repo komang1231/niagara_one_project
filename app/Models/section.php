@@ -27,4 +27,9 @@ class Section extends Model
     {
         return $this->belongsTo(Divisi::class, 'divisi_id');
     }
+
+    public function jobPosition()
+    {
+        return $this->hasMany(JobPosition::class, 'section_id');
+    }
 }

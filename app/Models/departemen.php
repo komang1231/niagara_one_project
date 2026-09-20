@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\HasGeneratedCode;
+use App\Models\Divisi;
 
 class Departemen extends Model
 {
@@ -21,5 +22,8 @@ class Departemen extends Model
     protected $table = 'departemens';
     protected $guarded = [];
 
-    //
+    public function divisi()
+    {
+        return $this->hasMany(Divisi::class, 'departemen_id');
+    }
 }

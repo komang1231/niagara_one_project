@@ -110,10 +110,27 @@ class JobLevelController extends Controller
         ]);
     }
 
-    public function destroy(JobLevel $jobLevel)
+    public function destroy($id)
     {
+        $jobLevel = JobLevel::findOrFail($id);
+
+        if ($jobLevel->karyawan()->exists()) {
+            return redirect()
+                ->route('job-level.index')
+                ->with(
+                    'error',
+                    'Job Level tidak dapat dihapus karena masih digunakan oleh data Karyawan.'
+                );
+        }
+
         $jobLevel->delete();
-        return redirect()->route('job-level.index')->with('success', 'Level Pekerjaan berhasil dihapus.');
+
+        return redirect()
+            ->route('job-level.index')
+            ->with(
+                'success',
+                'Job Level berhasil dipindahkan ke Trash.'
+            );
     }
 
     public function trash()
@@ -125,7 +142,7 @@ class JobLevelController extends Controller
     public function restore($id)
     {
         JobLevel::onlyTrashed()->findOrFail($id)->restore();
-        return redirect()->route('job-level.index')->with('success', 'Level Pekerjaan berhasil dipulihkan.');
+        return redirect()->route('job-level.trash')->with('success', 'Level Pekerjaan berhasil dipulihkan.');
     }
 
     public function forceDelete($id)
@@ -135,7 +152,7 @@ class JobLevelController extends Controller
             ->forceDelete();
 
         return redirect()
-            ->route('job-level.index')
+            ->route('job-level.trash')
             ->with('success', 'Job Level berhasil dihapus permanen.');
     }
 }

@@ -169,10 +169,27 @@ class JobPositionController extends Controller
         ]);
     }
 
-    public function destroy(JobPosition $jobPosition)
+    public function destroy($id)
     {
+        $jobPosition = JobPosition::findOrFail($id);
+
+        if ($jobPosition->karyawan()->exists()) {
+            return redirect()
+                ->route('job-position.index')
+                ->with(
+                    'error',
+                    'Job Position tidak dapat dihapus karena masih digunakan oleh data Karyawan.'
+                );
+        }
+
         $jobPosition->delete();
-        return redirect()->route('job-position.index')->with('success', 'Job Position berhasil dihapus.');
+
+        return redirect()
+            ->route('job-position.index')
+            ->with(
+                'success',
+                'Job Position berhasil dipindahkan ke Trash.'
+            );
     }
 
     public function trash()
@@ -184,7 +201,7 @@ class JobPositionController extends Controller
     public function restore($id)
     {
         JobPosition::onlyTrashed()->findOrFail($id)->restore();
-        return redirect()->route('job-position.index')->with('success', 'Job Position berhasil dipulihkan.');
+        return redirect()->route('job-position.trash')->with('success', 'Job Position berhasil dipulihkan.');
     }
 
     public function forceDelete($id)
@@ -194,7 +211,7 @@ class JobPositionController extends Controller
             ->forceDelete();
 
         return redirect()
-            ->route('job-position.index')
+            ->route('job-position.trash')
             ->with('success', 'Job Position berhasil dihapus permanen.');
     }
 }

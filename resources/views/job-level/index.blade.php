@@ -1,5 +1,9 @@
 @extends('layouts.app')
-
+@if (session('error'))
+    <script>
+        alert(@json(session('error')));
+    </script>
+@endif
 @section('content')
     <x-page-header eyebrow="Struktur Karyawan" title="Job Level" description="Kelola data job level dan status job level perusahaan."
         icon="bi-diagram-3-fill">

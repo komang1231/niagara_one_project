@@ -1,5 +1,9 @@
 @extends('layouts.app')
-
+@if (session('error'))
+    <script>
+        alert(@json(session('error')));
+    </script>
+@endif
 @section('content')
     <x-page-header eyebrow="Akses & Pengguna" title="Status Kepegawaian"
         description="Kelola data status kepegawaian." icon="bi-diagram-3-fill">

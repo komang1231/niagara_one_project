@@ -146,10 +146,27 @@ class StatusKepegawaianController extends Controller
             'status' => $statusKepegawaian->status,
         ]);
     }
-    public function destroy(StatusKepegawaian $statusKepegawaian)
+    public function destroy($id)
     {
+        $statusKepegawaian = StatusKepegawaian::findOrFail($id);
+
+        if ($statusKepegawaian->karyawan()->exists()) {
+            return redirect()
+                ->route('status-kepegawaian.index')
+                ->with(
+                    'error',
+                    'Status Kepegawaian tidak dapat dihapus karena masih digunakan oleh data Karyawan.'
+                );
+        }
+
         $statusKepegawaian->delete();
-        return redirect()->route('status-kepegawaian.index')->with('success', 'Status Kepegawaian berhasil dihapus.');
+
+        return redirect()
+            ->route('status-kepegawaian.index')
+            ->with(
+                'success',
+                'Status Kepegawaian berhasil dipindahkan ke Trash.'
+            );
     }
 
     public function trash()
@@ -161,7 +178,7 @@ class StatusKepegawaianController extends Controller
     public function restore($id)
     {
         StatusKepegawaian::onlyTrashed()->findOrFail($id)->restore();
-        return redirect()->route('status-kepegawaian.index')->with('success', 'Status Kepegawaian berhasil dipulihkan.');
+        return redirect()->route('status-kepegawaian.trash')->with('success', 'Status Kepegawaian berhasil dipulihkan.');
     }
 
     public function forceDelete($id)
@@ -171,7 +188,7 @@ class StatusKepegawaianController extends Controller
             ->forceDelete();
 
         return redirect()
-            ->route('status-kepegawaian.index')
+            ->route('status-kepegawaian.trash')
             ->with('success', 'Status Kepegawaian berhasil dihapus permanen.');
     }
 }
