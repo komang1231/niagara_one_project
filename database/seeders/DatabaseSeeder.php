@@ -33,13 +33,13 @@ class DatabaseSeeder extends Seeder
             HariLiburSeeder::class,
             CutiSeeder::class,
             KaryawanSeeder::class,
+            User::class,
             PermintaanKaryawanSeeder::class,
             LowonganSeeder::class,
             RekrutmenSeeder::class,
             SaldoCutiSeeder::class,
             KontrakKaryawanSeeder::class,
             JadwalKaryawanSeeder::class,
-            User::class,
         ]);
     }
 }

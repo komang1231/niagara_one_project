@@ -18,7 +18,7 @@ class PermintaanKaryawanSeeder extends Seeder
             ->pluck('id', 'nip');
         $jobPositionMap = JobPositionModel::whereIn('kode', ['JOBP-2600010920', 'JOBP-2600020920', 'JOBP-2600030920', 'JOBP-2600040920', 'JOBP-2600050920', 'JOBP-2600060920', 'JOBP-2600070920'])
             ->pluck('id', 'kode');
-        $jobLevelMap = JobLevelModel::whereIn('kode', ['JOBL-2600010920', 'JOBL-2600020920', 'JOBL-2600030920', 'JOBL-2600040920', 'JOBL-2600050920', 'JOBL-2600060920', 'JOBL-2600070920', 'JOBL-2600080920', 'JOBL-2600090920', 'JOBL-2600100920', 'JOBL-2600110920', 'JOBL-2600120920', 'JOBL-2600130920'])
+        $jobLevelMap = JobLevelModel::whereIn('kode', ['JOBL-2600010921', 'JOBL-2600020921', 'JOBL-2600030921', 'JOBL-2600040921', 'JOBL-2600050921', 'JOBL-2600060921', 'JOBL-2600070921', 'JOBL-2600080921', 'JOBL-2600090921', 'JOBL-2600100921', 'JOBL-2600110921', 'JOBL-2600120921', 'JOBL-2600130921'])
             ->pluck('id', 'kode');
 
         \App\Models\PermintaanKaryawan::firstOrCreate(
@@ -26,14 +26,14 @@ class PermintaanKaryawanSeeder extends Seeder
                 'kode' => 'PMK-2600010920',
                 'karyawan_id' => $karyawanMap['NIP-2600010920'] ?? null,
                 'job_position_id' => $jobPositionMap['JOBP-2600010920'] ?? null,
-                'job_level_id' => $jobLevelMap['JOBL-2600010920'] ?? null,
+                'job_level_id' => $jobLevelMap['JOBL-2600010921'] ?? null,
                 'jumlah' => 2,
             ],
             [
                 'kode' => 'PMK-2600020920',
                 'karyawan_id' => $karyawanMap['NIP-2600020920'] ?? null,
                 'job_position_id' => $jobPositionMap['JOBP-2600020920'] ?? null,
-                'job_level_id' => $jobLevelMap['JOBL-2600020920'] ?? null,
+                'job_level_id' => $jobLevelMap['JOBL-2600020921'] ?? null,
                 'jumlah' => 1,
             ],
             // [
