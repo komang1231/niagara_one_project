@@ -28,7 +28,8 @@ class KaryawanController extends Controller
 
         $previewNip = CodeGenerator::generate(
             Karyawan::class,
-            'NIP', 'nip'
+            'NIP',
+            'nip'
         );
 
         $statusOptions = [
@@ -339,5 +340,178 @@ class KaryawanController extends Controller
             ]);
 
         return response()->json($jobPositions);
+    }
+
+
+    public function show(Karyawan $karyawan)
+    {
+        $karyawan->load([
+            'departemen',
+            'divisi',
+            'section',
+            'jobPosition',
+            'jobLevel',
+            'cabangKantor',
+            'jenjangPendidikan',
+            'statusKawin',
+            'agama',
+            'statusKepegawaian',
+            'bank',
+        ]);
+
+        $penempatan = collect([
+            $karyawan->departemen?->nama,
+            $karyawan->divisi?->nama,
+            $karyawan->section?->nama,
+        ])
+            ->filter()
+            ->implode(' › ');
+
+        return response()->json([
+
+            'id' => $karyawan->id,
+
+            'nama' => $karyawan->nama,
+
+            'nip' => $karyawan->nip,
+
+            'inisial' => mb_strtoupper(
+                mb_substr($karyawan->nama, 0, 1)
+            ),
+
+            'job_position' =>
+            $karyawan->jobPosition?->nama ?? '-',
+
+            'status_kepegawaian' =>
+            $karyawan->statusKepegawaian?->nama ?? '-',
+
+            'status' =>
+            $karyawan->status,
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | DATA DIBUAT
+        |--------------------------------------------------------------------------
+        | created_at = waktu record karyawan dibuat di database.
+        | Bukan tanggal karyawan mulai bekerja.
+        */
+
+            'data_dibuat' => $karyawan->created_at
+                ? $karyawan->created_at
+                ->timezone('Asia/Makassar')
+                ->format('d/m/Y H:i') . ' WITA'
+                : '-',
+
+
+            'email' =>
+            $karyawan->email,
+
+            'no_tlp' =>
+            $this->formatGroup(
+                $karyawan->no_tlp,
+                4
+            ),
+
+            'nik' =>
+            $this->formatGroup(
+                $karyawan->nik,
+                4
+            ),
+
+            'jenjang_pendidikan' =>
+            $karyawan->jenjangPendidikan?->nama ?? '-',
+
+            'status_kawin' =>
+            $karyawan->statusKawin?->nama ?? '-',
+
+            'agama' =>
+            $karyawan->agama?->nama ?? '-',
+
+
+            'penempatan_breadcrumb' =>
+            $penempatan ?: '-',
+
+
+            'job_position_level' =>
+            trim(
+                ($karyawan->jobPosition?->nama ?? '-') .
+                    ' · ' .
+                    ($karyawan->jobLevel?->nama ?? '')
+            ),
+
+
+            'cabang_kantor' =>
+            $karyawan->cabangKantor?->nama ?? '-',
+
+
+            'status_kepegawaian_full' =>
+            $karyawan->statusKepegawaian?->nama ?? '-',
+
+
+            'status_aktif' =>
+            $karyawan->status === 'aktif'
+                ? 'Aktif'
+                : 'Nonaktif',
+
+
+            'gaji' =>
+            $karyawan->gaji
+                ? 'Rp ' . number_format(
+                    $karyawan->gaji,
+                    0,
+                    ',',
+                    '.'
+                )
+                : '-',
+
+
+            'bank' =>
+            $karyawan->bank?->nama ?? '-',
+
+
+            'nama_bank' =>
+            $karyawan->nama_bank ?? '-',
+
+
+            'no_rekening' =>
+            $this->formatGroup(
+                $karyawan->no_rekening,
+                4
+            ),
+
+
+            'no_npwp' =>
+            $karyawan->no_npwp ?? '-',
+
+
+            'no_bpjs_ketenagakerjaan' =>
+            $this->formatGroup(
+                $karyawan->no_bpjs_ketenagakerjaan,
+                4
+            ),
+
+
+            'no_bpjs_kesehatan' =>
+            $this->formatGroup(
+                $karyawan->no_bpjs_kesehatan,
+                4
+            ),
+
+        ]);
+    }
+
+    /**
+     * Kelompokkan digit angka jadi blok per-N karakter dgn spasi,
+     * biar angka panjang (no rekening, BPJS, dll) gampang dibaca.
+     * Contoh: formatGroup('081547607124', 4) -> "0815 4760 7124"
+     */
+    private function formatGroup(?string $value, int $groupSize = 4): string
+    {
+        if (!$value) {
+            return '-';
+        }
+
+        return trim(chunk_split($value, $groupSize, ' '));
     }
 }

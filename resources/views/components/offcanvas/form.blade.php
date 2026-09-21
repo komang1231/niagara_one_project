@@ -11,7 +11,7 @@
         'sm' => '400px',
         'md' => '500px',
         'lg' => '650px',
-        'xl' => '800px',
+        'xl' => '950px',
     ];
 
     $width = $widthMap[$size] ?? $widthMap['md'];

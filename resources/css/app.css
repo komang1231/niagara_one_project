@@ -12,6 +12,7 @@
 @import "table.css";
 @import "rich-text-editor.css";
 @import "pagination.css";
+@import "karyawan.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

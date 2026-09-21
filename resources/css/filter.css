@@ -1,249 +1,283 @@
-    :root {
-        --multiselect-accent: var(--primary);
-        --filter-select-width: 18.1875rem; 
-        --filter-select-min-width: 9rem;
-        /* satu-satunya sumber tinggi buat search input, dropdown, & tombol Search
+:root {
+    --multiselect-accent: var(--primary);
+    --filter-select-width: 18.1875rem;
+    --filter-select-min-width: 9rem;
+    /* satu-satunya sumber tinggi buat search input, dropdown, & tombol Search
         (dipake juga di button.css lewat var(--filter-control-height)) biar
         ketiganya PASTI sama tingginya, gak usah samain manual satu-satu */
-        --filter-control-height: 2.2rem;
-    }
+    --filter-control-height: 2.2rem;
+}
 
-    .app-filter-bar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: end;
-        gap: 1rem;
-        transition: opacity 0.15s ease;
-    }
-    .app-filter-bar.is-loading {
-        opacity: 0.6;
-        pointer-events: none;
-    }
+.app-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 1rem;
+    transition: opacity 0.15s ease;
+}
 
-    .app-filter-bar__fields {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: end;
-        gap: 1rem;
-        flex: 1; /* ini yang bikin actions (Search+ClearAll) selalu nempel kanan */
-    }
-    .app-filter-bar__actions {
-        display: flex;
-        align-items: flex-end; /* CHANGED: dari center -> flex-end, biar "Clear All" nempel sejajar bawah sama tombol Search, bukan ngambang di tengah */
-        gap: 0.875rem;
-        flex-shrink: 0; /* gak pernah ikut menyusut, tetep di pojok kanan */
-    }
+.app-filter-bar__fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 1rem;
+    flex: 1; /* ini yang bikin actions (Search+ClearAll) selalu nempel kanan */
+}
+.app-filter-bar__actions {
+    display: flex;
+    align-items: flex-end; /* CHANGED: dari center -> flex-end, biar "Clear All" nempel sejajar bawah sama tombol Search, bukan ngambang di tengah */
+    gap: 0.875rem;
+    flex-shrink: 0; /* gak pernah ikut menyusut, tetep di pojok kanan */
+}
 
-    .app-filter-field {
-        display: flex;
-        flex-direction: column;
-        gap: 0.375rem;
-        min-width: 11.25rem;
-    }
+.app-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    min-width: 11.25rem;
+}
 
-    /* search: flex-grow 2 -> otomatis "makan" sisa ruang.
+/* search: flex-grow 2 -> otomatis "makan" sisa ruang.
     Kalau cuma ada 1 dropdown di sebelahnya, sisa ruangnya lebih banyak
     jadi search jadi lebih lebar. Kalau ada 2 dropdown, sisa ruang lebih
     sedikit jadi search menyesuaikan lebih sempit. Ini otomatis dari
     flexbox, gak perlu logic PHP buat hitung jumlah dropdown. */
-    .app-filter-field--search {
-        flex: 2 1 15rem;
-    }
+.app-filter-field--search {
+    flex: 2 1 15rem;
+}
 
-    /* dropdown: lebar tetap 200px, boleh menyusut (bukan membesar) kalau mepet */
-    .app-filter-field--select {
-        flex: 0 1 var(--filter-select-width);
-        min-width: var(--filter-select-min-width);
-        max-width: var(--filter-select-width);
-    }
+/* dropdown: lebar tetap 200px, boleh menyusut (bukan membesar) kalau mepet */
+.app-filter-field--select {
+    flex: 0 1 var(--filter-select-width);
+    min-width: var(--filter-select-min-width);
+    max-width: var(--filter-select-width);
+}
 
-    .app-filter-label {
-        font-size: 0.8125rem;
-        font-weight: 600;
-        color: var(--color-text-700);
-    }
+.app-filter-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-700);
+}
 
-    .app-filter-clear {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--color-text-700);
-        text-decoration: underline;
-        white-space: nowrap;
-    }
-    .app-filter-clear:hover {
-        color: var(--color-text-900);
-    }
+.app-filter-clear {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-700);
+    text-decoration: underline;
+    white-space: nowrap;
+}
+.app-filter-clear:hover {
+    color: var(--color-text-900);
+}
 
-    .app-filter-search {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        box-sizing: border-box;
-        height: var(--filter-control-height);
-        border: 0.0625rem solid var(--color-bg-200);
-        border-radius: 0.5rem;
-        padding: 0 0.75rem; /* vertikal dihandle sama height, bukan padding lagi */
-        background: #fff;
-    }
-    .app-filter-search:focus-within {
-        border-color: var(--primary);
-    }
-    .app-filter-search i {
-        color: var(--color-text-400);
-        font-size: 0.875rem;
-    }
-    .app-filter-search input {
-        border: none;
-        outline: none;
-        flex: 1;
-        min-width: 0;
-        font-size: 0.875rem;
-        color: var(--color-text);
-        background: transparent;
-    }
-    .app-filter-search input::placeholder {
-        color: var(--color-text-400);
-    }
+.app-filter-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    height: var(--filter-control-height);
+    border: 0.0625rem solid var(--color-bg-200);
+    border-radius: 0.5rem;
+    padding: 0 0.75rem; /* vertikal dihandle sama height, bukan padding lagi */
+    background: #fff;
+}
+.app-filter-search:focus-within {
+    border-color: var(--primary);
+}
+.app-filter-search i {
+    color: var(--color-text-400);
+    font-size: 0.875rem;
+}
+.app-filter-search input {
+    border: none;
+    outline: none;
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    background: transparent;
+}
+.app-filter-search input::placeholder {
+    color: var(--color-text-400);
+}
 
-    .app-multiselect {
-        position: relative;
-    }
+.app-multiselect {
+    position: relative;
+}
 
-    .app-multiselect__control {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.5rem;
-        box-sizing: border-box;
-        height: var(--filter-control-height);
-        padding: 0.3rem 0.75rem;
-        background: #fff;
-        border: 0.0625rem solid var(--color-bg-200);
-        border-radius: 0.5rem;
-        cursor: pointer;
-    }
-    .app-multiselect.is-open .app-multiselect__control {
-        border-color: var(--multiselect-accent);
-    }
+.app-multiselect__control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    box-sizing: border-box;
+    height: var(--filter-control-height);
+    padding: 0.3rem 0.75rem;
+    background: #fff;
+    border: 0.0625rem solid var(--color-bg-200);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+.app-multiselect.is-open .app-multiselect__control {
+    border-color: var(--multiselect-accent);
+}
 
-    .app-multiselect__chips {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        gap: 0.5rem;
-        flex: 1;
-        min-width: 0;
-        overflow-x: auto;
-        scrollbar-width: none;
-    }
-    .app-multiselect__chips::-webkit-scrollbar {
-        display: none;
-    }
-    .app-multiselect__placeholder {
-        color: var(--color-text-400);
-        font-size: 0.875rem;
-        white-space: nowrap;
-    }
+.app-multiselect__chips {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.app-multiselect__chips::-webkit-scrollbar {
+    display: none;
+}
+.app-multiselect__placeholder {
+    color: var(--color-text-400);
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
 
-    .app-chip {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        flex-shrink: 0;
-        background: var(--color-chip);
-        color: var(--color-text-900);
-        font-size: 0.775rem;
-        line-height: 1.1;
-        font-weight: 500; 
-        padding: 0.25rem 0.9375rem 0.25rem 0.5rem;
-        border-radius: 0.3125rem;
-        white-space: nowrap;
-    }
-    .app-chip__label {
-        pointer-events: none;
-    }
+.app-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    background: var(--color-chip);
+    color: var(--color-text-900);
+    font-size: 0.775rem;
+    line-height: 1.1;
+    font-weight: 500;
+    padding: 0.25rem 0.9375rem 0.25rem 0.5rem;
+    border-radius: 0.3125rem;
+    white-space: nowrap;
+}
+.app-chip__label {
+    pointer-events: none;
+}
 
-    .app-chip__remove {
-        position: absolute;
-        top: 50%;
-        right: 0.25rem;
-        transform: translateY(-100%); 
-        border: none;
-        background: none;
-        padding: 0;
-        line-height: 1;
-        font-size: 0.5625rem;
-        color: var(--color-text-800);
-        cursor: pointer;
-    }
-    .app-chip__remove:hover {
-        color: var(--color-danger);
-    }
+.app-chip__remove {
+    position: absolute;
+    top: 50%;
+    right: 0.25rem;
+    transform: translateY(-100%);
+    border: none;
+    background: none;
+    padding: 0;
+    line-height: 1;
+    font-size: 0.5625rem;
+    color: var(--color-text-800);
+    cursor: pointer;
+}
+.app-chip__remove:hover {
+    color: var(--color-danger);
+}
 
-    .app-multiselect__caret {
-        color: var(--color-text-400);
-        transition: transform 0.15s ease;
-        font-size: 0.75rem;
-        flex-shrink: 0;
-    }
-    .app-multiselect.is-open .app-multiselect__caret {
-        transform: rotate(180deg);
-    }
+.app-multiselect__caret {
+    color: var(--color-text-400);
+    transition: transform 0.15s ease;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+.app-multiselect.is-open .app-multiselect__caret {
+    transform: rotate(180deg);
+}
 
-    .app-multiselect__menu {
-        display: none;
-        position: absolute;
-        top: calc(100% + 0.375rem);
-        left: 0;
-        right: 0;
-        z-index: 20;
-        background: #fff;
-        border: 0.0625rem solid var(--color-bg-100);
-        border-radius: 0.625rem;
-        box-shadow: 0 0.75rem 1.5rem rgba(16, 28, 45, 0.08);
-        padding: 0.375rem;
-        max-height: 15rem;
-        overflow-y: auto;
-    }
-    .app-multiselect.is-open .app-multiselect__menu {
-        display: block;
-    }
+.app-multiselect__menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.375rem);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: #fff;
+    border: 0.0625rem solid var(--color-bg-100);
+    border-radius: 0.625rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(16, 28, 45, 0.08);
+    padding: 0.375rem;
+    max-height: 15rem;
+    overflow-y: auto;
+}
+.app-multiselect.is-open .app-multiselect__menu {
+    display: block;
+}
 
-    .app-multiselect__option {
-        display: flex;
-        align-items: center;
-        gap: 0.625rem;
-        padding: 0.5rem 0.625rem;
-        border-radius: 0.375rem;
-        font-size: 0.875rem;
-        cursor: pointer;
-    }
-    .app-multiselect__option:hover {
-        background: var(--color-bg-25);
-    }
-    .app-multiselect__input {
-        display: none;
-    }
+.app-multiselect__option {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.625rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+.app-multiselect__option:hover {
+    background: var(--color-bg-25);
+}
+.app-multiselect__input {
+    display: none;
+}
 
-    .app-multiselect__box {
-        width: 1.125rem;
-        height: 1.125rem;
-        border: 0.09375rem solid var(--color-bg-300);
-        border-radius: 0.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 0.75rem;
-        flex-shrink: 0;
-    }
-    .app-multiselect__input:checked + .app-multiselect__box {
-        background: var(--multiselect-accent);
-        border-color: var(--multiselect-accent);
-    }
+.app-multiselect__box {
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 0.09375rem solid var(--color-bg-300);
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+.app-multiselect__input:checked + .app-multiselect__box {
+    background: var(--multiselect-accent);
+    border-color: var(--multiselect-accent);
+}
 
-    .is-loading {
-        opacity: 0.5;
-        pointer-events: none;
-        transition: opacity 0.15s ease;
+/* ============================================================
+   LOADING STATE
+   Dipisah jadi 2 class biar overlay+spinner cuma nempel di tabel,
+   sementara filter bar cuma dim tombol Search-nya doang.
+   ============================================================ */
+
+/* Dim tombol Search doang pas submit, gak ada overlay di filter bar */
+.is-submitting .btn-app-search {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Overlay + spinner, khusus nempel di elemen target tabel
+   (self-contained, gak gantung ke posisi HTML apapun) */
+.is-table-loading {
+    position: relative;
+}
+.is-table-loading::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(100, 100, 100, 0.059); /* abu opasitas rendah */
+    z-index: 10;
+}
+.is-table-loading::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2rem;
+    height: 2rem;
+    margin: -1rem 0 0 -1rem;
+    border: 3px solid rgba(0, 0, 0, 0.15);
+    border-top-color: var(--brand-green); /* ganti sesuai warna palette client */
+    border-radius: 50%;
+    z-index: 11;
+    animation: app-spin 0.6s linear infinite;
+}
+@keyframes app-spin {
+    to {
+        transform: rotate(360deg);
     }
+}

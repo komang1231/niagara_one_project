@@ -82,8 +82,10 @@ function submitFilterForm(form) {
     const params = new URLSearchParams(new FormData(form));
     const url = `${form.action}?${params.toString()}`;
 
-    if (target) target.classList.add('is-loading');
-    form.classList.add('is-loading');
+    // Class dipisah: overlay+spinner cuma nempel ke tabel (target),
+    // filter bar cuma dim tombol Search-nya (gak ada overlay di sini).
+    if (target) target.classList.add('is-table-loading');
+    form.classList.add('is-submitting');
 
     fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
         .then((res) => {
@@ -98,7 +100,7 @@ function submitFilterForm(form) {
             form.submit();
         })
         .finally(() => {
-            if (target) target.classList.remove('is-loading');
-            form.classList.remove('is-loading');
+            if (target) target.classList.remove('is-table-loading');
+            form.classList.remove('is-submitting');
         });
 }

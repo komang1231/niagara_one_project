@@ -20,10 +20,17 @@
             <option value="">{{ $placeholder }}</option>
         @endif
 
-        @foreach ($options as $option)
+        @foreach ($options as $key => $option)
             @php
-                $value = is_array($option) || is_object($option) ? data_get($option, $optionValue) : $loop->iteration;
-                $text = is_array($option) || is_object($option) ? data_get($option, $optionLabel) : $option;
+                if (is_array($option) || is_object($option)) {
+                    // options berupa koleksi objek/array, misal: $items (bukan pluck)
+                    $value = data_get($option, $optionValue);
+                    $text = data_get($option, $optionLabel);
+                } else {
+                    // options hasil pluck('nama', 'id') → key ADALAH id-nya
+                    $value = $key;
+                    $text = $option;
+                }
             @endphp
             <option value="{{ $value }}" {{ (string) old($name, $selected) === (string) $value ? 'selected' : '' }}>
                 {{ $text }}

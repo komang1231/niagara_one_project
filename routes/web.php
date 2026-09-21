@@ -39,8 +39,17 @@ Route::middleware('auth')->group(function () {
         ->name('karyawan.trash');
     Route::patch('karyawan/{id}/restore', [KaryawanController::class, 'restore'])
         ->name('karyawan.restore');
+        Route::delete('karyawan/{id}/force-delete', [KaryawanController::class, 'forceDelete'])
+    ->name('karyawan.force-delete');
     Route::patch('karyawan/{karyawan}/toggle-status', [KaryawanController::class, 'toggleStatus'])
         ->name('karyawan.toggle-status');
+    //chained dropdown
+    Route::get('karyawan/get-divisi/{departemen}', [KaryawanController::class, 'getDivisi'])
+        ->name('karyawan.get-divisi');
+    Route::get('karyawan/get-section/{divisi}', [KaryawanController::class, 'getSection'])
+        ->name('karyawan.get-section');
+    Route::get('karyawan/get-job-position/{section}', [KaryawanController::class, 'getJobPosition'])
+        ->name('karyawan.get-job-position');
 
 
     Route::view('/kontrak-karyawan', 'kontrak-karyawan.index')->name('kontrak-karyawan.index');

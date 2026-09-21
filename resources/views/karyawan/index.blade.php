@@ -4,7 +4,7 @@
     @php
         // Penyusun baris untuk <x-table.cell-stack>: baris kosong dibuang supaya
         // baris pertama (yang otomatis jadi judul tebal) selalu berisi data.
-        $stack = fn (...$lines) => array_values(array_filter($lines, 'filled'));
+        $stack = fn(...$lines) => array_values(array_filter($lines, 'filled'));
     @endphp
 
     <x-page-header eyebrow="Karyawan" title="Data Karyawan"
@@ -64,8 +64,7 @@
 
                             {{-- Karyawan: avatar + nama, NIP, email --}}
                             <td>
-                                <x-table.cell-stack :avatar="$row->nama"
-                                    :lines="$stack($row->nama, $row->nip, $row->email)" />
+                                <x-table.cell-stack :avatar="$row->nama" :lines="$stack($row->nama, $row->nip, $row->email)" />
                             </td>
 
                             {{-- Penempatan: departemen, divisi › section --}}
@@ -75,8 +74,11 @@
 
                             {{-- Jabatan: job position, level, status kepegawaian --}}
                             <td>
-                                <x-table.cell-stack
-                                    :lines="$stack($row->jobPosition?->nama ?? '-', $row->jobLevel?->nama, $row->statusKepegawaian?->nama)" />
+                                <x-table.cell-stack :lines="$stack(
+                                    $row->jobPosition?->nama ?? '-',
+                                    $row->jobLevel?->nama,
+                                    $row->statusKepegawaian?->nama,
+                                )" />
                             </td>
 
                             <td>
@@ -90,11 +92,11 @@
                                     {{-- Detail (offcanvas detail dibuat di langkah berikutnya) --}}
                                     <x-button variant="icon-view" icon="bi-eye" title="Lihat detail"
                                         data-bs-toggle="offcanvas" data-bs-target="#offcanvas-karyawan-detail"
-                                        data-detail-id="{{ $row->id }}" />
+                                        data-detail-url="{{ route('karyawan.show', $row->id) }}" />
 
                                     {{-- Edit --}}
-                                    <x-button variant="icon-edit" icon="bi-pencil" title="Edit"
-                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvas-karyawan-edit"
+                                    <x-button variant="icon-edit" icon="bi-pencil" title="Edit" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvas-karyawan-edit"
                                         data-edit-url="{{ route('karyawan.edit-data', $row->id) }}"
                                         data-update-url="{{ route('karyawan.update', $row->id) }}" />
 
@@ -106,9 +108,7 @@
                                             onclick="return confirm('Hapus karyawan ini?')" />
                                     </form>
 
-                                    {{-- Status (ditangani resources/js/status-toggle.js lewat data-toggle-url) --}}
-                                    <x-table.status-toggle :checked="$row->status === 'aktif'"
-                                        id="status-toggle-{{ $row->id }}"
+                                    <x-table.status-toggle :checked="$row->status === 'aktif'" id="status-toggle-{{ $row->id }}"
                                         data-toggle-url="{{ route('karyawan.toggle-status', $row->id) }}" />
                                 </div>
                             </td>
