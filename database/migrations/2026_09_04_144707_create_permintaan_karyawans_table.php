@@ -12,7 +12,11 @@ return new class extends Migration
             $table->increments('id');
             $table->string('kode', 20)->unique();
             $table->unsignedBigInteger('karyawan_id'); // pemohon — FK ditambahkan belakangan (circular)
-            $table->unsignedInteger('job_position_id');
+            $table->unsignedInteger('cabang_kantor_id');
+            $table->unsignedInteger('departemen_id');
+            $table->unsignedInteger('divisi_id')->nullable();
+            $table->unsignedInteger('section_id')->nullable();
+            $table->unsignedInteger('job_position_id')->nullable();
             $table->unsignedInteger('job_level_id');
             $table->unsignedInteger('jumlah');
             $table->unsignedBigInteger('approved_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)

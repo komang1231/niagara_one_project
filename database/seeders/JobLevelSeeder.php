@@ -13,19 +13,19 @@ class JobLevelSeeder extends Seeder
     public function run(): void
     {
         $jobLevels = [
-            ['nama' => 'Intership'],
-            ['nama' => 'Junior'],
-            ['nama' => 'Intermediate'],
-            ['nama' => 'Senior'],
-            ['nama' => 'SPV'],
-            ['nama' => 'Section Head'],
-            ['nama' => 'Division Head'],
-            ['nama' => 'Departement Head'],
-            ['nama' => 'Branch Manager'],
-            ['nama' => 'Country Manager'],
-            ['nama' => 'C-Level'],
-            ['nama' => 'Direktur'],
-            ['nama' => 'Komisaris'],  
+            ['kode' => '', 'nama' => 'Intership'],
+            ['kode' => '', 'nama' => 'Junior'],
+            ['kode' => '', 'nama' => 'Intermediate'],
+            ['kode' => '', 'nama' => 'Senior'],
+            ['kode' => '', 'nama' => 'SPV'],
+            ['kode' => '', 'nama' => 'Section Head'],
+            ['kode' => '', 'nama' => 'Division Head'],
+            ['kode' => '', 'nama' => 'Departement Head'],
+            ['kode' => '', 'nama' => 'Branch Manager'],
+            ['kode' => '', 'nama' => 'Country Manager'],
+            ['kode' => '', 'nama' => 'C-Level'],
+            ['kode' => '', 'nama' => 'Direktur'],
+            ['kode' => '', 'nama' => 'Komisaris'],
         ];
 
         foreach ($jobLevels as $jobLevel) {

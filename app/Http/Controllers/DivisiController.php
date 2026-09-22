@@ -30,7 +30,8 @@ class DivisiController extends Controller
         ];
 
         $divisi = $this->filter($request)
-            ->latest()
+            ->orderByDesc('kode')
+            // ->latest()
             ->paginate(10)
             ->withQueryString();
 

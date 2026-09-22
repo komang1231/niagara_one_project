@@ -13,10 +13,10 @@ class StatusKepegawaianSeeder extends Seeder
     public function run(): void
     {
         $statusKepegawaian = [
-            ['kode' => 'SKP-2600010920', 'nama' => 'PKWT (Kontrak)'],
-            ['kode' => 'SKP-2600020920', 'nama' => 'PKWTT (Tetap)'],
-            ['kode' => 'SKP-2600030920', 'nama' => 'Probation'],
-            ['kode' => 'SKP-2600040920', 'nama' => 'Magang'],
+            ['kode' => '', 'nama' => 'PKWT'],
+            ['kode' => '', 'nama' => 'PKWTT'],
+            ['kode' => '', 'nama' => 'Probation'],
+            ['kode' => '', 'nama' => 'Magang'],
         ];
 
         foreach ($statusKepegawaian as $status) {

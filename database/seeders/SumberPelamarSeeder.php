@@ -13,16 +13,15 @@ class SumberPelamarSeeder extends Seeder
     public function run(): void
     {
         $sumberPelamar = [
-            ['kode' => 'WEBSITE', 'nama' => 'Website Perusahaan'],
-            ['kode' => 'LINKEDIN', 'nama' => 'LinkedIn'],
-            ['kode' => 'JOBSTREET', 'nama' => 'Jobstreet'],
-            ['kode' => 'INSTAGRAM', 'nama' => 'Instagram'],
-            ['kode' => 'REFERRAL', 'nama' => 'Referensi Karyawan'],
-            ['kode' => 'WALKIN', 'nama' => 'Walk-in / Datang Langsung'],
-            ['kode' => 'JOBFAIR', 'nama' => 'Job Fair'],
-            ['kode' => 'KAMPUS', 'nama' => 'Kampus / Kampus Recruitment'],
-            ['kode' => 'AGENCY', 'nama' => 'Agency/Headhunter'],
-            // ['kode' => 'LAINNYA', 'nama' => 'Lainnya'],
+            ['kode' => '', 'nama' => 'Website Perusahaan'],
+            ['kode' => '', 'nama' => 'LinkedIn'],
+            ['kode' => '', 'nama' => 'Jobstreet'],
+            ['kode' => '', 'nama' => 'Instagram'],
+            ['kode' => '', 'nama' => 'Referensi Karyawan'],
+            ['kode' => '', 'nama' => 'Walk-in / Datang Langsung'],
+            ['kode' => '', 'nama' => 'Job Fair'],
+            ['kode' => '', 'nama' => 'Kampus / Kampus Recruitment'],
+            ['kode' => '', 'nama' => 'Agency/Headhunter'],
         ];
         foreach ($sumberPelamar as $sumber) {
             \App\Models\SumberPelamar::create($sumber);

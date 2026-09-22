@@ -19,7 +19,11 @@ class JobLevelController extends Controller
             'nonaktif' => 'Nonaktif',
         ];
 
-        $jobLevel = $this->filter($request)->latest()->paginate(10)->withQueryString();
+        $jobLevel = $this->filter($request)
+            ->orderByDesc('kode')
+            // ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax() || $request->wantsJson()) {
             Log::debug('JobLevel index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);

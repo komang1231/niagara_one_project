@@ -8,12 +8,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Traits\HasGeneratedCode;
 
 #[Fillable(['kode', 'role_id', 'karyawan_id', 'nama', 'no_tlp', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, HasGeneratedCode;
+    protected function getCodePrefix(): string
+    {
+        return 'USR';
+    }
+
+    protected function getCodeField(): string
+    {
+        return 'kode';
+    }
 
     protected $table = 'users';
 

@@ -20,7 +20,11 @@ class DepartemenController extends Controller
             'nonaktif' => 'Nonaktif',
         ];
 
-        $departemen = $this->filter($request)->latest()->paginate(10)->withQueryString();
+        $departemen = $this->filter($request)
+            ->orderByDesc('kode') 
+            // ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         if ($request->ajax() || $request->wantsJson()) {
             Log::debug('Departemen index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);

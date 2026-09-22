@@ -8,6 +8,10 @@ use App\Models\Departemen as DepartemenModel;
 use App\Models\Divisi as DivisiModel;
 use App\Models\Section as SectionModel;
 use App\Models\JobPosition as JobPositionModel;
+use App\Models\JenjangPendidikan as JenjangPendidikanModel;
+use App\Models\SumberPelamar as SumberPelamarModel;
+use App\Models\JobLevel as JobLevelModel;
+use App\Models\CabangKantor as CabangKantorModel;
 
 class RekrutmenSeeder extends Seeder
 {
@@ -16,103 +20,189 @@ class RekrutmenSeeder extends Seeder
      */
     public function run(): void
     {
-        $lowongan = \App\Models\Lowongan::first();
-        $departemenMap = DepartemenModel::whereIn('kode', ['DEP-2600010920', 'DEP-2600020920', 'DEP-2600030920', 'DEP-2600040920', 'DEP-2600050920'])
-            ->pluck('id', 'kode');
-        $divisiMap = DivisiModel::whereIn('kode', ['DIV-2600010920', 'DIV-2600020920', 'DIV-2600030920', 'DIV-2600040920', 'DIV-2600050920', 'DIV-2600010921', 'DIV-2600010922'])
-            ->pluck('id', 'kode');
-        $sectionMap = SectionModel::whereIn('kode', ['SEC-2600010920', 'SEC-2600020920', 'SEC-2600030920', 'SEC-2600040920', 'SEC-2600050920', 'SEC-2600060920', 'SEC-2600070920', 'SEC-2600080920'])
-            ->pluck('id', 'kode');
-        $jobPositionMap = JobPositionModel::whereIn('kode', ['JOBP-2600010920', 'JOBP-2600020920', 'JOBP-2600030920', 'JOBP-2600040920', 'JOBP-2600050920', 'JOBP-2600060920', 'JOBP-2600070920'])
-            ->pluck('id', 'kode');
-        $jobLevel = \App\Models\JobLevel::first();
-        $jenjangPendidikan = \App\Models\JenjangPendidikan::where('kode', 'S1')->first();
-        $sumberPelamar = \App\Models\SumberPelamar::first();
+        $lowonganMap = \App\Models\Lowongan::whereIn('judul', [
+            'Lowongan Backend Developer',
+            'Lowongan Frontend Developer',
+            'Lowongan QA Engineer',
+            'Lowongan DevOps Engineer',
+            'Lowongan HR Generalist',
+        ])->pluck('id', 'judul');
+
+        $departemenMap = DepartemenModel::whereIn('nama', [
+            'Human Resources Department',
+            'Information Technology',
+            'Finance',
+            'Marketing',
+            'Operations',
+        ])->pluck('id', 'nama');
+
+        $divisiMap = DivisiModel::whereIn('nama', [
+            'Recruitment',
+            'Web Development',
+            'Infrastructure',
+            'Accounting',
+            'Digital Marketing',
+            'Hotel Operations',
+            'Warehouse',
+        ])->pluck('id', 'nama');
+
+        $sectionMap = SectionModel::whereIn('nama', [
+            'Backend',
+            'Frontend',
+            'Quality Assurance',
+            'Talent Acquisition',
+            'SEO',
+            'Social Media',
+            'Front Office',
+            'Housekeeping',
+        ])->pluck('id', 'nama');
+
+        $jobPositionMap = JobPositionModel::whereIn('nama', [
+            'Backend Developer',
+            'Frontend Developer',
+            'QA Engineer',
+            'Recruitment Specialist',
+            'SEO Specialist',
+            'Front Office Staff',
+            'Housekeeping Staff',
+        ])->pluck('id', 'nama');
+
+        $jobLevelMap = JobLevelModel::whereIn('nama', [
+            'Intership',
+            'Junior',
+            'Intermediate',
+            'Senior',
+            'SPV',
+            'Section Head',
+            'Division Head',
+            'Departement Head',
+            'Branch Manager',
+            'Country Manager',
+            'C-Level',
+            'Direktur',
+            'Komisaris',
+        ])->pluck('id', 'nama');
+
+        $jenjangPendidikanMap = JenjangPendidikanModel::whereIn('nama', [
+            'Sekolah Dasar / SD',
+            'Sekolah Menengah Pertama / SMP',
+            'Sekolah Menengah Atas / SMA',
+            'Sekolah Menengah Kejuruan / SMK',
+            'Diploma 1 / D1',
+            'Diploma 2 / D2',
+            'Diploma 3 / D3',
+            'Diploma 4 / D4',
+            'Sarjana / S1',
+            'Magister / S2',
+            'Doktor / S3',
+        ])->pluck('id', 'nama');
+
+        $sumberPelamarMap = SumberPelamarModel::whereIn('nama', [
+            'Website Perusahaan',
+            'LinkedIn',
+            'Jobstreet',
+            'Instagram',
+            'Referensi Karyawan',
+            'Walk-in / Datang Langsung',
+            'Job Fair',
+            'Kampus / Kampus Recruitment',
+            'Agency/Headhunter',
+        ])->pluck('id', 'nama');
+
+        $cabangKantorMap = CabangKantorModel::whereIn('nama', [
+            'Kantor Pusat Denpasar',
+            'Cabang Kuta',
+            'Cabang Jakarta',
+            'Cabang Surabaya',
+            'Cabang Bandung',
+            'Cabang Yogyakarta',
+            'Cabang Medan',
+        ])->pluck('id', 'nama');
 
         \App\Models\Rekrutmen::firstOrCreate(
             [
-                'kode' => 'REK-2600010920',
-                'lowongan_id' => $lowongan->id,
-                'departemen_id' => $departemenMap->get('DEP-2600010920'),
-                'divisi_id' => $divisiMap->get('DIV-2600010920'),
-                'section_id' => $sectionMap->get('SEC-2600010920'),
-                'job_position_id' => $jobPositionMap->get('JOBP-2600010920'),
-                'job_level_id' => $jobLevel->id,
-                'cabang_kantor_id' => $lowongan->cabang_kantor_id,
+                'kode' => '',
+                'lowongan_id' => $lowonganMap['Lowongan DevOps Engineer'] ?? null,
+                'departemen_id' => $departemenMap['Information Technology'] ?? null,
+                'divisi_id' => $divisiMap['Web Development'] ?? null,
+                'section_id' => $sectionMap['DevOps'] ?? null,
+                'job_position_id' => $jobPositionMap['DevOps Engineer'] ?? null,
+                'job_level_id' => $jobLevelMap['Intermediate'] ?? null,
+                'cabang_kantor_id' => $cabangKantorMap['Kantor Pusat Denpasar'] ?? null,
                 'nama' => 'Andi Wijaya',
                 'email' => 'andi.wijaya@gmail.com',
                 'no_tlp' => '081298765432',
                 'file_cv' => 'dummy-cv-andi.pdf',
-                'jenjang_pendidikan_id' => $jenjangPendidikan->id ?? null,
-                'sumber_pelamar_id' => $sumberPelamar->id ?? null,
+                'jenjang_pendidikan_id' => $jenjangPendidikanMap['Sarjana / S1'] ?? null,
+                'sumber_pelamar_id' => $sumberPelamarMap['Website Perusahaan'] ?? null,
                 'status_rekrutmen' => 'pelamar',
             ],
             [
-                'kode' => 'REK-2600020920',
-                'lowongan_id' => $lowongan->id,
-                'departemen_id' => $departemenMap->get('DEP-2600020920'),
-                'divisi_id' => $divisiMap->get('DIV-2600020920'),
-                'section_id' => $sectionMap->get('SEC-2600020920'),
-                'job_position_id' => $jobPositionMap->get('JOBP-2600020920'),
-                'job_level_id' => $jobLevel->id,
-                'cabang_kantor_id' => $lowongan->cabang_kantor_id,
+                'kode' => '',
+                'lowongan_id' => $lowonganMap['Lowongan QA Engineer'] ?? null,
+                'departemen_id' => $departemenMap['Information Technology'] ?? null,
+                'divisi_id' => $divisiMap['Web Development'] ?? null,
+                'section_id' => $sectionMap['Quality Assurance'] ?? null,
+                'job_position_id' => $jobPositionMap['QA Engineer'] ?? null,
+                'job_level_id' => $jobLevelMap['Junior'] ?? null,
+                'cabang_kantor_id' => $cabangKantorMap['Kantor Pusat Denpasar'] ?? null,
                 'nama' => 'Budi Santoso',
                 'email' => 'budi.santoso@example.com',
                 'no_tlp' => '081234567890',
                 'file_cv' => 'dummy-cv-budi.pdf',
-                'jenjang_pendidikan_id' => $jenjangPendidikan->id ?? null,
-                'sumber_pelamar_id' => $sumberPelamar->id ?? null,
+                'jenjang_pendidikan_id' => $jenjangPendidikanMap['Sarjana / S1'] ?? null,
+                'sumber_pelamar_id' => $sumberPelamarMap['Website Perusahaan'] ?? null,
                 'status_rekrutmen' => 'pelamar',
             ],
             [
-                'kode' => 'REK-2600030920',
-                'lowongan_id' => $lowongan->id,
-                'departemen_id' => $departemenMap->get('DEP-2600030920'),
-                'divisi_id' => $divisiMap->get('DIV-2600030920'),
-                'section_id' => $sectionMap->get('SEC-2600030920'),
-                'job_position_id' => $jobPositionMap->get('JOBP-2600030920'),
-                'job_level_id' => $jobLevel->id,
-                'cabang_kantor_id' => $lowongan->cabang_kantor_id,
+                'kode' => '',
+                'lowongan_id' => $lowonganMap['Lowongan HR Generalist'] ?? null,
+                'departemen_id' => $departemenMap['Human Resources Department'] ?? null,
+                'divisi_id' => $divisiMap['Recruitment'] ?? null,
+                'section_id' => $sectionMap['Talent Acquisition'] ?? null,
+                'job_position_id' => $jobPositionMap['Recruitment Specialist'] ?? null,
+                'job_level_id' => $jobLevelMap['Junior'] ?? null,
+                'cabang_kantor_id' => $cabangKantorMap['Kantor Pusat Denpasar'] ?? null,
                 'nama' => 'Citra Lestari',
                 'email' => 'citra.lestari@example.com',
                 'no_tlp' => '082345678901',
                 'file_cv' => 'dummy-cv-citra.pdf',
-                'jenjang_pendidikan_id' => $jenjangPendidikan->id ?? null,
-                'sumber_pelamar_id' => $sumberPelamar->id ?? null,
+                'jenjang_pendidikan_id' => $jenjangPendidikanMap['Sarjana / S1'] ?? null,
+                'sumber_pelamar_id' => $sumberPelamarMap['Website Perusahaan'] ?? null,
                 'status_rekrutmen' => 'interview',
             ],
             [
-                'kode' => 'REK-2600040920',
-                'lowongan_id' => $lowongan->id,
-                'departemen_id' => $departemenMap->get('DEP-2600040920'),
-                'divisi_id' => $divisiMap->get('DIV-2600040920'),
-                'section_id' => $sectionMap->get('SEC-2600040920'),
-                'job_position_id' => $jobPositionMap->get('JOBP-2600040920'),
-                'job_level_id' => $jobLevel->id,
-                'cabang_kantor_id' => $lowongan->cabang_kantor_id,
+                'kode' => '',
+                'lowongan_id' => $lowonganMap['Lowongan Frontend Developer'] ?? null,
+                'departemen_id' => $departemenMap['Information Technology'] ?? null,
+                'divisi_id' => $divisiMap['Web Development'] ?? null,
+                'section_id' => $sectionMap['Frontend'] ?? null,
+                'job_position_id' => $jobPositionMap['Frontend Developer'] ?? null,
+                'job_level_id' => $jobLevelMap['Senior'] ?? null,
+                'cabang_kantor_id' => $cabangKantorMap['Kantor Pusat Denpasar'] ?? null,
                 'nama' => 'Dewi Putri',
                 'email' => 'dewi.putri@example.com',
                 'no_tlp' => '083456789012',
                 'file_cv' => 'dummy-cv-dewi.pdf',
-                'jenjang_pendidikan_id' => $jenjangPendidikan->id ?? null,
-                'sumber_pelamar_id' => $sumberPelamar->id ?? null,
+                'jenjang_pendidikan_id' => $jenjangPendidikanMap['Sarjana / S1'] ?? null,
+                'sumber_pelamar_id' => $sumberPelamarMap['Website Perusahaan'] ?? null,
                 'status_rekrutmen' => 'diterima',
             ],
             [
-                'kode' => 'REK-2600050920',
-                'lowongan_id' => $lowongan->id,
-                'departemen_id' => $departemenMap->get('DEP-2600050920'),
-                'divisi_id' => $divisiMap->get('DIV-2600050920'),
-                'section_id' => $sectionMap->get('SEC-2600050920'),
-                'job_position_id' => $jobPositionMap->get('JOBP-2600050920'),
-                'job_level_id' => $jobLevel->id,
-                'cabang_kantor_id' => $lowongan->cabang_kantor_id,
+                'kode' => '',
+                'lowongan_id' => $lowonganMap['Lowongan Backend Developer'] ?? null,
+                'departemen_id' => $departemenMap['Information Technology'] ?? null,
+                'divisi_id' => $divisiMap['Web Development'] ?? null,
+                'section_id' => $sectionMap['Backend'] ?? null,
+                'job_position_id' => $jobPositionMap['Backend Developer'] ?? null,
+                'job_level_id' => $jobLevelMap['Junior'] ?? null,
+                'cabang_kantor_id' => $cabangKantorMap['Kantor Pusat Denpasar'] ?? null,
                 'nama' => 'Eko Prasetyo',
                 'email' => 'eko.prasetyo@example.com',
                 'no_tlp' => '084567890123',
                 'file_cv' => 'dummy-cv-eko.pdf',
-                'jenjang_pendidikan_id' => $jenjangPendidikan->id ?? null,
-                'sumber_pelamar_id' => $sumberPelamar->id ?? null,
+                'jenjang_pendidikan_id' => $jenjangPendidikanMap['Sarjana / S1'] ?? null,
+                'sumber_pelamar_id' => $sumberPelamarMap['Website Perusahaan'] ?? null,
                 'status_rekrutmen' => 'ditolak',
             ],
         );

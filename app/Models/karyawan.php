@@ -125,6 +125,7 @@ class Karyawan extends Model
         'bank_id',
         'nama_bank',
         'no_rekening',
+        'status',
     ];
 
     // 'status' DIKELUARKAN

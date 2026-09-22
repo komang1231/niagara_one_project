@@ -13,24 +13,23 @@ class BankSeeder extends Seeder
     public function run(): void
     {
         $banks = [
-            ['kode' => '002', 'nama' => 'Bank Rakyat Indonesia (BRI)'],
-            ['kode' => '008', 'nama' => 'Bank Mandiri'],
-            ['kode' => '009', 'nama' => 'Bank Negara Indonesia (BNI)'],
-            ['kode' => '014', 'nama' => 'Bank Central Asia (BCA)'],
-            ['kode' => '011', 'nama' => 'Bank Danamon'],
-            ['kode' => '013', 'nama' => 'Bank Permata'],
-            ['kode' => '022', 'nama' => 'CIMB Niaga'],
-            ['kode' => '200', 'nama' => 'Bank Tabungan Negara (BTN)'],
-            ['kode' => '451', 'nama' => 'Bank Syariah Indonesia (BSI)'],
-            ['kode' => '110', 'nama' => 'Bank BJB'],
-            ['kode' => '111', 'nama' => 'Bank DKI'],
-            ['kode' => '112', 'nama' => 'BPD DIY'],
-            ['kode' => '132', 'nama' => 'Bank Papua'],
-            ['kode' => '490', 'nama' => 'Bank Jago'],
-            ['kode' => '501', 'nama' => 'Blu by BCA Digital'],
-            ['kode' => '947', 'nama' => 'SeaBank'],
-            ['kode' => 'LAINNYA', 'nama' => 'Bank Lainnya'],
-];
+            ['kode' => '', 'nama' => 'Bank Rakyat Indonesia (BRI)'],
+            ['kode' => '', 'nama' => 'Bank Mandiri'],
+            ['kode' => '', 'nama' => 'Bank Negara Indonesia (BNI)'],
+            ['kode' => '', 'nama' => 'Bank Central Asia (BCA)'],
+            ['kode' => '', 'nama' => 'Bank Danamon'],
+            ['kode' => '', 'nama' => 'Bank Permata'],
+            ['kode' => '', 'nama' => 'CIMB Niaga'],
+            ['kode' => '', 'nama' => 'Bank Tabungan Negara (BTN)'],
+            ['kode' => '', 'nama' => 'Bank Syariah Indonesia (BSI)'],
+            ['kode' => '', 'nama' => 'Bank BJB'],
+            ['kode' => '', 'nama' => 'Bank DKI'],
+            ['kode' => '', 'nama' => 'BPD DIY'],
+            ['kode' => '', 'nama' => 'Bank Papua'],
+            ['kode' => '', 'nama' => 'Bank Jago'],
+            ['kode' => '', 'nama' => 'Blu by BCA Digital'],
+            ['kode' => '', 'nama' => 'SeaBank'],
+        ];
         foreach ($banks as $bank) {
             \App\Models\Bank::create($bank);
         }

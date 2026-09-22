@@ -13,18 +13,57 @@ class SectionSeeder extends Seeder
      */
     public function run(): void
     {
-        $divisiMap = DivisiModel::whereIn('kode', ['DIV-2600010920', 'DIV-2600020920', 'DIV-2600030920', 'DIV-2600040920', 'DIV-2600050920', 'DIV-2600010921', 'DIV-2600010922'])
-            ->pluck('id', 'kode');
+        $divisiMap = DivisiModel::whereIn('nama', [
+            'Recruitment',
+            'Web Development',
+            'Infrastructure',
+            'Accounting',
+            'Digital Marketing',
+            'Hotel Operations',
+            'Warehouse',
+        ])->pluck('id', 'nama');
 
         $Section = [
-            ['kode' => 'SEC-2600010920', 'nama' => 'Backend', 'divisi_id' => $divisiMap['DIV-2600010920'] ?? null],
-            ['kode' => 'SEC-2600020920', 'nama' => 'Frontend', 'divisi_id' => $divisiMap['DIV-2600020920'] ?? null],
-            ['kode' => 'SEC-2600030920', 'nama' => 'Quality Assurance', 'divisi_id' => $divisiMap['DIV-2600030920'] ?? null],
-            ['kode' => 'SEC-2600040920', 'nama' => 'Talent Acquisition', 'divisi_id' => $divisiMap['DIV-2600040920'] ?? null],
-            ['kode' => 'SEC-2600050920', 'nama' => 'SEO', 'divisi_id' => $divisiMap['DIV-2600050920'] ?? null],
-            ['kode' => 'SEC-2600060920', 'nama' => 'Social Media', 'divisi_id' => $divisiMap['DIV-2600060920'] ?? null],
-            ['kode' => 'SEC-2600070920', 'nama' => 'Front Office', 'divisi_id' => $divisiMap['DIV-2600070920'] ?? null],
-            ['kode' => 'SEC-2600080920', 'nama' => 'Housekeeping', 'divisi_id' => $divisiMap['DIV-2600080920'] ?? null],
+            [
+                'kode' => '',
+                'nama' => 'Backend',
+                'divisi_id' => $divisiMap['Web Development'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Frontend',
+                'divisi_id' => $divisiMap['Web Development'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Quality Assurance',
+                'divisi_id' => $divisiMap['Web Development'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Talent Acquisition',
+                'divisi_id' => $divisiMap['Recruitment'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'SEO',
+                'divisi_id' => $divisiMap['Digital Marketing'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Social Media',
+                'divisi_id' => $divisiMap['Digital Marketing'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Front Office',
+                'divisi_id' => $divisiMap['Hotel Operations'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Housekeeping',
+                'divisi_id' => $divisiMap['Hotel Operations'] ?? null,
+            ],
         ];
 
         foreach ($Section as $item) {

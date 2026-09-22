@@ -29,7 +29,8 @@ class RoleController extends Controller
         ];
 
         $role = $this->filter($request)
-            ->latest()
+            ->orderByDesc('kode')
+            // ->latest()
             ->paginate(10)
             ->withQueryString();
 

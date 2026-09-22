@@ -158,6 +158,11 @@ class KaryawanRequest extends FormRequest
                 'max:30',
                 Rule::unique('karyawans', 'no_rekening')->ignore($this->karyawan),
             ],
+
+            'status' => [
+                'required',
+                'in:aktif,nonaktif,resign',
+            ],
         ];
     }
 

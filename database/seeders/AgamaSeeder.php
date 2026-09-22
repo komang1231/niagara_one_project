@@ -13,12 +13,12 @@ class AgamaSeeder extends Seeder
     public function run(): void
     {
         $Agama = [
-            ['kode' => 'ISL', 'nama' => 'Islam'],
-            ['kode' => 'KRS', 'nama' => 'Kristen'],
-            ['kode' => 'KTL', 'nama' => 'Katolik'],
-            ['kode' => 'HND', 'nama' => 'Hindu'],
-            ['kode' => 'BDH', 'nama' => 'Buddha'],
-            ['kode' => 'KHC', 'nama' => 'Konghucu'],
+            ['kode' => '', 'nama' => 'Islam'],
+            ['kode' => '', 'nama' => 'Kristen'],
+            ['kode' => '', 'nama' => 'Katolik'],
+            ['kode' => '', 'nama' => 'Hindu'],
+            ['kode' => '', 'nama' => 'Buddha'],
+            ['kode' => '', 'nama' => 'Konghucu'],
         ];
 
         foreach ($Agama as $data) {

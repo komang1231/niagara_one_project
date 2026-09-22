@@ -13,17 +13,17 @@ class JenjangPendidikanSeeder extends Seeder
     public function run(): void
     {
         $jenjangPendidikan = [
-            ['kode' => 'SD', 'nama' => 'Sekolah Dasar'],
-            ['kode' => 'SMP', 'nama' => 'Sekolah Menengah Pertama'],
-            ['kode' => 'SMA', 'nama' => 'Sekolah Menengah Atas'],
-            ['kode' => 'SMK', 'nama' => 'Sekolah Menengah Kejuruan'],
-            ['kode' => 'D1', 'nama' => 'Diploma 1'],
-            ['kode' => 'D2', 'nama' => 'Diploma 2'],
-            ['kode' => 'D3', 'nama' => 'Diploma 3'],
-            ['kode' => 'D4', 'nama' => 'Diploma 4'],
-            ['kode' => 'S1', 'nama' => 'Sarjana (S1)'],
-            ['kode' => 'S2', 'nama' => 'Magister (S2)'],
-            ['kode' => 'S3', 'nama' => 'Doktor (S3)'],
+            ['kode' => '', 'nama' => 'Sekolah Dasar / SD'],
+            ['kode' => '', 'nama' => 'Sekolah Menengah Pertama / SMP '],
+            ['kode' => '', 'nama' => 'Sekolah Menengah Atas / SMA'],
+            ['kode' => '', 'nama' => 'Sekolah Menengah Kejuruan / SMK'],
+            ['kode' => '', 'nama' => 'Diploma 1 / D1'],
+            ['kode' => '', 'nama' => 'Diploma 2 / D2'],
+            ['kode' => '', 'nama' => 'Diploma 3 / D3'],
+            ['kode' => '', 'nama' => 'Diploma 4 / D4'],
+            ['kode' => '', 'nama' => 'Sarjana / S1'],
+            ['kode' => '', 'nama' => 'Magister / S2'],
+            ['kode' => '', 'nama' => 'Doktor / S3'],
         ];
 
         foreach ($jenjangPendidikan as $jenjang) {

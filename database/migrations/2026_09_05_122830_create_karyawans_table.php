@@ -35,7 +35,7 @@ return new class extends Migration
             $table->unsignedInteger('bank_id');
             $table->string('nama_bank', 100);
             $table->string('no_rekening', 30)->unique();
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->enum('status', ['aktif', 'nonaktif', 'resign'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();
 

@@ -13,11 +13,11 @@ class DepartemenSeeder extends Seeder
     public function run(): void
     {
         $Departemen = [
-            ['kode' => 'DEP-2600010920', 'nama' => 'Human Resources Department'],
-            ['kode' => 'DEP-2600020920', 'nama' => 'Information Technology'],
-            ['kode' => 'DEP-2600030920', 'nama' => 'Finance'],
-            ['kode' => 'DEP-2600040920', 'nama' => 'Marketing'],
-            ['kode' => 'DEP-2600050920', 'nama' => 'Operations'],
+            ['kode' => '', 'nama' => 'Human Resources Department'],
+            ['kode' => '', 'nama' => 'Information Technology'],
+            ['kode' => '', 'nama' => 'Finance'],
+            ['kode' => '', 'nama' => 'Marketing'],
+            ['kode' => '', 'nama' => 'Operations'],
         ];
 
         foreach ($Departemen as $dept) {

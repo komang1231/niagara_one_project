@@ -13,17 +13,51 @@ class DivisiSeeder extends Seeder
      */
     public function run(): void
     {
-        $departemenMap = DepartemenModel::whereIn('kode', ['DEP-2600010920', 'DEP-2600020920', 'DEP-2600030920', 'DEP-2600040920', 'DEP-2600050920'])
-            ->pluck('id', 'kode');
+
+        $departemenMap = DepartemenModel::whereIn('nama', [
+            'Human Resources Department',
+            'Information Technology',
+            'Finance',
+            'Marketing',
+            'Operations',
+        ])->pluck('id', 'nama');
 
         $Divisi = [
-            ['kode' => 'DIV-2600010920', 'nama' => 'Recruitment', 'departemen_id' => $departemenMap['DEP-2600010920'] ?? null],
-            ['kode' => 'DIV-2600020920', 'nama' => 'Web Development', 'departemen_id' => $departemenMap['DEP-2600020920'] ?? null],
-            ['kode' => 'DIV-2600030920', 'nama' => 'Infrastructure', 'departemen_id' => $departemenMap['DEP-2600030920'] ?? null],
-            ['kode' => 'DIV-2600040920', 'nama' => 'Accounting', 'departemen_id' => $departemenMap['DEP-2600040920'] ?? null],
-            ['kode' => 'DIV-2600050920', 'nama' => 'Digital Marketing', 'departemen_id' => $departemenMap['DEP-2600050920'] ?? null],
-            ['kode' => 'DIV-2600010921', 'nama' => 'Hotel Operations', 'departemen_id' => $departemenMap['DEP-2600010921'] ?? null],
-            ['kode' => 'DIV-2600010922', 'nama' => 'Warehouse', 'departemen_id' => $departemenMap['DEP-2600010922'] ?? null],
+            [
+                'kode' => '',
+                'nama' => 'Recruitment',
+                'departemen_id' => $departemenMap['Human Resources Department'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Web Development',
+                'departemen_id' => $departemenMap['Information Technology'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Infrastructure',
+                'departemen_id' => $departemenMap['Information Technology'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Accounting',
+                'departemen_id' => $departemenMap['Finance'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Digital Marketing',
+                'departemen_id' => $departemenMap['Marketing'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Hotel Operations',
+                'departemen_id' => $departemenMap['Operations'] ?? null,
+            ],
+            [
+                'kode' => '',
+                'nama' => 'Warehouse',
+                'departemen_id' => $departemenMap['Operations'] ?? null,
+            ],
         ];
 
         foreach ($Divisi as $div) {

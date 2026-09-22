@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasGeneratedCode;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KontrakKaryawan extends Model
 {
-    use HasGeneratedCode;
+    use HasGeneratedCode, SoftDeletes;
 
     protected function getCodePrefix(): string
     {

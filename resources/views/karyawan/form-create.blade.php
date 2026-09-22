@@ -56,7 +56,8 @@
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="job_position_id" label="Job Position" :options="[]" nullable disabled required />
+                <x-form.select name="job_position_id" label="Job Position" :options="[]" nullable disabled
+                    required />
             </div>
 
             <div class="col-md-4">
@@ -177,14 +178,21 @@
             STATUS
         ========================== --}}
         <div class="mt-4">
-            <x-form.switch name="status" label="Status Aktif" :checked="true" />
+            <label class="form-label d-block">Status Aktif</label>
+
+            <input type="hidden" name="status" value="nonaktif">
+
+            <label class="app-form-switch">
+                <input type="checkbox" name="status" value="aktif" id="status" checked>
+                <span class="app-form-switch__slider"></span>
+            </label>
         </div>
 
     </form>
 </x-offcanvas.form>
 
 <script>
-    (function () {
+    (function() {
         const form = document.getElementById('offcanvas-karyawan-form');
 
         const departemenSelect = form.querySelector('#departemen_id');
@@ -229,7 +237,7 @@
         }
 
         // Departemen -> Divisi
-        departemenSelect.addEventListener('change', function () {
+        departemenSelect.addEventListener('change', function() {
             resetSelect(divisiSelect);
             resetSelect(sectionSelect);
             resetSelect(jobPositionSelect);
@@ -241,7 +249,7 @@
         });
 
         // Divisi -> Section
-        divisiSelect.addEventListener('change', function () {
+        divisiSelect.addEventListener('change', function() {
             resetSelect(sectionSelect);
             resetSelect(jobPositionSelect);
 
@@ -252,7 +260,7 @@
         });
 
         // Section -> Job Position
-        sectionSelect.addEventListener('change', function () {
+        sectionSelect.addEventListener('change', function() {
             resetSelect(jobPositionSelect);
 
             const sectionId = this.value;

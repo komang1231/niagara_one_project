@@ -30,7 +30,8 @@ class JobPositionController extends Controller
         ];
 
         $jobPosition = $this->filter($request)
-            ->latest()
+            ->orderByDesc('kode')
+            // ->latest()
             ->paginate(10)
             ->withQueryString();
 

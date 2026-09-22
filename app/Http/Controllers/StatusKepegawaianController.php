@@ -29,7 +29,8 @@ class StatusKepegawaianController extends Controller
         ];
 
         $statusKepegawaian = $this->filter($request)
-            ->latest()
+            ->orderByDesc('kode')
+            // ->latest()
             ->paginate(10)
             ->withQueryString();
 

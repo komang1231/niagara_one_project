@@ -108,8 +108,12 @@
                                             onclick="return confirm('Hapus karyawan ini?')" />
                                     </form>
 
-                                    <x-table.status-toggle :checked="$row->status === 'aktif'" id="status-toggle-{{ $row->id }}"
-                                        data-toggle-url="{{ route('karyawan.toggle-status', $row->id) }}" />
+                                        <x-table.status-toggle :
+                                            checked="$row->status === 'aktif'" 
+                                            id="status-toggle-{{ $row->id }}"
+                                            {{-- data-toggle-url="{{ route('karyawan.toggle-status', $row->id) }}"  --}}
+                                            data-id="{{ $row->id }}"
+                                        />
                                 </div>
                             </td>
                         </tr>
@@ -139,5 +143,36 @@
     --}}
     @includeIf('karyawan.form-create')
     @includeIf('karyawan.form-edit')
+    <script>
+        document.addEventListener('change', function(e) {
+            const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');
+
+            if (!toggle) return;
+
+            const id = toggle.dataset.id;
+
+            fetch(`/karyawan/${id}/toggle-status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengubah status.');
+                    }
+
+                    return response.json();
+                })
+                .then(() => window.location.reload())
+                .catch(error => {
+                    console.error(error);
+
+                    // Kembalikan switch jika request gagal
+                    toggle.checked = !toggle.checked;
+                });
+        });
+    </script>
     @includeIf('karyawan.detail')
 @endsection
