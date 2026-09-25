@@ -21,6 +21,7 @@
         "@tiptap/core": "^3.31.3",
         "@tiptap/extension-placeholder": "^3.31.3",
         "@tiptap/starter-kit": "^3.31.3",
+        "air-datepicker": "^3.6.0",
         "bootstrap": "^5.3.8",
         "bootstrap-icons": "^1.13.1"
     }

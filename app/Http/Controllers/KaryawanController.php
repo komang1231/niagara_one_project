@@ -46,7 +46,7 @@ class KaryawanController extends Controller
                 'jobLevel',
                 'statusKepegawaian',
             ])
-            ->orderByDesc('kode')
+            ->orderByDesc('nip')
             // ->latest()
             ->paginate(10)
             ->withQueryString();

@@ -49,7 +49,8 @@
 
         <div class="row">
             <div class="col-md-4">
-                <x-form.select name="status_kepegawaian_id" label="Status Kepegawaian" :options="$statusKepegawaians->pluck('nama', 'id')" nullable required />
+                <x-form.select name="status_kepegawaian_id" label="Status Kepegawaian" :options="$statusKepegawaians->pluck('nama', 'id')" nullable
+                    required />
             </div>
             <div class="col-md-4">
                 <x-form.input name="gaji" label="Gaji" type="number" required />
@@ -60,7 +61,8 @@
 
         <div class="row">
             <div class="col-md-4">
-                <x-form.select name="jenjang_pendidikan_id" label="Jenjang Pendidikan" :options="$jenjangPendidikans->pluck('nama', 'id')" nullable required />
+                <x-form.select name="jenjang_pendidikan_id" label="Jenjang Pendidikan" :options="$jenjangPendidikans->pluck('nama', 'id')" nullable
+                    required />
             </div>
             <div class="col-md-4">
                 <x-form.select name="status_kawin_id" label="Status Kawin" :options="$statusKawins->pluck('nama', 'id')" nullable required />
@@ -107,13 +109,20 @@
         </div>
 
         <div class="mt-4">
-            <x-form.switch name="status" label="Status Aktif" />
+            <label class="form-label d-block">Status Aktif</label>
+
+            <input type="hidden" name="status" value="nonaktif">
+
+            <label class="app-form-switch">
+                <input type="checkbox" name="status" value="aktif" id="status" checked>
+                <span class="app-form-switch__slider"></span>
+            </label>
         </div>
     </form>
 </x-offcanvas.form>
 
 <script>
-    (function () {
+    (function() {
         const editOffcanvasId = 'offcanvas-karyawan-edit';
         const offcanvasEl = document.getElementById(editOffcanvasId);
         if (!offcanvasEl) return;
@@ -155,7 +164,7 @@
         // begitu user GANTI MANUAL parent-nya
         // ============================================
 
-        departemenSelect.addEventListener('change', function () {
+        departemenSelect.addEventListener('change', function() {
             resetSelect(divisiSelect);
             resetSelect(sectionSelect);
             resetSelect(jobPositionSelect);
@@ -166,7 +175,7 @@
             fetchAndFill(routes.getDivisi, departemenId, divisiSelect);
         });
 
-        divisiSelect.addEventListener('change', function () {
+        divisiSelect.addEventListener('change', function() {
             resetSelect(sectionSelect);
             resetSelect(jobPositionSelect);
 
@@ -176,7 +185,7 @@
             fetchAndFill(routes.getSection, divisiId, sectionSelect);
         });
 
-        sectionSelect.addEventListener('change', function () {
+        sectionSelect.addEventListener('change', function() {
             resetSelect(jobPositionSelect);
 
             const sectionId = this.value;
@@ -190,14 +199,18 @@
         // (SAMA persis kayak sebelumnya, gak berubah)
         // ============================================
 
-        document.addEventListener('click', function (e) {
+        document.addEventListener('click', function(e) {
             const btn = e.target.closest('[data-edit-url]');
             if (!btn) return;
 
             const targetOffcanvas = document.querySelector(btn.dataset.bsTarget);
             if (!targetOffcanvas || targetOffcanvas.id !== editOffcanvasId) return;
 
-            fetch(btn.dataset.editUrl, { headers: { Accept: 'application/json' } })
+            fetch(btn.dataset.editUrl, {
+                    headers: {
+                        Accept: 'application/json'
+                    }
+                })
                 .then(res => res.json())
                 .then(data => {
                     fillSelect(divisiSelect, []);
@@ -215,7 +228,8 @@
                         .then(() => {
                             sectionSelect.value = data.section_id ?? '';
                             if (!data.section_id) return;
-                            return fetchAndFill(routes.getJobPosition, data.section_id, jobPositionSelect);
+                            return fetchAndFill(routes.getJobPosition, data.section_id,
+                                jobPositionSelect);
                         })
                         .then(() => {
                             jobPositionSelect.value = data.job_position_id ?? '';

@@ -5,26 +5,26 @@
     </script>
 @endif
 @section('content')
-    <x-page-header eyebrow="Struktur Karyawan" title="Job Position"
-        description="Kelola data job position dan status job position perusahaan." icon="bi-diagram-3-fill">
+    <x-page-header eyebrow="Kehadiran" title="Hari Libur" description="Kelola data hari libur perusahaan."
+        icon="bi-diagram-3-fill">
         <x-slot:badges>
-            <x-badge>{{ $jobPosition->total() }} job position</x-badge>
+            <x-badge>{{ $hariLibur->total() }} hari libur</x-badge>
         </x-slot:badges>
 
         <x-slot:actions>
-            <x-button variant="outline" icon="bi-trash" href="{{ route('job-position.trash') }}">
+            <x-button variant="outline" icon="bi-trash" href="{{ route('hari-libur.trash') }}">
                 Trash
             </x-button>
 
-            <x-button variant="primary" icon="bi-plus-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-job-position">
-                Tambah Job Position
+            <x-button variant="primary" icon="bi-plus-lg" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-hari-libur">
+                Tambah Hari Libur
             </x-button>
         </x-slot:actions>
     </x-page-header>
 
     <x-panel>
         <div>
-            <x-filter.bar :clearable="['search', 'status']" ajax-target="#job-position-table">
+            <x-filter.bar :clearable="['search', 'status']" ajax-target="#hari-libur-table">
                 <x-filter.search />
 
                 <x-filter.multiselect name="status" label="Status" :options="$statusOptions" />
@@ -33,24 +33,24 @@
 
         <hr class="app-panel__divider">
 
-        <div id="job-position-table">
+        <div id="hari-libur-table">
             <x-table>
                 <thead>
                     <tr>
                         <th class="app-table__col-no">NO</th>
                         <th>Kode</th>
-                        <th>Nama Job Position</th>
-                        <th>Section</th>
+                        <th>Nama Hari Libur</th>
+                        <th>Tanggal</th>
                         <th>Status</th>
                         <th class="app-table__col-actions">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($jobPosition as $i => $row)
+                    @forelse ($hariLibur as $i => $row)
                         <tr>
                             <td class="app-table__col-no">
-                                {{ $jobPosition->firstItem() + $i }}
+                                {{ $hariLibur->firstItem() + $i }}
                             </td>
 
                             <td class="fw-semibold">
@@ -62,7 +62,7 @@
                             </td>
 
                             <td>
-                                {{ optional($row->section)->nama ?? '-' }}
+                               {{ \Carbon\Carbon::parse($row->tanggal)->translatedFormat('d F') }}
                             </td>
 
                             <td>
@@ -75,16 +75,16 @@
                                 <div class="app-table__actions">
                                     {{-- Edit --}}
                                     <x-button variant="icon-edit" icon="bi-pencil" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvas-job-position-edit"
-                                        data-edit-url="{{ url('job-position/' . $row['id'] . '/edit-data') }}"
-                                        data-update-url="{{ route('job-position.update', $row['id']) }}" />
+                                        data-bs-target="#offcanvas-hari-libur-edit"
+                                        data-edit-url="{{ url('hari-libur/' . $row['id'] . '/edit-data') }}"
+                                        data-update-url="{{ route('hari-libur.update', $row['id']) }}" />
 
                                     {{-- Hapus (soft delete) --}}
-                                    <form action="{{ route('job-position.destroy', $row->id) }}" method="POST">
+                                    <form action="{{ route('hari-libur.destroy', $row->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash"
-                                            onclick="return confirm('Hapus job position ini?')" />
+                                            onclick="return confirm('Hapus hari libur ini?')" />
                                     </form>
 
                                     {{-- Status --}}
@@ -102,19 +102,19 @@
             <div class="app-table-footer">
                 <span>
                     Menampilkan
-                    {{ $jobPosition->firstItem() ?? 0 }}–{{ $jobPosition->lastItem() ?? 0 }}
+                    {{ $hariLibur->firstItem() ?? 0 }}–{{ $hariLibur->lastItem() ?? 0 }}
                     dari
-                    {{ $jobPosition->total() }}
+                    {{ $hariLibur->total() }}
                     entri
                 </span>
 
-                <x-pagination :paginator="$jobPosition" />
+                <x-pagination :paginator="$hariLibur" />
             </div>
         </div>
     </x-panel>
 
-    @include('job-position.form-create')
-    @include('job-position.form-edit')
+    @includeIf('hari-libur.form-create')
+    @includeIf('hari-libur.form-edit')
     <script>
         document.addEventListener('change', function(e) {
             const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');
@@ -123,7 +123,7 @@
 
             const id = toggle.dataset.id;
 
-            fetch(`/job-position/${id}/toggle-status`, {
+            fetch(`/hari-libur/${id}/toggle-status`, {
                     method: 'PATCH',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,

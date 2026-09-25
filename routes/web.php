@@ -11,6 +11,8 @@ use App\Http\Controllers\CabangKantorController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusKepegawaianController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\HariLiburController;
+use App\Models\HariLibur;
 
 Route::get('/test-laravel', function () {
     return 'Laravel OK';
@@ -39,8 +41,8 @@ Route::middleware('auth')->group(function () {
         ->name('karyawan.trash');
     Route::patch('karyawan/{id}/restore', [KaryawanController::class, 'restore'])
         ->name('karyawan.restore');
-        Route::delete('karyawan/{id}/force-delete', [KaryawanController::class, 'forceDelete'])
-    ->name('karyawan.force-delete');
+    Route::delete('karyawan/{id}/force-delete', [KaryawanController::class, 'forceDelete'])
+        ->name('karyawan.force-delete');
     Route::patch('karyawan/{karyawan}/toggle-status', [KaryawanController::class, 'toggleStatus'])
         ->name('karyawan.toggle-status');
     //chained dropdown
@@ -53,6 +55,20 @@ Route::middleware('auth')->group(function () {
 
 
     Route::view('/kontrak-karyawan', 'kontrak-karyawan.index')->name('kontrak-karyawan.index');
+
+    Route::resource('hari-libur', HariLiburController::class)
+        ->parameters(['hari-libur' => 'hari-libur']);
+    Route::get('hari-libur/{id}/edit-data', [HariLiburController::class, 'editData'])
+        ->name('hari-libur.edit-data');
+    Route::get('hari-libur-trash', [HariLiburController::class, 'trash'])
+        ->name('hari-libur.trash');
+    Route::patch('hari-libur/{id}/restore', [HariLiburController::class, 'restore'])
+        ->name('hari-libur.restore');
+    Route::delete('hari-libur/{id}/force-delete', [HariLiburController::class, 'forceDelete'])
+        ->name('hari-libur.force-delete');
+    Route::patch('hari-libur/{id}/toggle-status', [HariLiburController::class, 'toggleStatus'])
+        ->name('hari-libur.toggle-status');
+
     Route::view('/perubahan-karyawan', 'perubahan-karyawan.index')->name('perubahan-karyawan.index');
     Route::view('/permintaan-resign', 'permintaan-resign.index')->name('permintaan-resign.index');
     Route::view('/surat-peringatan', 'surat-peringatan.index')->name('surat-peringatan.index');

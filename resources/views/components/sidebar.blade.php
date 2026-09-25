@@ -28,6 +28,7 @@
                 ['label' => 'Jadwal Karyawan', 'slug' => 'jadwal-karyawan'],
                 ['label' => 'Shift', 'slug' => 'shift'],
                 ['label' => 'Pola Shift', 'slug' => 'pola-shift'],
+                ['label' => 'Hari Libur', 'slug' => 'hari-libur'],
                 ['label' => 'Permintaan Tukar Shift', 'slug' => 'tukar-shift'],
                 ['label' => 'Permintaan Lembur', 'slug' => 'lembur'],
             ],

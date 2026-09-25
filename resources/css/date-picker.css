@@ -1,0 +1,180 @@
+/* ==========================================================
+   Date Picker)
+   ========================================================== */
+
+.air-datepicker {
+    z-index: 1100 !important;
+
+    border: 1px solid var(--neutral-100);
+    border-radius: 16px; /* radius dibesarin biar lebih soft */
+    box-shadow: 0 12px 32px rgba(25, 30, 36, 0.10); /* shadow lebih lembut & jauh */
+    overflow: hidden;
+
+    font-family: "Inter", sans-serif;
+
+    --adp-accent-color: var(--accent);
+    --adp-color-current-date: var(--accent);
+
+    --adp-background-color-hover: var(--accent-50);
+    --adp-background-color-active: var(--accent-100);
+
+    --adp-cell-background-color-hover: var(--accent-50);
+    --adp-cell-background-color-selected: var(--accent);
+    --adp-cell-background-color-selected-hover: var(--accent-600);
+
+    --adp-day-name-color: var(--neutral-500);
+    --adp-day-name-color-hover: var(--accent);
+
+    --adp-nav-arrow-color: var(--neutral-500);
+    --adp-padding: 16px; /* kasih ruang napas di dalam kalender */
+}
+
+/* fix double view / transisi aneh */
+.air-datepicker-body {
+    transition: none !important;
+}
+
+.air-datepicker-body.-hidden- {
+    display: none !important;
+}
+
+.air-datepicker--content {
+    overflow: hidden;
+}
+
+/* ==========================================================
+   INPUT DATE
+   ========================================================== */
+
+.input-date-wrapper {
+    position: relative;
+}
+
+.input-date {
+    padding-right: 42px;
+    cursor: pointer;
+}
+
+.input-date-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    color: var(--neutral-500);
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.input-date-icon:hover {
+    color: var(--accent);
+}
+
+/* ==========================================================
+   NAVIGASI (bulan / tahun / panah)
+   ========================================================== */
+
+.air-datepicker-nav {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--neutral-50);
+}
+
+.air-datepicker-nav--title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-text-900);
+    transition: color 0.15s ease;
+}
+
+.air-datepicker-nav--title:hover {
+    color: var(--accent);
+}
+
+.air-datepicker-nav--action {
+    border-radius: 10px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.air-datepicker-nav--action:hover {
+    background-color: var(--accent-50);
+    color: var(--accent);
+}
+
+.air-datepicker-nav--action:active {
+    background-color: var(--accent-100);
+}
+
+/* ==========================================================
+   NAMA HARI
+   ========================================================== */
+
+.air-datepicker-body--day-name {
+    color: var(--neutral-500);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase; /* biar kesan minimalis-modern */
+}
+
+/* ==========================================================
+   SEL TANGGAL / BULAN / TAHUN — dibikin konsisten satu style
+   ========================================================== */
+
+.air-datepicker-cell {
+    border-radius: 10px;
+    font-size: 13px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.air-datepicker-cell.-day-:hover,
+.air-datepicker-cell.-month-:hover,
+.air-datepicker-cell.-year-:hover {
+    background-color: var(--accent-50);
+    color: var(--accent-900);
+}
+
+/* hari ini: gak usah full color, cukup dot kecil biar minimalis */
+.air-datepicker-cell.-day-.-current- {
+    position: relative;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* tanggal / bulan / tahun terpilih */
+.air-datepicker-cell.-selected- {
+    background-color: var(--accent) !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.air-datepicker-cell.-selected-.-focus- {
+    background-color: var(--accent-600) !important;
+    color: #fff !important;
+}
+
+/* ==========================================================
+   BUTTON "HARI INI" / BUTTON LAIN
+   ========================================================== */
+
+.air-datepicker-button {
+    color: var(--accent);
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.air-datepicker-button:hover {
+    color: var(--accent-700);
+    background-color: var(--accent-50);
+}
