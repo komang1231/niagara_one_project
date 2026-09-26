@@ -39,6 +39,7 @@
             'icon' => 'bi-calendar-week-fill',
             'slug' => 'cuti',
             'children' => [
+                ['label' => 'Cuti', 'slug' => 'cuti'],
                 ['label' => 'Saldo Cuti', 'slug' => 'saldo-cuti'],
                 ['label' => 'Permintaan Cuti', 'slug' => 'permintaan-cuti'],
             ],

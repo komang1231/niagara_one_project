@@ -12,6 +12,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusKepegawaianController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\HariLiburController;
+use App\Http\Controllers\CutiController;
+use App\Http\Controllers\ShiftController;
 use App\Models\HariLibur;
 
 Route::get('/test-laravel', function () {
@@ -66,8 +68,34 @@ Route::middleware('auth')->group(function () {
         ->name('hari-libur.restore');
     Route::delete('hari-libur/{id}/force-delete', [HariLiburController::class, 'forceDelete'])
         ->name('hari-libur.force-delete');
-    Route::patch('hari-libur/{id}/toggle-status', [HariLiburController::class, 'toggleStatus'])
+    Route::patch('hari-libur/{hariLibur}/toggle-status', [HariLiburController::class, 'toggleStatus'])
         ->name('hari-libur.toggle-status');
+
+    Route::resource('cuti', CutiController::class)
+        ->parameters(['cuti' => 'cuti']);
+    Route::get('cuti/{id}/edit-data', [CutiController::class, 'editData'])
+        ->name('cuti.edit-data');
+    Route::get('cuti-trash', [CutiController::class, 'trash'])
+        ->name('cuti.trash');
+    Route::patch('cuti/{id}/restore', [CutiController::class, 'restore'])
+        ->name('cuti.restore');
+    Route::delete('cuti/{id}/force-delete', [CutiController::class, 'forceDelete'])
+        ->name('cuti.force-delete');
+    Route::patch('cuti/{cuti}/toggle-status', [CutiController::class, 'toggleStatus'])
+        ->name('cuti.toggle-status');
+        
+        Route::resource('shift', ShiftController::class)
+            ->parameters(['shift' => 'shift']);
+        Route::get('shift/{id}/edit-data', [ShiftController::class, 'editData'])
+            ->name('shift.edit-data');
+        Route::get('shift-trash', [ShiftController::class, 'trash'])
+            ->name('shift.trash');
+        Route::patch('shift/{id}/restore', [ShiftController::class, 'restore'])
+            ->name('shift.restore');
+        Route::delete('shift/{id}/force-delete', [ShiftController::class, 'forceDelete'])
+            ->name('shift.force-delete');
+        Route::patch('shift/{shift}/toggle-status', [ShiftController::class, 'toggleStatus'])
+            ->name('shift.toggle-status');
 
     Route::view('/perubahan-karyawan', 'perubahan-karyawan.index')->name('perubahan-karyawan.index');
     Route::view('/permintaan-resign', 'permintaan-resign.index')->name('permintaan-resign.index');
@@ -75,7 +103,6 @@ Route::middleware('auth')->group(function () {
 
     // Kehadiran
     Route::view('/jadwal-karyawan', 'jadwal-karyawan.index')->name('jadwal-karyawan.index');
-    Route::view('/shift', 'shift.index')->name('shift.index');
     Route::view('/pola-shift', 'pola-shift.index')->name('pola-shift.index');
     Route::view('/tukar-shift', 'tukar-shift.index')->name('tukar-shift.index');
     Route::view('/lembur', 'lembur.index')->name('lembur.index');

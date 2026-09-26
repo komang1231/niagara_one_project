@@ -1,0 +1,54 @@
+/* ==========================================================
+   INPUT STEPPER (jumlah hari, dsb)
+   ==================================================== */
+
+.input-stepper {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--neutral-200);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-stepper:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.2rem rgba(239, 159, 39, 0.10);
+}
+
+/* input di tengah, border dihilangin karena border udah dipegang wrapper */
+.input-stepper-field {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-align: center;
+    -moz-appearance: textfield; /* buang spinner default firefox */
+}
+
+/* buang spinner default chrome/safari */
+.input-stepper-field::-webkit-outer-spin-button,
+.input-stepper-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.stepper-btn {
+    flex: 0 0 36px;
+    border: none;
+    background-color: var(--neutral-50);
+    color: var(--neutral-500);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.stepper-btn:hover {
+    background-color: var(--accent-50);
+    color: var(--accent);
+}
+
+.stepper-btn:active {
+    background-color: var(--accent-100);
+}

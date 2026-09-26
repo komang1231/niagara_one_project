@@ -4,6 +4,7 @@ import './filter';
 import './rich-text-editor';
 import './offcanvas-edit';
 import './input-date';
+import './input-stepper';
 
 
 // Ganti ikon chevron (down <-> up) mengikuti status collapse Bootstrap.
