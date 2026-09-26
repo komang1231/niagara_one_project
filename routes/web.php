@@ -15,6 +15,13 @@ use App\Http\Controllers\HariLiburController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\ShiftController;
 use App\Models\HariLibur;
+use App\Http\Controllers\PermintaanController;
+use App\Http\Controllers\PermintaanCutiController;
+use App\Http\Controllers\PermintaanResignController;
+use App\Http\Controllers\PermintaanLemburController;
+use App\Http\Controllers\PermintaanTukarShiftController;
+use App\Http\Controllers\PermintaanKaryawanController;
+
 
 Route::get('/test-laravel', function () {
     return 'Laravel OK';
@@ -33,7 +40,142 @@ Route::middleware('auth')->group(function () {
     // LOGOUT
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Karyawan
+    // ============================================================================
+    // PERMINTAAN
+    // ============================================================================
+
+    // Halaman utama semua permintaan
+    Route::get('/permintaan', [PermintaanController::class, 'index'])
+        ->name('permintaan.index');
+
+
+
+    // ============================================================================
+    // PERMINTAAN KARYAWAN
+    // ============================================================================
+
+    Route::get('permintaan-karyawan-trash', [PermintaanKaryawanController::class, 'trash'])
+        ->name('permintaan-karyawan.trash');
+    Route::post('permintaan-karyawan', [PermintaanKaryawanController::class, 'store'])
+        ->name('permintaan-karyawan.store');
+    Route::put('permintaan-karyawan/{permintaanKaryawan}', [PermintaanKaryawanController::class, 'update'])
+        ->name('permintaan-karyawan.update');
+    Route::delete('permintaan-karyawan/{permintaanKaryawan}', [PermintaanKaryawanController::class, 'destroy'])
+        ->name('permintaan-karyawan.destroy');
+    Route::get('permintaan-karyawan/{id}/edit-data', [PermintaanKaryawanController::class, 'editData'])
+        ->name('permintaan-karyawan.edit-data');
+    Route::patch('permintaan-karyawan/{id}/restore', [PermintaanKaryawanController::class, 'restore'])
+        ->name('permintaan-karyawan.restore');
+    Route::delete('permintaan-karyawan/{id}/force-delete', [PermintaanKaryawanController::class, 'forceDelete'])
+        ->name('permintaan-karyawan.force-delete');
+    Route::get('permintaan-karyawan/get-divisi/{departemen}', [PermintaanKaryawanController::class, 'getDivisi'])
+        ->name('permintaan-karyawan.get-divisi');
+    Route::get('permintaan-karyawan/get-section/{divisi}', [PermintaanKaryawanController::class, 'getSection'])
+        ->name('permintaan-karyawan.get-section');
+    Route::get('permintaan-karyawan/get-job-position/{section}', [PermintaanKaryawanController::class, 'getJobPosition'])
+        ->name('permintaan-karyawan.get-job-position');
+    Route::patch('permintaan-karyawan/{permintaanKaryawan}/approve', [PermintaanKaryawanController::class, 'approve'])
+        ->name('permintaan-karyawan.approve');
+    Route::patch('permintaan-karyawan/{permintaanKaryawan}/reject', [PermintaanKaryawanController::class, 'reject'])
+        ->name('permintaan-karyawan.reject');
+
+
+    // ============================================================================
+    // PERMINTAAN CUTI
+    // ============================================================================
+
+    Route::get('permintaan-cuti-trash', [PermintaanCutiController::class, 'trash'])
+        ->name('permintaan-cuti.trash');
+    Route::post('permintaan-cuti', [PermintaanCutiController::class, 'store'])
+        ->name('permintaan-cuti.store');
+    Route::put('permintaan-cuti/{permintaanCuti}', [PermintaanCutiController::class, 'update'])
+        ->name('permintaan-cuti.update');
+    Route::delete('permintaan-cuti/{permintaanCuti}', [PermintaanCutiController::class, 'destroy'])
+        ->name('permintaan-cuti.destroy');
+    Route::get('permintaan-cuti/{id}/edit-data', [PermintaanCutiController::class, 'editData'])
+        ->name('permintaan-cuti.edit-data');
+    Route::patch('permintaan-cuti/{id}/restore', [PermintaanCutiController::class, 'restore'])
+        ->name('permintaan-cuti.restore');
+    Route::delete('permintaan-cuti/{id}/force-delete', [PermintaanCutiController::class, 'forceDelete'])
+        ->name('permintaan-cuti.force-delete');
+    Route::patch('permintaan-cuti/{permintaanCuti}/approve', [PermintaanCutiController::class, 'approve'])
+        ->name('permintaan-cuti.approve');
+    Route::patch('permintaan-cuti/{permintaanCuti}/reject', [PermintaanCutiController::class, 'reject'])
+        ->name('permintaan-cuti.reject');
+
+
+    // ============================================================================
+    // PERMINTAAN LEMBUR
+    // ============================================================================
+
+    Route::get('permintaan-lembur-trash', [PermintaanLemburController::class, 'trash'])
+        ->name('permintaan-lembur.trash');
+    Route::post('permintaan-lembur', [PermintaanLemburController::class, 'store'])
+        ->name('permintaan-lembur.store');
+    Route::put('permintaan-lembur/{permintaanLembur}', [PermintaanLemburController::class, 'update'])
+        ->name('permintaan-lembur.update');
+    Route::delete('permintaan-lembur/{permintaanLembur}', [PermintaanLemburController::class, 'destroy'])
+        ->name('permintaan-lembur.destroy');
+    Route::get('permintaan-lembur/{id}/edit-data', [PermintaanLemburController::class, 'editData'])
+        ->name('permintaan-lembur.edit-data');
+    Route::patch('permintaan-lembur/{id}/restore', [PermintaanLemburController::class, 'restore'])
+        ->name('permintaan-lembur.restore');
+    Route::delete('permintaan-lembur/{id}/force-delete', [PermintaanLemburController::class, 'forceDelete'])
+        ->name('permintaan-lembur.force-delete');
+    Route::patch('permintaan-lembur/{permintaanLembur}/approve', [PermintaanLemburController::class, 'approve'])
+        ->name('permintaan-lembur.approve');
+    Route::patch('permintaan-lembur/{permintaanLembur}/reject', [PermintaanLemburController::class, 'reject'])
+        ->name('permintaan-lembur.reject');
+
+
+    // ============================================================================
+    // PERMINTAAN RESIGN
+    // ============================================================================
+
+    Route::get('permintaan-resign-trash', [PermintaanResignController::class, 'trash'])
+        ->name('permintaan-resign.trash');
+    Route::post('permintaan-resign', [PermintaanResignController::class, 'store'])
+        ->name('permintaan-resign.store');
+    Route::put('permintaan-resign/{permintaanResign}', [PermintaanResignController::class, 'update'])
+        ->name('permintaan-resign.update');
+    Route::delete('permintaan-resign/{permintaanResign}', [PermintaanResignController::class, 'destroy'])
+        ->name('permintaan-resign.destroy');
+    Route::get('permintaan-resign/{id}/edit-data', [PermintaanResignController::class, 'editData'])
+        ->name('permintaan-resign.edit-data');
+    Route::patch('permintaan-resign/{id}/restore', [PermintaanResignController::class, 'restore'])
+        ->name('permintaan-resign.restore');
+    Route::delete('permintaan-resign/{id}/force-delete', [PermintaanResignController::class, 'forceDelete'])
+        ->name('permintaan-resign.force-delete');
+    Route::patch('permintaan-resign/{permintaanResign}/approve', [PermintaanResignController::class, 'approve'])
+        ->name('permintaan-resign.approve');
+    Route::patch('permintaan-resign/{permintaanResign}/reject', [PermintaanResignController::class, 'reject'])
+        ->name('permintaan-resign.reject');
+
+
+    // ============================================================================
+    // PERMINTAAN TUKAR SHIFT
+    // ============================================================================
+
+    Route::get('permintaan-tukar-shift-trash', [PermintaanTukarShiftController::class, 'trash'])
+        ->name('permintaan-tukar-shift.trash');
+    Route::post('permintaan-tukar-shift', [PermintaanTukarShiftController::class, 'store'])
+        ->name('permintaan-tukar-shift.store');
+    Route::put('permintaan-tukar-shift/{permintaanTukarShift}', [PermintaanTukarShiftController::class, 'update'])
+        ->name('permintaan-tukar-shift.update');
+    Route::delete('permintaan-tukar-shift/{permintaanTukarShift}', [PermintaanTukarShiftController::class, 'destroy'])
+        ->name('permintaan-tukar-shift.destroy');
+    Route::get('permintaan-tukar-shift/{id}/edit-data', [PermintaanTukarShiftController::class, 'editData'])
+        ->name('permintaan-tukar-shift.edit-data');
+    Route::patch('permintaan-tukar-shift/{id}/restore', [PermintaanTukarShiftController::class, 'restore'])
+        ->name('permintaan-tukar-shift.restore');
+    Route::delete('permintaan-tukar-shift/{id}/force-delete', [PermintaanTukarShiftController::class, 'forceDelete'])
+        ->name('permintaan-tukar-shift.force-delete');
+    Route::patch('permintaan-tukar-shift/{permintaanTukarShift}/approve', [PermintaanTukarShiftController::class, 'approve'])
+        ->name('permintaan-tukar-shift.approve');
+    Route::patch('permintaan-tukar-shift/{permintaanTukarShift}/reject', [PermintaanTukarShiftController::class, 'reject'])
+        ->name('permintaan-tukar-shift.reject');
+
+
     // Karyawan
     Route::resource('karyawan', KaryawanController::class)
         ->parameters(['karyawan' => 'karyawan']);
@@ -83,22 +225,22 @@ Route::middleware('auth')->group(function () {
         ->name('cuti.force-delete');
     Route::patch('cuti/{cuti}/toggle-status', [CutiController::class, 'toggleStatus'])
         ->name('cuti.toggle-status');
-        
-        Route::resource('shift', ShiftController::class)
-            ->parameters(['shift' => 'shift']);
-        Route::get('shift/{id}/edit-data', [ShiftController::class, 'editData'])
-            ->name('shift.edit-data');
-        Route::get('shift-trash', [ShiftController::class, 'trash'])
-            ->name('shift.trash');
-        Route::patch('shift/{id}/restore', [ShiftController::class, 'restore'])
-            ->name('shift.restore');
-        Route::delete('shift/{id}/force-delete', [ShiftController::class, 'forceDelete'])
-            ->name('shift.force-delete');
-        Route::patch('shift/{shift}/toggle-status', [ShiftController::class, 'toggleStatus'])
-            ->name('shift.toggle-status');
+
+    Route::resource('shift', ShiftController::class)
+        ->parameters(['shift' => 'shift']);
+    Route::get('shift/{id}/edit-data', [ShiftController::class, 'editData'])
+        ->name('shift.edit-data');
+    Route::get('shift-trash', [ShiftController::class, 'trash'])
+        ->name('shift.trash');
+    Route::patch('shift/{id}/restore', [ShiftController::class, 'restore'])
+        ->name('shift.restore');
+    Route::delete('shift/{id}/force-delete', [ShiftController::class, 'forceDelete'])
+        ->name('shift.force-delete');
+    Route::patch('shift/{shift}/toggle-status', [ShiftController::class, 'toggleStatus'])
+        ->name('shift.toggle-status');
 
     Route::view('/perubahan-karyawan', 'perubahan-karyawan.index')->name('perubahan-karyawan.index');
-    Route::view('/permintaan-resign', 'permintaan-resign.index')->name('permintaan-resign.index');
+    // Route::view('/permintaan-resign', 'permintaan-resign.index')->name('permintaan-resign.index');
     Route::view('/surat-peringatan', 'surat-peringatan.index')->name('surat-peringatan.index');
 
     // Kehadiran
@@ -109,7 +251,7 @@ Route::middleware('auth')->group(function () {
 
     // Cuti
     Route::view('/saldo-cuti', 'saldo-cuti.index')->name('saldo-cuti.index');
-    Route::view('/permintaan-cuti', 'permintaan-cuti.index')->name('permintaan-cuti.index');
+    // Route::view('/permintaan-cuti', 'permintaan-cuti.index')->name('permintaan-cuti.index');
 
     // test front end
     // Route::get('/departemen/{departemen}/edit', [DepartemenController::class, 'edit']);
@@ -123,7 +265,7 @@ Route::middleware('auth')->group(function () {
     // Rekrutmen
     Route::view('/rekrutmen', 'rekrutmen.index')->name('rekrutmen.index');
     Route::view('/lowongan', 'lowongan.index')->name('lowongan.index');
-    Route::view('/permintaan-karyawan', 'permintaan-karyawan.index')->name('permintaan-karyawan.index');
+    // Route::view('/permintaan-karyawan', 'permintaan-karyawan.index')->name('permintaan-karyawan.index');
 
     // Struktur Organisasi
 

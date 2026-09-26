@@ -19,8 +19,9 @@ return new class extends Migration
             $table->date('tanggal_tujuan');
             $table->unsignedInteger('shift_pengaju');
             $table->unsignedInteger('shift_pengganti');
-            $table->unsignedBigInteger('approved_by')->nullable();
+            $table->unsignedBigInteger('processed_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
             $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->foreign('karyawan_pengganti')->references('id')->on('karyawans');
             $table->foreign('shift_pengaju')->references('id')->on('shifts');
             $table->foreign('shift_pengganti')->references('id')->on('shifts');
-            $table->foreign('approved_by')->references('id')->on('users');
+            $table->foreign('processed_by')->references('id')->on('users');
         });
     }
 

@@ -19,11 +19,16 @@ return new class extends Migration
             $table->unsignedInteger('job_position_id')->nullable();
             $table->unsignedInteger('job_level_id');
             $table->unsignedInteger('jumlah');
-            $table->unsignedBigInteger('approved_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
+            $table->unsignedBigInteger('processed_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
             $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantors');
+            $table->foreign('departemen_id')->references('id')->on('departemens');
+            $table->foreign('divisi_id')->references('id')->on('divisis');
+            $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('job_position_id')->references('id')->on('job_positions');
             $table->foreign('job_level_id')->references('id')->on('job_levels');
         });

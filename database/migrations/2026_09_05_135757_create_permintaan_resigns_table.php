@@ -17,13 +17,14 @@ return new class extends Migration
             $table->unsignedBigInteger('karyawan_id');
             $table->date('tanggal_efektif');
             $table->text('alasan');
-            $table->unsignedBigInteger('approved_by')->nullable();
+            $table->unsignedBigInteger('processed_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
             $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
             $table->softDeletes();  
 
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
-            $table->foreign('approved_by')->references('id')->on('users');
+            $table->foreign('processed_by')->references('id')->on('users');
         });
     }
 

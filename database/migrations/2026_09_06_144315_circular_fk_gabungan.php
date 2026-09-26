@@ -14,7 +14,7 @@ return new class extends Migration
 
         Schema::table('permintaan_karyawans', function (Blueprint $table) {
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
-            $table->foreign('approved_by')->references('id')->on('users');
+            $table->foreign('processed_by')->references('id')->on('users');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
 
         Schema::table('permintaan_karyawans', function (Blueprint $table) {
             $table->dropForeign(['karyawan_id']);
-            $table->dropForeign(['approved_by']);
+            $table->dropForeign(['processed_by']);
         });
     }
 };

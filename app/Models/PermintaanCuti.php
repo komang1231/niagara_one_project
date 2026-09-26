@@ -17,7 +17,7 @@ class PermintaanCuti extends Model
 
     protected $table = 'permintaan_cutis';
     protected $fillable = ['kode', 'cuti_id', 'karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'alasan', 'lampiran', 'pengganti_karyawan_id'];
-    // approved_by & approved_at DIKELUARKAN dari fillable
+    // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable
 
     public function details()
     {

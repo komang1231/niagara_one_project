@@ -33,8 +33,8 @@ return new class extends Migration
             $table->foreign('level_baru')->references('id')->on('job_levels');
             $table->foreign('posisi_lama')->references('id')->on('job_positions');
             $table->foreign('posisi_baru')->references('id')->on('job_positions');
-            $table->foreign('cabang_lama')->references('id')->on('cabang_kantor');
-            $table->foreign('cabang_baru')->references('id')->on('cabang_kantor');
+            $table->foreign('cabang_lama')->references('id')->on('cabang_kantors');
+            $table->foreign('cabang_baru')->references('id')->on('cabang_kantors');
         });
     }
 

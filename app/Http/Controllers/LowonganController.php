@@ -134,14 +134,14 @@ class LowonganController extends Controller
     {
         $lowongan = Lowongan::findOrFail($id);
 
-        if ($lowongan->divisi()->exists()) {
-            return redirect()
-                ->route('lowongan.index')
-                ->with(
-                    'error',
-                    'Lowongan tidak dapat dihapus karena masih digunakan oleh data Divisi.'
-                );
-        }
+        // if ($lowongan->divisi()->exists()) {
+        //     return redirect()
+        //         ->route('lowongan.index')
+        //         ->with(
+        //             'error',
+        //             'Lowongan tidak dapat dihapus karena masih digunakan oleh data Divisi.'
+        //         );
+        // }
 
         $lowongan->delete();
 

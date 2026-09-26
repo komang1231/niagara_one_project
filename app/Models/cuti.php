@@ -15,5 +15,4 @@ class Cuti extends Model {
 
     protected $table = 'cutis';
     protected $guarded = [];
-
 }

@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('cabang_kantor', function (Blueprint $table) {
+        Schema::create('cabang_kantors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kode', 20)->unique();
             $table->string('nama', 150);

@@ -21,15 +21,16 @@ return new class extends Migration
             $table->text('alasan')->nullable();
             $table->string('lampiran', 255)->nullable();
             $table->unsignedBigInteger('pengganti_karyawan_id')->nullable();
-            $table->unsignedBigInteger('approved_by')->nullable();
+            $table->unsignedBigInteger('processed_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
             $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('cuti_id')->references('id')->on('cutis');
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
             $table->foreign('pengganti_karyawan_id')->references('id')->on('karyawans');
-            $table->foreign('approved_by')->references('id')->on('users');
+            $table->foreign('processed_by')->references('id')->on('users');
         });
     }
 

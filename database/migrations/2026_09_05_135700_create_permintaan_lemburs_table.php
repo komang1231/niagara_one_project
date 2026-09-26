@@ -20,13 +20,14 @@ return new class extends Migration
             $table->time('jam_selesai');
             $table->text('alasan');
             $table->decimal('pengali', 2, 1);
-            $table->unsignedBigInteger('approved_by')->nullable();
+            $table->unsignedBigInteger('processed_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
             $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
-            $table->foreign('approved_by')->references('id')->on('users');
+            $table->foreign('processed_by')->references('id')->on('users');
         });
     }
 

@@ -46,7 +46,7 @@ return new class extends Migration
             $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('job_position_id')->references('id')->on('job_positions');
             $table->foreign('job_level_id')->references('id')->on('job_levels');
-            $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantor');
+            $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantors');
             $table->foreign('jenjang_pendidikan_id')->references('id')->on('jenjang_pendidikans');
             $table->foreign('status_kawin_id')->references('id')->on('status_kawins');
             $table->foreign('agama_id')->references('id')->on('agamas');

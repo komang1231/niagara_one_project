@@ -37,7 +37,11 @@ class DatabaseSeeder extends Seeder
             PermintaanKaryawanSeeder::class,
             LowonganSeeder::class,
             RekrutmenSeeder::class,
-            // SaldoCutiSeeder::class, 
+            // SaldoCutiSeeder::class,
+            PermintaanCutiSeeder::class,
+            PermintaanResignSeeder::class,
+            PermintaanLemburSeeder::class,
+            PermintaanTukarShiftSeeder::class, 
             KontrakKaryawanSeeder::class,
             JadwalKaryawanSeeder::class,
         ]);

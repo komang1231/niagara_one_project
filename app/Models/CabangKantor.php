@@ -14,7 +14,7 @@ class CabangKantor extends Model {
         return 'CAB';
     }
 
-    protected $table = 'cabang_kantor';
+    protected $table = 'cabang_kantors';
     protected $guarded = [];
 
 //

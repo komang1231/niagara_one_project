@@ -31,7 +31,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('permintaan_karyawan_id')->references('id')->on('permintaan_karyawans');
-            $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantor');
+            $table->foreign('cabang_kantor_id')->references('id')->on('cabang_kantors');
             $table->foreign('departemen_id')->references('id')->on('departemens');
             $table->foreign('divisi_id')->references('id')->on('divisis');
             $table->foreign('section_id')->references('id')->on('sections');

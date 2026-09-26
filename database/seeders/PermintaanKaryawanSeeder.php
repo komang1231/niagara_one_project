@@ -98,45 +98,57 @@ class PermintaanKaryawanSeeder extends Seeder
                 'karyawan_id' => $karyawanMap['5171012345670001'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Kantor Pusat Denpasar'] ?? null,
                 'departemen_id' => $departemenMap['Marketing'] ?? null,
-                'divisi_id' => $divisiMap[''] ?? null,
-                'section_id' => $sectionMap[''] ?? null,
-                'job_position_id' => $jobPositionMap[''] ?? null,
+                'divisi_id' => null,
+                'section_id' => null,
+                'job_position_id' => null,
                 'job_level_id' => $jobLevelMap['Departement Head'] ?? null,
                 'jumlah' => 2,
-            ],
+            ]
+        );
+
+        \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
                 'karyawan_id' => $karyawanMap['5171012345670002'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Cabang Jakarta'] ?? null,
                 'departemen_id' => $departemenMap['Information Technology'] ?? null,
-                'divisi_id' => $divisiMap[''] ?? null,
-                'section_id' => $sectionMap[''] ?? null,
-                'job_position_id' => $jobPositionMap[''] ?? null,
+                'divisi_id' => null,
+                'section_id' => null,
+                'job_position_id' => null,
                 'job_level_id' => $jobLevelMap['Departement Head'] ?? null,
                 'jumlah' => 1,
-            ],
+            ]
+        );
+
+        \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
                 'karyawan_id' => $karyawanMap['5171012345670003'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Cabang Surabaya'] ?? null,
                 'departemen_id' => $departemenMap['Information Technology'] ?? null,
                 'divisi_id' => $divisiMap['Web Development'] ?? null,
-                'section_id' => $sectionMap[''] ?? null,
-                'job_position_id' => $jobPositionMap[''] ?? null,
+                'section_id' => null,
+                'job_position_id' => null,
                 'job_level_id' => $jobLevelMap['Division Head'] ?? null,
                 'jumlah' => 3,
-            ],
+            ]
+        );
+
+        \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
                 'karyawan_id' => $karyawanMap['5171012345670004'] ?? null,
-                'cabang_kantor_id' => $cabangKantorMap['Cabang Genteng'] ?? null,
+                'cabang_kantor_id' => $cabangKantorMap['Cabang Medan'] ?? null,
                 'departemen_id' => $departemenMap['Information Technology'] ?? null,
                 'divisi_id' => $divisiMap['Web Development'] ?? null,
                 'section_id' => $sectionMap['Front Office'] ?? null,
                 'job_position_id' => $jobPositionMap['Front Office Staff'] ?? null,
                 'job_level_id' => $jobLevelMap['Junior'] ?? null,
                 'jumlah' => 2,
-            ],
+            ]
+        );
+
+        \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
                 'karyawan_id' => $karyawanMap['5171012345670005'] ?? null,
