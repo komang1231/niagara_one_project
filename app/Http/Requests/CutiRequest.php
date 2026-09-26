@@ -25,7 +25,7 @@ class CutiRequest extends FormRequest
         return [
             'nama' => ['required', 'string', 'max:255'],
             'kode' => ['required', 'string', 'max:255'],
-            'kuota_hari_default' => ['required', 'integer', 'min:0'],
+            // 'kuota_hari_default' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'in:0,1'],
         ];
     }

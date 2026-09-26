@@ -13,12 +13,12 @@ class CutiSeeder extends Seeder
     public function run(): void
     {
         $Cuti = [
-            ['kode' => '', 'nama' => 'Cuti Tahunan', 'kuota_hari_default' => 12],
-            ['kode' => '', 'nama' => 'Cuti Sakit', 'kuota_hari_default' => 0],
-            ['kode' => '', 'nama' => 'Cuti Melahirkan', 'kuota_hari_default' => 0],
-            ['kode' => '', 'nama' => 'Cuti Dinas Luar', 'kuota_hari_default' => 0],
-            ['kode' => '', 'nama' => 'Cuti Alasan Penting', 'kuota_hari_default' => 0],
-            ['kode' => '', 'nama' => 'Work From Home', 'kuota_hari_default' => 0],
+            ['kode' => '', 'nama' => 'Cuti Tahunan'],
+            ['kode' => '', 'nama' => 'Cuti Sakit'],
+            ['kode' => '', 'nama' => 'Cuti Melahirkan'],
+            ['kode' => '', 'nama' => 'Cuti Dinas Luar'],
+            ['kode' => '', 'nama' => 'Cuti Alasan Penting'],
+            ['kode' => '', 'nama' => 'Work From Home'],
         ];
 
         foreach ($Cuti as $c) {

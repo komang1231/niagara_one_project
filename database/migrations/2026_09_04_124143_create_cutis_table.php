@@ -12,7 +12,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('kode', 20)->unique();
             $table->string('nama', 100);
-            $table->integer('kuota_hari_default');
+            // $table->integer('kuota_hari_default');
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();

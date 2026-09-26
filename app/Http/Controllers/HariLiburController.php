@@ -121,14 +121,14 @@ class HariLiburController extends Controller
     {
         $hariLibur = HariLibur::findOrFail($id);
 
-        if ($hariLibur->divisi()->exists()) {
-            return redirect()
-                ->route('hari-libur.index')
-                ->with(
-                    'error',
-                    'Hari Libur tidak dapat dihapus karena masih digunakan oleh data Divisi.'
-                );
-        }
+        // if ($hariLibur->divisi()->exists()) {
+        //     return redirect()
+        //         ->route('hari-libur.index')
+        //         ->with(
+        //             'error',
+        //             'Hari Libur tidak dapat dihapus karena masih digunakan oleh data Divisi.'
+        //         );
+        // }
 
         $hariLibur->delete();
 

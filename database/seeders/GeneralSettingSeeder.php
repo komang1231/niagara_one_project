@@ -13,8 +13,8 @@ class GeneralSettingSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            ['key' => 'waktu_kerja', 'name' => 'Waktu Kerja', 'value' => '08:00-17:00'],
-            ['key' => 'waktu_istirahat', 'name' => 'Waktu Istirahat', 'value' => '12:00-13:00'],
+            ['key' => 'waktu_kerja', 'name' => 'Waktu Kerja', 'value' => '8'],
+            ['key' => 'waktu_istirahat', 'name' => 'Waktu Istirahat', 'value' => '1'],
             ['key' => 'annual_leave_kuota', 'name' => 'Kuota Cuti Tahunan', 'value' => '12'],
             ['key' => 'logo', 'name' => 'Logo', 'value' => null],
             ['key' => 'title', 'name' => 'Judul', 'value' => 'Niagara One'],

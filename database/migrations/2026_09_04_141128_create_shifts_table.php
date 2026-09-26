@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('istirahat_menit')->default(60);
             $table->unsignedInteger('toleransi_keterlambatan')->default(0);
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->string('warna', 10);
             $table->timestamps();
             $table->softDeletes();
         });

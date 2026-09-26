@@ -21,7 +21,7 @@ class ShiftController extends Controller
         ];
 
         $shift = $this->filter($request)
-            ->orderByDesc('kode') 
+            ->orderByDesc('kode')
             // ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -60,6 +60,7 @@ class ShiftController extends Controller
         $start = microtime(true);
         $data = $request->validated();
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
+        $data['lintas_hari'] = $data['jam_masuk'] > $data['jam_pulang'];
 
         $before = microtime(true);
         $shift = Shift::create($data);
@@ -80,12 +81,28 @@ class ShiftController extends Controller
     }
     public function editData($id)
     {
+        //$table->string('kode', 20)->unique();
+        // $table->string('nama', 100);
+        // $table->time('jam_masuk');
+        // $table->time('jam_pulang');
+        // $table->boolean('lintas_hari')->default(false);
+        // $table->unsignedInteger('istirahat_menit')->default(60);
+        // $table->unsignedInteger('toleransi_keterlambatan')->default(0);
+        // $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+        // $table->string('warna', 10);
+
         $shift = Shift::findOrFail($id);
         return response()->json([
             'id' => $shift->id,
             'kode' => $shift->kode,
             'nama' => $shift->nama,
+            'jam_masuk' => $shift->jam_masuk,
+            'jam_pulang' => $shift->jam_pulang,
+            'lintas_hari' => $shift->lintas_hari,
+            'istirahat_menit' => $shift->istirahat_menit,
+            'toleransi_keterlambatan' => $shift->toleransi_keterlambatan,
             'status' => $shift->status,
+            'warna' => $shift->warna,
         ]);
     }
 
@@ -93,6 +110,7 @@ class ShiftController extends Controller
     {
         $data = $request->validated();
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
+        $data['lintas_hari'] = $data['jam_masuk'] > $data['jam_pulang'];
 
         Log::debug('Data update shift', [
             'id' => $shift->id,
@@ -119,14 +137,14 @@ class ShiftController extends Controller
     {
         $shift = Shift::findOrFail($id);
 
-        if ($shift->divisi()->exists()) {
-            return redirect()
-                ->route('shift.index')
-                ->with(
-                    'error',
-                    'Shift tidak dapat dihapus karena masih digunakan oleh data Divisi.'
-                );
-        }
+        // if ($shift->divisi()->exists()) {
+        //     return redirect()
+        //         ->route('shift.index')
+        //         ->with(
+        //             'error',
+        //             'Shift tidak dapat dihapus karena masih digunakan oleh data Divisi.'
+        //         );
+        // }
 
         $shift->delete();
 

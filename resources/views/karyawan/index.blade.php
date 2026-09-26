@@ -109,7 +109,7 @@
                                     </form>
 
                                         <x-table.status-toggle :
-                                            checked="$row->status === 'aktif'" 
+                                            :checked="$row->status === 'aktif'" 
                                             id="status-toggle-{{ $row->id }}"
                                             {{-- data-toggle-url="{{ route('karyawan.toggle-status', $row->id) }}"  --}}
                                             data-id="{{ $row->id }}"

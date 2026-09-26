@@ -120,14 +120,14 @@ class BankController extends Controller
     {
         $bank = Bank::findOrFail($id);
 
-        if ($bank->divisi()->exists()) {
-            return redirect()
-                ->route('bank.index')
-                ->with(
-                    'error',
-                    'Bank tidak dapat dihapus karena masih digunakan oleh data Divisi.'
-                );
-        }
+        // if ($bank->divisi()->exists()) {
+        //     return redirect()
+        //         ->route('bank.index')
+        //         ->with(
+        //             'error',
+        //             'Bank tidak dapat dihapus karena masih digunakan oleh data Divisi.'
+        //         );
+        // }
 
         $bank->delete();
 

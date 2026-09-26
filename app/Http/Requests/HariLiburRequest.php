@@ -15,6 +15,19 @@ class HariLiburRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('tanggal')) {
+            try {
+                $this->merge([
+                    'tanggal' => \Carbon\Carbon::parse($this->tanggal)->format('Y-m-d'),
+                ]);
+            } catch (\Exception $e) {
+                // Biarkan validasi 'date' menangani tanggal yang tidak valid
+            }
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,7 +36,10 @@ class HariLiburRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:100',
+            'tanggal' => 'required|date',
+            // Terima nilai dari UI (switch) sebagai 0/1, mapping dilakukan di controller
+            'status' => 'required|in:0,1',
         ];
     }
 }

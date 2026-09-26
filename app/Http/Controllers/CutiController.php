@@ -120,14 +120,14 @@ class CutiController extends Controller
     {
         $cuti = Cuti::findOrFail($id);
 
-        if ($cuti->divisi()->exists()) {
-            return redirect()
-                ->route('cuti.index')
-                ->with(
-                    'error',
-                    'Cuti tidak dapat dihapus karena masih digunakan oleh data Divisi.'
-                );
-        }
+        // if ($cuti->divisi()->exists()) {
+        //     return redirect()
+        //         ->route('cuti.index')
+        //         ->with(
+        //             'error',
+        //             'Cuti tidak dapat dihapus karena masih digunakan oleh data Divisi.'
+        //         );
+        // }
 
         $cuti->delete();
 
