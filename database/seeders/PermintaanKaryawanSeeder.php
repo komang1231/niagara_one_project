@@ -38,7 +38,7 @@ class PermintaanKaryawanSeeder extends Seeder
         ])->pluck('id', 'nama');
 
         $departemenMap = DepartemenModel::whereIn('nama', [
-            'Human Resources Department',
+            'Human Resources Departemen',
             'Information Technology',
             'Finance',
             'Marketing',

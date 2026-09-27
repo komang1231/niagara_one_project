@@ -389,7 +389,7 @@ Route::middleware('auth')->group(function () {
         ->name('lowongan.restore');
     Route::delete('lowongan/{id}/force-delete', [LowonganController::class, 'forceDelete'])
         ->name('lowongan.force-delete');
-    Route::patch('lowongan/{jobPosition}/toggle-status', [LowonganController::class, 'toggleStatus'])
+    Route::patch('lowongan/{lowongan}/toggle-status', [LowonganController::class, 'toggleStatus'])
         ->name('lowongan.toggle-status');
     Route::get('lowongan/{departemen}/get-divisi', [LowonganController::class, 'getDivisi'])->name('lowongan.get-divisi');
     Route::get('lowongan/{divisi}/get-section', [LowonganController::class, 'getSection'])->name('lowongan.get-section');

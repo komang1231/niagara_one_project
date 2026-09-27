@@ -10,8 +10,8 @@
         $stack = fn(...$lines) => array_values(array_filter($lines, 'filled'));
     @endphp
 
-    <x-page-header eyebrow="Rekrutmen" title="Lowongan"
-        description="Kelola data lowongan pekerjaan dan status pembukaannya." icon="bi-briefcase-fill">
+    <x-page-header eyebrow="Rekrutmen" title="Lowongan" description="Kelola data lowongan pekerjaan dan status pembukaannya."
+        icon="bi-briefcase-fill">
         <x-slot:badges>
             <x-badge>{{ $lowongan->total() }} lowongan</x-badge>
         </x-slot:badges>
@@ -66,10 +66,15 @@
                                 optional($row->departemen_id)->nama,
                                 optional($row->divisi)->nama,
                                 optional($row->section)->nama,
-                            ])->filter()->implode(' › ');
+                            ])
+                                ->filter()
+                                ->implode(' › ');
 
-                            $gajiRange = 'Rp ' . number_format((float) $row->min_gaji, 0, ',', '.')
-                                . ' - Rp ' . number_format((float) $row->max_gaji, 0, ',', '.');
+                            $gajiRange =
+                                'Rp ' .
+                                number_format((float) $row->min_gaji, 0, ',', '.') .
+                                ' - Rp ' .
+                                number_format((float) $row->max_gaji, 0, ',', '.');
 
                             $periodeBuka = \Carbon\Carbon::parse($row->tanggal_buka)->translatedFormat('d M Y');
                             $periodeTutup = \Carbon\Carbon::parse($row->tanggal_tutup)->translatedFormat('d M Y');
@@ -127,8 +132,8 @@
                                     </form>
 
                                     {{-- Status --}}
-                                    <x-table.status-toggle :checked="$row->status === 'aktif'"
-                                        id="status-toggle-{{ $row->id }}" data-id="{{ $row->id }}" />
+                                    <x-table.status-toggle :checked="$row->status === 'aktif'" id="status-toggle-{{ $row->id }}"
+                                        data-id="{{ $row->id }}" />
                                 </div>
                             </td>
                         </tr>
@@ -154,10 +159,10 @@
 
     @includeIf('lowongan.form-create')
     @includeIf('lowongan.form-edit')
-
     <script>
-        document.addEventListener('change', function (e) {
+        document.addEventListener('change', function(e) {
             const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');
+
             if (!toggle) return;
 
             const id = toggle.dataset.id;
@@ -169,12 +174,15 @@
                         'Accept': 'application/json',
                     },
                 })
-                .then((response) => {
-                    if (!response.ok) throw new Error('Gagal mengubah status.');
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Gagal mengubah status.');
+                    }
+
                     return response.json();
                 })
                 .then(() => window.location.reload())
-                .catch((error) => {
+                .catch(error => {
                     console.error(error);
 
                     // Kembalikan switch jika request gagal

@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
             ['kode' => '', 'nama' => 'HR Manager'],
             ['kode' => '', 'nama' => 'HR Staff'],
             ['kode' => '', 'nama' => 'Recruiter'],
-            ['kode' => '', 'nama' => 'Head of Department'],
+            ['kode' => '', 'nama' => 'Head of Departemen'],
             ['kode' => '', 'nama' => 'Employee'],
         ];
 

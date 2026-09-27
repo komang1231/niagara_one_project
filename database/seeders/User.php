@@ -20,7 +20,7 @@ class User extends Seeder
             'HR Manager',
             'HR Staff',
             'Recruiter',
-            'Head of Department',
+            'Head of Departemen',
             'Employee',
         ])->pluck('id', 'nama');
 

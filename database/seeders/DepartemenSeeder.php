@@ -13,7 +13,7 @@ class DepartemenSeeder extends Seeder
     public function run(): void
     {
         $Departemen = [
-            ['kode' => '', 'nama' => 'Human Resources Department'],
+            ['kode' => '', 'nama' => 'Human Resources Departemen'],
             ['kode' => '', 'nama' => 'Information Technology'],
             ['kode' => '', 'nama' => 'Finance'],
             ['kode' => '', 'nama' => 'Marketing'],

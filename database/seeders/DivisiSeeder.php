@@ -15,7 +15,7 @@ class DivisiSeeder extends Seeder
     {
 
         $departemenMap = DepartemenModel::whereIn('nama', [
-            'Human Resources Department',
+            'Human Resources Departemen',
             'Information Technology',
             'Finance',
             'Marketing',
@@ -26,7 +26,7 @@ class DivisiSeeder extends Seeder
             [
                 'kode' => '',
                 'nama' => 'Recruitment',
-                'departemen_id' => $departemenMap['Human Resources Department'] ?? null,
+                'departemen_id' => $departemenMap['Human Resources Departemen'] ?? null,
             ],
             [
                 'kode' => '',

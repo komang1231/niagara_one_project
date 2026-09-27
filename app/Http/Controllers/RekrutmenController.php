@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use App\Models\Rekrutmen;
+use App\Models\Departemen;
+use App\Models\JobPosition;
+use App\Models\JobLevel;
+use App\Models\CabangKantor;
+use App\Models\Divisi;
+use App\Models\Section;
 use App\Services\CodeGenerator;
 
 class RekrutmenController extends Controller
@@ -21,10 +27,41 @@ class RekrutmenController extends Controller
         ];
 
         $rekrutmen = $this->filter($request)
-            ->orderByDesc('kode') 
+            ->with(['lowongan', 'departemen', 'divisi', 'section', 'jobPosition', 'jobLevel', 'cabangKantor'])
+            ->orderByDesc('kode')
             // ->latest()
             ->paginate(10)
             ->withQueryString();
+
+
+        $lowongans = \App\Models\Lowongan::where('status', 'aktif')
+            ->orderBy('judul')
+            ->get();
+
+        $departemens = Departemen::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        $divisis = Divisi::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        $sections = Section::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        $jobPositions = JobPosition::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        $jobLevels = JobLevel::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        $cabangKantors = CabangKantor::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
 
         if ($request->ajax() || $request->wantsJson()) {
             Log::debug('Rekrutmen index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
@@ -32,7 +69,7 @@ class RekrutmenController extends Controller
         }
 
         Log::debug('Rekrutmen index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-        return view('rekrutmen.index', compact('statusOptions', 'rekrutmen', 'previewKode'));
+        return view('rekrutmen.index', compact('statusOptions', 'rekrutmen', 'previewKode', 'lowongans', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors' ));
     }
 
     private function filter(Request $request)
@@ -77,7 +114,7 @@ class RekrutmenController extends Controller
     public function edit(Rekrutmen $rekrutmen)
     {
         return view('rekrutmen.form-edit', compact('rekrutmen'));
-    } 
+    }
     public function editData($id)
     {
         //protected $fillable = ['kode', 'lowongan_id', 'departement_id', 'divisi_id', 'section_id', 'job_position_id', 'job_level_id', 'cabang_kantor_id', 'nama', 'email', 'no_tlp', 'file_cv', 'jenjang_pendidikan_id', 'sumber_pelamar_id', 'status_rekrutmen', 'pool_talent', 'status'];
@@ -175,5 +212,53 @@ class RekrutmenController extends Controller
         return redirect()
             ->route('rekrutmen.trash')
             ->with('success', 'Rekrutmen berhasil dihapus permanen.');
+    }
+
+    public function getDivisi($departemenId)
+    {
+        $divisis = Divisi::where(
+            'departemen_id',
+            $departemenId
+        )
+            ->where('status', 'aktif')
+            ->orderBy('nama')
+            ->get([
+                'id',
+                'nama',
+            ]);
+
+        return response()->json($divisis);
+    }
+
+    public function getSection($divisiId)
+    {
+        $sections = Section::where(
+            'divisi_id',
+            $divisiId
+        )
+            ->where('status', 'aktif')
+            ->orderBy('nama')
+            ->get([
+                'id',
+                'nama',
+            ]);
+
+        return response()->json($sections);
+    }
+
+    public function getJobPosition($sectionId)
+    {
+        $jobPositions = JobPosition::where(
+            'section_id',
+            $sectionId
+        )
+            ->where('status', 'aktif')
+            ->orderBy('nama')
+            ->get([
+                'id',
+                'nama',
+            ]);
+
+        return response()->json($jobPositions);
     }
 }

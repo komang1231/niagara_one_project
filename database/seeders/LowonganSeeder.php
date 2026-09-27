@@ -21,7 +21,7 @@ class LowonganSeeder extends Seeder
         $permintaan = \App\Models\PermintaanKaryawan::first();
 
         $departemenMap = DepartemenModel::whereIn('nama', [
-            'Human Resources Department',
+            'Human Resources Departemen',
             'Information Technology',
             'Finance',
             'Marketing',
@@ -166,7 +166,7 @@ class LowonganSeeder extends Seeder
             'judul' => 'Lowongan HR Generalist',
             'permintaan_karyawan_id' => $permintaan->id,
             'cabang_kantor_id' => $cabangKantorMap->get('Kantor Pusat Denpasar'),
-            'departemen_id' => $departemenMap->get('Human Resources Department'),
+            'departemen_id' => $departemenMap->get('Human Resources Departemen'),
             'divisi_id' => $divisiMap->get('Recruitment'),
             'section_id' => $sectionMap->get('Talent Acquisition'),
             'job_position_id' => $jobPositionMap->get('Recruitment Specialist'),

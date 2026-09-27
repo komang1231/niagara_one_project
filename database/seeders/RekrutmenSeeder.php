@@ -29,7 +29,7 @@ class RekrutmenSeeder extends Seeder
         ])->pluck('id', 'judul');
 
         $departemenMap = DepartemenModel::whereIn('nama', [
-            'Human Resources Department',
+            'Human Resources Departemen',
             'Information Technology',
             'Finance',
             'Marketing',
@@ -157,7 +157,7 @@ class RekrutmenSeeder extends Seeder
             [
                 'kode' => '',
                 'lowongan_id' => $lowonganMap['Lowongan HR Generalist'] ?? null,
-                'departemen_id' => $departemenMap['Human Resources Department'] ?? null,
+                'departemen_id' => $departemenMap['Human Resources Departemen'] ?? null,
                 'divisi_id' => $divisiMap['Recruitment'] ?? null,
                 'section_id' => $sectionMap['Talent Acquisition'] ?? null,
                 'job_position_id' => $jobPositionMap['Recruitment Specialist'] ?? null,

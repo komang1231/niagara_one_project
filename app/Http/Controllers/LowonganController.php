@@ -135,7 +135,7 @@ class LowonganController extends Controller
             'judul' => $lowongan->judul,
             'permintaan_karyawan_id' => $lowongan->permintaan_karyawan_id,
             'cabang_kantor_id' => $lowongan->cabang_kantor_id,
-            'department_id' => $lowongan->department_id,
+            'departemen_id' => $lowongan->departemen_id,
             'divisi_id' => $lowongan->divisi_id,
             'section_id' => $lowongan->section_id,
             'job_position_id' => $lowongan->job_position_id,
