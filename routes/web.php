@@ -23,6 +23,7 @@ use App\Http\Controllers\PermintaanTukarShiftController;
 use App\Http\Controllers\PermintaanKaryawanController;
 use App\Http\Controllers\LowonganController;
 use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\RekrutmenController;
 
 
 Route::get('/test-laravel', function () {
@@ -258,6 +259,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('permintaan-resign/{permintaanResign}/toggle-status', [PermintaanResignController::class, 'toggleStatus'])
         ->name('permintaan-resign.toggle-status');
 
+    Route::resource('rekrutmen', RekrutmenController::class)
+        ->parameters(['rekrutmen' => 'rekrutmen']);
+    Route::get('rekrutmen/{id}/edit-data', [RekrutmenController::class, 'editData'])
+        ->name('rekrutmen.edit-data');
+    Route::get('rekrutmen-trash', [RekrutmenController::class, 'trash'])
+        ->name('rekrutmen.trash');
+    Route::patch('rekrutmen/{id}/restore', [RekrutmenController::class, 'restore'])
+        ->name('rekrutmen.restore');
+    Route::delete('rekrutmen/{id}/force-delete', [RekrutmenController::class, 'forceDelete'])
+        ->name('rekrutmen.force-delete');
+    Route::patch('rekrutmen/{rekrutmen}/toggle-status', [RekrutmenController::class, 'toggleStatus'])
+        ->name('rekrutmen.toggle-status');
+
     Route::resource('permintaan-cuti', PermintaanCutiController::class)
         ->parameters(['permintaan-cuti' => 'permintaan-cuti']);
     Route::get('permintaan-cuti/{id}/edit-data', [PermintaanCutiController::class, 'editData'])
@@ -301,9 +315,6 @@ Route::middleware('auth')->group(function () {
     // test front end
     // Route::get('/departemen/{departemen}/edit', [DepartemenController::class, 'edit']);
     // Route::view('/departemen/trash', 'departemen.trash')->name('departemen.trash');
-
-    // Rekrutmen
-    Route::view('/rekrutmen', 'rekrutmen.index')->name('rekrutmen.index');
 
     // Route::view('/permintaan-karyawan', 'permintaan-karyawan.index')->name('permintaan-karyawan.index');
 
@@ -379,8 +390,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('job-position/{jobPosition}/toggle-status', [JobPositionController::class, 'toggleStatus'])
         ->name('job-position.toggle-status');
 
-    Route::resource('lowongan', LowonganController::class)
-        ->parameters(['lowongan' => 'jobPosition']);
+    Route::resource('lowongan', LowonganController::class);
     Route::get('lowongan/{id}/edit-data', [LowonganController::class, 'editData'])
         ->name('lowongan.edit-data');
     Route::get('lowongan-trash', [LowonganController::class, 'trash'])

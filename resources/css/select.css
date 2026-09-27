@@ -380,3 +380,24 @@ select.select2.select2-hidden-accessible {
 .offcanvas .select2-container { z-index: 1065; }
 .offcanvas .select2-container--open { z-index: 1070; }
 .offcanvas .select2-dropdown { z-index: 1071; }
+
+/* ============================================================
+   DISABLED STATE — versi lebih robust pakai aria-disabled,
+   independen dari urutan class container (--default--disabled).
+   Select2 selalu taruh aria-disabled="true" di .select2-selection
+   itu sendiri kalau <select> aslinya disabled, jadi ini gak akan
+   miss walau ada perbedaan versi/struktur.
+   ============================================================ */
+.select2-selection[aria-disabled="true"] {
+    background-color: var(--color-bg-25, #f6f7f9) !important;
+    cursor: not-allowed !important;
+}
+
+.select2-selection[aria-disabled="true"] .select2-selection__rendered {
+    color: var(--neutral-400, #97a5ba) !important;
+}
+
+.select2-selection[aria-disabled="true"] ~ .select2-selection__arrow::after,
+.select2-selection[aria-disabled="true"] .select2-selection__arrow::after {
+    opacity: 0.35;
+}

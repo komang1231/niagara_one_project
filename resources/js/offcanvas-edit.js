@@ -1,3 +1,16 @@
+/**
+ * resources/js/offcanvas-edit.js
+ * ---------------------------------------------------------------
+ * WAJIB pakai jQuery .val().trigger('change') buat field <select>
+ * yang di-select2-in, BUKAN field.value = ... biasa. Alasannya:
+ * Select2 render kotak tertutupnya sendiri dan cuma refresh pas
+ * ada event 'change' resmi. Set .value native doang bikin value
+ * ASLI benar tapi KOTAK TERTUTUPNYA masih nampilin cache lama
+ * (baru kelihatan bener kalau dropdown-nya dibuka manual).
+ */
+
+const TRUTHY = ['1', 'true', 'aktif', 'active', 'yes', 'ya'];
+
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-edit-url]');
     if (!btn) return;
@@ -7,7 +20,17 @@ document.addEventListener('click', (e) => {
     if (!form) return;
 
     form.reset();
-    if (btn.dataset.updateUrl) form.action = btn.dataset.updateUrl;
+
+    // Select2 juga wajib direset visualnya, bukan cuma native select,
+    // supaya kalau user klik edit baris LAIN, gak kebawa opsi baris
+    // sebelumnya (soalnya form/select ini dipakai ulang, bukan dibuat baru).
+    if (window.jQuery) {
+        window.jQuery(form).find('select.select2').val('').trigger('change');
+    }
+
+    if (btn.dataset.updateUrl) {
+        form.action = btn.dataset.updateUrl;
+    }
 
     fetch(btn.dataset.editUrl, { headers: { Accept: 'application/json' } })
         .then((res) => {
@@ -16,8 +39,8 @@ document.addEventListener('click', (e) => {
         })
         .then((data) => {
             fillForm(form, data);
-            // event generik: modul lain (lowongan, karyawan, dll) bisa dengerin ini
-            // buat isi ulang chained dropdown / komponen custom lainnya.
+            // Dipakai modul yang punya chained dropdown (Lowongan, Karyawan)
+            // buat isi ulang divisi/section/job-position setelah data utama masuk.
             form.dispatchEvent(new CustomEvent('edit-data:loaded', { detail: data }));
         })
         .catch((err) => console.error('Gagal mengambil data untuk form edit:', err));
@@ -27,11 +50,9 @@ function fillForm(form, data) {
     Object.entries(data).forEach(([key, value]) => {
         form.querySelectorAll(`[name="${key}"]`).forEach((field) => {
             if (field.type === 'hidden') {
-                // rich text editor (kualifikasi, dll)
                 if (field.hasAttribute('data-rich-text-input')) {
                     window.setRichTextContent?.(key, value);
                 }
-                // currency input (gaji, min_gaji, max_gaji)
                 if (field.hasAttribute('data-currency-input')) {
                     window.setCurrencyValue?.(key, value);
                 }
@@ -42,6 +63,14 @@ function fillForm(form, data) {
                 field.checked = TRUTHY.includes(String(value).toLowerCase());
             } else if (field.type === 'radio') {
                 field.checked = field.value === String(value);
+            } else if (field.tagName === 'SELECT' && field.classList.contains('select2')) {
+                // INI FIX UTAMANYA — tanpa baris ini, kotak tertutup
+                // Select2 gak bakal keupdate walau value asli udah benar.
+                if (window.jQuery) {
+                    window.jQuery(field).val(value ?? '').trigger('change');
+                } else {
+                    field.value = value ?? '';
+                }
             } else {
                 field.value = value ?? '';
             }
