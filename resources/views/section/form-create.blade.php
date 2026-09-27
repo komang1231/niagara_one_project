@@ -11,7 +11,7 @@
             </div>
 
             <div class="col-md-6">
-                <x-form.select name="divisi_id" label="Divisi" :options="$divisis" :selected="old('divisi_id')" nullable />
+                <x-form.select name="divisi_id" id="create_divisi_id" label="Divisi" :options="$divisis" :selected="old('divisi_id')" nullable />
             </div>
         </div>
 

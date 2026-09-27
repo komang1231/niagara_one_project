@@ -23,6 +23,8 @@
         "@tiptap/starter-kit": "^3.31.3",
         "air-datepicker": "^3.6.0",
         "bootstrap": "^5.3.8",
-        "bootstrap-icons": "^1.13.1"
+        "bootstrap-icons": "^1.13.1",
+        "jquery": "^4.0.0",
+        "select2": "^4.1.0"
     }
 }

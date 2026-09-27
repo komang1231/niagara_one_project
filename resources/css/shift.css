@@ -1,0 +1,194 @@
+/* ===== Badge nama shift di tabel ===== */
+.shift-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* ===== Time Picker ===== */
+.app-time-picker {
+    position: relative;
+}
+
+.app-time-picker__input {
+    cursor: pointer;
+    font-size: 13px; /* dikurangi dari default form-control (~16px) biar pas di layout inline */
+}
+
+.app-time-picker__dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 20;
+    width: 120px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid var(--neutral-200);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 4px 0;
+    margin: 0;
+    list-style: none;
+    display: none;
+}
+
+.app-time-picker.is-open .app-time-picker__dropdown {
+    display: block;
+}
+
+.app-time-picker__dropdown li {
+    padding: 6px 14px;
+    font-size: 22px; /* +8px dari sebelumnya (14px), sesuai request */
+    color: var(--color-text-800);
+    cursor: pointer;
+}
+
+.app-time-picker__dropdown li:hover {
+    background: #f4f4f5;
+}
+
+.app-time-picker__dropdown li.is-active {
+    background: rgba(29, 158, 117, 0.1);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Layout inline "Masuk [box] Pulang [box]" */
+.shift-time-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.shift-time-inline__label {
+    font-size: 15px; /* digedein dikit dari label kecil sebelumnya (~13px) */
+    font-weight: 600;
+    color: var(--color-text-800);
+}
+
+.shift-time-inline .mb-3 {
+    margin-bottom: 0 !important;
+}
+.shift-time-inline .app-time-picker__input {
+    width: 100px;
+}
+
+/* ===== Color Picker ===== */
+.app-color-picker {
+    position: relative;
+    display: inline-block;
+}
+
+.app-color-picker__trigger {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+    border: 1px solid var(--neutral-200);
+    border-radius: 8px;
+    background: #fff;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.app-color-picker__dot,
+.app-color-picker__swatch {
+    border-radius: 50%;
+}
+
+.app-color-picker__dot {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    border: 2px solid transparent;
+}
+
+.app-color-picker__dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0; /* dari left:0 -> right:0, biar nempel ke kanan trigger, gak nembus keluar offcanvas */
+    left: auto;
+    z-index: 20;
+    display: none;
+    grid-template-columns: repeat(5, 28px); /* 5 kolom x 2 baris = 10 warna */
+    gap: 8px;
+    background: #fff;
+    border: 1px solid var(--neutral-200);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 10px;
+}
+
+.app-color-picker.is-open .app-color-picker__dropdown {
+    display: grid;
+}
+
+.app-color-picker__swatch {
+    width: 24px;
+    height: 24px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.app-color-picker__swatch.is-active {
+    box-shadow: 0 0 0 2px var(--color-text-900, #111);
+}
+
+/* Warna tiap swatch & dot ngikutin preset asli (bg + border), bukan warna solid */
+.app-color-picker__swatch[data-color-key="green"],
+.app-color-picker__dot[data-color="green"] {
+    background: var(--shift-green-bg);
+    border-color: var(--shift-green-border);
+}
+.app-color-picker__swatch[data-color-key="red"],
+.app-color-picker__dot[data-color="red"] {
+    background: var(--shift-red-bg);
+    border-color: var(--shift-red-border);
+}
+.app-color-picker__swatch[data-color-key="purple"],
+.app-color-picker__dot[data-color="purple"] {
+    background: var(--shift-purple-bg);
+    border-color: var(--shift-purple-border);
+}
+.app-color-picker__swatch[data-color-key="blue"],
+.app-color-picker__dot[data-color="blue"] {
+    background: var(--shift-blue-bg);
+    border-color: var(--shift-blue-border);
+}
+.app-color-picker__swatch[data-color-key="orange"],
+.app-color-picker__dot[data-color="orange"] {
+    background: var(--shift-orange-bg);
+    border-color: var(--shift-orange-border);
+}
+.app-color-picker__swatch[data-color-key="yellow"],
+.app-color-picker__dot[data-color="yellow"] {
+    background: var(--shift-yellow-bg);
+    border-color: var(--shift-yellow-border);
+}
+.app-color-picker__swatch[data-color-key="teal"],
+.app-color-picker__dot[data-color="teal"] {
+    background: var(--shift-teal-bg);
+    border-color: var(--shift-teal-border);
+}
+.app-color-picker__swatch[data-color-key="pink"],
+.app-color-picker__dot[data-color="pink"] {
+    background: var(--shift-pink-bg);
+    border-color: var(--shift-pink-border);
+}
+.app-color-picker__swatch[data-color-key="indigo"],
+.app-color-picker__dot[data-color="indigo"] {
+    background: var(--shift-indigo-bg);
+    border-color: var(--shift-indigo-border);
+}
+.app-color-picker__swatch[data-color-key="gray"],
+.app-color-picker__dot[data-color="gray"] {
+    background: var(--shift-gray-bg);
+    border-color: var(--shift-gray-border);
+}

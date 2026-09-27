@@ -16,6 +16,10 @@
 @import "date-picker.css";
 @import "input.css";
 @import "input-stepper.css";
+@import "select.css";
+@import "shift.css";
+@import "currency.css";
+@import "select2/dist/css/select2.min.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -89,8 +93,8 @@
     --color-text-900: #313f54;
     --color-text: #000000;
     --color-text-1000: #161d28;
-    
-    --color-text-muted: #6B7280;
+
+    --color-text-muted: #6b7280;
 
     /* Background */
     --color-bg-25: #f4f6f9;
@@ -107,18 +111,71 @@
     --color-bg-950: #192a43;
     --color-bg-1000: #101c2d;
 
-    --color-bg-th: #F9F9FC;
+    --color-bg-th: #f9f9fc;
 
     /* Status/Badge */
     --color-success: #137f3a;
     --color-success-soft: #dcfce7;
     --color-success-border: #bbf7d0;
-    
+
     --color-danger: #b91c1c;
     --color-danger-soft: #fee2e2;
     --color-danger-border: #fecaca;
 
-    --color-chip: #F0F1F3;
+    /* ============================================
+   SHIFT COLORS
+   Warna preset untuk Shift & Jadwal
+   ============================================ */
+    /* Green */
+    --shift-green-bg: #dcfce7;
+    --shift-green-text: #137f3a;
+    --shift-green-border: #bbf7d0;
+
+    /* Red */
+    --shift-red-bg: #fee2e2;
+    --shift-red-text: #b91c1c;
+    --shift-red-border: #fecaca;
+
+    /* Purple */
+    --shift-purple-bg: #f5f3ff;
+    --shift-purple-text: #5b21b6;
+    --shift-purple-border: #ddd6fe;
+
+    /* Blue */
+    --shift-blue-bg: #e0f2fe;
+    --shift-blue-text: #0369a1;
+    --shift-blue-border: #bae6fd;
+
+    /* Orange */
+    --shift-orange-bg: #ffedd5;
+    --shift-orange-text: #c2410c;
+    --shift-orange-border: #fed7aa;
+
+    /* Yellow */
+    --shift-yellow-bg: #fef9c3;
+    --shift-yellow-text: #a16207;
+    --shift-yellow-border: #fde68a;
+
+    /* Teal */
+    --shift-teal-bg: #ccfbf1;
+    --shift-teal-text: #0f766e;
+    --shift-teal-border: #99f6e4;
+    /* Pink */
+    --shift-pink-bg: #fce7f3;
+    --shift-pink-text: #be185d;
+    --shift-pink-border: #fbcfe8;
+    /* Indigo */
+    --shift-indigo-bg: #e0e7ff;
+    --shift-indigo-text: #4338ca;
+    --shift-indigo-border: #c7d2fe;
+    /* Gray */
+    --shift-gray-bg: #f3f4f6;
+    --shift-gray-text: #4b5563;
+    --shift-gray-border: #d1d5db;
+
+
+
+    --color-chip: #f0f1f3;
 
     --sidebar-width: 260px;
     --topbar-height: 62px;
@@ -146,7 +203,6 @@
     box-sizing: border-box;
 }
 
-
 html,
 body {
     height: 100%;
@@ -169,4 +225,30 @@ body {
     flex: 1 1 auto;
     padding: 32px;
     background-color: var(--color-bg-25);
+}
+
+
+/* ===== Form Row Inline: label kiri, input kanan ) ===== */
+.form-row-inline {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 1rem;
+}
+
+.form-row-inline__label {
+    flex: 0 0 130px; /* lebar label tetap, */
+    margin-bottom: 0 !important;
+}
+
+.form-row-inline__control {
+    flex: 1;
+    min-width: 0; /* biar input gak "dorong" keluar container kalau kepanjangan */
+}
+
+/* Untuk field yang error-nya nongol di bawah input (invalid-feedback), 
+   biar gak numpuk sama field baris berikutnya */
+.form-row-inline__control .invalid-feedback,
+.form-row-inline__control .text-danger.small {
+    margin-top: 4px;
 }

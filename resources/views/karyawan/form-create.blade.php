@@ -107,7 +107,7 @@
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="agama_id" label="Agama" :options="$agamas->pluck('nama', 'id')" nullable required />
+                <x-form.currency name="gaji" label="Gaji" required />
             </div>
 
         </div>

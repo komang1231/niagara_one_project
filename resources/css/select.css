@@ -1,0 +1,382 @@
+/* =========================================================
+   SELECT2 — Niagara One (FINAL, self-contained)
+   ---------------------------------------------------------
+   Bagian 1: STRUCTURAL BASE
+   Ini pondasi wajib yang biasanya datang dari select2.min.css
+   resmi (position, display, list-style dasar). Kalau file
+   resmi itu nggak ke-import di project ini, blok ini yang
+   gantiin — supaya nggak ada lagi elemen yang salah posisi
+   (itu penyebab "lingkaran aneh" yang muncul terus-terusan).
+   ========================================================= */
+
+.select2-container {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.select2-container .select2-selection--single {
+    position: relative;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.select2-selection__arrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.select2-dropdown {
+    position: absolute;
+    left: -100000px;
+    z-index: 1060;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.select2-results {
+    display: block;
+}
+
+.select2-results__options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.select2-results__option {
+    padding: 6px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.select2-results__option[aria-selected] {
+    cursor: pointer;
+}
+
+.select2-search--dropdown {
+    display: block;
+    padding: 4px;
+}
+
+.select2-search--dropdown .select2-search__field {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.select2-search--dropdown.select2-search--hide {
+    display: none;
+}
+
+.select2-close-mask {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    min-height: 100%;
+    min-width: 100%;
+    height: auto;
+    width: auto;
+    opacity: 0;
+    z-index: 1059;
+    background-color: #fff;
+}
+
+select.select2.select2-hidden-accessible {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.select2 + .select2-container {
+    width: 100% !important;
+}
+
+/* =========================================================
+   Bagian 2: VISUAL — TRIGGER BOX (state belum diklik)
+   ========================================================= */
+.select2-container--default .select2-selection--single {
+    width: 100%;
+    height: 40px !important;
+    display: flex;
+    align-items: center;
+    padding: 0 !important;
+    background-color: #fff !important;
+    border: 1px solid var(--neutral-200, #dee2e6) !important;
+    border-radius: 10px !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.select2-container--default .select2-selection--single:hover {
+    border-color: var(--neutral-300, #afbaca) !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-left: 14px !important;
+    padding-right: 38px !important;
+    color: var(--color-text-900, #212529) !important;
+    font-size: 14px;
+    line-height: 40px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: var(--neutral-500, #98a2ad) !important;
+}
+
+/* Arrow — chevron modern, ganti segitiga bawaan */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    width: 34px !important;
+    height: 38px !important;
+    top: 1px !important;
+    right: 2px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    display: none !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-color: var(--neutral-500, #7e90a9);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") center / contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.select2-container--default.select2-container--open .select2-selection__arrow {
+    transform: rotate(180deg);
+}
+
+/* =========================================================
+   Bagian 3: TRIGGER + DROPDOWN NEMPEL (state terbuka)
+   ---------------------------------------------------------
+   Trigger: sudut bawah dikotakin & border dipertahankan.
+   Dropdown: ditarik naik 1px pas nutupin border trigger,
+   sudut atas dikotakin juga, border atas dihapus — hasilnya
+   dropdown keliatan "menyambung langsung" dari trigger,
+   sama kayak referensi gambar kamu (jarak nyaris 0).
+   ========================================================= */
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--primary, #1d9e75) !important;
+    box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.10) !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.select2-container--default .select2-dropdown {
+    margin-top: -1px !important;
+    background-color: #fff !important;
+    border: 1px solid var(--primary, #1d9e75) !important;
+    border-top: none !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(23, 43, 77, 0.10), 0 2px 6px rgba(23, 43, 77, 0.04) !important;
+}
+
+/* Search field — langsung di bawah trigger, bg abu biar beda dari trigger putih */
+.select2-container--default .select2-search--dropdown {
+    padding: 8px !important;
+    background-color: #fff;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    height: 38px !important;
+    padding: 0 12px !important;
+    background-color: var(--color-bg-25, #f6f7f9) !important;
+    border: 1px solid transparent !important;
+    border-radius: 8px !important;
+    outline: none !important;
+    color: var(--color-text-900, #212529) !important;
+    font-size: 13.5px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field::placeholder {
+    color: var(--neutral-500, #9aa3ab);
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    background-color: #fff !important;
+    border-color: var(--primary, #1d9e75) !important;
+    box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.08) !important;
+}
+
+/* List opsi — langsung di bawah search, no bullet, checkmark selected */
+.select2-container--default .select2-results__options {
+    max-height: 260px;
+    padding: 6px !important;
+    margin: 0 !important;
+    list-style: none !important;
+}
+
+.select2-container--default .select2-results__option {
+    padding: 10px 12px !important;
+    margin-bottom: 2px;
+    border-radius: 8px;
+    color: var(--color-text-800, #343a40);
+    font-size: 14px;
+    line-height: 1.4;
+    cursor: pointer;
+    list-style: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.select2-container--default .select2-results__option:last-child {
+    margin-bottom: 0;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--primary-50, #e9f6f2) !important;
+    color: var(--primary-900, #127254) !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: var(--primary-25, #f4faf8) !important;
+    color: var(--primary-900, #127254) !important;
+    font-weight: 600;
+}
+
+.select2-container--default .select2-results__option[aria-selected="true"]::after {
+    content: '';
+    flex: none;
+    width: 16px;
+    height: 16px;
+    background-color: var(--primary, #1d9e75);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5'/%3E%3C/svg%3E") center / contain no-repeat;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected="true"] {
+    background-color: var(--primary-50, #e9f6f2) !important;
+}
+
+.select2-container--default .select2-results__option.select2-results__message {
+    padding: 16px 10px !important;
+    color: var(--neutral-500, #8a939c);
+    font-size: 13px;
+    text-align: center;
+    list-style: none !important;
+}
+
+/* Clear (x) */
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    position: absolute;
+    top: 50%;
+    right: 32px;
+    transform: translateY(-50%);
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--neutral-500, #98a2ad);
+    font-size: 15px;
+    line-height: 1;
+    z-index: 2;
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear:hover {
+    background-color: var(--color-danger-soft, #fee2e2);
+    color: var(--color-danger, #b91c1c);
+}
+
+/* Multiselect */
+.select2-container--default .select2-selection--multiple {
+    min-height: 40px !important;
+    background-color: #fff !important;
+    border: 1px solid var(--neutral-200, #dee2e6) !important;
+    border-radius: 10px !important;
+    padding: 4px 8px !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.select2-container--default.select2-container--open .select2-selection--multiple {
+    border-color: var(--primary, #1d9e75) !important;
+    box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.10) !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 2px 0 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    margin: 0 !important;
+    padding: 3px 8px 3px 10px !important;
+    background-color: var(--primary-50, #e9f6f2) !important;
+    border: 1px solid var(--primary-200, #bbe7d9) !important;
+    border-radius: 999px !important;
+    color: var(--primary-900, #127254) !important;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    order: 2;
+    color: var(--primary-700, #25b185) !important;
+    font-weight: 700;
+    border: none !important;
+    margin-right: 0 !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: var(--color-danger, #b91c1c) !important;
+    background: transparent !important;
+}
+
+/* Validation */
+.select2-container--default .select2-selection.select2-is-invalid {
+    border-color: var(--color-danger, #dc3545) !important;
+}
+
+.select2-container--default.select2-container--open .select2-selection.select2-is-invalid {
+    border-color: var(--color-danger, #dc3545) !important;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.08) !important;
+}
+
+/* Offcanvas z-index */
+.offcanvas .select2-container { z-index: 1065; }
+.offcanvas .select2-container--open { z-index: 1070; }
+.offcanvas .select2-dropdown { z-index: 1071; }
