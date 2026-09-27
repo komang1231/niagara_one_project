@@ -83,7 +83,7 @@
     </div>
 </x-offcanvas.detail>
 
-<style>
+
     .lowongan-detail__title-group h5 {
         font-weight: 700;
         color: var(--color-text-900, #212529);
@@ -126,4 +126,3 @@
         color: var(--neutral-500, #98a2ad);
         font-style: italic;
     }
-</style>

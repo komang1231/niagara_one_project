@@ -117,6 +117,10 @@
 
                             <td class="app-table__col-actions">
                                 <div class="app-table__actions">
+                                    <x-button variant="icon-view" icon="bi-eye" title="Lihat detail"
+                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvas-lowongan-detail"
+                                        data-detail-url="{{ route('lowongan.show', $row->id) }}" />
+
                                     {{-- Edit --}}
                                     <x-button variant="icon-edit" icon="bi-pencil" title="Edit" data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvas-lowongan-edit"
@@ -159,6 +163,7 @@
 
     @includeIf('lowongan.form-create')
     @includeIf('lowongan.form-edit')
+    @includeIf('lowongan.detail')
     <script>
         document.addEventListener('change', function(e) {
             const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');

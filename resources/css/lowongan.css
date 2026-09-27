@@ -1,0 +1,42 @@
+.lowongan-detail__title-group h5 {
+    font-weight: 700;
+    color: var(--color-text-900, #212529);
+}
+
+.lowongan-detail__section-title {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--neutral-500, #8a939c);
+    margin-bottom: 12px;
+}
+
+.lowongan-detail__label {
+    font-size: 12.5px;
+    color: var(--neutral-500, #8a939c);
+    margin-bottom: 2px;
+}
+
+.lowongan-detail__value {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--color-text-900, #212529);
+}
+
+.lowongan-detail__text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--color-text-800, #343a40);
+    white-space: pre-line;
+}
+
+.lowongan-detail__rich {
+    min-height: auto;
+    max-height: none;
+}
+
+.lowongan-detail__rich.is-empty {
+    color: var(--neutral-500, #98a2ad);
+    font-style: italic;
+}
