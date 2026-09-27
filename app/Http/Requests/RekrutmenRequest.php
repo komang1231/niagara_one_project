@@ -48,7 +48,7 @@ class RekrutmenRequest extends FormRequest
             'section_id' => 'nullable|integer|exists:sections,id',
             'job_position_id' => 'nullable|integer|exists:job_positions,id',
             'job_level_id' => 'required|integer|exists:job_levels,id',
-            'cabang_kantor_id' => 'required|integer|exists:cabang_kantor,id',
+            'cabang_kantor_id' => 'required|integer|exists:cabang_kantors,id',
             'nama' => 'required|string|max:100',
             'email' => 'required|string|email|max:150|unique:rekrutmen,email',
             'no_tlp' => 'required|string|max:20|unique:rekrutmen,no_tlp',

@@ -189,57 +189,57 @@ class PermintaanTukarShiftController extends Controller
             ->with('success', 'Permintaan Tukar Shift berhasil dihapus permanen.');
     }
 
-    public function approve(PermintaanTukarShift $permintaanTukarShift)
-    {
-        if (
-            $permintaanTukarShift->approved_at ||
-            $permintaanTukarShift->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Tukar Shift sudah pernah diproses.'
-                );
-        }
+    // public function approve(PermintaanTukarShift $permintaanTukarShift)
+    // {
+    //     if (
+    //         $permintaanTukarShift->approved_at ||
+    //         $permintaanTukarShift->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Tukar Shift sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanTukarShift->processed_by = auth()->id();
-        $permintaanTukarShift->approved_at = now();
-        $permintaanTukarShift->rejected_at = null;
-        $permintaanTukarShift->save();
+    //     $permintaanTukarShift->processed_by = auth()->id();
+    //     $permintaanTukarShift->approved_at = now();
+    //     $permintaanTukarShift->rejected_at = null;
+    //     $permintaanTukarShift->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Tukar Shift berhasil disetujui.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Tukar Shift berhasil disetujui.'
+    //         );
+    // }
 
-    public function reject(PermintaanTukarShift $permintaanTukarShift)
-    {
-        if (
-            $permintaanTukarShift->approved_at ||
-            $permintaanTukarShift->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Tukar Shift sudah pernah diproses.'
-                );
-        }
+    // public function reject(PermintaanTukarShift $permintaanTukarShift)
+    // {
+    //     if (
+    //         $permintaanTukarShift->approved_at ||
+    //         $permintaanTukarShift->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Tukar Shift sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanTukarShift->processed_by = auth()->id();
-        $permintaanTukarShift->approved_at = null;
-        $permintaanTukarShift->rejected_at = now();
-        $permintaanTukarShift->save();
+    //     $permintaanTukarShift->processed_by = auth()->id();
+    //     $permintaanTukarShift->approved_at = null;
+    //     $permintaanTukarShift->rejected_at = now();
+    //     $permintaanTukarShift->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Tukar Shift berhasil ditolak.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Tukar Shift berhasil ditolak.'
+    //         );
+    // }
 }

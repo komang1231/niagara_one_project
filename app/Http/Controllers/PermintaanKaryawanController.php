@@ -241,57 +241,57 @@ class PermintaanKaryawanController extends Controller
         return response()->json($jobPositions);
     }
 
-    public function approve(PermintaanKaryawan $permintaanKaryawan)
-    {
-        if (
-            $permintaanKaryawan->approved_at ||
-            $permintaanKaryawan->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Karyawan sudah pernah diproses.'
-                );
-        }
+    // public function approve(PermintaanKaryawan $permintaanKaryawan)
+    // {
+    //     if (
+    //         $permintaanKaryawan->approved_at ||
+    //         $permintaanKaryawan->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Karyawan sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanKaryawan->processed_by = auth()->id();
-        $permintaanKaryawan->approved_at = now();
-        $permintaanKaryawan->rejected_at = null;
-        $permintaanKaryawan->save();
+    //     $permintaanKaryawan->processed_by = auth()->id();
+    //     $permintaanKaryawan->approved_at = now();
+    //     $permintaanKaryawan->rejected_at = null;
+    //     $permintaanKaryawan->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Karyawan berhasil disetujui.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Karyawan berhasil disetujui.'
+    //         );
+    // }
 
-    public function reject(PermintaanKaryawan $permintaanKaryawan)
-    {
-        if (
-            $permintaanKaryawan->approved_at ||
-            $permintaanKaryawan->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Karyawan sudah pernah diproses.'
-                );
-        }
+    // public function reject(PermintaanKaryawan $permintaanKaryawan)
+    // {
+    //     if (
+    //         $permintaanKaryawan->approved_at ||
+    //         $permintaanKaryawan->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Karyawan sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanKaryawan->processed_by = auth()->id();
-        $permintaanKaryawan->approved_at = null;
-        $permintaanKaryawan->rejected_at = now();
-        $permintaanKaryawan->save();
+    //     $permintaanKaryawan->processed_by = auth()->id();
+    //     $permintaanKaryawan->approved_at = null;
+    //     $permintaanKaryawan->rejected_at = now();
+    //     $permintaanKaryawan->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Karyawan berhasil ditolak.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Karyawan berhasil ditolak.'
+    //         );
+    // }
 }

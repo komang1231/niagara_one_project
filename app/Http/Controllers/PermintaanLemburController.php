@@ -189,57 +189,57 @@ class PermintaanLemburController extends Controller
             ->with('success', 'Permintaan Lembur berhasil dihapus permanen.');
     }
 
-    public function approve(PermintaanLembur $permintaanLembur)
-    {
-        if (
-            $permintaanLembur->approved_at ||
-            $permintaanLembur->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Lembur sudah pernah diproses.'
-                );
-        }
+    // public function approve(PermintaanLembur $permintaanLembur)
+    // {
+    //     if (
+    //         $permintaanLembur->approved_at ||
+    //         $permintaanLembur->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Lembur sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanLembur->processed_by = auth()->id();
-        $permintaanLembur->approved_at = now();
-        $permintaanLembur->rejected_at = null;
-        $permintaanLembur->save();
+    //     $permintaanLembur->processed_by = auth()->id();
+    //     $permintaanLembur->approved_at = now();
+    //     $permintaanLembur->rejected_at = null;
+    //     $permintaanLembur->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Lembur berhasil disetujui.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Lembur berhasil disetujui.'
+    //         );
+    // }
 
-    public function reject(PermintaanLembur $permintaanLembur)
-    {
-        if (
-            $permintaanLembur->approved_at ||
-            $permintaanLembur->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Lembur sudah pernah diproses.'
-                );
-        }
+    // public function reject(PermintaanLembur $permintaanLembur)
+    // {
+    //     if (
+    //         $permintaanLembur->approved_at ||
+    //         $permintaanLembur->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Lembur sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanLembur->processed_by = auth()->id();
-        $permintaanLembur->approved_at = null;
-        $permintaanLembur->rejected_at = now();
-        $permintaanLembur->save();
+    //     $permintaanLembur->processed_by = auth()->id();
+    //     $permintaanLembur->approved_at = null;
+    //     $permintaanLembur->rejected_at = now();
+    //     $permintaanLembur->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Lembur berhasil ditolak.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Lembur berhasil ditolak.'
+    //         );
+    // }
 }

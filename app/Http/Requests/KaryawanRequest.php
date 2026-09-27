@@ -62,7 +62,7 @@ class KaryawanRequest extends FormRequest
 
             'cabang_kantor_id' => [
                 'required',
-                'exists:cabang_kantor,id',
+                'exists:cabang_kantors,id',
             ],
 
             'gaji' => [

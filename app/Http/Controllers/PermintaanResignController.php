@@ -187,57 +187,57 @@ class PermintaanResignController extends Controller
             ->with('success', 'Permintaan Resign berhasil dihapus permanen.');
     }
 
-    public function approve(PermintaanResign $permintaanResign)
-    {
-        if (
-            $permintaanResign->approved_at ||
-            $permintaanResign->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Resign sudah pernah diproses.'
-                );
-        }
+    // public function approve(PermintaanResign $permintaanResign)
+    // {
+    //     if (
+    //         $permintaanResign->approved_at ||
+    //         $permintaanResign->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Resign sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanResign->processed_by = auth()->id();
-        $permintaanResign->approved_at = now();
-        $permintaanResign->rejected_at = null;
-        $permintaanResign->save();
+    //     $permintaanResign->processed_by = auth()->id();
+    //     $permintaanResign->approved_at = now();
+    //     $permintaanResign->rejected_at = null;
+    //     $permintaanResign->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Resign berhasil disetujui.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Resign berhasil disetujui.'
+    //         );
+    // }
 
-    public function reject(PermintaanResign $permintaanResign)
-    {
-        if (
-            $permintaanResign->approved_at ||
-            $permintaanResign->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Resign sudah pernah diproses.'
-                );
-        }
+    // public function reject(PermintaanResign $permintaanResign)
+    // {
+    //     if (
+    //         $permintaanResign->approved_at ||
+    //         $permintaanResign->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Resign sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanResign->processed_by = auth()->id();
-        $permintaanResign->approved_at = null;
-        $permintaanResign->rejected_at = now();
-        $permintaanResign->save();
+    //     $permintaanResign->processed_by = auth()->id();
+    //     $permintaanResign->approved_at = null;
+    //     $permintaanResign->rejected_at = now();
+    //     $permintaanResign->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Resign berhasil ditolak.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Resign berhasil ditolak.'
+    //         );
+    // }
 }

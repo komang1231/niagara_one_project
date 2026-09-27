@@ -12,7 +12,7 @@
             </div>
             <div class="col-md-6">
                 <x-form.select name="permintaan_karyawan_id" label="Permintaan Karyawan"
-                    :options="$permintaanKaryawans->pluck('judul', 'id')" nullable />
+                    :options="$permintaanKaryawans->pluck('nama', 'id')" nullable />
             </div>
         </div>
 

@@ -95,6 +95,7 @@ class PermintaanKaryawanSeeder extends Seeder
         \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
+                'nama' => 'Permintaan Karyawan Departemen Head Bagian Marketing di Cabang Kantor Pusat Denpasar',
                 'karyawan_id' => $karyawanMap['5171012345670001'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Kantor Pusat Denpasar'] ?? null,
                 'departemen_id' => $departemenMap['Marketing'] ?? null,
@@ -109,6 +110,7 @@ class PermintaanKaryawanSeeder extends Seeder
         \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
+                'nama' => 'Permintaan Karyawan Departemen Head Bagian IT di Cabang Kantor Pusat Denpasar',
                 'karyawan_id' => $karyawanMap['5171012345670002'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Cabang Jakarta'] ?? null,
                 'departemen_id' => $departemenMap['Information Technology'] ?? null,
@@ -123,6 +125,7 @@ class PermintaanKaryawanSeeder extends Seeder
         \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
+                'nama' => 'Permintaan Karyawan Division Head Bagian Web Development di Cabang Surabaya',
                 'karyawan_id' => $karyawanMap['5171012345670003'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Cabang Surabaya'] ?? null,
                 'departemen_id' => $departemenMap['Information Technology'] ?? null,
@@ -137,6 +140,7 @@ class PermintaanKaryawanSeeder extends Seeder
         \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
+                'nama' => 'Permintaan Karyawan Junior Web Developer di Cabang Medan',
                 'karyawan_id' => $karyawanMap['5171012345670004'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Cabang Medan'] ?? null,
                 'departemen_id' => $departemenMap['Information Technology'] ?? null,
@@ -151,6 +155,7 @@ class PermintaanKaryawanSeeder extends Seeder
         \App\Models\PermintaanKaryawan::firstOrCreate(
             [
                 'kode' => '',
+                'nama' => 'Permintaan Karyawan Junior Housekeeping Staff di Cabang Kuta',
                 'karyawan_id' => $karyawanMap['5171012345670005'] ?? null,
                 'cabang_kantor_id' => $cabangKantorMap['Cabang Kuta'] ?? null,
                 'departemen_id' => $departemenMap['Information Technology'] ?? null,

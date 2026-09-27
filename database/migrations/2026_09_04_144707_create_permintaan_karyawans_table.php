@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('permintaan_karyawans', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kode', 20)->unique();
+            $table->string('nama', 100);
             $table->unsignedBigInteger('karyawan_id'); // pemohon — FK ditambahkan belakangan (circular)
             $table->unsignedInteger('cabang_kantor_id');
             $table->unsignedInteger('departemen_id');

@@ -270,57 +270,57 @@ class PermintaanCutiController extends Controller
             );
     }
 
-    public function approve(PermintaanCuti $permintaanCuti)
-    {
-        if (
-            $permintaanCuti->approved_at ||
-            $permintaanCuti->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Cuti sudah pernah diproses.'
-                );
-        }
+    // public function approve(PermintaanCuti $permintaanCuti)
+    // {
+    //     if (
+    //         $permintaanCuti->approved_at ||
+    //         $permintaanCuti->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Cuti sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanCuti->processed_by = auth()->id();
-        $permintaanCuti->approved_at = now();
-        $permintaanCuti->rejected_at = null;
-        $permintaanCuti->save();
+    //     $permintaanCuti->processed_by = auth()->id();
+    //     $permintaanCuti->approved_at = now();
+    //     $permintaanCuti->rejected_at = null;
+    //     $permintaanCuti->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Cuti berhasil disetujui.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Cuti berhasil disetujui.'
+    //         );
+    // }
 
-    public function reject(PermintaanCuti $permintaanCuti)
-    {
-        if (
-            $permintaanCuti->approved_at ||
-            $permintaanCuti->rejected_at
-        ) {
-            return redirect()
-                ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Cuti sudah pernah diproses.'
-                );
-        }
+    // public function reject(PermintaanCuti $permintaanCuti)
+    // {
+    //     if (
+    //         $permintaanCuti->approved_at ||
+    //         $permintaanCuti->rejected_at
+    //     ) {
+    //         return redirect()
+    //             ->route('permintaan.index')
+    //             ->with(
+    //                 'error',
+    //                 'Permintaan Cuti sudah pernah diproses.'
+    //             );
+    //     }
 
-        $permintaanCuti->processed_by = auth()->id();
-        $permintaanCuti->approved_at = null;
-        $permintaanCuti->rejected_at = now();
-        $permintaanCuti->save();
+    //     $permintaanCuti->processed_by = auth()->id();
+    //     $permintaanCuti->approved_at = null;
+    //     $permintaanCuti->rejected_at = now();
+    //     $permintaanCuti->save();
 
-        return redirect()
-            ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Cuti berhasil ditolak.'
-            );
-    }
+    //     return redirect()
+    //         ->route('permintaan.index')
+    //         ->with(
+    //             'success',
+    //             'Permintaan Cuti berhasil ditolak.'
+    //         );
+    // }
 }

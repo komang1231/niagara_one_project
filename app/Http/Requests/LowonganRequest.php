@@ -20,6 +20,29 @@ class LowonganRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('tanggal_buka')) {
+            try {
+                $this->merge([
+                    'tanggal_buka' => \Carbon\Carbon::parse($this->tanggal_buka)->format('Y-m-d'),
+                ]);
+            } catch (\Exception $e) {
+                // Biarkan validasi 'date' menangani tanggal yang tidak valid
+            }
+        }
+
+        if ($this->filled('tanggal_tutup')) {
+            try {
+                $this->merge([
+                    'tanggal_tutup' => \Carbon\Carbon::parse($this->tanggal_tutup)->format('Y-m-d'),
+                ]);
+            } catch (\Exception $e) {
+                // Biarkan validasi 'date' menangani tanggal yang tidak valid
+            }
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -38,10 +61,10 @@ class LowonganRequest extends FormRequest
             // $table->decimal('max_gaji', 20, 4);
             // $table->date('tanggal_buka');
             // $table->date('tanggal_tutup');
-        
+
             'judul' => 'required|string|max:100',
             'permintaan_karyawan_id' => 'nullable|integer|exists:permintaan_karyawan,id',
-            'cabang_kantor_id' => 'required|integer|exists:cabang_kantor,id',
+            'cabang_kantor_id' => 'required|integer|exists:cabang_kantors,id',
             'departemen_id' => 'required|integer|exists:departemens,id',
             'divisi_id' => 'nullable|integer|exists:divisis,id',
             'section_id' => 'nullable|integer|exists:sections,id',

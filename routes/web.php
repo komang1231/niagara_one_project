@@ -22,6 +22,7 @@ use App\Http\Controllers\PermintaanLemburController;
 use App\Http\Controllers\PermintaanTukarShiftController;
 use App\Http\Controllers\PermintaanKaryawanController;
 use App\Http\Controllers\LowonganController;
+use App\Http\Controllers\ApprovalController;
 
 
 Route::get('/test-laravel', function () {
@@ -75,10 +76,6 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-karyawan.get-section');
     Route::get('permintaan-karyawan/get-job-position/{section}', [PermintaanKaryawanController::class, 'getJobPosition'])
         ->name('permintaan-karyawan.get-job-position');
-    Route::patch('permintaan-karyawan/{permintaanKaryawan}/approve', [PermintaanKaryawanController::class, 'approve'])
-        ->name('permintaan-karyawan.approve');
-    Route::patch('permintaan-karyawan/{permintaanKaryawan}/reject', [PermintaanKaryawanController::class, 'reject'])
-        ->name('permintaan-karyawan.reject');
 
 
     // ============================================================================
@@ -99,10 +96,6 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-cuti.restore');
     Route::delete('permintaan-cuti/{id}/force-delete', [PermintaanCutiController::class, 'forceDelete'])
         ->name('permintaan-cuti.force-delete');
-    Route::patch('permintaan-cuti/{permintaanCuti}/approve', [PermintaanCutiController::class, 'approve'])
-        ->name('permintaan-cuti.approve');
-    Route::patch('permintaan-cuti/{permintaanCuti}/reject', [PermintaanCutiController::class, 'reject'])
-        ->name('permintaan-cuti.reject');
 
 
     // ============================================================================
@@ -123,10 +116,6 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-lembur.restore');
     Route::delete('permintaan-lembur/{id}/force-delete', [PermintaanLemburController::class, 'forceDelete'])
         ->name('permintaan-lembur.force-delete');
-    Route::patch('permintaan-lembur/{permintaanLembur}/approve', [PermintaanLemburController::class, 'approve'])
-        ->name('permintaan-lembur.approve');
-    Route::patch('permintaan-lembur/{permintaanLembur}/reject', [PermintaanLemburController::class, 'reject'])
-        ->name('permintaan-lembur.reject');
 
 
     // ============================================================================
@@ -147,10 +136,6 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-resign.restore');
     Route::delete('permintaan-resign/{id}/force-delete', [PermintaanResignController::class, 'forceDelete'])
         ->name('permintaan-resign.force-delete');
-    Route::patch('permintaan-resign/{permintaanResign}/approve', [PermintaanResignController::class, 'approve'])
-        ->name('permintaan-resign.approve');
-    Route::patch('permintaan-resign/{permintaanResign}/reject', [PermintaanResignController::class, 'reject'])
-        ->name('permintaan-resign.reject');
 
 
     // ============================================================================
@@ -171,11 +156,31 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-tukar-shift.restore');
     Route::delete('permintaan-tukar-shift/{id}/force-delete', [PermintaanTukarShiftController::class, 'forceDelete'])
         ->name('permintaan-tukar-shift.force-delete');
-    Route::patch('permintaan-tukar-shift/{permintaanTukarShift}/approve', [PermintaanTukarShiftController::class, 'approve'])
-        ->name('permintaan-tukar-shift.approve');
-    Route::patch('permintaan-tukar-shift/{permintaanTukarShift}/reject', [PermintaanTukarShiftController::class, 'reject'])
-        ->name('permintaan-tukar-shift.reject');
 
+
+    //APPROVAL SEMUA PERMINTAAN
+    Route::get('/approval', [ApprovalController::class, 'index'])
+        ->name('approval.index');
+    Route::post('/approval/karyawan/{id}/approve', [ApprovalController::class, 'approveKaryawan'])
+        ->name('approval.karyawan.approve');
+    Route::post('/approval/karyawan/{id}/reject', [ApprovalController::class, 'rejectKaryawan'])
+        ->name('approval.karyawan.reject');
+    Route::post('/approval/cuti/{id}/approve', [ApprovalController::class, 'approveCuti'])
+        ->name('approval.cuti.approve');
+    Route::post('/approval/cuti/{id}/reject', [ApprovalController::class, 'rejectCuti'])
+        ->name('approval.cuti.reject');
+    Route::post('/approval/lembur/{id}/approve', [ApprovalController::class, 'approveLembur'])
+        ->name('approval.lembur.approve');
+    Route::post('/approval/lembur/{id}/reject', [ApprovalController::class, 'rejectLembur'])
+        ->name('approval.lembur.reject');
+    Route::post('/approval/resign/{id}/approve', [ApprovalController::class, 'approveResign'])
+        ->name('approval.resign.approve');
+    Route::post('/approval/resign/{id}/reject', [ApprovalController::class, 'rejectResign'])
+        ->name('approval.resign.reject');
+    Route::post('/approval/tukar-shift/{id}/approve', [ApprovalController::class, 'approveTukarShift'])
+        ->name('approval.tukar-shift.approve');
+    Route::post('/approval/tukar-shift/{id}/reject', [ApprovalController::class, 'rejectTukarShift'])
+        ->name('approval.tukar-shift.reject');
 
     // Karyawan
     Route::resource('karyawan', KaryawanController::class)

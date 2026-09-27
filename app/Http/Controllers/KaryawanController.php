@@ -55,6 +55,14 @@ class KaryawanController extends Controller
             ->orderBy('nama')
             ->get();
 
+        $divisis = Divisi::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
+        $sections = Section::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
         $jobPositions = JobPosition::where('status', 'aktif')
             ->orderBy('nama')
             ->get();
@@ -119,6 +127,8 @@ class KaryawanController extends Controller
             'statusOptions',
             'previewNip',
             'departemens',
+            'divisis',
+            'sections',
             'jobPositions',
             'jobLevels',
             'cabangKantors',
