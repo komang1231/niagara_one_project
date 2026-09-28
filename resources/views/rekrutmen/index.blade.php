@@ -4,15 +4,6 @@
 
     @php
         $stack = fn(...$lines) => array_values(array_filter($lines, 'filled'));
-
-        $statusRekrutmenOptions = [
-            'pelamar' => 'Pelamar',
-            'screening' => 'Screening',
-            'interview' => 'Interview',
-            'offering' => 'Offering',
-            'diterima' => 'Diterima',
-            'ditolak' => 'Ditolak',
-        ];
     @endphp
 
     <x-page-header
@@ -80,35 +71,13 @@
 
                 <thead>
                     <tr>
-
-                        <th class="app-table__col-no">
-                            NO
-                        </th>
-
-                        <th>
-                            Kandidat
-                        </th>
-
-                        <th>
-                            Posisi
-                        </th>
-
-                        <th>
-                            Tahap Rekrutmen
-                        </th>
-
-                        <th>
-                            Kontak
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                        <th class="app-table__col-actions">
-                            Aksi
-                        </th>
-
+                        <th class="app-table__col-no">NO</th>
+                        <th>Kandidat</th>
+                        <th>Posisi</th>
+                        <th>Tahap Rekrutmen</th>
+                        <th>Kontak</th>
+                        <th>Status</th>
+                        <th class="app-table__col-actions">Aksi</th>
                     </tr>
                 </thead>
 
@@ -126,37 +95,25 @@
 
                             {{-- Kandidat --}}
                             <td>
-
                                 <x-table.cell-stack
-                                    :lines="$stack(
-                                        $row->nama,
-                                        $row->kode
-                                    )"
+                                    :lines="$stack($row->nama, $row->kode)"
                                 />
-
                             </td>
 
 
                             {{-- Posisi --}}
                             <td>
-
                                 <x-table.cell-stack
                                     :lines="$stack(
-                                        $row->job_position_id
-                                            ? ($row->jobPosition->nama ?? '-')
-                                            : '-',
-                                        $row->departemen_id
-                                            ? ($row->departemen->nama ?? '-')
-                                            : null
+                                        $row->jobPosition?->nama ?? '-',
+                                        $row->departemen?->nama
                                     )"
                                 />
-
                             </td>
 
 
                             {{-- Tahap --}}
                             <td>
-
                                 @php
                                     $statusVariant = match ($row->status_rekrutmen) {
                                         'pelamar' => 'neutral',
@@ -172,34 +129,24 @@
                                 <x-badge :variant="$statusVariant">
                                     {{ ucfirst($row->status_rekrutmen) }}
                                 </x-badge>
-
                             </td>
 
 
                             {{-- Kontak --}}
                             <td>
-
                                 <x-table.cell-stack
-                                    :lines="$stack(
-                                        $row->email,
-                                        $row->no_tlp
-                                    )"
+                                    :lines="$stack($row->email, $row->no_tlp)"
                                 />
-
                             </td>
 
 
                             {{-- Status --}}
                             <td>
-
                                 <x-badge
-                                    :variant="$row->status === 'aktif'
-                                        ? 'success'
-                                        : 'neutral'"
+                                    :variant="$row->status === 'aktif' ? 'success' : 'neutral'"
                                 >
                                     {{ ucfirst($row->status) }}
                                 </x-badge>
-
                             </td>
 
 
@@ -208,18 +155,18 @@
 
                                 <div class="app-table__actions">
 
-                                    {{-- DETAIL --}}
+                                    {{-- DETAIL (pakai route show -> JSON berisi nama) --}}
                                     <x-button
                                         variant="icon"
                                         icon="bi-eye"
                                         title="Detail"
                                         data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvas-rekrutmen-detail"
-                                        data-detail-url="{{ route('rekrutmen.edit-data', $row->id) }}"
+                                        data-detail-url="{{ route('rekrutmen.show', $row->id) }}"
                                     />
 
 
-                                    {{-- EDIT --}}
+                                    {{-- EDIT (pakai edit-data -> JSON berisi ID) --}}
                                     <x-button
                                         variant="icon-edit"
                                         icon="bi-pencil"
@@ -292,15 +239,15 @@
     </x-panel>
 
 
-    {{-- OFFCANVAS --}}
-    @includeIf('rekrutmen.form-create')
-    @includeIf('rekrutmen.form-edit')
-    @includeIf('rekrutmen.detail')
+    {{-- OFFCANVAS (@include biasa supaya error view tidak tersembunyi) --}}
+    @include('rekrutmen.form-create')
+    @include('rekrutmen.form-edit')
+    @include('rekrutmen.detail')
 
 
     {{-- STATUS TOGGLE --}}
     <script>
-        document.addEventListener('change', function(e) {
+        document.addEventListener('change', function (e) {
 
             const toggle = e.target.closest(
                 '.app-table-toggle input[type="checkbox"]'
@@ -316,26 +263,20 @@
                         'X-CSRF-TOKEN': document.querySelector(
                             'meta[name="csrf-token"]'
                         ).content,
-
                         'Accept': 'application/json',
                     },
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(
-                            'Gagal mengubah status.'
-                        );
+                        throw new Error('Gagal mengubah status.');
                     }
 
                     return response.json();
                 })
                 .then(() => window.location.reload())
                 .catch(error => {
-
                     console.error(error);
-
                     toggle.checked = !toggle.checked;
-
                 });
 
         });

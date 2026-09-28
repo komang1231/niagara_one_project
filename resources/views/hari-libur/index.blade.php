@@ -62,7 +62,7 @@
                             </td>
 
                             <td>
-                               {{ \Carbon\Carbon::parse($row->tanggal)->translatedFormat('d F') }}
+                               {{ \Carbon\Carbon::parse($row->tanggal)->translatedFormat('d F') }} 
                             </td>
 
                             <td>

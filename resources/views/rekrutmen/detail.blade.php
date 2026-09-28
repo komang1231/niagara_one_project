@@ -6,9 +6,7 @@
                 Detail Rekrutmen
             </h5>
 
-            <p class="text-muted small mb-0" id="detail-kode">
-                -
-            </p>
+            <p class="text-muted small mb-0" id="detail-kode">-</p>
         </div>
 
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Tutup"></button>
@@ -19,45 +17,24 @@
         {{-- Header kandidat --}}
         <div class="d-flex align-items-start gap-3 mb-4">
             <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-                style="
-                    width: 48px;
-                    height: 48px;
-                    background: var(--primary-50);
-                    color: var(--primary);
-                    font-size: 20px;
-                ">
+                style="width: 48px; height: 48px; background: var(--primary-50); color: var(--primary); font-size: 20px;">
                 <i class="bi bi-person"></i>
             </div>
 
             <div class="min-w-0">
-                <h5 class="mb-1 fw-semibold" id="detail-nama">
-                    -
-                </h5>
-
-                <div class="text-muted small" id="detail-email">
-                    -
-                </div>
-
-                <div class="text-muted small" id="detail-no-tlp">
-                    -
-                </div>
+                <h5 class="mb-1 fw-semibold" id="detail-nama">-</h5>
+                <div class="text-muted small" id="detail-email">-</div>
+                <div class="text-muted small" id="detail-no-tlp">-</div>
             </div>
         </div>
 
         {{-- Status --}}
         <div class="mb-4">
-            <div class="text-muted small mb-2">
-                Status Rekrutmen
-            </div>
+            <div class="text-muted small mb-2">Status Rekrutmen</div>
 
             <div class="d-flex align-items-center gap-2">
-                <x-badge id="detail-status-rekrutmen" variant="neutral">
-                    -
-                </x-badge>
-
-                <x-badge id="detail-status" variant="success">
-                    -
-                </x-badge>
+                <x-badge id="detail-status-rekrutmen" variant="neutral">-</x-badge>
+                <x-badge id="detail-status" variant="success">-</x-badge>
             </div>
         </div>
 
@@ -65,62 +42,19 @@
 
         {{-- Posisi --}}
         <div class="mb-4">
-            <h6 class="fw-semibold mb-3">
-                Posisi & Penempatan
-            </h6>
+            <h6 class="fw-semibold mb-3">Posisi & Penempatan</h6>
 
             <div class="detail-list">
-
-                <div class="detail-list__row">
-                    <span>Lowongan</span>
-                    <strong id="detail-lowongan">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Departemen</span>
-                    <strong id="detail-departemen">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Divisi</span>
-                    <strong id="detail-divisi">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Section</span>
-                    <strong id="detail-section">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Posisi</span>
-                    <strong id="detail-job-position">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Job Level</span>
-                    <strong id="detail-job-level">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Cabang Kantor</span>
-                    <strong id="detail-cabang">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Pendidikan</span>
-                    <strong id="detail-pendidikan">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Sumber Pelamar</span>
-                    <strong id="detail-sumber">-</strong>
-                </div>
-
-                <div class="detail-list__row">
-                    <span>Talent Pool</span>
-                    <strong id="detail-pool">-</strong>
-                </div>
-
+                <div class="detail-list__row"><span>Lowongan</span><strong id="detail-lowongan">-</strong></div>
+                <div class="detail-list__row"><span>Departemen</span><strong id="detail-departemen">-</strong></div>
+                <div class="detail-list__row"><span>Divisi</span><strong id="detail-divisi">-</strong></div>
+                <div class="detail-list__row"><span>Section</span><strong id="detail-section">-</strong></div>
+                <div class="detail-list__row"><span>Posisi</span><strong id="detail-job-position">-</strong></div>
+                <div class="detail-list__row"><span>Job Level</span><strong id="detail-job-level">-</strong></div>
+                <div class="detail-list__row"><span>Cabang Kantor</span><strong id="detail-cabang">-</strong></div>
+                <div class="detail-list__row"><span>Pendidikan</span><strong id="detail-pendidikan">-</strong></div>
+                <div class="detail-list__row"><span>Sumber Pelamar</span><strong id="detail-sumber">-</strong></div>
+                <div class="detail-list__row"><span>Talent Pool</span><strong id="detail-pool">-</strong></div>
             </div>
         </div>
 
@@ -128,26 +62,20 @@
 
         {{-- Dokumen --}}
         <div>
-            <h6 class="fw-semibold mb-3">
-                Dokumen
-            </h6>
+            <h6 class="fw-semibold mb-3">Dokumen</h6>
 
-            <div class="detail-document" id="detail-cv">
+            <div class="detail-document">
                 <div class="detail-document__icon">
                     <i class="bi bi-file-earmark-pdf"></i>
                 </div>
 
                 <div class="detail-document__info">
-                    <div class="detail-document__name">
-                        CV Kandidat
-                    </div>
-
-                    <div class="detail-document__file" id="detail-cv-name">
-                        -
-                    </div>
+                    <div class="detail-document__name">CV Kandidat</div>
+                    <div class="detail-document__file" id="detail-cv-name">-</div>
                 </div>
 
-                <a href="#" target="_blank" class="btn btn-sm btn-outline-secondary" id="detail-cv-link">
+                <a href="#" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary d-none"
+                    id="detail-cv-link">
                     <i class="bi bi-eye me-1"></i>
                     Lihat
                 </a>
@@ -158,110 +86,73 @@
 </div>
 
 <script>
-    document.addEventListener('click', function(e) {
-
+    document.addEventListener('click', function (e) {
         const button = e.target.closest('[data-detail-url]');
-
         if (!button) return;
 
-        const url = button.dataset.detailUrl;
+        const setText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value ?? '-';
+        };
 
-        fetch(url, {
-                headers: {
-                    'Accept': 'application/json',
-                },
-            })
-            .then(response => {
+        const capitalize = (value) =>
+            value ? value.charAt(0).toUpperCase() + value.slice(1) : '-';
+
+        // Reset dulu supaya tidak tampil data kandidat sebelumnya
+        [
+            'detail-kode', 'detail-nama', 'detail-email', 'detail-no-tlp',
+            'detail-lowongan', 'detail-departemen', 'detail-divisi', 'detail-section',
+            'detail-job-position', 'detail-job-level', 'detail-cabang',
+            'detail-pendidikan', 'detail-sumber', 'detail-pool',
+            'detail-status-rekrutmen', 'detail-status', 'detail-cv-name',
+        ].forEach((id) => setText(id, '-'));
+
+        document.getElementById('detail-cv-link')?.classList.add('d-none');
+
+        fetch(button.dataset.detailUrl, {
+            headers: { Accept: 'application/json' },
+        })
+            .then((response) => {
                 if (!response.ok) {
-                    throw new Error(
-                        'Gagal mengambil detail rekrutmen.'
-                    );
+                    throw new Error('Gagal mengambil detail rekrutmen.');
                 }
-
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
+                setText('detail-kode', data.kode);
+                setText('detail-nama', data.nama);
+                setText('detail-email', data.email);
+                setText('detail-no-tlp', data.no_tlp);
 
-                document.getElementById('detail-kode').textContent =
-                    data.kode ?? '-';
+                setText('detail-lowongan', data.lowongan);
+                setText('detail-departemen', data.departemen);
+                setText('detail-divisi', data.divisi);
+                setText('detail-section', data.section);
+                setText('detail-job-position', data.job_position);
+                setText('detail-job-level', data.job_level);
+                setText('detail-cabang', data.cabang);
+                setText('detail-pendidikan', data.pendidikan);
+                setText('detail-sumber', data.sumber);
 
-                document.getElementById('detail-nama').textContent =
-                    data.nama ?? '-';
+                setText(
+                    'detail-pool',
+                    data.pool_talent ? capitalize(data.pool_talent) : '-'
+                );
 
-                document.getElementById('detail-email').textContent =
-                    data.email ?? '-';
+                setText('detail-status-rekrutmen', capitalize(data.status_rekrutmen));
+                setText('detail-status', data.status === 'aktif' ? 'Aktif' : 'Nonaktif');
 
-                document.getElementById('detail-no-tlp').textContent =
-                    data.no_tlp ?? '-';
+                const cvLink = document.getElementById('detail-cv-link');
 
-                document.getElementById('detail-lowongan').textContent =
-                    data.lowongan ?? '-';
-
-                document.getElementById('detail-departemen').textContent =
-                    data.departemen ?? '-';
-
-                document.getElementById('detail-divisi').textContent =
-                    data.divisi ?? '-';
-
-                document.getElementById('detail-section').textContent =
-                    data.section ?? '-';
-
-                document.getElementById('detail-job-position').textContent =
-                    data.job_position ?? '-';
-
-                document.getElementById('detail-job-level').textContent =
-                    data.job_level ?? '-';
-
-                document.getElementById('detail-cabang').textContent =
-                    data.cabang ?? '-';
-
-                document.getElementById('detail-pendidikan').textContent =
-                    data.pendidikan ?? '-';
-
-                document.getElementById('detail-sumber').textContent =
-                    data.sumber ?? '-';
-
-                document.getElementById('detail-pool').textContent =
-                    data.pool_talent
-                        ? data.pool_talent === 'rehire'
-                            ? 'Rehire'
-                            : 'Blacklist'
-                        : '-';
-
-                document.getElementById(
-                    'detail-status-rekrutmen'
-                ).textContent =
-                    data.status_rekrutmen
-                        ? data.status_rekrutmen.charAt(0).toUpperCase() +
-                          data.status_rekrutmen.slice(1)
-                        : '-';
-
-                document.getElementById(
-                    'detail-status'
-                ).textContent =
-                    data.status === 'aktif'
-                        ? 'Aktif'
-                        : 'Nonaktif';
-
-                const cvName =
-                    document.getElementById('detail-cv-name');
-
-                const cvLink =
-                    document.getElementById('detail-cv-link');
-
-                if (data.file_cv) {
-                    cvName.textContent = data.file_cv;
-                    cvLink.href = data.file_cv;
+                if (data.cv_url) {
+                    setText('detail-cv-name', data.cv_name);
+                    cvLink.href = data.cv_url;
                     cvLink.classList.remove('d-none');
                 } else {
-                    cvName.textContent = 'Belum ada CV';
+                    setText('detail-cv-name', 'Belum ada CV');
                     cvLink.classList.add('d-none');
                 }
-
             })
-            .catch(error => {
-                console.error(error);
-            });
-
+            .catch((error) => console.error(error));
     });
 </script>

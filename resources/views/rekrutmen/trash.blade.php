@@ -28,31 +28,12 @@
 
             <thead>
                 <tr>
-
-                    <th class="app-table__col-no">
-                        NO
-                    </th>
-
-                    <th>
-                        Kode
-                    </th>
-
-                    <th>
-                        Kandidat
-                    </th>
-
-                    <th>
-                        Tahap Rekrutmen
-                    </th>
-
-                    <th>
-                        Dihapus
-                    </th>
-
-                    <th class="app-table__col-actions">
-                        Aksi
-                    </th>
-
+                    <th class="app-table__col-no">NO</th>
+                    <th>Kode</th>
+                    <th>Kandidat</th>
+                    <th>Tahap Rekrutmen</th>
+                    <th>Dihapus</th>
+                    <th class="app-table__col-actions">Aksi</th>
                 </tr>
             </thead>
 
@@ -67,25 +48,18 @@
                             {{ $rekrutmens->firstItem() + $i }}
                         </td>
 
-                        <td>
-                            {{ $row->kode }}
-                        </td>
+                        <td>{{ $row->kode }}</td>
 
                         <td>
                             <x-table.cell-stack
-                                :lines="[
-                                    $row->nama,
-                                    $row->email
-                                ]"
+                                :lines="[$row->nama, $row->email]"
                             />
                         </td>
 
                         <td>
-
                             <x-badge variant="neutral">
                                 {{ ucfirst($row->status_rekrutmen) }}
                             </x-badge>
-
                         </td>
 
                         <td>
@@ -96,11 +70,13 @@
 
                             <div class="app-table__actions">
 
+                                {{-- Route restore = PATCH, jadi wajib @method('PATCH') --}}
                                 <form
                                     action="{{ route('rekrutmen.restore', $row->id) }}"
                                     method="POST"
                                 >
                                     @csrf
+                                    @method('PATCH')
 
                                     <x-button
                                         type="submit"

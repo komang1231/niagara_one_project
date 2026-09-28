@@ -1,4 +1,4 @@
-<x-offcanvas.detail id="offcanvas-lowongan-detail" size="lg">
+<x-offcanvas.detail id="offcanvas-lowongan-detail" size="xl">
     <x-slot:header>
         <div class="lowongan-detail__title-group">
             <h5 class="mb-1" data-field="judul">-</h5>
@@ -28,25 +28,17 @@
         <section class="mb-4">
             <h6 class="lowongan-detail__section-title">Penempatan</h6>
             <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="lowongan-detail__label">Cabang Kantor</div>
                     <div class="lowongan-detail__value" data-field="cabang_kantor">-</div>
                 </div>
-                <div class="col-md-4">
-                    <div class="lowongan-detail__label">Departemen</div>
-                    <div class="lowongan-detail__value" data-field="departemen">-</div>
-                </div>
-                <div class="col-md-4">
-                    <div class="lowongan-detail__label">Divisi</div>
-                    <div class="lowongan-detail__value" data-field="divisi">-</div>
-                </div>
-                <div class="col-md-4">
-                    <div class="lowongan-detail__label">Section</div>
-                    <div class="lowongan-detail__value" data-field="section">-</div>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="lowongan-detail__label">Job Position</div>
                     <div class="lowongan-detail__value" data-field="job_position">-</div>
+                </div>
+                <div class="col-12">
+                    <div class="lowongan-detail__label">Departemen › Divisi › Section</div>
+                    <div class="lowongan-detail__value" data-field="penempatan">-</div>
                 </div>
             </div>
         </section>
@@ -71,7 +63,7 @@
 
         <section class="mb-4">
             <h6 class="lowongan-detail__section-title">Deskripsi Pekerjaan</h6>
-            <div class="lowongan-detail__text" data-field="deskripsi">-</div>
+            <div class="lowongan-detail__text" style="white-space: pre-line;" data-field="deskripsi">-</div>
         </section>
 
         <section class="mb-2">
@@ -83,46 +75,74 @@
     </div>
 </x-offcanvas.detail>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const el = document.getElementById('offcanvas-lowongan-detail');
+        if (!el) return;
 
-    .lowongan-detail__title-group h5 {
-        font-weight: 700;
-        color: var(--color-text-900, #212529);
-    }
+        // isi teks ke elemen [data-field="..."]; kosong -> "-"
+        function setText(field, value) {
+            const target = el.querySelector(`[data-field="${field}"]`);
+            if (!target) return;
+            target.textContent = value !== null && value !== undefined && value !== '' ? value : '-';
+        }
 
-    .lowongan-detail__section-title {
-        text-transform: uppercase;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: .04em;
-        color: var(--neutral-500, #8a939c);
-        margin-bottom: 12px;
-    }
+        // kosongkan dulu supaya data lowongan sebelumnya gak sempat kelihatan
+        function resetDetail() {
+            el.querySelectorAll('[data-field]').forEach((t) => {
+                t.textContent = '-';
+            });
+            const badge = el.querySelector('[data-field="status-badge"]');
+            if (badge) badge.className = 'badge';
+        }
 
-    .lowongan-detail__label {
-        font-size: 12.5px;
-        color: var(--neutral-500, #8a939c);
-        margin-bottom: 2px;
-    }
+        function fillDetail(d) {
+            setText('judul', d.judul);
+            setText('kode', d.kode);
 
-    .lowongan-detail__value {
-        font-size: 14.5px;
-        font-weight: 600;
-        color: var(--color-text-900, #212529);
-    }
+            const badge = el.querySelector('[data-field="status-badge"]');
+            if (badge) {
+                const aktif = d.status === 'aktif';
+                badge.textContent = aktif ? 'Aktif' : 'Nonaktif';
+                badge.className = 'badge ' + (aktif ? 'bg-success' : 'bg-secondary');
+            }
 
-    .lowongan-detail__text {
-        font-size: 14px;
-        line-height: 1.65;
-        color: var(--color-text-800, #343a40);
-        white-space: pre-line;
-    }
+            setText('permintaan_karyawan', d.permintaan_karyawan);
+            setText('job_level', d.job_level);
+            setText('cabang_kantor', d.cabang_kantor);
+            setText('job_position', d.job_position);
+            setText('penempatan', d.penempatan);
+            setText('kuota', d.kuota ? `${d.kuota} orang` : '-');
+            setText('periode', `${d.tanggal_buka} – ${d.tanggal_tutup}`);
+            setText('gaji', `${d.gaji_min} – ${d.gaji_max}`);
+            setText('deskripsi', d.deskripsi);
 
-    .lowongan-detail__rich {
-        min-height: auto;
-        max-height: none;
-    }
+            // Kualifikasi = HTML dari rich text editor (sudah di-whitelist di BE),
+            // makanya pakai innerHTML, bukan textContent.
+            const kualifikasi = el.querySelector('[data-field="kualifikasi"]');
+            const html = (d.kualifikasi || '').trim();
+            if (kualifikasi) {
+                if (html && html !== '<p></p>') kualifikasi.innerHTML = html;
+                else kualifikasi.textContent = '-';
+            }
+        }
 
-    .lowongan-detail__rich.is-empty {
-        color: var(--neutral-500, #98a2ad);
-        font-style: italic;
-    }
+        el.addEventListener('show.bs.offcanvas', function (event) {
+            const url = event.relatedTarget?.getAttribute('data-detail-url');
+            if (!url) return;
+
+            resetDetail();
+
+            fetch(url, { headers: { Accept: 'application/json' } })
+                .then((res) => {
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    return res.json();
+                })
+                .then(fillDetail)
+                .catch((err) => {
+                    console.error('Gagal ambil detail lowongan:', err);
+                    setText('judul', 'Gagal memuat data');
+                });
+        });
+    });
+</script>

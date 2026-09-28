@@ -9,14 +9,14 @@
  * (baru kelihatan bener kalau dropdown-nya dibuka manual).
  */
 
-const TRUTHY = ['1', 'true', 'aktif', 'active', 'yes', 'ya'];
+const TRUTHY = ["1", "true", "aktif", "active", "yes", "ya"];
 
-document.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-edit-url]');
+document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-edit-url]");
     if (!btn) return;
 
     const offcanvas = document.querySelector(btn.dataset.bsTarget);
-    const form = offcanvas?.querySelector('[data-edit-form]');
+    const form = offcanvas?.querySelector("[data-edit-form]");
     if (!form) return;
 
     form.reset();
@@ -25,14 +25,14 @@ document.addEventListener('click', (e) => {
     // supaya kalau user klik edit baris LAIN, gak kebawa opsi baris
     // sebelumnya (soalnya form/select ini dipakai ulang, bukan dibuat baru).
     if (window.jQuery) {
-        window.jQuery(form).find('select.select2').val('').trigger('change');
+        window.jQuery(form).find("select.select2").val("").trigger("change");
     }
 
     if (btn.dataset.updateUrl) {
         form.action = btn.dataset.updateUrl;
     }
 
-    fetch(btn.dataset.editUrl, { headers: { Accept: 'application/json' } })
+    fetch(btn.dataset.editUrl, { headers: { Accept: "application/json" } })
         .then((res) => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
@@ -41,38 +41,48 @@ document.addEventListener('click', (e) => {
             fillForm(form, data);
             // Dipakai modul yang punya chained dropdown (Lowongan, Karyawan)
             // buat isi ulang divisi/section/job-position setelah data utama masuk.
-            form.dispatchEvent(new CustomEvent('edit-data:loaded', { detail: data }));
+            form.dispatchEvent(
+                new CustomEvent("edit-data:loaded", { detail: data }),
+            );
         })
-        .catch((err) => console.error('Gagal mengambil data untuk form edit:', err));
+        .catch((err) =>
+            console.error("Gagal mengambil data untuk form edit:", err),
+        );
 });
 
 function fillForm(form, data) {
     Object.entries(data).forEach(([key, value]) => {
         form.querySelectorAll(`[name="${key}"]`).forEach((field) => {
-            if (field.type === 'hidden') {
-                if (field.hasAttribute('data-rich-text-input')) {
-                    window.setRichTextContent?.(key, value);
+            if (field.type === "hidden") {
+                if (field.hasAttribute("data-rich-text-input")) {
+                    window.setRichTextContent?.(key, value, form);
                 }
-                if (field.hasAttribute('data-currency-input')) {
-                    window.setCurrencyValue?.(key, value);
+                if (field.hasAttribute("data-currency-input")) {
+                    window.setCurrencyValue?.(key, value, form);
                 }
                 return;
             }
 
-            if (field.type === 'checkbox') {
+            if (field.type === "checkbox") {
                 field.checked = TRUTHY.includes(String(value).toLowerCase());
-            } else if (field.type === 'radio') {
+            } else if (field.type === "radio") {
                 field.checked = field.value === String(value);
-            } else if (field.tagName === 'SELECT' && field.classList.contains('select2')) {
+            } else if (
+                field.tagName === "SELECT" &&
+                field.classList.contains("select2")
+            ) {
                 // INI FIX UTAMANYA — tanpa baris ini, kotak tertutup
                 // Select2 gak bakal keupdate walau value asli udah benar.
                 if (window.jQuery) {
-                    window.jQuery(field).val(value ?? '').trigger('change');
+                    window
+                        .jQuery(field)
+                        .val(value ?? "")
+                        .trigger("change");
                 } else {
-                    field.value = value ?? '';
+                    field.value = value ?? "";
                 }
             } else {
-                field.value = value ?? '';
+                field.value = value ?? "";
             }
         });
     });

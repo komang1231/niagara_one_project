@@ -27,13 +27,16 @@
                     :options="$departemens->pluck('nama', 'id')" nullable required />
             </div>
             <div class="col-md-4">
-                <x-form.select name="divisi_id" id="edit_divisi_id" label="Divisi" :options="[]" nullable disabled />
+                <x-form.select name="divisi_id" id="edit_divisi_id" label="Divisi" :options="[]" nullable
+                    disabled />
             </div>
             <div class="col-md-4">
-                <x-form.select name="section_id" id="edit_section_id" label="Section" :options="[]" nullable disabled />
+                <x-form.select name="section_id" id="edit_section_id" label="Section" :options="[]" nullable
+                    disabled />
             </div>
             <div class="col-md-4">
-                <x-form.select name="job_position_id" id="edit_job_position_id" label="Job Position" :options="[]" nullable disabled />
+                <x-form.select name="job_position_id" id="edit_job_position_id" label="Job Position"
+                    :options="[]" nullable disabled />
             </div>
             <div class="col-md-4">
                 <x-form.select name="job_level_id" id="edit_job_level_id" label="Job Level"
@@ -72,300 +75,142 @@
 </x-offcanvas.form>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('offcanvas-lowongan-edit-form');
+        if (!form) return;
 
-    const form = document.getElementById('offcanvas-lowongan-edit-form');
+        // jQuery opsional: kalau ada dipakai supaya select2 ikut ke-update,
+        // kalau tidak ada, jatuh ke event native (script gak mati).
+        const $ = window.jQuery;
 
-    if (!form) return;
+        const departemenSelect = form.querySelector('#edit_departemen_id');
+        const divisiSelect = form.querySelector('#edit_divisi_id');
+        const sectionSelect = form.querySelector('#edit_section_id');
+        const jobPositionSelect = form.querySelector('#edit_job_position_id');
 
-    const $ = window.jQuery;
+        const routes = {
+            getDivisi: "{{ route('lowongan.get-divisi', ['departemen' => '__ID__']) }}",
+            getSection: "{{ route('lowongan.get-section', ['divisi' => '__ID__']) }}",
+            getJobPosition: "{{ route('lowongan.get-job-position', ['section' => '__ID__']) }}",
+        };
 
-    if (!$) {
-        console.error('jQuery belum tersedia.');
-        return;
-    }
+        // true selama prefill data lama, supaya event change dari prefill
+        // gak dianggap "user ganti pilihan"
+        let isPrefilling = false;
 
-    const departemenSelect  = form.querySelector('#edit_departemen_id');
-    const divisiSelect      = form.querySelector('#edit_divisi_id');
-    const sectionSelect     = form.querySelector('#edit_section_id');
-    const jobPositionSelect = form.querySelector('#edit_job_position_id');
+        // "Tiket" per select: kalau ada fetch baru / reset, respons fetch lama dibuang
+        const tickets = {};
+        const newTicket = (select) => (tickets[select.id] = (tickets[select.id] || 0) + 1);
 
-    const routes = {
-        getDivisi: "{{ route('lowongan.get-divisi', ['departemen' => '__ID__']) }}",
-        getSection: "{{ route('lowongan.get-section', ['divisi' => '__ID__']) }}",
-        getJobPosition: "{{ route('lowongan.get-job-position', ['section' => '__ID__']) }}",
-    };
+        function onChange(el, handler) {
+            if ($) $(el).on('change', handler);
+            else el.addEventListener('change', handler);
+        }
 
-    let isPrefilling = false;
-
-
-    // =========================================================
-    // RESET SELECT
-    // =========================================================
-
-    function resetSelect(select, placeholder = '-- Pilih --') {
-
-        select.innerHTML = `<option value="">${placeholder}</option>`;
-        select.disabled = true;
-
-        $(select)
-            .val('')
-            .trigger('change');
-    }
-
-
-    // =========================================================
-    // ISI SELECT DARI HASIL API
-    // =========================================================
-
-    function fillSelect(select, data, selectedId = null) {
-
-        select.innerHTML = '<option value="">-- Pilih --</option>';
-
-        data.forEach(item => {
-
-            const option = document.createElement('option');
-
-            option.value = item.id;
-            option.textContent = item.nama;
-
-            select.appendChild(option);
-        });
-
-        select.disabled = data.length === 0;
-
-        $(select)
-            .val(selectedId ?? '')
-            .trigger('change');
-    }
-
-
-    // =========================================================
-    // FETCH DATA CHILD
-    // =========================================================
-
-    function fetchChildren(
-        url,
-        parentId,
-        targetSelect,
-        selectedId = null
-    ) {
-
-        return fetch(
-            url.replace('__ID__', parentId)
-        )
-            .then(response => {
-
-                if (!response.ok) {
-                    throw new Error(
-                        `Response tidak OK (${response.status})`
-                    );
-                }
-
-                return response.json();
-            })
-            .then(data => {
-
-                fillSelect(
-                    targetSelect,
-                    data,
-                    selectedId
-                );
-
-                return data;
-            })
-            .catch(error => {
-
-                console.error(
-                    'Gagal mengambil data chained dropdown:',
-                    error
-                );
-
-                throw error;
-            });
-    }
-
-
-    // =========================================================
-    // DATA EDIT SELESAI DIMUAT
-    // =========================================================
-    //
-    // Event ini dikirim oleh offcanvas-edit.js.
-    // Jangan diganti menjadi $(form).on(...)
-    // karena ini adalah custom event native.
-    //
-
-    form.addEventListener(
-        'edit-data:loaded',
-        async function (event) {
-
-            const data = event.detail;
-
-            if (!data) {
-                console.warn(
-                    'Data edit lowongan tidak ditemukan.'
-                );
-
-                return;
+        function setValue(el, value) {
+            if ($) {
+                $(el).val(value).trigger('change');
+            } else {
+                el.value = value;
+                el.dispatchEvent(new Event('change'));
             }
+        }
 
-            const {
-                departemen_id,
-                divisi_id,
-                section_id,
-                job_position_id
-            } = data;
+        function resetSelect(select) {
+            newTicket(select); // batalkan fetch yang masih jalan
+            select.innerHTML = '<option value="">-- Pilih --</option>';
+            select.disabled = true;
+            setValue(select, '');
+        }
+
+        function fillSelect(select, data, selectedId = '') {
+            select.innerHTML = '<option value="">-- Pilih --</option>';
+            data.forEach((item) => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.nama;
+                select.appendChild(option);
+            });
+            select.disabled = data.length === 0;
+            setValue(select, selectedId ?? '');
+        }
+
+        function fetchChildren(url, parentId, targetSelect, selectedId = '') {
+            const ticket = newTicket(targetSelect);
+
+            return fetch(url.replace('__ID__', parentId), { headers: { Accept: 'application/json' } })
+                .then((res) => {
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    return res.json();
+                })
+                .then((data) => {
+                    if (ticket !== tickets[targetSelect.id]) return; // respons usang
+                    fillSelect(targetSelect, data, selectedId);
+                });
+        }
+
+        // Data edit selesai dimuat (event dikirim oleh offcanvas-edit.js)
+        // -> isi divisi / section / job position sesuai data lama, berurutan.
+        form.addEventListener('edit-data:loaded', async function (event) {
+            const { departemen_id, divisi_id, section_id, job_position_id } = event.detail || {};
 
             isPrefilling = true;
 
             try {
-
-                // ---------------------------------------------
-                // RESET CHILD
-                // ---------------------------------------------
-
                 resetSelect(divisiSelect);
                 resetSelect(sectionSelect);
                 resetSelect(jobPositionSelect);
 
-
-                // ---------------------------------------------
-                // DEPARTEMEN → DIVISI
-                // ---------------------------------------------
-
                 if (departemen_id) {
-
-                    await fetchChildren(
-                        routes.getDivisi,
-                        departemen_id,
-                        divisiSelect,
-                        divisi_id
-                    );
+                    await fetchChildren(routes.getDivisi, departemen_id, divisiSelect, divisi_id);
                 }
-
-
-                // ---------------------------------------------
-                // DIVISI → SECTION
-                // ---------------------------------------------
-
                 if (divisi_id) {
-
-                    await fetchChildren(
-                        routes.getSection,
-                        divisi_id,
-                        sectionSelect,
-                        section_id
-                    );
+                    await fetchChildren(routes.getSection, divisi_id, sectionSelect, section_id);
                 }
-
-
-                // ---------------------------------------------
-                // SECTION → JOB POSITION
-                // ---------------------------------------------
-
                 if (section_id) {
-
-                    await fetchChildren(
-                        routes.getJobPosition,
-                        section_id,
-                        jobPositionSelect,
-                        job_position_id
-                    );
+                    await fetchChildren(routes.getJobPosition, section_id, jobPositionSelect, job_position_id);
                 }
-
-            } catch (error) {
-
-                console.error(
-                    'Gagal mengisi chained dropdown edit lowongan:',
-                    error
-                );
-
+            } catch (err) {
+                console.error('Gagal mengisi chained dropdown edit lowongan:', err);
             } finally {
-
                 isPrefilling = false;
             }
-        }
-    );
+        });
 
+        // User ganti Departemen -> Divisi
+        onChange(departemenSelect, function () {
+            if (isPrefilling) return;
 
-    // =========================================================
-    // USER GANTI DEPARTEMEN
-    // DEPARTEMEN → DIVISI
-    // =========================================================
+            resetSelect(divisiSelect);
+            resetSelect(sectionSelect);
+            resetSelect(jobPositionSelect);
+            if (!this.value) return;
 
-    $(departemenSelect).on('change', function () {
+            fetchChildren(routes.getDivisi, this.value, divisiSelect)
+                .catch((err) => console.error('Gagal ambil divisi:', err));
+        });
 
-        // Jangan jalankan ini ketika sedang
-        // mengisi data edit lama.
-        if (isPrefilling) {
-            return;
-        }
+        // User ganti Divisi -> Section
+        onChange(divisiSelect, function () {
+            if (isPrefilling) return;
 
-        resetSelect(divisiSelect);
-        resetSelect(sectionSelect);
-        resetSelect(jobPositionSelect);
+            resetSelect(sectionSelect);
+            resetSelect(jobPositionSelect);
+            if (!this.value) return;
 
-        if (!this.value) {
-            return;
-        }
+            fetchChildren(routes.getSection, this.value, sectionSelect)
+                .catch((err) => console.error('Gagal ambil section:', err));
+        });
 
-        fetchChildren(
-            routes.getDivisi,
-            this.value,
-            divisiSelect
-        );
+        // User ganti Section -> Job Position
+        onChange(sectionSelect, function () {
+            if (isPrefilling) return;
+
+            resetSelect(jobPositionSelect);
+            if (!this.value) return;
+
+            fetchChildren(routes.getJobPosition, this.value, jobPositionSelect)
+                .catch((err) => console.error('Gagal ambil job position:', err));
+        });
     });
-
-
-    // =========================================================
-    // USER GANTI DIVISI
-    // DIVISI → SECTION
-    // =========================================================
-
-    $(divisiSelect).on('change', function () {
-
-        if (isPrefilling) {
-            return;
-        }
-
-        resetSelect(sectionSelect);
-        resetSelect(jobPositionSelect);
-
-        if (!this.value) {
-            return;
-        }
-
-        fetchChildren(
-            routes.getSection,
-            this.value,
-            sectionSelect
-        );
-    });
-
-
-    // =========================================================
-    // USER GANTI SECTION
-    // SECTION → JOB POSITION
-    // =========================================================
-
-    $(sectionSelect).on('change', function () {
-
-        if (isPrefilling) {
-            return;
-        }
-
-        resetSelect(jobPositionSelect);
-
-        if (!this.value) {
-            return;
-        }
-
-        fetchChildren(
-            routes.getJobPosition,
-            this.value,
-            jobPositionSelect
-        );
-    });
-
-});
 </script>

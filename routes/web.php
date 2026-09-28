@@ -271,6 +271,12 @@ Route::middleware('auth')->group(function () {
         ->name('rekrutmen.force-delete');
     Route::patch('rekrutmen/{rekrutmen}/toggle-status', [RekrutmenController::class, 'toggleStatus'])
         ->name('rekrutmen.toggle-status');
+    Route::get('rekrutmen/{departemen}/get-divisi', [RekrutmenController::class, 'getDivisi'])
+        ->name('rekrutmen.get-divisi');
+    Route::get('rekrutmen/{divisi}/get-section', [RekrutmenController::class, 'getSection'])
+        ->name('rekrutmen.get-section');
+    Route::get('rekrutmen/{section}/get-job-position', [RekrutmenController::class, 'getJobPosition'])
+        ->name('rekrutmen.get-job-position');
 
     Route::resource('permintaan-cuti', PermintaanCutiController::class)
         ->parameters(['permintaan-cuti' => 'permintaan-cuti']);

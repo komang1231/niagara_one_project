@@ -39,7 +39,6 @@
                         <th class="app-table__col-no">NO</th>
                         <th>Kode</th>
                         <th>Nama Cuti</th>
-                        <th>Kuota Cuti</th>
                         <th>Status</th>
                         <th class="app-table__col-actions">Aksi</th>
                     </tr>
@@ -58,10 +57,6 @@
 
                             <td>
                                 {{ $row->nama }}
-                            </td>
-
-                            <td>
-                                {{ $row->kuota_hari_default }} hari
                             </td>
 
                             <td>
