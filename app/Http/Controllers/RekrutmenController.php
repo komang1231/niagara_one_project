@@ -13,6 +13,8 @@ use App\Models\JobLevel;
 use App\Models\CabangKantor;
 use App\Models\Divisi;
 use App\Models\Section;
+use App\Models\JenjangPendidikan;
+use App\Models\SumberPelamar;
 use App\Services\CodeGenerator;
 
 class RekrutmenController extends Controller
@@ -62,6 +64,14 @@ class RekrutmenController extends Controller
             ->orderBy('nama')
             ->get();
 
+        $jenjangPendidikans = JenjangPendidikan::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+        
+        $sumberPelamars = SumberPelamar::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
 
         if ($request->ajax() || $request->wantsJson()) {
             Log::debug('Rekrutmen index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
@@ -69,7 +79,7 @@ class RekrutmenController extends Controller
         }
 
         Log::debug('Rekrutmen index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-        return view('rekrutmen.index', compact('statusOptions', 'rekrutmen', 'previewKode', 'lowongans', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors' ));
+        return view('rekrutmen.index', compact('statusOptions', 'rekrutmen', 'previewKode', 'lowongans', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors', 'jenjangPendidikans', 'sumberPelamars'));
     }
 
     private function filter(Request $request)
@@ -222,10 +232,7 @@ class RekrutmenController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($divisis);
     }
@@ -238,10 +245,7 @@ class RekrutmenController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($sections);
     }
@@ -254,10 +258,7 @@ class RekrutmenController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($jobPositions);
     }

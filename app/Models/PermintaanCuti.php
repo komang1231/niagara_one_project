@@ -15,12 +15,28 @@ class PermintaanCuti extends Model
         return 'PMC';
     }
 
-    protected $table = 'permintaan_cutis';
-    protected $fillable = ['kode', 'cuti_id', 'karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'alasan', 'lampiran', 'pengganti_karyawan_id'];
-    // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class);
+    }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'processed_by');
+    }
+
+    public function cuti()
+    {
+        return $this->belongsTo(Cuti::class);
+    }
+    
     public function details()
     {
         return $this->hasMany(PermintaanCutiDetail::class, 'permintaan_cuti_id', 'id');
     }
+
+    protected $table = 'permintaan_cutis';
+    protected $fillable = ['kode', 'cuti_id', 'karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'alasan', 'lampiran', 'pengganti_karyawan_id'];
+    // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable
+
 }

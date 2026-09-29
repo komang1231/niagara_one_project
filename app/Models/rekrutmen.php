@@ -24,47 +24,47 @@ class Rekrutmen extends Model
         return 'REK';
     }
 
-    protected function lowongan()
+    public function lowongan()
     {
         return $this->belongsTo(Lowongan::class, 'lowongan_id');
     }
 
-    protected function departemen()
+    public function departemen()
     {
         return $this->belongsTo(Departemen::class, 'departemen_id');
     }
 
-    protected function divisi()
+    public function divisi()
     {
         return $this->belongsTo(Divisi::class, 'divisi_id');
     }
 
-    protected function section()
+    public function section()
     {
         return $this->belongsTo(Section::class, 'section_id');
     }
 
-    protected function jobPosition()
+    public function jobPosition()
     {
         return $this->belongsTo(JobPosition::class, 'job_position_id');
     }
 
-    protected function jobLevel()
+    public function jobLevel()
     {
         return $this->belongsTo(JobLevel::class, 'job_level_id');
     }
 
-    protected function cabangKantor()
+    public function cabangKantor()
     {
         return $this->belongsTo(CabangKantor::class, 'cabang_kantor_id');
     }
 
-    protected function jenjangPendidikan()
+    public function jenjangPendidikan()
     {
         return $this->belongsTo(JenjangPendidikan::class, 'jenjang_pendidikan_id');
     }
 
-    protected function sumberPelamar()
+    public function sumberPelamar()
     {
         return $this->belongsTo(SumberPelamar::class, 'sumber_pelamar_id');
     }

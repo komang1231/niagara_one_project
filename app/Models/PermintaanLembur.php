@@ -15,6 +15,16 @@ class PermintaanLembur extends Model
         return 'PML';
     }
 
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'processed_by');
+    }
+
     protected $table = 'permintaan_lemburs';
     protected $fillable = ['kode', 'karyawan_id', 'tanggal_tujuan', 'jam_mulai', 'jam_selesai', 'alasan', 'pengali'];
     // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable

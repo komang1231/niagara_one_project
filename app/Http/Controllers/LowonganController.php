@@ -181,15 +181,6 @@ class LowonganController extends Controller
     {
         $lowongan = Lowongan::findOrFail($id);
 
-        // if ($lowongan->divisi()->exists()) {
-        //     return redirect()
-        //         ->route('lowongan.index')
-        //         ->with(
-        //             'error',
-        //             'Lowongan tidak dapat dihapus karena masih digunakan oleh data Divisi.'
-        //         );
-        // }
-
         $lowongan->delete();
 
         return redirect()
@@ -232,10 +223,7 @@ class LowonganController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($divisis);
     }
@@ -248,10 +236,7 @@ class LowonganController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($sections);
     }
@@ -264,10 +249,7 @@ class LowonganController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($jobPositions);
     }

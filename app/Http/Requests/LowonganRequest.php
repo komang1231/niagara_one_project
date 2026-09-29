@@ -28,7 +28,7 @@ class LowonganRequest extends FormRequest
                     'tanggal_buka' => \Carbon\Carbon::parse($this->tanggal_buka)->format('Y-m-d'),
                 ]);
             } catch (\Exception $e) {
-                // Biarkan validasi 'date' menangani tanggal yang tidak valid
+                // return message()->error('Format tanggal buka tidak valid.');
             }
         }
 
@@ -38,7 +38,7 @@ class LowonganRequest extends FormRequest
                     'tanggal_tutup' => \Carbon\Carbon::parse($this->tanggal_tutup)->format('Y-m-d'),
                 ]);
             } catch (\Exception $e) {
-                // Biarkan validasi 'date' menangani tanggal yang tidak valid
+                // return message()->error('Format tanggal tutup tidak valid.');
             }
         }
     }
@@ -70,7 +70,7 @@ class LowonganRequest extends FormRequest
             'section_id' => 'nullable|integer|exists:sections,id',
             'job_position_id' => 'nullable|integer|exists:job_positions,id',
             'job_level_id' => 'required|integer|exists:job_levels,id',
-            'kuota' => 'required|integer|min:1',
+            'kuota' => 'required|integer|min:1|max:99',
             'kualifikasi' => 'required|string',
             'deskripsi' => 'required|string',
             'min_gaji' => 'required|numeric|min:0',

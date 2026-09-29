@@ -28,6 +28,11 @@ class PermintaanKaryawan extends Model
         return $this->belongsTo(Karyawan::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'processed_by');
+    }
+
     public function cabangKantor()
     {
         return $this->belongsTo(CabangKantor::class);
@@ -59,11 +64,6 @@ class PermintaanKaryawan extends Model
     }
 
     public function processedBy()
-    {
-        return $this->belongsTo(User::class, 'processed_by');
-    }
-
-    public function user()
     {
         return $this->belongsTo(User::class, 'processed_by');
     }

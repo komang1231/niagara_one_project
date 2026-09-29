@@ -110,7 +110,7 @@ class KaryawanController extends Controller
 
             return view(
                 'components.table.table',
-                compact('karyawan')
+                compact('karyawan', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors', 'jenjangPendidikans', 'statusKawins', 'agamas', 'statusKepegawaians', 'banks', 'lowongans')
             );
         }
 
@@ -313,10 +313,7 @@ class KaryawanController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($divisis);
     }
@@ -329,10 +326,7 @@ class KaryawanController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($sections);
     }
@@ -345,10 +339,7 @@ class KaryawanController extends Controller
         )
             ->where('status', 'aktif')
             ->orderBy('nama')
-            ->get([
-                'id',
-                'nama',
-            ]);
+            ->get();
 
         return response()->json($jobPositions);
     }
