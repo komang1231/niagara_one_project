@@ -82,6 +82,41 @@ class RekrutmenController extends Controller
         return view('rekrutmen.index', compact('statusOptions', 'rekrutmen', 'previewKode', 'lowongans', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors', 'jenjangPendidikans', 'sumberPelamars'));
     }
 
+    public function show(Rekrutmen $rekrutmen)
+    {
+        $rekrutmen->load([
+            'lowongan',
+            'departemen',
+            'divisi',
+            'section',
+            'jobPosition',
+            'jobLevel',
+            'cabangKantor',
+            'jenjangPendidikan',
+            'sumberPelamar',
+        ]);
+
+        return response()->json([
+            'kode' => $rekrutmen->kode,
+            'status' => $rekrutmen->status,
+            'lowongan' => $rekrutmen->lowongan?->judul,
+            'departemen' => $rekrutmen->departemen?->nama,
+            'divisi' => $rekrutmen->divisi?->nama,
+            'section' => $rekrutmen->section?->nama,
+            'job_position' => $rekrutmen->jobPosition?->nama,
+            'job_level' => $rekrutmen->jobLevel?->nama,
+            'cabang_kantor' => $rekrutmen->cabangKantor?->nama,
+            'jenjang_pendidikan' => $rekrutmen->jenjangPendidikan?->nama,
+            'sumber_pelamar' => $rekrutmen->sumberPelamar?->nama,
+            'nama' => $rekrutmen->nama,
+            'email' => $rekrutmen->email,
+            'no_tlp' => $rekrutmen->no_tlp,
+            'file_cv' => $rekrutmen->file_cv,
+            'status_rekrutmen' => $rekrutmen->status_rekrutmen,
+            'pool_talent' => $rekrutmen->pool_talent,
+        ]);
+    }
+
     private function filter(Request $request)
     {
         $search = $request->query('search');

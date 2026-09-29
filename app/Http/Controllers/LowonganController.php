@@ -82,6 +82,41 @@ class LowonganController extends Controller
         ));
     }
 
+    public function show(Lowongan $lowongan)
+    {
+        $lowongan->load([
+            'permintaanKaryawan',
+            'cabangKantor',
+            'departemen',
+            'divisi',
+            'section',
+            'jobPosition',
+            'jobLevel',
+        ]);
+
+        return response()->json([
+            'judul' => $lowongan->judul,
+            'kode' => $lowongan->kode,
+            'status' => $lowongan->status,
+            'permintaan_karyawan' => $lowongan->permintaanKaryawan?->nama,
+            'job_level' => $lowongan->jobLevel?->nama,
+            'cabang_kantor' => $lowongan->cabangKantor?->nama,
+            'job_position' => $lowongan->jobPosition?->nama,
+            'penempatan' => collect([
+                $lowongan->departemen?->nama,
+                $lowongan->divisi?->nama,
+                $lowongan->section?->nama,
+            ])->filter()->implode(' › '),
+            'kuota' => $lowongan->kuota,
+            'tanggal_buka' => $lowongan->tanggal_buka,
+            'tanggal_tutup' => $lowongan->tanggal_tutup,
+            'gaji_min' => 'Rp ' . number_format((float) $lowongan->min_gaji, 0, ',', '.'),
+            'gaji_max' => 'Rp ' . number_format((float) $lowongan->max_gaji, 0, ',', '.'),
+            'deskripsi' => $lowongan->deskripsi,
+            'kualifikasi' => $lowongan->kualifikasi,
+        ]);
+    }
+
     private function filter(Request $request)
     {
         $search = $request->query('search');

@@ -41,7 +41,7 @@ class RekrutmenRequest extends FormRequest
             // $table->enum('pool_talent', ['rehire', 'blacklist'])->nullable();
             // $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
 
-            'kode' => 'required|string|max:20|unique:rekrutmen,kode',
+            'kode' => 'required|string|max:20|unique:rekrutmens,kode',
             'lowongan_id' => 'nullable|integer|exists:lowongans,id',
             'departemen_id' => 'required|integer|exists:departemens,id',
             'divisi_id' => 'nullable|integer|exists:divisis,id',
@@ -50,8 +50,8 @@ class RekrutmenRequest extends FormRequest
             'job_level_id' => 'required|integer|exists:job_levels,id',
             'cabang_kantor_id' => 'required|integer|exists:cabang_kantors,id',
             'nama' => 'required|string|max:100',
-            'email' => 'required|string|email|max:150|unique:rekrutmen,email',
-            'no_tlp' => 'required|string|max:20|unique:rekrutmen,no_tlp',
+            'email' => 'required|string|email|max:150|unique:rekrutmens,email',
+            'no_tlp' => 'required|string|max:20|unique:rekrutmens,no_tlp',
             'file_cv' => 'required|string|max:255',
             'jenjang_pendidikan_id' => 'required|integer|exists:jenjang_pendidikan,id',
             'sumber_pelamar_id' => 'required|integer|exists:sumber_pelamars,id',
