@@ -1,17 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-
     @php
         $stack = fn(...$lines) => array_values(array_filter($lines, 'filled'));
     @endphp
 
-    <x-page-header
-        eyebrow="Rekrutmen"
-        title="Data Rekrutmen"
-        description="Kelola kandidat dan proses rekrutmen."
-        icon="bi-person-badge-fill"
-    >
+    <x-page-header eyebrow="Rekrutmen" title="Data Rekrutmen" description="Kelola kandidat dan proses rekrutmen."
+        icon="bi-person-badge-fill">
         <x-slot:badges>
             <x-badge>
                 {{ $rekrutmen->total() }} kandidat
@@ -20,20 +15,12 @@
 
         <x-slot:actions>
 
-            <x-button
-                variant="outline"
-                icon="bi-trash"
-                href="{{ route('rekrutmen.trash') }}"
-            >
+            <x-button variant="outline" icon="bi-trash" href="{{ route('rekrutmen.trash') }}">
                 Trash
             </x-button>
 
-            <x-button
-                variant="primary"
-                icon="bi-plus-lg"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvas-tambah-rekrutmen"
-            >
+            <x-button variant="primary" icon="bi-plus-lg" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvas-tambah-rekrutmen">
                 Tambah Rekrutmen
             </x-button>
 
@@ -44,20 +31,11 @@
     <x-panel>
 
         <div>
-            <x-filter.bar
-                :clearable="['search', 'status']"
-                ajax-target="#rekrutmen-table"
-            >
+            <x-filter.bar :clearable="['search', 'status']" ajax-target="#rekrutmen-table">
 
-                <x-filter.search
-                    placeholder="Cari nama atau kode rekrutmen"
-                />
+                <x-filter.search placeholder="Cari nama atau kode rekrutmen" />
 
-                <x-filter.multiselect
-                    name="status"
-                    label="Status"
-                    :options="$statusOptions"
-                />
+                <x-filter.multiselect name="status" label="Status" :options="$statusOptions" />
 
             </x-filter.bar>
         </div>
@@ -85,7 +63,6 @@
                 <tbody>
 
                     @forelse ($rekrutmen as $i => $row)
-
                         <tr>
 
                             <td class="app-table__col-no">
@@ -95,20 +72,13 @@
 
                             {{-- Kandidat --}}
                             <td>
-                                <x-table.cell-stack
-                                    :lines="$stack($row->nama, $row->kode)"
-                                />
+                                <x-table.cell-stack :lines="$stack($row->nama, $row->kode)" />
                             </td>
 
 
                             {{-- Posisi --}}
                             <td>
-                                <x-table.cell-stack
-                                    :lines="$stack(
-                                        $row->jobPosition?->nama ?? '-',
-                                        $row->departemen?->nama
-                                    )"
-                                />
+                                <x-table.cell-stack :lines="$stack($row->jobPosition?->nama ?? '-', $row->departemen?->nama)" />
                             </td>
 
 
@@ -134,17 +104,13 @@
 
                             {{-- Kontak --}}
                             <td>
-                                <x-table.cell-stack
-                                    :lines="$stack($row->email, $row->no_tlp)"
-                                />
+                                <x-table.cell-stack :lines="$stack($row->email, $row->no_tlp)" />
                             </td>
 
 
                             {{-- Status --}}
                             <td>
-                                <x-badge
-                                    :variant="$row->status === 'aktif' ? 'success' : 'neutral'"
-                                >
+                                <x-badge :variant="$row->status === 'aktif' ? 'success' : 'neutral'">
                                     {{ ucfirst($row->status) }}
                                 </x-badge>
                             </td>
@@ -156,52 +122,31 @@
                                 <div class="app-table__actions">
 
                                     {{-- DETAIL (pakai route show -> JSON berisi nama) --}}
-                                    <x-button
-                                        variant="icon"
-                                        icon="bi-eye"
-                                        title="Detail"
-                                        data-bs-toggle="offcanvas"
+                                    <x-button variant="icon" icon="bi-eye" title="Detail" data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvas-rekrutmen-detail"
-                                        data-detail-url="{{ route('rekrutmen.show', $row->id) }}"
-                                    />
+                                        data-detail-url="{{ route('rekrutmen.show', $row->id) }}" />
 
 
                                     {{-- EDIT (pakai edit-data -> JSON berisi ID) --}}
-                                    <x-button
-                                        variant="icon-edit"
-                                        icon="bi-pencil"
-                                        title="Edit"
-                                        data-bs-toggle="offcanvas"
+                                    <x-button variant="icon-edit" icon="bi-pencil" title="Edit" data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvas-rekrutmen-edit"
                                         data-edit-url="{{ route('rekrutmen.edit-data', $row->id) }}"
-                                        data-update-url="{{ route('rekrutmen.update', $row->id) }}"
-                                    />
+                                        data-update-url="{{ route('rekrutmen.update', $row->id) }}" />
 
 
                                     {{-- DELETE --}}
-                                    <form
-                                        action="{{ route('rekrutmen.destroy', $row->id) }}"
-                                        method="POST"
-                                    >
+                                    <form action="{{ route('rekrutmen.destroy', $row->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
 
-                                        <x-button
-                                            type="submit"
-                                            variant="icon-danger"
-                                            icon="bi-trash"
-                                            title="Hapus"
-                                            onclick="return confirm('Hapus kandidat ini?')"
-                                        />
+                                        <x-button type="submit" variant="icon-danger" icon="bi-trash" title="Hapus"
+                                            onclick="return confirm('Hapus kandidat ini?')" />
                                     </form>
 
 
                                     {{-- STATUS --}}
-                                    <x-table.status-toggle
-                                        :checked="$row->status === 'aktif'"
-                                        id="status-toggle-{{ $row->id }}"
-                                        data-id="{{ $row->id }}"
-                                    />
+                                    <x-table.status-toggle :checked="$row->status === 'aktif'" id="status-toggle-{{ $row->id }}"
+                                        data-id="{{ $row->id }}" />
 
                                 </div>
 
@@ -212,7 +157,6 @@
                     @empty
 
                         <x-table.empty-row colspan="7" />
-
                     @endforelse
 
                 </tbody>
@@ -247,7 +191,7 @@
 
     {{-- STATUS TOGGLE --}}
     <script>
-        document.addEventListener('change', function (e) {
+        document.addEventListener('change', function(e) {
 
             const toggle = e.target.closest(
                 '.app-table-toggle input[type="checkbox"]'
@@ -281,5 +225,4 @@
 
         });
     </script>
-
 @endsection

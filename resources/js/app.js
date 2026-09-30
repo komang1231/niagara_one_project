@@ -10,6 +10,7 @@ import './color-picker';
 import './time-picker';
 import './currency';
 import './file-upload';
+import './permintaan';
 
 
 // Ganti ikon chevron (down <-> up) mengikuti status collapse Bootstrap.

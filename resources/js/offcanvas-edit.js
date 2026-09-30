@@ -1,12 +1,11 @@
 /**
- * resources/js/offcanvas-edit.js
- * ---------------------------------------------------------------
  * WAJIB pakai jQuery .val().trigger('change') buat field <select>
  * yang di-select2-in, BUKAN field.value = ... biasa. Alasannya:
  * Select2 render kotak tertutupnya sendiri dan cuma refresh pas
  * ada event 'change' resmi. Set .value native doang bikin value
  * ASLI benar tapi KOTAK TERTUTUPNYA masih nampilin cache lama
- * (baru kelihatan bener kalau dropdown-nya dibuka manual).
+ * (baru kelihatan bener kalau dropdown-nya dibuka manuall).
+ * 
  */
 
 const TRUTHY = ["1", "true", "aktif", "active", "yes", "ya"];
@@ -39,7 +38,7 @@ document.addEventListener("click", (e) => {
         })
         .then((data) => {
             fillForm(form, data);
-            // Dipakai modul yang punya chained dropdown (Lowongan, Karyawan)
+            // Dipakai modul yang punya chained dropdown (Lowongan, Karyawan, Permintaan)
             // buat isi ulang divisi/section/job-position setelah data utama masuk.
             form.dispatchEvent(
                 new CustomEvent("edit-data:loaded", { detail: data }),
@@ -53,6 +52,10 @@ document.addEventListener("click", (e) => {
 function fillForm(form, data) {
     Object.entries(data).forEach(([key, value]) => {
         form.querySelectorAll(`[name="${key}"]`).forEach((field) => {
+            // File input tidak boleh di-set value-nya (melempar error, dan
+            // event edit-data:loaded jadi tidak pernah terkirim).
+            if (field.type === "file") return;
+
             if (field.type === "hidden") {
                 if (field.hasAttribute("data-rich-text-input")) {
                     window.setRichTextContent?.(key, value, form);
@@ -60,6 +63,12 @@ function fillForm(form, data) {
                 if (field.hasAttribute("data-currency-input")) {
                     window.setCurrencyValue?.(key, value, form);
                 }
+                return;
+            }
+
+            // Flatpickr: pakai setDate supaya tampilan ikut berubah
+            if (field._flatpickr) {
+                field._flatpickr.setDate(value ?? "", false);
                 return;
             }
 

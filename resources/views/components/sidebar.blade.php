@@ -8,6 +8,13 @@
         ],
 
         [
+            'label' => 'Permintaan',
+            'icon' => 'bi-inbox-fill',
+            'slug' => 'permintaan',
+            'children' => [],
+        ],
+
+        [
             'label' => 'Karyawan',
             'icon' => 'bi-people-fill',
             'slug' => 'karyawan',

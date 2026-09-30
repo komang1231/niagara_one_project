@@ -121,17 +121,17 @@
             setValue(select, '');
         }
 
-        function fillSelect(select, data) {
-            select.innerHTML = '<option value="">-- Pilih --</option>';
-            data.forEach((item) => {
-                const option = document.createElement('option');
-                option.value = item.id;
-                option.textContent = item.nama;
-                select.appendChild(option);
-            });
-            select.disabled = data.length === 0;
-            setValue(select, '');
-        }
+            function fillSelect(select, data) {
+                select.innerHTML = '<option value="">-- Pilih --</option>';
+                data.forEach((item) => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.nama;
+                    select.appendChild(option);
+                });
+                select.disabled = data.length === 0;
+                setValue(select, '');
+            }
 
         function fetchChildren(url, parentId, targetSelect) {
             const ticket = newTicket(targetSelect);
@@ -142,7 +142,7 @@
                     return res.json();
                 })
                 .then((data) => {
-                    if (ticket !== tickets[targetSelect.id]) return; // respons usang
+                    if (ticket !== tickets[targetSelect.id]) return; 
                     fillSelect(targetSelect, data);
                 })
                 .catch((err) => console.error('Gagal ambil data chained dropdown:', err));
