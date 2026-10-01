@@ -52,12 +52,12 @@ class RekrutmenRequest extends FormRequest
             'nama' => 'required|string|max:100',
             'email' => 'required|string|email|max:150|unique:rekrutmens,email',
             'no_tlp' => 'required|string|max:20|unique:rekrutmens,no_tlp',
-            'file_cv' => 'required|string|max:255',
-            'jenjang_pendidikan_id' => 'required|integer|exists:jenjang_pendidikan,id',
+            'file_cv' => 'required|file|mimes:pdf,doc,docx|max:20480',
+            'jenjang_pendidikan_id' => 'required|integer|exists:jenjang_pendidikans,id',
             'sumber_pelamar_id' => 'required|integer|exists:sumber_pelamars,id',
             'status_rekrutmen' => 'required|in:pelamar,screening,interview,offering,diterima,ditolak',
             'pool_talent' => 'nullable|in:rehire,blacklist',
-            'status' => 'required|in:aktif,nonaktif',
+            'status' => 'required|in:0,1'
         ];
     }
 }

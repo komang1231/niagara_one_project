@@ -86,7 +86,7 @@
 </div>
 
 <script>
-    document.addEventListener('click', function (e) {
+    document.addEventListener('click', function(e) {
         const button = e.target.closest('[data-detail-url]');
         if (!button) return;
 
@@ -98,20 +98,23 @@
         const capitalize = (value) =>
             value ? value.charAt(0).toUpperCase() + value.slice(1) : '-';
 
-        // Reset dulu supaya tidak tampil data kandidat sebelumnya
         [
             'detail-kode', 'detail-nama', 'detail-email', 'detail-no-tlp',
-            'detail-lowongan', 'detail-departemen', 'detail-divisi', 'detail-section',
-            'detail-job-position', 'detail-job-level', 'detail-cabang',
-            'detail-pendidikan', 'detail-sumber', 'detail-pool',
-            'detail-status-rekrutmen', 'detail-status', 'detail-cv-name',
+            'detail-lowongan', 'detail-departemen', 'detail-divisi',
+            'detail-section', 'detail-job-position', 'detail-job-level',
+            'detail-cabang', 'detail-pendidikan', 'detail-sumber',
+            'detail-pool', 'detail-status-rekrutmen', 'detail-status',
+            'detail-cv-name',
         ].forEach((id) => setText(id, '-'));
 
-        document.getElementById('detail-cv-link')?.classList.add('d-none');
+        const cvLink = document.getElementById('detail-cv-link');
+        cvLink?.classList.add('d-none');
 
         fetch(button.dataset.detailUrl, {
-            headers: { Accept: 'application/json' },
-        })
+                headers: {
+                    Accept: 'application/json'
+                },
+            })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Gagal mengambil detail rekrutmen.');
@@ -130,27 +133,38 @@
                 setText('detail-section', data.section);
                 setText('detail-job-position', data.job_position);
                 setText('detail-job-level', data.job_level);
-                setText('detail-cabang', data.cabang);
-                setText('detail-pendidikan', data.pendidikan);
-                setText('detail-sumber', data.sumber);
+                setText('detail-cabang', data.cabang_kantor);
+                setText('detail-pendidikan', data.jenjang_pendidikan);
+                setText('detail-sumber', data.sumber_pelamar);
 
                 setText(
                     'detail-pool',
-                    data.pool_talent ? capitalize(data.pool_talent) : '-'
+                    data.pool_talent === null || data.pool_talent === '' ?
+                    '-' :
+                    data.pool_talent
                 );
 
-                setText('detail-status-rekrutmen', capitalize(data.status_rekrutmen));
-                setText('detail-status', data.status === 'aktif' ? 'Aktif' : 'Nonaktif');
+                setText(
+                    'detail-status-rekrutmen',
+                    capitalize(data.status_rekrutmen)
+                );
 
-                const cvLink = document.getElementById('detail-cv-link');
+                setText(
+                    'detail-status',
+                    data.status === 'aktif' ? 'Aktif' : 'Nonaktif'
+                );
 
-                if (data.cv_url) {
-                    setText('detail-cv-name', data.cv_name);
-                    cvLink.href = data.cv_url;
+                if (data.file_cv) {
+                    setText(
+                        'detail-cv-name',
+                        data.file_cv.split('/').pop()
+                    );
+
+                    // URL ini perlu disesuaikan dengan penyimpanan CV.
+                    cvLink.href = `/storage/${data.file_cv}`;
                     cvLink.classList.remove('d-none');
                 } else {
                     setText('detail-cv-name', 'Belum ada CV');
-                    cvLink.classList.add('d-none');
                 }
             })
             .catch((error) => console.error(error));

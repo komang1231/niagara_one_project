@@ -67,7 +67,7 @@ class RekrutmenController extends Controller
         $jenjangPendidikans = JenjangPendidikan::where('status', 'aktif')
             ->orderBy('nama')
             ->get();
-        
+
         $sumberPelamars = SumberPelamar::where('status', 'aktif')
             ->orderBy('nama')
             ->get();
@@ -139,23 +139,25 @@ class RekrutmenController extends Controller
 
     public function store(RekrutmenRequest $request)
     {
-        $start = microtime(true);
+        Log::debug('Rekrutmen store dipanggil', [
+            'input' => $request->all(),
+            'validated' => $request->validated(),
+        ]);
+
         $data = $request->validated();
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
 
-        $before = microtime(true);
         $rekrutmen = Rekrutmen::create($data);
-        $after = microtime(true);
 
-        Log::debug('Rekrutmen store timings', [
-            'total_ms' => round((microtime(true) - $start) * 1000, 2),
-            'create_ms' => round(($after - $before) * 1000, 2),
-            'id' => $rekrutmen->id ?? null,
+        Log::debug('Rekrutmen berhasil dibuat', [
+            'id' => $rekrutmen->id,
+            'data' => $rekrutmen->toArray(),
         ]);
 
-        return redirect()->route('rekrutmen.index')->with('success', 'Rekrutmen berhasil ditambahkan.');
+        return redirect()
+            ->route('rekrutmen.index')
+            ->with('success', 'Rekrutmen berhasil ditambahkan.');
     }
-
     public function edit(Rekrutmen $rekrutmen)
     {
         return view('rekrutmen.form-edit', compact('rekrutmen'));
