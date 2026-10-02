@@ -59,14 +59,14 @@
                                     @csrf
                                     @method('PATCH')
                                     <x-button type="submit" variant="icon-success" icon="bi-arrow-counterclockwise"
-                                        onclick="return confirm('Pulihkan lowongan ini?')" />
+                                         />
                                 </form>
 
                                 <form action="{{ route('lowongan.force-delete', $row->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <x-button type="submit" variant="icon-danger" icon="bi-trash3-fill"
-                                        onclick="return confirm('Lowongan akan dihapus permanen dan tidak bisa dikembalikan lagi. Lanjutkan?')" />
+                                         />
                                 </form>
                             </div>
                         </td>

@@ -140,7 +140,7 @@
                                         @method('DELETE')
 
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash" title="Hapus"
-                                            onclick="return confirm('Hapus kandidat ini?')" />
+                                             />
                                     </form>
 
 

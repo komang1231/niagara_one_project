@@ -83,7 +83,7 @@
                                         variant="icon"
                                         icon="bi-arrow-counterclockwise"
                                         title="Pulihkan"
-                                        onclick="return confirm('Pulihkan kandidat ini?')"
+
                                     />
                                 </form>
 
@@ -100,7 +100,7 @@
                                         variant="icon-danger"
                                         icon="bi-trash"
                                         title="Hapus Permanen"
-                                        onclick="return confirm('Hapus kandidat secara permanen? Data tidak dapat dipulihkan.')"
+                                        
                                     />
                                 </form>
 

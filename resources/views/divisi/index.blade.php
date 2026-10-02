@@ -84,7 +84,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash"
-                                            onclick="return confirm('Hapus divisi ini?')" />
+                                             />
                                     </form>
 
                                     {{-- Status --}}

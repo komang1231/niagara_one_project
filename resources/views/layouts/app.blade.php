@@ -9,7 +9,7 @@
 
     <div class="app-content-wrapper">
 
-        <x-topbar {{-- untuk smntara --}}
+        <x-topbar
             :user-name="auth()->user()->nama ?? 'Super Admin'"
             :user-email="auth()->user()->email ?? 'superadmin@gmail.com'"
             :user-role="auth()->user()->role_label ?? 'Super Admin'"
@@ -21,6 +21,9 @@
         </main>
 
     </div>
+
+    {{-- POPUP GLOBAL --}}
+    <x-popup />
 
 </body>
 </html>

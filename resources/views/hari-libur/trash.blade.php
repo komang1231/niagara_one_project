@@ -60,7 +60,7 @@
                                     @csrf
                                     @method('PATCH')
                                     <x-button type="submit" variant="icon-success" icon="bi-arrow-counterclockwise"
-                                        onclick="return confirm('Pulihkan hari libur ini?')" />
+                                         />
                                 </form>
 
                                 {{-- Hapus permanen --}}
@@ -68,7 +68,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <x-button type="submit" variant="icon-danger" icon="bi-trash3-fill"
-                                        onclick="return confirm('Hari libur akan dihapus permanen dan tidak bisa dikembalikan lagi. Lanjutkan?')" />
+                                         />
                                 </form>
                             </div>
                             </td>

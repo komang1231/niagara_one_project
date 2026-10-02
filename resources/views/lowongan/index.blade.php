@@ -132,7 +132,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash" title="Hapus"
-                                            onclick="return confirm('Hapus lowongan ini?')" />
+                                            />
                                     </form>
 
                                     {{-- Status --}}

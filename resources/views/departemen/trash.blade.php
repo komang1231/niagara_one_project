@@ -49,7 +49,7 @@
                                     @csrf
                                     @method('PATCH')
                                     <x-button type="submit" variant="icon-success" icon="bi-arrow-counterclockwise"
-                                        onclick="return confirm('Pulihkan departemen ini?')" />
+                                     />
                                 </form>
 
                                 {{-- Hapus permanen --}}
@@ -57,7 +57,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <x-button type="submit" variant="icon-danger" icon="bi-trash"
-                                        onclick="return confirm('Departemen akan dihapus permanen. Lanjutkan?')" />
+                                     />
                                 </form>
                             </div>
                         </td>
