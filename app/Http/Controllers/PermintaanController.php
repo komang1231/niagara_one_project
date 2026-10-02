@@ -18,6 +18,8 @@ use App\Models\CabangKantor;
 use App\Models\Cuti;
 use App\Models\Karyawan;
 use App\Models\Shift;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class PermintaanController extends Controller
 {
@@ -30,11 +32,11 @@ class PermintaanController extends Controller
         */
 
         $tabs = [
-            'karyawan' => 'Permintaan Karyawan',
-            'cuti' => 'Permintaan Cuti',
-            'lembur' => 'Permintaan Lembur',
-            'resign' => 'Permintaan Resign',
-            'tukar-shift' => 'Permintaan Tukar Shift',
+            'karyawan' => 'Karyawan',
+            'cuti' => 'Cuti',
+            'lembur' => 'Lembur',
+            'resign' => 'Resign',
+            'tukar-shift' => 'Tukar Shift',
         ];
         $tab = $request->get('tab', 'karyawan');
 
@@ -237,6 +239,8 @@ class PermintaanController extends Controller
         return response()->json($jobPositions);
     }
 
+
+    //PERMINTAAN KARYAWAN EDIT DATA
     public function editDataPermintaanKaryawan($id)
     {
         $permintaanKaryawan = PermintaanKaryawan::findOrFail($id);
@@ -264,6 +268,131 @@ class PermintaanController extends Controller
             'job_position_id' => $permintaanKaryawan->job_position_id,
             'job_level_id' => $permintaanKaryawan->job_level_id,
             'jumlah' => $permintaanKaryawan->jumlah,
+        ]);
+    }
+
+    //PERMINTAAN CUTI EDIT DATA
+    public function editDataPermintaanCuti($id)
+    {
+        $permintaanCuti = PermintaanCuti::with('details')
+            ->findOrFail($id);
+
+        if (
+            $permintaanCuti->approved_at ||
+            $permintaanCuti->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Cuti yang sudah diproses tidak dapat diubah.',
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'id' => $permintaanCuti->id,
+            'kode' => $permintaanCuti->kode,
+            'cuti_id' => $permintaanCuti->cuti_id,
+            'karyawan_id' => $permintaanCuti->karyawan_id,
+            'tanggal_mulai' => $permintaanCuti->tanggal_mulai,
+            'tanggal_selesai' => $permintaanCuti->tanggal_selesai,
+            'alasan' => $permintaanCuti->alasan,
+            'lampiran' => $permintaanCuti->lampiran,
+            'pengganti_karyawan_id' => $permintaanCuti->pengganti_karyawan_id,
+            'details' => $permintaanCuti->details->map(function ($detail) {
+                return [
+                    'id' => $detail->id,
+                    'tanggal' => $detail->tanggal,
+                    'setengah_hari' => $detail->setengah_hari,
+                ];
+            }),
+        ]);
+    }
+
+    //PERMINTAAN LEMBUR EDIT DATA
+    public function editDataPermintaanLembur($id)
+    {
+        $permintaanLembur = PermintaanLembur::findOrFail($id);
+
+        if (
+            $permintaanLembur->approved_at ||
+            $permintaanLembur->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Lembur yang sudah diproses tidak dapat diubah.',
+            ], 422);
+        }
+
+        //['kode', 'karyawan_id', 'tanggal_tujuan', 'jam_mulai', 'jam_selesai', 'alasan', 'pengali'];
+        return response()->json([
+            'success' => true,
+            'id' => $permintaanLembur->id,
+            'kode' => $permintaanLembur->kode,
+            'karyawan_id' => $permintaanLembur->karyawan_id,
+            'tanggal_tujuan' => $permintaanLembur->tanggal_tujuan,
+            'jam_mulai' => $permintaanLembur->jam_mulai
+                ? \Carbon\Carbon::parse($permintaanLembur->jam_mulai)->format('H:i')
+                : null,
+
+            'jam_selesai' => $permintaanLembur->jam_selesai
+                ? \Carbon\Carbon::parse($permintaanLembur->jam_selesai)->format('H:i')
+                : null,
+            'alasan' => $permintaanLembur->alasan,
+            'pengali' => $permintaanLembur->pengali,
+        ]);
+    }
+
+    //PERMINTAAN RESIGN EDIT DATA
+    public function editDataPermintaanResign($id)
+    {
+        $permintaanResign = PermintaanResign::findOrFail($id);
+
+        if (
+            $permintaanResign->approved_at ||
+            $permintaanResign->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Resign yang sudah diproses tidak dapat diubah.',
+            ], 422);
+        }
+
+        //['kode', 'karyawan_id', 'tanggal_efektif', 'alasan'];
+        return response()->json([
+            'success' => true,
+            'id' => $permintaanResign->id,
+            'kode' => $permintaanResign->kode,
+            'karyawan_id' => $permintaanResign->karyawan_id,
+            'tanggal_efektif' => $permintaanResign->tanggal_efektif,
+            'alasan' => $permintaanResign->alasan,
+        ]);
+    }
+
+    //PERMINTAAN TUKAR SHIFT EDIT DATA
+    public function editDataPemintaanTukarShift($id)
+    {
+        $permintaanTukarShift = PermintaanTukarShift::findOrFail($id);
+
+        if (
+            $permintaanTukarShift->approved_at ||
+            $permintaanTukarShift->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Tukar Shift yang sudah diproses tidak dapat diubah.',
+            ], 422);
+        }
+
+        //['kode', 'karyawan_pengaju', 'karyawan_pengganti', 'tanggal_tujuan', 'shift_pengaju', 'shift_pengganti'];
+        return response()->json([
+            'success' => true,
+            'id' => $permintaanTukarShift->id,
+            'kode' => $permintaanTukarShift->kode,
+            'karyawan_pengaju' => $permintaanTukarShift->karyawan_pengaju,
+            'karyawan_pengganti' => $permintaanTukarShift->karyawan_pengganti,
+            'tanggal_tujuan' => $permintaanTukarShift->tanggal_tujuan,
+            'shift_pengaju' => $permintaanTukarShift->shift_pengaju,
+            'shift_pengganti' => $permintaanTukarShift->shift_pengganti,
         ]);
     }
 }

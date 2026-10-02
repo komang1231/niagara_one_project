@@ -1,6 +1,6 @@
 <x-offcanvas.form id="offcanvas-permintaan-tukar-shift-edit" title="Edit Permintaan Tukar Shift"
     description="Perbarui permintaan tukar shift." size="lg">
-    <form id="offcanvas-permintaan-tukar-shift-edit-form" method="POST">
+    <form id="offcanvas-permintaan-tukar-shift-edit-form" method="POST" data-edit-form data-chained>
         @csrf
         @method('PUT')
         <input type="hidden" name="_form" value="offcanvas-permintaan-tukar-shift-edit">

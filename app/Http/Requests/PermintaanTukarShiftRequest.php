@@ -14,11 +14,53 @@ class PermintaanTukarShiftRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'karyawan_pengaju' => 'required|exists:karyawans,id',
             'karyawan_pengganti' => 'required|exists:karyawans,id',
             'tanggal_tujuan' => 'required|date',
             'shift_pengaju' => 'required|exists:shifts,id',
             'shift_pengganti' => 'required|exists:shifts,id',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('tanggal')) {
+            $tanggal = $this->input('tanggal');
+
+            $bulan = [
+                'Januari' => '01',
+                'Februari' => '02',
+                'Maret' => '03',
+                'April' => '04',
+                'Mei' => '05',
+                'Juni' => '06',
+                'Juli' => '07',
+                'Agustus' => '08',
+                'September' => '09',
+                'Oktober' => '10',
+                'November' => '11',
+                'Desember' => '12',
+            ];
+
+            if (
+                preg_match('/^(\d{1,2}) ([A-Za-z]+) (\d{4})$/', $tanggal, $match)
+                && isset($bulan[$match[2]])
+            ) {
+
+                $tanggal = sprintf(
+                    '%04d-%02d-%02d',
+                    $match[3],
+                    $bulan[$match[2]],
+                    $match[1]
+                );
+
+                $this->merge([
+                    'tanggal_efektif' => $tanggal,
+                ]);
+            }
+        } else {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'tanggal' => 'Format tanggal tidak valid.',
+            ]);
+        }
     }
 }

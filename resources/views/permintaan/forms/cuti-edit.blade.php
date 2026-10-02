@@ -1,6 +1,6 @@
 <x-offcanvas.form id="offcanvas-permintaan-cuti-edit" title="Edit Permintaan Cuti"
     description="Perbarui permintaan cuti." size="xl">
-    <form id="offcanvas-permintaan-cuti-edit-form" method="POST" enctype="multipart/form-data" data-cuti-form>
+    <form id="offcanvas-permintaan-cuti-edit-form" method="POST" enctype="multipart/form-data" data-edit-form data-cuti-form data-chained>
         @csrf
         @method('PUT')
         <input type="hidden" name="_form" value="offcanvas-permintaan-cuti-edit">

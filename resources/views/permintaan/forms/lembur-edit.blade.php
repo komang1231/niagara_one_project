@@ -1,6 +1,6 @@
 <x-offcanvas.form id="offcanvas-permintaan-lembur-edit" title="Edit Permintaan Lembur"
     description="Perbarui permintaan lembur." size="lg">
-    <form id="offcanvas-permintaan-lembur-edit-form" method="POST">
+    <form id="offcanvas-permintaan-lembur-edit-form" method="POST" data-edit-form data-chained>
         @csrf
         @method('PUT')
         <input type="hidden" name="_form" value="offcanvas-permintaan-lembur-edit">

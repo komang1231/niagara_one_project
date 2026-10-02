@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-cuti.update');
     Route::delete('permintaan-cuti/{permintaanCuti}', [PermintaanCutiController::class, 'destroy'])
         ->name('permintaan-cuti.destroy');
-    Route::get('permintaan-cuti/{id}/edit-data', [PermintaanCutiController::class, 'editData'])
+    Route::get('permintaan-cuti/{id}/edit-data', [PermintaanController::class, 'editDataPermintaanCuti'])
         ->name('permintaan-cuti.edit-data');
     Route::patch('permintaan-cuti/{id}/restore', [PermintaanCutiController::class, 'restore'])
         ->name('permintaan-cuti.restore');
@@ -112,7 +112,7 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-lembur.update');
     Route::delete('permintaan-lembur/{permintaanLembur}', [PermintaanLemburController::class, 'destroy'])
         ->name('permintaan-lembur.destroy');
-    Route::get('permintaan-lembur/{id}/edit-data', [PermintaanLemburController::class, 'editData'])
+    Route::get('permintaan-lembur/{id}/edit-data', [PermintaanController::class, 'editDataPermintaanLembur'])
         ->name('permintaan-lembur.edit-data');
     Route::patch('permintaan-lembur/{id}/restore', [PermintaanLemburController::class, 'restore'])
         ->name('permintaan-lembur.restore');
@@ -132,7 +132,7 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-resign.update');
     Route::delete('permintaan-resign/{permintaanResign}', [PermintaanResignController::class, 'destroy'])
         ->name('permintaan-resign.destroy');
-    Route::get('permintaan-resign/{id}/edit-data', [PermintaanResignController::class, 'editData'])
+    Route::get('permintaan-resign/{id}/edit-data', [PermintaanController::class, 'editDataPermintaanResign'])
         ->name('permintaan-resign.edit-data');
     Route::patch('permintaan-resign/{id}/restore', [PermintaanResignController::class, 'restore'])
         ->name('permintaan-resign.restore');
@@ -152,7 +152,7 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-tukar-shift.update');
     Route::delete('permintaan-tukar-shift/{permintaanTukarShift}', [PermintaanTukarShiftController::class, 'destroy'])
         ->name('permintaan-tukar-shift.destroy');
-    Route::get('permintaan-tukar-shift/{id}/edit-data', [PermintaanTukarShiftController::class, 'editData'])
+    Route::get('permintaan-tukar-shift/{id}/edit-data', [PermintaanController::class, 'editDataPermintaanTukarShift'])
         ->name('permintaan-tukar-shift.edit-data');
     Route::patch('permintaan-tukar-shift/{id}/restore', [PermintaanTukarShiftController::class, 'restore'])
         ->name('permintaan-tukar-shift.restore');
@@ -249,8 +249,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('permintaan-resign', PermintaanResignController::class)
         ->parameters(['permintaan-resign' => 'permintaan-resign']);
-    Route::get('permintaan-resign/{id}/edit-data', [PermintaanResignController::class, 'editData'])
-        ->name('permintaan-resign.edit-data');
     Route::get('permintaan-resign-trash', [PermintaanResignController::class, 'trash'])
         ->name('permintaan-resign.trash');
     Route::patch('permintaan-resign/{id}/restore', [PermintaanResignController::class, 'restore'])
@@ -281,8 +279,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('permintaan-cuti', PermintaanCutiController::class)
         ->parameters(['permintaan-cuti' => 'permintaan-cuti']);
-    Route::get('permintaan-cuti/{id}/edit-data', [PermintaanCutiController::class, 'editData'])
-        ->name('permintaan-cuti.edit-data');
     Route::get('permintaan-cuti-trash', [PermintaanCutiController::class, 'trash'])
         ->name('permintaan-cuti.trash');
     Route::patch('permintaan-cuti/{id}/restore', [PermintaanCutiController::class, 'restore'])
@@ -294,8 +290,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('permintaan-karyawan', PermintaanKaryawanController::class)
         ->parameters(['permintaan-karyawan' => 'permintaan-karyawan']);
-    Route::get('permintaan-karyawan/{id}/edit-data', [PermintaanKaryawanController::class, 'editData'])
-        ->name('permintaan-karyawan.edit-data');
     Route::get('permintaan-karyawan-trash', [PermintaanKaryawanController::class, 'trash'])
         ->name('permintaan-karyawan.trash');
     Route::patch('permintaan-karyawan/{id}/restore', [PermintaanKaryawanController::class, 'restore'])

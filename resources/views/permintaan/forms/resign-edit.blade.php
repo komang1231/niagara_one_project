@@ -1,6 +1,6 @@
 <x-offcanvas.form id="offcanvas-permintaan-resign-edit" title="Edit Permintaan Resign"
     description="Perbarui permintaan resign." size="lg">
-    <form id="offcanvas-permintaan-resign-edit-form" method="POST">
+    <form id="offcanvas-permintaan-resign-edit-form" method="POST" data-edit-form data-chained>
         @csrf
         @method('PUT')
         <input type="hidden" name="_form" value="offcanvas-permintaan-resign-edit">

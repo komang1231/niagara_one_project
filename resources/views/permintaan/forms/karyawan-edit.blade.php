@@ -1,6 +1,6 @@
 <x-offcanvas.form id="offcanvas-permintaan-karyawan-edit" title="Edit Permintaan Karyawan"
     description="Perbarui permintaan karyawan." size="xl">
-    <form id="offcanvas-permintaan-karyawan-edit-form" method="POST" data-chained
+    <form id="offcanvas-permintaan-karyawan-edit-form" method="POST" data-edit-form data-chained
         data-url-divisi="{{ route('permintaan-karyawan.get-divisi', ['departemen' => '__ID__']) }}"
         data-url-section="{{ route('permintaan-karyawan.get-section', ['divisi' => '__ID__']) }}"
         data-url-position="{{ route('permintaan-karyawan.get-job-position', ['section' => '__ID__']) }}">
