@@ -43,10 +43,6 @@
         </thead>
         <tbody>
             @forelse ($permintaanResign as $i => $row)
-                @php
-                    $pemohon = $row->karyawan->nama ?? '-';
-                    $efektif = \Carbon\Carbon::parse($row->tanggal_efektif)->format('d/m/Y');
-                @endphp
                 <tr>
                     <td class="app-table__col-no">
                         {{ $permintaanResign->firstItem() + $i }}

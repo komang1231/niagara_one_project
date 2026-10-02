@@ -42,12 +42,6 @@
         </thead>
         <tbody>
             @forelse ($permintaanKaryawan as $i => $row)
-                @php
-                    $pemohon = $row->karyawan->nama ?? '-';
-                    $posisi = $row->jobPosition->nama ?? ($row->departemen->nama ?? '-');
-                    $level = $row->jobLevel->nama ?? '-';
-                @endphp
-
                 <tr>
                     <td class="app-table__col-no">
                         {{ $permintaanKaryawan->firstItem() + $i }}

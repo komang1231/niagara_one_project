@@ -43,11 +43,6 @@
 
             <tbody>
                 @forelse ($permintaanCuti as $i => $row)
-                    @php
-                        $pemohon = $row->karyawan->nama ?? '-';
-                        $mulai = \Carbon\Carbon::parse($row->tanggal_mulai)->format('d/m/Y');
-                        $selesai = \Carbon\Carbon::parse($row->tanggal_selesai)->format('d/m/Y');
-                    @endphp
                     <tr>
                         <td class="app-table__col-no">
                             {{ $permintaanCuti->firstItem() + $i }}

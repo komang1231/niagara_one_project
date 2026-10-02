@@ -44,10 +44,6 @@
         </thead>
         <tbody>
             @forelse ($permintaanLembur as $i => $row)
-                @php
-                    $pemohon = $row->karyawan->nama ?? '-';
-                    $tanggal = \Carbon\Carbon::parse($row->tanggal_tujuan)->format('d/m/Y');
-                @endphp
                 <tr>
                     <td class="app-table__col-no">
                         {{ $permintaanLembur->firstItem() + $i }}

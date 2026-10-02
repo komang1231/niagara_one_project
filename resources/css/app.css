@@ -22,6 +22,7 @@
 @import "lowongan.css";
 @import "rekrutmen.css";
 @import "file-upload.css";
+@import "approval.css";
 @import "select2/dist/css/select2.min.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

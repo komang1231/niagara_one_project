@@ -1,0 +1,36 @@
+  .approval-tabs {
+            margin-bottom: 1rem;
+        }
+
+        .permintaan-status {
+            display: inline-block;
+            padding: .25rem .65rem;
+            border-radius: 999px;
+            font-size: .75rem;
+            font-weight: 600;
+        }
+
+        .permintaan-status--menunggu {
+            background: #fff4d6;
+            color: #8a6100;
+        }
+
+        .permintaan-status--disetujui {
+            background: #dcf5e3;
+            color: #1b6b3a;
+        }
+
+        .permintaan-status--ditolak {
+            background: #fde2e2;
+            color: #a12626;
+        }
+
+        .permintaan-status--dibatalkan {
+            background: #e9ecef;
+            color: #5c636a;
+        }
+
+        /* Form tombol aksi di dalam tabel jangan ada margin */
+        .app-table__actions form {
+            margin: 0;
+        }

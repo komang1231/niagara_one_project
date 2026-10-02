@@ -4,26 +4,6 @@
 @section('title', 'Permintaan')
 
 @section('content')
-    @php
-        // Data dropdown dikirim backend. Kalau belum ada -> collection kosong (tidak error).
-        $karyawans = collect($karyawans ?? []);
-        $cabangKantors = collect($cabangKantors ?? []);
-        $departemens = collect($departemens ?? []);
-        $jobLevels = collect($jobLevels ?? []);
-        $cutis = collect($cutis ?? []);
-        $shifts = collect($shifts ?? []);
-
-        $tabs = [
-            'karyawan' => 'Karyawan',
-            'cuti' => 'Cuti',
-            'lembur' => 'Lembur',
-            'resign' => 'Resign',
-            'tukar-shift' => 'Tukar Shift',
-        ];
-
-        // Kalau ?tab= tidak valid, jatuh ke tab pertama
-        $tab = array_key_exists($tab ?? '', $tabs) ? $tab : 'karyawan';
-    @endphp
 
     <style>
         .permintaan-tabs {

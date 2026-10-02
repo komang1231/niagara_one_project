@@ -15,6 +15,13 @@
         ],
 
         [
+            'label' => 'Approval',
+            'icon' => 'bi-inbox-fill',
+            'slug' => 'approval',
+            'children' => [],
+        ],
+
+        [
             'label' => 'Karyawan',
             'icon' => 'bi-people-fill',
             'slug' => 'karyawan',

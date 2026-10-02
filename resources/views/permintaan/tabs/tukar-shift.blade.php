@@ -43,13 +43,6 @@
         </thead>
         <tbody>
             @forelse ($permintaanTukarShift as $i => $row)
-                @php
-                    $pengaju = $row->pengaju->nama ?? 'ID ' . $row->karyawan_pengaju;
-                    $pengganti = $row->pengganti->nama ?? 'ID ' . $row->karyawan_pengganti;
-                    $shiftA = $row->shiftPengaju->nama ?? '#' . $row->shift_pengaju;
-                    $shiftB = $row->shiftPengganti->nama ?? '#' . $row->shift_pengganti;
-                    $tanggal = \Carbon\Carbon::parse($row->tanggal_tujuan)->format('d/m/Y');
-                @endphp
                 <tr>
                     <td class="app-table__col-no">
                         {{ $permintaanTukarShift->firstItem() + $i }}
