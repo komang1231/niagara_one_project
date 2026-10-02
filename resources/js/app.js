@@ -16,6 +16,8 @@ import './time-picker';
 import './currency';
 import './file-upload';
 import './permintaan';
+import './jadwal-karyawan';
+import './jadwal-form';
 
 
 // Ganti ikon chevron (down <-> up) mengikuti status collapse Bootstrap.
@@ -41,4 +43,4 @@ document.addEventListener('DOMContentLoaded', function () {
       trigger.setAttribute('aria-expanded', 'false');
     });
   });
-});
+}); 

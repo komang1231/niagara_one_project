@@ -24,6 +24,7 @@ use App\Http\Controllers\PermintaanKaryawanController;
 use App\Http\Controllers\LowonganController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\RekrutmenController;
+use App\Http\Controllers\JadwalKaryawanController;
 
 
 Route::get('/test-laravel', function () {
@@ -309,7 +310,9 @@ Route::middleware('auth')->group(function () {
     Route::view('/surat-peringatan', 'surat-peringatan.index')->name('surat-peringatan.index');
 
     // Kehadiran
-    Route::view('/jadwal-karyawan', 'jadwal-karyawan.index')->name('jadwal-karyawan.index');
+     Route::get('jadwal-karyawan', [JadwalKaryawanController::class, 'index'])->name('jadwal-karyawan.index');
+    Route::post('jadwal-karyawan', [JadwalKaryawanController::class, 'store'])->name('jadwal-karyawan.store');
+
     Route::view('/pola-shift', 'pola-shift.index')->name('pola-shift.index');
     Route::view('/tukar-shift', 'tukar-shift.index')->name('tukar-shift.index');
     Route::view('/lembur', 'lembur.index')->name('lembur.index');

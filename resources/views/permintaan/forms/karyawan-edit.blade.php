@@ -10,9 +10,8 @@
 
         <x-form.input name="kode" label="Kode Permintaan" readonly />
 
-        <h6 class="mb-3 mt-4">Pemohon</h6>
-        <x-form.select name="karyawan_id" id="pk_edit_karyawan_id" label="Pemohon"
-            :options="$karyawans->pluck('nama', 'id')" nullable required />
+        <h6 class="mb-3 mt-4">Nama Pemohon</h6>
+        <x-form.input name="nama" label="nama" type="text" placeholder="Contoh: andrew" required />
 
         <h6 class="mb-3 mt-4">Penempatan</h6>
         <div class="row">
@@ -21,20 +20,20 @@
                     :options="$cabangKantors->pluck('nama', 'id')" nullable required />
             </div>
             <div class="col-md-4">
-                <x-form.select name="departemen_id" id="pk_edit_departemen_id" label="Departemen"
-                    :options="$departemens->pluck('nama', 'id')" nullable required />
+                <x-form.select name="departemen_id" id="pk_edit_departemen_id" label="Departemen" :options="$departemens->pluck('nama', 'id')"
+                    nullable required />
             </div>
             <div class="col-md-4">
-                <x-form.select name="job_level_id" id="pk_edit_job_level_id" label="Job Level"
-                    :options="$jobLevels->pluck('nama', 'id')" nullable required />
+                <x-form.select name="job_level_id" id="pk_edit_job_level_id" label="Job Level" :options="$jobLevels->pluck('nama', 'id')"
+                    nullable required />
             </div>
             <div class="col-md-4">
-                <x-form.select name="divisi_id" id="pk_edit_divisi_id" label="Divisi" :options="[]"
-                    nullable disabled data-chained-child />
+                <x-form.select name="divisi_id" id="pk_edit_divisi_id" label="Divisi" :options="[]" nullable
+                    disabled data-chained-child />
             </div>
             <div class="col-md-4">
-                <x-form.select name="section_id" id="pk_edit_section_id" label="Section" :options="[]"
-                    nullable disabled data-chained-child />
+                <x-form.select name="section_id" id="pk_edit_section_id" label="Section" :options="[]" nullable
+                    disabled data-chained-child />
             </div>
             <div class="col-md-4">
                 <x-form.select name="job_position_id" id="pk_edit_job_position_id" label="Job Position"

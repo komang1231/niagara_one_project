@@ -52,18 +52,23 @@
 
     {{-- FOOTER --}}
     <div class="offcanvas-footer border-top p-3 d-flex justify-content-end gap-2">
-        <button
-            type="button"
-            class="btn btn-outline-secondary"
-            data-bs-dismiss="offcanvas"
-        >
-            Batal
-        </button>
+        {{-- Slot opsional "extra": tombol tambahan di kiri footer (contoh: Tambah Shift di Jadwal Karyawan).
+             Kalau menu lain tidak mengisi slot ini, footer tampil seperti biasa. --}}
+        @if (isset($extra) && !$extra->isEmpty())
+            <div class="me-auto">
+                {{ $extra }}
+            </div>
+        @endif
 
-        {{-- form="{{ $formId }}" -> ini yang menyambungkan tombol ini (walau
-             posisinya di luar <form>) ke <form id="{{ $formId }}"> di body --}}
-        <button type="submit" form="{{ $formId }}" class="btn btn-success">
+        {{-- Batal & Simpan pakai <x-button> (pill) biar sama dengan tombol di dashboard.
+             form="{{ $formId }}" -> menyambungkan tombol Simpan (yang posisinya di luar <form>)
+             ke <form id="{{ $formId }}"> di body. --}}
+        <x-button variant="outline" data-bs-dismiss="offcanvas">
+            Batal
+        </x-button>
+
+        <x-button variant="primary" type="submit" icon="bi-check-lg" form="{{ $formId }}">
             Simpan
-        </button>
+        </x-button>
     </div> 
 </div>

@@ -53,7 +53,7 @@
                 <x-form.input-date name="tanggal_buka" label="Tanggal Buka" required />
             </div>
             <div class="col-md-4">
-                <x-form.input-date name="tanggal_tutup" label="Tanggal Tutup" required />
+                <x-form.input-date name="tanggal_tutup" label="Tanggal Tutup" after="tanggal_buka" required />
             </div>
         </div>
 

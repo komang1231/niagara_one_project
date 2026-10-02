@@ -1,0 +1,366 @@
+/* ============================================
+   JADWAL KARYAWAN — form tambah (baris shift + tanggal),
+   legend scroll horizontal, dan penanda LINTAS HARI.
+   Warna shift ngikut token --shift-{warna}-* di app.css
+   ============================================ */
+
+/* ===== Penanda lintas hari: selalu pakai warna indigo + ikon bulan ===== */
+.jadwal-lintas-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--shift-indigo-border);
+    background: var(--shift-indigo-bg);
+    color: var(--shift-indigo-text);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ===== Form: judul seksi ===== */
+.jadwal-form-section {
+    margin-bottom: 10px;
+}
+
+.jadwal-form-section__title {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-text-1000);
+}
+
+.jadwal-form-section__hint {
+    margin: 2px 0 0;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+/* ===== Form: 1 baris shift + tanggal ===== */
+.jadwal-form-row {
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--neutral-100);
+    border-radius: 12px;
+    background: var(--neutral-25);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.jadwal-form-row.is-duplicate {
+    border-color: var(--color-danger-border);
+    background: var(--color-danger-soft);
+}
+
+.jadwal-form-row__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.jadwal-form-row__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--primary-900);
+}
+
+.jadwal-form-row__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--neutral-500);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.jadwal-form-row__remove:hover {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+}
+
+.jadwal-form-row__remove[hidden] {
+    display: none;
+}
+
+/* ===== Form: info shift terpilih (jam + lintas hari) ===== */
+.jadwal-info {
+    padding: 8px 12px;
+    border: 1px solid var(--c-border);
+    border-radius: 10px;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.jadwal-info[hidden] {
+    display: none;
+}
+
+.jadwal-info__main {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.jadwal-info__sub {
+    margin-top: 2px;
+    opacity: 0.85;
+}
+
+/* lintas hari: garis tepi kiri indigo biar langsung kelihatan beda */
+.jadwal-info.is-lintas {
+    border-left: 4px solid var(--shift-indigo-text);
+}
+
+/* ===== Form: grid kartu (2-3 kartu per baris di offcanvas xl) ===== */
+.jadwal-rows {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.jadwal-rows .jadwal-form-row {
+    margin-bottom: 0;
+    min-width: 0; /* biar select2 / datepicker tidak melebarkan kolom */
+}
+
+/* ===== Form: kartu placeholder "Tambah Shift" ===== */
+.jadwal-add-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 220px;
+    padding: 16px;
+    border: 1.5px dashed var(--primary-300);
+    border-radius: 12px;
+    background: var(--primary-25);
+    color: var(--primary-900);
+    text-align: center;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.jadwal-add-card[hidden] {
+    display: none;
+}
+
+.jadwal-add-card:hover {
+    background: var(--primary-50);
+    border-color: var(--primary);
+}
+
+.jadwal-add-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-100);
+    font-size: 1.1rem;
+}
+
+.jadwal-add-card__title {
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.jadwal-add-card__hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.jadwal-summary {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: var(--primary-50);
+    color: var(--primary-950);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.jadwal-summary[hidden] {
+    display: none;
+}
+
+/* ===== Select2 shift: tampilan opsi ===== */
+.jadwal-opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.jadwal-opt__dot {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--c-text);
+    box-shadow: 0 0 0 3px var(--c-bg);
+}
+
+.jadwal-opt__name {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.jadwal-opt__time {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+.jadwal-opt__moon {
+    margin-left: auto;
+    flex: none;
+    padding: 0 7px;
+    border-radius: 999px;
+    background: var(--shift-indigo-bg);
+    color: var(--shift-indigo-text);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ===== Legend shift: scroll horizontal ===== */
+.jadwal-legend .jadwal-legend__items {
+    flex: 1 1 320px;
+    flex-wrap: nowrap;
+    min-width: 0;
+}
+
+.jadwal-legend__title {
+    flex: none;
+}
+
+.jadwal-legend__scroll {
+    --fade-l: 0px;
+    --fade-r: 0px;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 2px 0 6px;
+    scrollbar-width: thin;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+}
+
+.jadwal-legend__scroll.has-more-start {
+    --fade-l: 28px;
+}
+
+.jadwal-legend__scroll.has-more-end {
+    --fade-r: 28px;
+}
+
+.jadwal-legend__track {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+}
+
+.jadwal-legend__track .jadwal-legend__item,
+.jadwal-legend__fixed .jadwal-legend__item {
+    flex: none;
+    white-space: nowrap;
+}
+
+.jadwal-legend__nav {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid var(--neutral-100);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--color-text-700);
+    font-size: 11px;
+    transition: background-color 0.15s ease;
+}
+
+.jadwal-legend__nav:hover:not(:disabled) {
+    background: var(--primary-50);
+}
+
+.jadwal-legend__nav:disabled {
+    opacity: 0.4;
+}
+
+.jadwal-legend__nav[hidden] {
+    display: none;
+}
+
+/* item tetap (tidak ikut scroll): lintas hari + hari Minggu */
+.jadwal-legend__fixed {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 10px;
+    border-left: 1px solid var(--neutral-100);
+}
+
+.jadwal-legend__item--lintas {
+    --c-bg: var(--shift-indigo-bg);
+    --c-text: var(--shift-indigo-text);
+    --c-border: var(--shift-indigo-border);
+}
+
+.jadwal-legend__empty {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* ===== Kalender: chip shift LINTAS HARI ===== */
+.jadwal-chip.is-lintas {
+    border-right: 3px dashed var(--shift-indigo-text);
+}
+
+.jadwal-chip__moon {
+    margin-left: 4px;
+    font-size: 0.625rem;
+    color: var(--shift-indigo-text);
+}
+
+/* Penanda lanjutan di hari berikutnya: "shift kemarin masih berjalan sampai jam X" */
+.jadwal-cont {
+    padding: 4px 8px;
+    border: 1px dashed var(--shift-indigo-border);
+    border-radius: 8px;
+    background: repeating-linear-gradient(135deg, var(--shift-indigo-bg) 0 6px, transparent 6px 12px);
+    color: var(--shift-indigo-text);
+    font-size: 0.6875rem;
+    line-height: 1.3;
+}
+
+.jadwal-cont__name {
+    display: block;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.jadwal-cont__time {
+    display: block;
+    opacity: 0.85;
+    white-space: nowrap;
+}

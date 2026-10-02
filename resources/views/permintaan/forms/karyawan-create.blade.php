@@ -10,9 +10,8 @@
 
         <x-form.input name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeKaryawan }}" readonly />
 
-        <h6 class="mb-3 mt-4">Pemohon</h6>
-        <x-form.select name="karyawan_id" id="pk_create_karyawan_id" label="Pemohon"
-            :options="$karyawans->pluck('nama', 'id')" nullable required />
+        <h6 class="mb-3 mt-4">Nama Pemohon</h6>
+        <x-form.input name="nama" label="nama" type="text" placeholder="Contoh: andrew" required />
 
         <h6 class="mb-3 mt-4">Penempatan</h6>
         <div class="row">
