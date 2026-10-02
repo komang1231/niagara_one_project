@@ -49,9 +49,16 @@
 
                     <td class="fw-semibold">{{ $row->kode }}</td>
 
-                    <td><x-table.cell-stack :avatar="$pemohon" :lines="[$pemohon]" /></td>
+                    <td>
+                        <x-table.cell-stack :avatar="$row->karyawan?->avatar" :lines="[$row->karyawan?->nama ?? '-']" />
+                    </td>
 
-                    <td><x-table.cell-stack :lines="[$posisi, $level . ' • ' . $row->jumlah . ' orang']" /></td>
+                    <td>
+                        <x-table.cell-stack :lines="[
+                            $row->jobPosition?->nama ?? '-',
+                            ($row->jobLevel?->nama ?? '-') . ' • ' . $row->jumlah . ' orang',
+                        ]" />
+                    </td>
 
                     <td>@include('permintaan.partials.status', ['row' => $row])</td>
 

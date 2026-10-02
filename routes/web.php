@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-karyawan.update');
     Route::delete('permintaan-karyawan/{permintaanKaryawan}', [PermintaanKaryawanController::class, 'destroy'])
         ->name('permintaan-karyawan.destroy');
-    Route::get('permintaan-karyawan/{id}/edit-data', [PermintaanKaryawanController::class, 'editData'])
+    Route::get('permintaan-karyawan/{id}/edit-data', [PermintaanController::class, 'editDataPermintaanKaryawan'])
         ->name('permintaan-karyawan.edit-data');
     Route::patch('permintaan-karyawan/{id}/restore', [PermintaanKaryawanController::class, 'restore'])
         ->name('permintaan-karyawan.restore');

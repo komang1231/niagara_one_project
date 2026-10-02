@@ -33,7 +33,7 @@
     <x-table.table>
         <thead>
             <tr>
-                 <th class="app-table__col-no">NO</th>
+                <th class="app-table__col-no">NO</th>
                 <th>Kode</th>
                 <th>Pemohon</th>
                 <th>Info Utama</th>
@@ -48,8 +48,10 @@
                         {{ $permintaanResign->firstItem() + $i }}
                     </td>
                     <td class="fw-semibold">{{ $row->kode }}</td>
-                    <td><x-table.cell-stack :avatar="$pemohon" :lines="[$pemohon]" /></td>
-                    <td><x-table.cell-stack :lines="['Efektif ' . $efektif, \Illuminate\Support\Str::limit($row->alasan, 40)]" /></td>
+                    <td>
+                        <x-table.cell-stack :avatar="$row->karyawan?->avatar" :lines="[$row->karyawan?->nama ?? '-']" />
+                    </td>
+                    <td><x-table.cell-stack :lines="['Efektif ' . $row->tanggal_efektif, \Illuminate\Support\Str::limit($row->alasan, 40)]" /></td>
                     <td>@include('permintaan.partials.status', ['row' => $row])</td>
                     <td>@include('permintaan.partials.aksi', [
                         'row' => $row,

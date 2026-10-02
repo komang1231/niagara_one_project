@@ -98,6 +98,40 @@ class Karyawan extends Model
         return $this->belongsTo(Bank::class, 'bank_id');
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'karyawan_id');
+    }
+
+    public function permintaanCuti()
+    {
+        return $this->hasMany(PermintaanCuti::class, 'karyawan_id');
+    }
+
+    public function permintaanLembur()
+    {
+        return $this->hasMany(PermintaanLembur::class, 'karyawan_id');
+    }
+
+    public function permintaanKaryawan()
+    {
+        return $this->hasMany(PermintaanKaryawan::class, 'karyawan_id');
+    }
+
+    public function permintaanTukarShift()
+    {
+        return $this->hasMany(PermintaanTukarShift::class, 'karyawan_id');
+    }
+
+    public function historyKaryawan()
+    {
+        return $this->hasMany(HistoryKaryawan::class, 'karyawan_id');
+    }
+
+    public function permintaanResign()
+    {
+        return $this->hasMany(PermintaanResign::class, 'karyawan_id');
+    }
     protected $table = 'karyawans';
 
     protected $fillable = [

@@ -7,33 +7,70 @@ use App\Models\PermintaanCuti;
 use App\Models\PermintaanLembur;
 use App\Models\PermintaanResign;
 use App\Models\PermintaanTukarShift;
+use App\Services\ApprovalService;
 
 class ApprovalController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+
+        $allowedRequesterRoles = match ($user->role->nama) {
+            'HR Manager' => [
+                'HR Staff',
+                'Recruiter',
+                'Head of Departemen',
+                'Employee',
+            ],
+
+            'Admin Tenant' => [
+                'HR Manager',
+            ],
+
+            'Super Admin' => [
+                'Admin Tenant',
+            ],
+
+            default => [],
+        };
+
         $permintaanKaryawan = PermintaanKaryawan::whereNull('approved_at')
             ->whereNull('rejected_at')
+            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+                $query->whereIn('nama', $allowedRequesterRoles);
+            })
             ->latest('id')
             ->get();
 
         $permintaanCuti = PermintaanCuti::whereNull('approved_at')
             ->whereNull('rejected_at')
+            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+                $query->whereIn('nama', $allowedRequesterRoles);
+            })
             ->latest('id')
             ->get();
 
         $permintaanLembur = PermintaanLembur::whereNull('approved_at')
             ->whereNull('rejected_at')
+            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+                $query->whereIn('nama', $allowedRequesterRoles);
+            })
             ->latest('id')
             ->get();
 
         $permintaanResign = PermintaanResign::whereNull('approved_at')
             ->whereNull('rejected_at')
+            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+                $query->whereIn('nama', $allowedRequesterRoles);
+            })
             ->latest('id')
             ->get();
 
         $permintaanTukarShift = PermintaanTukarShift::whereNull('approved_at')
             ->whereNull('rejected_at')
+            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+                $query->whereIn('nama', $allowedRequesterRoles);
+            })
             ->latest('id')
             ->get();
 
@@ -56,6 +93,14 @@ class ApprovalController extends Controller
                 ->with('error', 'Permintaan Karyawan sudah pernah diproses.');
         }
 
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk menyetujui permintaan ini.');
+        }
+
         $permintaan->processed_by = auth()->id();
         $permintaan->approved_at = now();
         $permintaan->rejected_at = null;
@@ -74,6 +119,14 @@ class ApprovalController extends Controller
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Permintaan Karyawan sudah pernah diproses.');
+        }
+
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk menolak permintaan ini.');
         }
 
         $permintaan->processed_by = auth()->id();
@@ -96,6 +149,14 @@ class ApprovalController extends Controller
                 ->with('error', 'Permintaan Cuti sudah pernah diproses.');
         }
 
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
+        }
+
         $permintaan->processed_by = auth()->id();
         $permintaan->approved_at = now();
         $permintaan->rejected_at = null;
@@ -114,6 +175,14 @@ class ApprovalController extends Controller
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Permintaan Cuti sudah pernah diproses.');
+        }
+
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
         $permintaan->processed_by = auth()->id();
@@ -136,6 +205,14 @@ class ApprovalController extends Controller
                 ->with('error', 'Permintaan Lembur sudah pernah diproses.');
         }
 
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
+        }
+
         $permintaan->processed_by = auth()->id();
         $permintaan->approved_at = now();
         $permintaan->rejected_at = null;
@@ -154,6 +231,14 @@ class ApprovalController extends Controller
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Permintaan Lembur sudah pernah diproses.');
+        }
+
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
         $permintaan->processed_by = auth()->id();
@@ -176,6 +261,14 @@ class ApprovalController extends Controller
                 ->with('error', 'Permintaan Resign sudah pernah diproses.');
         }
 
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
+        }
+
         $permintaan->processed_by = auth()->id();
         $permintaan->approved_at = now();
         $permintaan->rejected_at = null;
@@ -194,6 +287,14 @@ class ApprovalController extends Controller
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Permintaan Resign sudah pernah diproses.');
+        }
+
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
         $permintaan->processed_by = auth()->id();
@@ -216,6 +317,14 @@ class ApprovalController extends Controller
                 ->with('error', 'Permintaan Tukar Shift sudah pernah diproses.');
         }
 
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
+        }
+
         $permintaan->processed_by = auth()->id();
         $permintaan->approved_at = now();
         $permintaan->rejected_at = null;
@@ -234,6 +343,14 @@ class ApprovalController extends Controller
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Permintaan Tukar Shift sudah pernah diproses.');
+        }
+
+        $pemohon = $permintaan->karyawan?->user;
+
+        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+            return redirect()
+                ->route('approval.index')
+                ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
         $permintaan->processed_by = auth()->id();

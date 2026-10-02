@@ -49,6 +49,8 @@ class PermintaanLemburController extends Controller
         $start = microtime(true);
         $data = $request->validated();
 
+        $data['karyawan_id'] = auth()->user()->karyawan_id;
+
         $before = microtime(true);
         $permintaanLembur = PermintaanLembur::create($data);
         $after = microtime(true);

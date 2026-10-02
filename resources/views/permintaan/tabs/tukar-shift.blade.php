@@ -48,9 +48,13 @@
                         {{ $permintaanTukarShift->firstItem() + $i }}
                     </td>
                     <td class="fw-semibold">{{ $row->kode }}</td>
-                    <td><x-table.cell-stack :avatar="$pengaju" :lines="[$pengaju]" /></td>
                     <td>
-                        <x-table.cell-stack :lines="['Ditukar dengan ' . $pengganti, $tanggal . ' • ' . $shiftA . ' ⇄ ' . $shiftB]" />
+                        <x-table.cell-stack :avatar="$row->karyawanPengaju?->avatar" :lines="[$row->karyawanPengaju?->nama ?? '-']" />
+                    </td>
+                    <x-table.cell-stack :lines="[
+                        'Ditukar dengan ' . $row->karyawanPengganti?->nama,
+                        $row->tanggal_tujuan . ' • ' . $row->shift_pengaju . ' ⇄ ' . $row->shift_pengganti,
+                    ]" />
                     </td>
                     <td>@include('permintaan.partials.status', ['row' => $row])</td>
                     <td>@include('permintaan.partials.aksi', [

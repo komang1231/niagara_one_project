@@ -50,12 +50,14 @@
 
                         <td class="fw-semibold">{{ $row->kode }}</td>
 
-                        <td><x-table.cell-stack :avatar="$pemohon" :lines="[$pemohon]" /></td>
+                        <td>
+                            <x-table.cell-stack :avatar="$row->karyawan?->avatar" :lines="[$row->karyawan?->nama ?? '-']" />
+                        </td>
 
                         <td>
                             <x-table.cell-stack :lines="[
                                 $row->cuti->nama ?? '-',
-                                $mulai . ' - ' . $selesai . ' • ' . $row->details->count() . ' hari',
+                                ($row->tanggal_mulai ?? '-') . ' - ' . ($row->tanggal_selesai ?? '-'),
                             ]" />
                         </td>
 

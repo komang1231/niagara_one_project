@@ -34,7 +34,7 @@
     <x-table>
         <thead>
             <tr>
-                 <th class="app-table__col-no">NO</th>
+                <th class="app-table__col-no">NO</th>
                 <th>Kode</th>
                 <th>Pemohon</th>
                 <th>Info Utama</th>
@@ -49,16 +49,17 @@
                         {{ $permintaanLembur->firstItem() + $i }}
                     </td>
                     <td class="fw-semibold">{{ $row->kode }}</td>
-                    <td><x-table.cell-stack :avatar="$pemohon" :lines="[$pemohon]" /></td>
                     <td>
-                        <x-table.cell-stack :lines="[
-                            $tanggal,
-                            substr($row->jam_mulai, 0, 5) .
-                            ' - ' .
-                            substr($row->jam_selesai, 0, 5) .
-                            ' • x' .
-                            $row->pengali,
-                        ]" />
+                        <x-table.cell-stack :avatar="$row->karyawan?->avatar" :lines="[$row->karyawan?->nama ?? '-']" />
+                    </td>
+                    <x-table.cell-stack :lines="[
+                        $row->tanggal_tujuan,
+                        substr($row->jam_mulai, 0, 5) .
+                        ' - ' .
+                        substr($row->jam_selesai, 0, 5) .
+                        ' • x' .
+                        $row->pengali,
+                    ]" />
                     </td>
                     <td>@include('permintaan.partials.status', ['row' => $row])</td>
                     <td>@include('permintaan.partials.aksi', [

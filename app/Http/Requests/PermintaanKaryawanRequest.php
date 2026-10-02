@@ -14,7 +14,7 @@ class PermintaanKaryawanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'karyawan_id' => ['required', 'integer', 'exists:karyawans,id'],
+            'nama' => ['required', 'string', 'max:255'],
             'cabang_kantor_id' => ['required', 'integer', 'exists:cabang_kantors,id'],
             'departemen_id' => ['required', 'integer', 'exists:departemens,id'],
             'divisi_id' => ['nullable', 'integer', 'exists:divisis,id'],

@@ -15,7 +15,7 @@ class PermintaanLemburRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'karyawan_id' => 'required|exists:karyawans,id',
+
             'tanggal_tujuan' => 'required|date',
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i',
@@ -58,5 +58,20 @@ class PermintaanLemburRequest extends FormRequest
                 );
             }
         });
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->filled('tanggal_tujuan')) {
+            try {
+                $this->merge([
+                    'tanggal_tujuan' => \Carbon\Carbon::parse($this->tanggal_tujuan)->format('Y-m-d'),
+                ]);
+            } catch (\Exception $e) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'tanggal_tujuan' => 'Format tanggal tujuan tidak valid.',
+                ]);
+            }
+        }
     }
 }

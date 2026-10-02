@@ -28,7 +28,9 @@ class LowonganRequest extends FormRequest
                     'tanggal_buka' => \Carbon\Carbon::parse($this->tanggal_buka)->format('Y-m-d'),
                 ]);
             } catch (\Exception $e) {
-                // return message()->error('Format tanggal buka tidak valid.');
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'tanggal_buka' => 'Format tanggal buka tidak valid.',
+                ]);
             }
         }
 
@@ -38,7 +40,9 @@ class LowonganRequest extends FormRequest
                     'tanggal_tutup' => \Carbon\Carbon::parse($this->tanggal_tutup)->format('Y-m-d'),
                 ]);
             } catch (\Exception $e) {
-                // return message()->error('Format tanggal tutup tidak valid.');
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'tanggal_tutup' => 'Format tanggal tutup tidak valid.',
+                ]);
             }
         }
     }

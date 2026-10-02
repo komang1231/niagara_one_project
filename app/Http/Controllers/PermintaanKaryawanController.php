@@ -52,6 +52,8 @@ class PermintaanKaryawanController extends Controller
         $start = microtime(true);
         $data = $request->validated();
 
+        $data['karyawan_id'] = auth()->user()->karyawan_id;
+
         $before = microtime(true);
         $permintaanKaryawan = PermintaanKaryawan::create($data);
         $after = microtime(true);

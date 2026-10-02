@@ -19,6 +19,16 @@ class PermintaanTukarShift extends Model {
         return $this->belongsTo(Karyawan::class);
     }
 
+    public function karyawanPengaju()
+    {
+        return $this->belongsTo(Karyawan::class, 'karyawan_pengaju');
+    }
+
+    public function karyawanPengganti()
+    {
+        return $this->belongsTo(Karyawan::class, 'karyawan_pengganti');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'processed_by');
