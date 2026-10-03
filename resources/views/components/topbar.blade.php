@@ -1,14 +1,17 @@
-@props([
-    'userName' => 'Super Admin',
-    'userEmail' => 'superadmin@gmail.com',
-    'userRole' => 'Super Admin',
-    'userInitials' => 'SA',
-    'rows' => null,
-])
-
 @php
+    $user = Auth::user();
 
-    $profileRows = $rows ?? [
+    $userName = $user?->nama ?? 'User';
+    $userEmail = $user?->email ?? '-';
+    $userRole = $user?->role?->nama ?? '-';
+
+    $userInitials = collect(explode(' ', $userName))
+        ->filter()
+        ->map(fn ($word) => strtoupper(substr($word, 0, 1)))
+        ->take(2)
+        ->implode('');
+
+    $profileRows = [
         'Nama' => $userName,
         'Email' => $userEmail,
         'Role' => $userRole,

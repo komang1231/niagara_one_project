@@ -23,7 +23,9 @@ class HariLiburRequest extends FormRequest
                     'tanggal' => \Carbon\Carbon::parse($this->tanggal)->format('Y-m-d'),
                 ]);
             } catch (\Exception $e) {
-                // Biarkan validasi 'date' menangani tanggal yang tidak valid
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'tanggal' => 'Format tanggal tidak valid.',
+                ]);
             }
         }
     }

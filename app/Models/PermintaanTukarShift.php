@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasGeneratedCode;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Karyawan;
 
 class PermintaanTukarShift extends Model {
     use HasGeneratedCode, SoftDeletes;
@@ -12,11 +13,6 @@ class PermintaanTukarShift extends Model {
     protected function getCodePrefix(): string
     {
         return 'PMTS';
-    }
-
-    public function karyawan()
-    {
-        return $this->belongsTo(Karyawan::class);
     }
 
     public function karyawanPengaju()
@@ -27,6 +23,16 @@ class PermintaanTukarShift extends Model {
     public function karyawanPengganti()
     {
         return $this->belongsTo(Karyawan::class, 'karyawan_pengganti');
+    }
+
+    public function shiftPengaju()
+    {
+        return $this->belongsTo(Shift::class, 'shift_pengaju');
+    }
+
+    public function shiftPengganti()
+    {
+        return $this->belongsTo(Shift::class, 'shift_pengganti');
     }
 
     public function user()

@@ -54,7 +54,11 @@
                     <td>
                         <x-table.cell-stack :lines="[
                             'Ditukar dengan ' . ($row->karyawanPengganti?->nama ?? '-'),
-                            $row->tanggal_tujuan . ' • ' . $row->shift_pengaju . ' ⇄ ' . $row->shift_pengganti,
+                            ($row->tanggal_tujuan ?? '-') .
+                            ' • ' .
+                            ($row->shiftPengaju?->nama ?? '-') .
+                            ' ⇄ ' .
+                            ($row->shiftPengganti?->nama ?? '-'),
                         ]" />
                     </td>
                     <td>@include('permintaan.partials.status', ['row' => $row])</td>

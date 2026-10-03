@@ -28,8 +28,11 @@ document.addEventListener("click", (e) => {
     }
 
     if (btn.dataset.updateUrl) {
-        form.action = btn.dataset.updateUrl;
-    }
+    form.action = btn.dataset.updateUrl;
+
+    console.log('UPDATE URL:', form.action);
+    console.log('METHOD:', form.method);
+}
 
     fetch(btn.dataset.editUrl, { headers: { Accept: "application/json" } })
         .then((res) => {

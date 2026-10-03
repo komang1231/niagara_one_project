@@ -37,9 +37,10 @@ class PermintaanCutiRequest extends FormRequest
             ],
 
             'lampiran' => [
-                'nullable',
-                'string',
-                'max:255',
+                'required',
+                'file',
+                'mimes:pdf,doc,docx',
+                'max:20480',
             ],
 
             'pengganti_karyawan_id' => [
@@ -66,6 +67,11 @@ class PermintaanCutiRequest extends FormRequest
             ],
         ];
     }
+
+    // protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    // {
+    //     dd($this->allFiles());
+    // }
 
     protected function prepareForValidation(): void
     {

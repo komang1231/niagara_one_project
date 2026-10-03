@@ -369,7 +369,7 @@ class PermintaanController extends Controller
     }
 
     //PERMINTAAN TUKAR SHIFT EDIT DATA
-    public function editDataPemintaanTukarShift($id)
+    public function editDataPermintaanTukarShift($id)
     {
         $permintaanTukarShift = PermintaanTukarShift::findOrFail($id);
 

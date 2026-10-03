@@ -18,6 +18,12 @@ use App\Models\StatusKawin;
 use App\Models\Agama;
 use App\Models\StatusKepegawaian;
 use App\Models\Bank;
+use App\Models\User;
+use App\Models\PermintaanCuti;
+use App\Models\PermintaanLembur;
+use App\Models\PermintaanKaryawan;
+use App\Models\PermintaanTukarShift;
+use App\Models\HistoryKaryawan;
 
 class Karyawan extends Model
 {

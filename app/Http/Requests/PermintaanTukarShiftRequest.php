@@ -23,8 +23,8 @@ class PermintaanTukarShiftRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        if ($this->filled('tanggal')) {
-            $tanggal = $this->input('tanggal');
+        if ($this->filled('tanggal_tujuan')) {
+            $tanggal = $this->input('tanggal_tujuan');
 
             $bulan = [
                 'Januari' => '01',
@@ -54,12 +54,12 @@ class PermintaanTukarShiftRequest extends FormRequest
                 );
 
                 $this->merge([
-                    'tanggal_efektif' => $tanggal,
+                    'tanggal_tujuan' => $tanggal,
                 ]);
             }
         } else {
             throw \Illuminate\Validation\ValidationException::withMessages([
-                'tanggal' => 'Format tanggal tidak valid.',
+                'tanggal_tujuan' => 'Format tanggal tidak valid.',
             ]);
         }
     }

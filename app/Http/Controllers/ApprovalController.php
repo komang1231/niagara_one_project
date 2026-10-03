@@ -13,6 +13,17 @@ class ApprovalController extends Controller
 {
     public function index()
     {
+        $tabs = [
+            'permintaan_karyawan' => 'Permintaan Karyawan',
+            'permintaan_cuti' => 'Permintaan Cuti',
+            'permintaan_lembur' => 'Permintaan Lembur',
+            'permintaan_resign' => 'Permintaan Resign',
+            'permintaan_tukar_shift' => 'Permintaan Tukar Shift',
+        ];
+        $tab = collect($tabs)->map(fn ($label, $key) => [
+            'key' => $key,
+            'label' => $label,
+        ])->values();
         $user = auth()->user();
 
         $allowedRequesterRoles = match ($user->role->nama) {
@@ -68,13 +79,16 @@ class ApprovalController extends Controller
 
         $permintaanTukarShift = PermintaanTukarShift::whereNull('approved_at')
             ->whereNull('rejected_at')
-            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+            ->whereHas('karyawanPengaju.user.role', function ($query) use ($allowedRequesterRoles) {
                 $query->whereIn('nama', $allowedRequesterRoles);
             })
             ->latest('id')
             ->get();
 
         return view('approval.index', compact(
+            'tabs',
+            'tab',
+
             'permintaanKaryawan',
             'permintaanCuti',
             'permintaanLembur',

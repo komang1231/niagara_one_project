@@ -46,7 +46,6 @@ class PermintaanTukarShiftController extends Controller
 
     public function store(PermintaanTukarShiftRequest $request)
     {
-        dd('STORE TERPANGGIL');
         $start = microtime(true);
         $data = $request->validated();
 

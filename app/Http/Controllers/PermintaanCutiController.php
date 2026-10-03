@@ -76,8 +76,9 @@ class PermintaanCutiController extends Controller
     public function store(PermintaanCutiRequest $request)
     {
         $start = microtime(true);
-
         $data = $request->validated();
+
+        $data['karyawan_id'] = auth()->user()->karyawan_id;
 
         $details = $data['details'];
         unset($data['details']);
@@ -153,10 +154,9 @@ class PermintaanCutiController extends Controller
         ]);
     }
 
-    public function update(
-        PermintaanCutiRequest $request,
-        PermintaanCuti $permintaanCuti
-    ) {
+    public function update(PermintaanCutiRequest $request, PermintaanCuti $permintaanCuti) {
+        dd($request->all());
+
         if (
             $permintaanCuti->approved_at ||
             $permintaanCuti->rejected_at
