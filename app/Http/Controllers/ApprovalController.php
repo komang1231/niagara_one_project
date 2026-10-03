@@ -14,13 +14,13 @@ class ApprovalController extends Controller
     public function index()
     {
         $tabs = [
-            'permintaan_karyawan' => 'Permintaan Karyawan',
-            'permintaan_cuti' => 'Permintaan Cuti',
-            'permintaan_lembur' => 'Permintaan Lembur',
-            'permintaan_resign' => 'Permintaan Resign',
-            'permintaan_tukar_shift' => 'Permintaan Tukar Shift',
+            'karyawan' => 'Karyawan',
+            'cuti' => 'Cuti',
+            'lembur' => 'Lembur',
+            'resign' => 'Resign',
+            'tukar-shift' => 'Tukar Shift',
         ];
-        $tab = collect($tabs)->map(fn ($label, $key) => [
+        $tab = collect($tabs)->map(fn($label, $key) => [
             'key' => $key,
             'label' => $label,
         ])->values();
@@ -45,45 +45,48 @@ class ApprovalController extends Controller
             default => [],
         };
 
-        $permintaanKaryawan = PermintaanKaryawan::whereNull('approved_at')
+        $permintaanKaryawan = PermintaanKaryawan::whereNull('processed_by')
+            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+                $query->whereIn('nama', $allowedRequesterRoles);
+            })
+            ->latest('id')
+            ->paginate(10, ['*'], 'karyawan_page')
+            ->withQueryString();
+
+        $permintaanCuti = PermintaanCuti::
+            WhereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+                $query->whereIn('nama', $allowedRequesterRoles);
+            })
+            ->latest('id')
+            ->paginate(10, ['*'], 'cuti_page')
+            ->withQueryString();
+
+        $permintaanLembur = PermintaanLembur::whereNull('processed_by')
             ->whereNull('rejected_at')
             ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
                 $query->whereIn('nama', $allowedRequesterRoles);
             })
             ->latest('id')
-            ->get();
+            ->paginate(10, ['*'], 'lembur_page')
+            ->withQueryString();
 
-        $permintaanCuti = PermintaanCuti::whereNull('approved_at')
+        $permintaanResign = PermintaanResign::whereNull('processed_by')
             ->whereNull('rejected_at')
             ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
                 $query->whereIn('nama', $allowedRequesterRoles);
             })
             ->latest('id')
-            ->get();
+            ->paginate(10, ['*'], 'resign_page')
+            ->withQueryString();
 
-        $permintaanLembur = PermintaanLembur::whereNull('approved_at')
-            ->whereNull('rejected_at')
-            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
-                $query->whereIn('nama', $allowedRequesterRoles);
-            })
-            ->latest('id')
-            ->get();
-
-        $permintaanResign = PermintaanResign::whereNull('approved_at')
-            ->whereNull('rejected_at')
-            ->whereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
-                $query->whereIn('nama', $allowedRequesterRoles);
-            })
-            ->latest('id')
-            ->get();
-
-        $permintaanTukarShift = PermintaanTukarShift::whereNull('approved_at')
+        $permintaanTukarShift = PermintaanTukarShift::whereNull('processed_by')
             ->whereNull('rejected_at')
             ->whereHas('karyawanPengaju.user.role', function ($query) use ($allowedRequesterRoles) {
                 $query->whereIn('nama', $allowedRequesterRoles);
             })
             ->latest('id')
-            ->get();
+            ->paginate(10, ['*'], 'tukar_shift_page')
+            ->withQueryString();
 
         return view('approval.index', compact(
             'tabs',

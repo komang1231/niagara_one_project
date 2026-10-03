@@ -1,7 +1,7 @@
-<x-page-header eyebrow="Persetujuan" title="Lembur"
-    description="Setujui atau tolak pengajuan lembur karyawan." icon="bi-clock-fill">
+<x-page-header eyebrow="Persetujuan" title="Lembur" description="Setujui atau tolak pengajuan lembur karyawan."
+    icon="bi-clock-fill">
     <x-slot:badges>
-        <x-badge>{{ $total }} permintaan</x-badge>
+        <x-badge>{{ $permintaanLembur->count() }} permintaan</x-badge>
     </x-slot:badges>
 </x-page-header>
 
@@ -29,7 +29,7 @@
             </thead>
 
             <tbody>
-                @forelse ($items as $i => $row)
+                @forelse ($permintaanLembur as $i => $row)
                     @php
                         $pemohon = $row->karyawan->nama ?? '-';
                         $tanggal = \Carbon\Carbon::parse($row->tanggal_tujuan)->format('d/m/Y');
@@ -37,7 +37,9 @@
                         $jamSelesai = substr((string) $row->jam_selesai, 0, 5);
                     @endphp
                     <tr>
-                        <td class="app-table__col-no">{{ $noAwal + $i }}</td>
+                        <td class="app-table__col-no">
+                            {{ $permintaanLembur->firstItem() + $i }}
+                        </td>
 
                         <td class="fw-semibold">{{ $row->kode }}</td>
 
@@ -59,18 +61,8 @@
             </tbody>
         </x-table>
 
-        <div class="app-table-footer">
-            <span>
-                Menampilkan
-                {{ $paginated ? $items->firstItem() ?? 0 : $items->count() }}–{{ $paginated ? $items->lastItem() ?? 0 : $items->count() }}
-                dari
-                {{ $total }}
-                entri
-            </span>
-
-            @if ($paginated)
-                <x-pagination :paginator="$items" />
-            @endif
+        <div class="mt-3">
+            {{ $permintaanLembur->links() }}
         </div>
     </div>
 </x-panel>

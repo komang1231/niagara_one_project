@@ -1,8 +1,7 @@
-
-<x-page-header eyebrow="Persetujuan" title="Cuti"
-    description="Setujui atau tolak pengajuan cuti karyawan." icon="bi-calendar2-check-fill">
+<x-page-header eyebrow="Persetujuan" title="Cuti" description="Setujui atau tolak pengajuan cuti karyawan."
+    icon="bi-calendar2-check-fill">
     <x-slot:badges>
-        <x-badge>{{ $total }} permintaan</x-badge>
+        <x-badge>>{{ $permintaanCuti->count() }} permintaan</x-badge>
     </x-slot:badges>
 </x-page-header>
 
@@ -30,7 +29,7 @@
             </thead>
 
             <tbody>
-                @forelse ($items as $i => $row)
+                @forelse ($permintaanCuti as $i => $row)
                     @php
                         $pemohon = $row->karyawan->nama ?? '-';
                         $mulai = \Carbon\Carbon::parse($row->tanggal_mulai)->format('d/m/Y');
@@ -38,8 +37,9 @@
                         $jumlahHari = optional($row->details)->count() ?? 0;
                     @endphp
                     <tr>
-                        <td class="app-table__col-no">{{ $noAwal + $i }}</td>
-
+                        <td class="app-table__col-no">
+                            {{ $permintaanCuti->firstItem() + $i }}
+                        </td>
                         <td class="fw-semibold">{{ $row->kode }}</td>
 
                         <td><x-table.cell-stack :avatar="$pemohon" :lines="[$pemohon]" /></td>
@@ -63,18 +63,8 @@
             </tbody>
         </x-table>
 
-        <div class="app-table-footer">
-            <span>
-                Menampilkan
-                {{ $paginated ? $items->firstItem() ?? 0 : $items->count() }}–{{ $paginated ? $items->lastItem() ?? 0 : $items->count() }}
-                dari
-                {{ $total }}
-                entri
-            </span>
-
-            @if ($paginated)
-                <x-pagination :paginator="$items" />
-            @endif
+        <div class="mt-3">
+            {{ $permintaanCuti->links() }}
         </div>
     </div>
 </x-panel>

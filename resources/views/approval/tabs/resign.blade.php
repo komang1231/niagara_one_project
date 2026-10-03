@@ -1,7 +1,7 @@
 <x-page-header eyebrow="Persetujuan" title="Resign"
     description="Setujui atau tolak pengajuan resign karyawan." icon="bi-box-arrow-right">
     <x-slot:badges>
-        <x-badge>{{ $total }} permintaan</x-badge>
+        <x-badge>{{ $permintaanResign->count() }} permintaan</x-badge>
     </x-slot:badges>
 </x-page-header>
 
@@ -29,13 +29,15 @@
             </thead>
 
             <tbody>
-                @forelse ($items as $i => $row)
+                @forelse ($permintaanResign as $i => $row)
                     @php
                         $pemohon = $row->karyawan->nama ?? '-';
                         $efektif = \Carbon\Carbon::parse($row->tanggal_efektif)->format('d/m/Y');
                     @endphp
                     <tr>
-                        <td class="app-table__col-no">{{ $noAwal + $i }}</td>
+                        <td class="app-table__col-no">
+                            {{ $permintaanResign->firstItem() + $i }}
+                        </td>
 
                         <td class="fw-semibold">{{ $row->kode }}</td>
 
@@ -57,18 +59,8 @@
             </tbody>
         </x-table>
 
-        <div class="app-table-footer">
-            <span>
-                Menampilkan
-                {{ $paginated ? $items->firstItem() ?? 0 : $items->count() }}–{{ $paginated ? $items->lastItem() ?? 0 : $items->count() }}
-                dari
-                {{ $total }}
-                entri
-            </span>
-
-            @if ($paginated)
-                <x-pagination :paginator="$items" />
-            @endif
+        <div class="mt-3">
+            {{ $permintaanResign->links() }}
         </div>
     </div>
 </x-panel>

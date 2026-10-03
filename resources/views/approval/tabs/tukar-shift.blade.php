@@ -1,7 +1,7 @@
 <x-page-header eyebrow="Persetujuan" title="Tukar Shift"
     description="Setujui atau tolak pengajuan tukar shift karyawan." icon="bi-arrow-left-right">
     <x-slot:badges>
-        <x-badge>{{ $total }} permintaan</x-badge>
+        <x-badge>{{ $permintaanTukarShift->count() }} permintaan</x-badge>
     </x-slot:badges>
 </x-page-header>
 
@@ -29,7 +29,7 @@
             </thead>
 
             <tbody>
-                @forelse ($items as $i => $row)
+                @forelse ($permintaanTukarShift as $i => $row)
                     @php
                         $pengaju = $namaKaryawan[$row->karyawan_pengaju] ?? '-';
                         $pengganti = $namaKaryawan[$row->karyawan_pengganti] ?? '-';
@@ -38,7 +38,9 @@
                         $tanggal = \Carbon\Carbon::parse($row->tanggal_tujuan)->format('d/m/Y');
                     @endphp
                     <tr>
-                        <td class="app-table__col-no">{{ $noAwal + $i }}</td>
+                        <td class="app-table__col-no">
+                            {{ $permintaanTukarShift->firstItem() + $i }}
+                        </td>
 
                         <td class="fw-semibold">{{ $row->kode }}</td>
 
@@ -60,18 +62,8 @@
             </tbody>
         </x-table>
 
-        <div class="app-table-footer">
-            <span>
-                Menampilkan
-                {{ $paginated ? $items->firstItem() ?? 0 : $items->count() }}–{{ $paginated ? $items->lastItem() ?? 0 : $items->count() }}
-                dari
-                {{ $total }}
-                entri
-            </span>
-
-            @if ($paginated)
-                <x-pagination :paginator="$items" />
-            @endif
+        <div class="mt-3">
+            {{ $permintaanTukarShift->links() }}
         </div>
     </div>
 </x-panel>

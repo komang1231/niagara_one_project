@@ -40,6 +40,8 @@ class PermintaanController extends Controller
         ];
         $tab = $request->get('tab', 'karyawan');
 
+        $user = auth()->user();
+
 
         /*
         |--------------------------------------------------------------------------
@@ -80,6 +82,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanKaryawan = PermintaanKaryawan::query()
+            ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_karyawan'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_karyawan . '%');
             })
@@ -95,6 +98,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanCuti = PermintaanCuti::query()
+            ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_cuti'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_cuti . '%');
             })
@@ -110,6 +114,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanLembur = PermintaanLembur::query()
+            ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_lembur'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_lembur . '%');
             })
@@ -125,6 +130,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanResign = PermintaanResign::query()
+            ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_resign'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_resign . '%');
             })
@@ -140,6 +146,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanTukarShift = PermintaanTukarShift::query()
+            ->where('karyawan_pengaju', $user->karyawan->id)
             ->when($request->filled('search_tukar_shift'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_tukar_shift . '%');
             })
