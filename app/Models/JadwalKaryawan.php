@@ -25,6 +25,4 @@ class JadwalKaryawan extends Model {
     
     protected $table = 'jadwal_karyawans';
     protected $fillable = ['shift_id', 'karyawan_id', 'tanggal', 'status'];
-
-//
 }

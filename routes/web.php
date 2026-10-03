@@ -25,6 +25,7 @@ use App\Http\Controllers\LowonganController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\RekrutmenController;
 use App\Http\Controllers\JadwalKaryawanController;
+use App\Http\Controllers\AttendanceController;
 
 
 Route::get('/test-laravel', function () {
@@ -304,8 +305,42 @@ Route::middleware('auth')->group(function () {
     Route::view('/surat-peringatan', 'surat-peringatan.index')->name('surat-peringatan.index');
 
     // Kehadiran
-     Route::get('jadwal-karyawan', [JadwalKaryawanController::class, 'index'])->name('jadwal-karyawan.index');
-    Route::post('jadwal-karyawan', [JadwalKaryawanController::class, 'store'])->name('jadwal-karyawan.store');
+    Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])
+    ->name('attendance.check-in');
+    Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])
+    ->name('attendance.check-out');
+
+    // Jadwal Karyawan
+    Route::get('jadwal-karyawan', [JadwalKaryawanController::class, 'index'])
+        ->name('jadwal-karyawan.index');
+
+    Route::post('jadwal-karyawan', [JadwalKaryawanController::class, 'store'])
+        ->name('jadwal-karyawan.store');
+
+    Route::get('jadwal-karyawan/{jadwalKaryawan}/edit', [JadwalKaryawanController::class, 'edit'])
+        ->name('jadwal-karyawan.edit');
+
+    Route::get('jadwal-karyawan/{id}/edit-data', [JadwalKaryawanController::class, 'editData'])
+        ->name('jadwal-karyawan.edit-data');
+
+    Route::put('jadwal-karyawan/{jadwalKaryawan}', [JadwalKaryawanController::class, 'update'])
+        ->name('jadwal-karyawan.update');
+
+    Route::patch('jadwal-karyawan/{jadwalKaryawan}/toggle-status', [JadwalKaryawanController::class, 'toggleStatus'])
+        ->name('jadwal-karyawan.toggle-status');
+
+    Route::delete('jadwal-karyawan/{id}', [JadwalKaryawanController::class, 'destroy'])
+        ->name('jadwal-karyawan.destroy');
+
+    Route::get('jadwal-karyawan-trash', [JadwalKaryawanController::class, 'trash'])
+        ->name('jadwal-karyawan.trash');
+
+    Route::patch('jadwal-karyawan/{id}/restore', [JadwalKaryawanController::class, 'restore'])
+        ->name('jadwal-karyawan.restore');
+
+    Route::delete('jadwal-karyawan/{id}/force-delete', [JadwalKaryawanController::class, 'forceDelete'])
+        ->name('jadwal-karyawan.force-delete');
+
 
     Route::view('/pola-shift', 'pola-shift.index')->name('pola-shift.index');
     Route::view('/tukar-shift', 'tukar-shift.index')->name('tukar-shift.index');

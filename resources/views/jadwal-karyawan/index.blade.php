@@ -10,7 +10,7 @@
     <x-page-header eyebrow="Kehadiran" title="Jadwal Karyawan"
         description="Atur dan pantau jadwal shift karyawan per minggu." icon="bi-calendar-week-fill">
         <x-slot:badges>
-            <x-badge>{{ $karyawan->count() }} karyawan</x-badge>
+            <x-badge>{{ $karyawans->count() }} karyawan</x-badge>
         </x-slot:badges>
 
         <x-slot:actions>
@@ -133,7 +133,7 @@
                 <div class="jadwal-row jadwal-row--head">
                     <div class="jadwal-emp jadwal-emp--head">
                         Karyawan
-                        <span class="jadwal-count">{{ $karyawan->count() }}</span>
+                        <span class="jadwal-count">{{ $karyawans->count() }}</span>
                     </div>
 
                     @foreach ($hari as $i => $h)
