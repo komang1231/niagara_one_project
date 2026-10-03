@@ -1,0 +1,285 @@
+/* ==========================================================
+   PERMINTAAN - Rincian tanggal cuti & time picker lembur
+   ========================================================== */
+
+.permintaan-tabs {
+    margin-bottom: 1rem;
+}
+
+.permintaan-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.permintaan-status {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.permintaan-status--menunggu {
+    background: #fff4d6;
+    color: #8a6100;
+}
+
+.permintaan-status--disetujui {
+    background: #dcf5e3;
+    color: #1b6b3a;
+}
+
+.permintaan-status--ditolak {
+    background: #fde2e2;
+    color: #a12626;
+}
+
+.permintaan-status--dibatalkan {
+    background: #e9ecef;
+    color: #5c636a;
+}
+
+.permintaan-detail-list {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    max-height: 260px;
+    overflow: auto;
+}
+
+.permintaan-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+.permintaan-detail-row:last-child {
+    border-bottom: 0;
+}
+
+/* ---------- Rincian tanggal cuti ---------- */
+
+.cuti-detail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.cuti-detail-hint {
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+}
+
+/* tombol kecil "semua sehari penuh / semua setengah hari" */
+.cuti-detail-bulk {
+    display: inline-flex;
+    gap: 0.25rem;
+}
+
+.cuti-detail-bulk button {
+    border: 1px solid var(--primary-200);
+    background: #fff;
+    color: var(--primary-900);
+    border-radius: 999px;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.cuti-detail-bulk button:hover {
+    background: var(--primary-50);
+    border-color: var(--primary);
+}
+
+.cuti-detail-list {
+    border: 1px solid var(--neutral-100);
+    border-radius: 12px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: #fff;
+}
+
+.cuti-detail-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 1rem;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.cuti-detail-empty.is-error {
+    color: #a12626;
+}
+
+.cuti-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.55rem 0.9rem;
+    border-bottom: 1px solid var(--neutral-50);
+    border-left: 3px solid transparent;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.cuti-detail-row:last-child {
+    border-bottom: 0;
+}
+
+/* baris yang dipilih setengah hari diberi tanda hijau tipis */
+.cuti-detail-row.is-half {
+    background: var(--primary-25);
+    border-left-color: var(--primary);
+}
+
+.cuti-detail-date {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    min-width: 150px;
+}
+
+.cuti-detail-day {
+    font-weight: 600;
+    color: var(--color-text-900);
+    width: 2.2rem;
+}
+
+.cuti-detail-full {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+}
+
+/* ---------- Segmented control: Sehari penuh | Setengah hari ---------- */
+
+.cuti-segmented {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--neutral-25);
+    border: 1px solid var(--neutral-100);
+    border-radius: 999px;
+}
+
+.cuti-segmented__opt {
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* radio asli disembunyikan, tapi tetap bisa difokus keyboard */
+.cuti-segmented__opt input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.cuti-segmented__opt span {
+    display: block;
+    padding: 0.3rem 0.95rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--neutral-700);
+    white-space: nowrap;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.cuti-segmented__opt:hover span {
+    color: var(--primary-900);
+}
+
+.cuti-segmented__opt input:checked + span {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(18, 114, 84, 0.3);
+}
+
+.cuti-segmented__opt input:focus-visible + span {
+    outline: 2px solid var(--primary-900);
+    outline-offset: 2px;
+}
+
+/* ---------- Ringkasan total ---------- */
+
+.cuti-detail-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-800);
+}
+
+.cuti-detail-summary:empty {
+    display: none;
+}
+
+.cuti-detail-summary strong {
+    color: var(--primary-900);
+}
+
+/* ---------- Pesan error kecil di bawah field ---------- */
+
+.form-inline-error {
+    color: #a12626;
+    font-size: 0.8125rem;
+    margin: -0.5rem 0 0.75rem;
+}
+
+/* ---------- Time picker khusus form lembur ---------- */
+
+/* dropdown selebar input & font lebih kecil dibanding default (default dibuat besar untuk form shift) */
+.lembur-time .app-time-picker__input {
+    font-size: 1rem;
+}
+
+.lembur-time .app-time-picker__dropdown {
+    width: 100%;
+}
+
+.lembur-time .app-time-picker__dropdown li {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.9rem;
+}
+
+/* info durasi lembur */
+.lembur-durasi {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: -0.5rem 0 1rem;
+}
+
+.lembur-durasi.is-ok {
+    color: var(--primary-900);
+    font-weight: 600;
+}
+
+.lembur-durasi.is-error {
+    color: #a12626;
+    font-weight: 600;
+}

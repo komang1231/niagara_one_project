@@ -61,6 +61,12 @@ export function keISO(date) {
     return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`;
 }
 
+// Date -> "04 Oktober 2026" (sama dengan dateFormat picker)
+function formatTampil(date) {
+    const p = (n) => String(n).padStart(2, '0');
+    return `${p(date.getDate())} ${localeIndonesia.months[date.getMonth()]} ${date.getFullYear()}`;
+}
+
 // ---------------------------------------------------------------
 // Batas minimal
 // ---------------------------------------------------------------
@@ -95,15 +101,22 @@ function perbaruiBatas(el) {
     const dp = el._datepicker;
     if (!dp) return;
 
+    // Baca pilihan SEBELUM update(): update({ minDate }) membuang tanggal terpilih yang < minDate
+    // (mis. tanggal selesai data lama di form edit yang sudah lewat dari hari ini).
+    const dipilih = parseTanggal(el.value);
+
     const min = hitungMin(el);
     dp.update({ minDate: min ?? '' });
 
     const pasangan = cariPasangan(el);
     const tglPasangan = pasangan ? parseTanggal(pasangan.value) : null;
-    const dipilih = parseTanggal(el.value);
 
     if (dipilih && tglPasangan && dipilih < tglPasangan) {
         dp.clear(); // contoh: tanggal tutup lebih awal dari tanggal buka yang baru
+    } else if (dipilih && !parseTanggal(el.value)) {
+        // tanggal lama tetap sah (>= pasangannya) tapi terbuang oleh minDate -> kembalikan
+        dp.selectDate(dipilih, { silent: true });
+        if (!el.value) el.value = formatTampil(dipilih);
     } else if (!dipilih && min) {
         dp.setViewDate(min); // kalender langsung buka di bulan batas minimal
     }
@@ -119,8 +132,9 @@ function sinkron(el) {
 
     if (tgl) {
         dp.selectDate(tgl, { silent: true });
-        // tanggal lampau (data lama di form edit) bisa ditolak picker -> tampilkan apa adanya
-        if (!el.value) el.value = mentah;
+        // tanggal lampau (data lama di form edit) bisa ditolak picker -> tetap tampilkan,
+        // dengan format yang sama seperti picker ("04 Oktober 2026"), bukan "2026-10-04"
+        if (!el.value) el.value = formatTampil(tgl);
     } else {
         dp.clear({ silent: true });
     }
@@ -160,7 +174,7 @@ export function initDatePicker(element) {
     element._datepicker = datepicker;
 
     // nilai lama (old input / data edit) jangan sampai hilang kalau ditolak picker
-    if (mentah && !element.value) element.value = mentah;
+    if (mentah && !element.value) element.value = awal ? formatTampil(awal) : mentah;
 
     // icon kalender: cari di wrapper-nya sendiri (bukan lewat id, karena id bisa kembar
     // antara form create & edit)

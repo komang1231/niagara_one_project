@@ -1,71 +1,8 @@
-{{-- Ganti nama layout sesuai @extends yang kamu pakai di index Lowongan --}}
 @extends('layouts.app')
 
 @section('title', 'Permintaan')
 
 @section('content')
-
-    <style>
-        .permintaan-tabs {
-            margin-bottom: 1rem;
-        }
-
-        .permintaan-toolbar {
-            display: flex;
-            justify-content: space-between;
-            gap: .75rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .permintaan-status {
-            display: inline-block;
-            padding: .25rem .65rem;
-            border-radius: 999px;
-            font-size: .75rem;
-            font-weight: 600;
-        }
-
-        .permintaan-status--menunggu {
-            background: #fff4d6;
-            color: #8a6100;
-        }
-
-        .permintaan-status--disetujui {
-            background: #dcf5e3;
-            color: #1b6b3a;
-        }
-
-        .permintaan-status--ditolak {
-            background: #fde2e2;
-            color: #a12626;
-        }
-
-        .permintaan-status--dibatalkan {
-            background: #e9ecef;
-            color: #5c636a;
-        }
-
-        .permintaan-detail-list {
-            border: 1px solid #dee2e6;
-            border-radius: .5rem;
-            padding: .5rem .75rem;
-            max-height: 260px;
-            overflow: auto;
-        }
-
-        .permintaan-detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: .4rem 0;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-
-        .permintaan-detail-row:last-child {
-            border-bottom: 0;
-        }
-    </style>
 
     {{-- data-reopen: kalau validasi create gagal, offcanvas create dibuka lagi oleh JS --}}
     <div id="permintaan-root"

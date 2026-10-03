@@ -1,3 +1,5 @@
+import { parseTanggal, keISO } from '../input-date';
+
 document.addEventListener('DOMContentLoaded', function () {
     const root = document.getElementById('permintaan-root');
     if (!root) return;
@@ -114,6 +116,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const section = pilih('section_id');
         const jobPosition = pilih('job_position_id');
 
+        // Form ini tidak punya dropdown bertingkat (mis. salah pasang data-chained) -> lewati,
+        // supaya tidak error "null" dan tidak menghentikan script di bawahnya.
+        if (!departemen || !divisi || !section || !jobPosition) return;
+
         const url = {
             divisi: form.dataset.urlDivisi,
             section: form.dataset.urlSection,
@@ -208,34 +214,82 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* =====================================================================
-     * 6. CUTI: daftar tanggal + toggle setengah hari per tanggal
+     * 6. CUTI: rincian tanggal (Sehari penuh / Setengah hari per tanggal)
+     *    + validasi tanggal selesai tidak boleh sebelum tanggal mulai
      * ===================================================================== */
     document.querySelectorAll('form[data-cuti-form]').forEach(function (form) {
         const mulai = form.querySelector('[name="tanggal_mulai"]');
         const selesai = form.querySelector('[name="tanggal_selesai"]');
         const box = form.querySelector('[data-cuti-details]');
+        const ringkasan = form.querySelector('[data-cuti-summary]');
+        const bulk = form.querySelector('[data-cuti-bulk]');
+        const error = form.querySelector('[data-cuti-error]');
         const lampiranInfo = form.querySelector('[data-lampiran-info]');
 
         const NAMA_HARI = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
         const MAKS_HARI = 60; // batas aman supaya form tidak kebanjiran baris
+        const PESAN_URUTAN = 'Tanggal selesai tidak boleh lebih awal dari tanggal mulai.';
         const pad = (n) => String(n).padStart(2, '0');
-        const keString = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-        const keDate = (s) => {
-            const [y, m, d] = s.split('-').map(Number);
-            return new Date(y, m - 1, d);
-        };
+        // Input tanggal tampil "03 Oktober 2026" (Air Datepicker), bukan "2026-10-03",
+        // jadi WAJIB dibaca lewat parseTanggal (mendukung dua format itu).
+        const keString = keISO;
+        const keDate = parseTanggal;
 
-        function pesan(teks) {
-            box.innerHTML = '<p class="text-muted small mb-0">' + teks + '</p>';
+        function urutanSalah() {
+            const awal = keDate(mulai.value);
+            const akhir = keDate(selesai.value);
+            return !!(awal && akhir && akhir < awal);
         }
 
-        // Baca status setengah hari yang sudah dipilih user, supaya tidak hilang saat render ulang
+        function tampilError(teks) {
+            if (!error) return;
+            error.textContent = teks || '';
+            error.hidden = !teks;
+        }
+
+        // Pesan kosong / error di dalam kotak rincian (daftar tanggal disembunyikan)
+        function pesan(teks, isError = false) {
+            box.innerHTML = '<div class="cuti-detail-empty' + (isError ? ' is-error' : '') + '">'
+                + '<i class="bi ' + (isError ? 'bi-exclamation-circle' : 'bi-calendar-range') + '"></i>'
+                + '<span>' + teks + '</span></div>';
+            ringkasan.textContent = '';
+            bulk.hidden = true;
+        }
+
+        const baris = () => box.querySelectorAll('.cuti-detail-row');
+        const setengahDipilih = (row) => row.querySelector('input[type="radio"][value="1"]').checked;
+
+        // Baca pilihan user, supaya tidak hilang saat daftar dirender ulang
         function statusSekarang() {
             const map = {};
-            box.querySelectorAll('.permintaan-detail-row').forEach(function (row) {
-                map[row.dataset.tanggal] = row.querySelector('input[type="checkbox"]').checked;
+            baris().forEach(function (row) {
+                map[row.dataset.tanggal] = setengahDipilih(row);
             });
             return map;
+        }
+
+        // 3,5 -> "3,5" ; 4 -> "4"
+        const angka = (n) => String(n).replace('.', ',');
+
+        function perbaruiRingkasan() {
+            let penuh = 0;
+            let setengah = 0;
+            baris().forEach(function (row) {
+                const half = setengahDipilih(row);
+                row.classList.toggle('is-half', half);
+                if (half) setengah++; else penuh++;
+            });
+
+            if (penuh + setengah === 0) {
+                ringkasan.textContent = '';
+                return;
+            }
+
+            const total = penuh + setengah * 0.5;
+            const bagian = [];
+            if (penuh) bagian.push(penuh + ' sehari penuh');
+            if (setengah) bagian.push(setengah + ' setengah hari');
+            ringkasan.innerHTML = 'Total cuti: <strong>' + angka(total) + ' hari</strong> (' + bagian.join(' + ') + ')';
         }
 
         // existing = { 'YYYY-MM-DD': true/false }
@@ -243,44 +297,124 @@ document.addEventListener('DOMContentLoaded', function () {
             const a = mulai.value;
             const b = selesai.value;
 
+            tampilError('');
+
             if (!a || !b) return pesan('Pilih tanggal mulai dan selesai untuk menampilkan daftar tanggal.');
 
             const awal = keDate(a);
             const akhir = keDate(b);
 
-            if (akhir < awal) return pesan('Tanggal selesai tidak boleh sebelum tanggal mulai.');
+            if (!awal || !akhir) return pesan('Format tanggal tidak dikenali, pilih ulang tanggalnya.', true);
+
+            if (akhir < awal) {
+                tampilError(PESAN_URUTAN);
+                return pesan(PESAN_URUTAN, true);
+            }
 
             const jumlah = Math.round((akhir - awal) / 86400000) + 1;
-            if (jumlah > MAKS_HARI) return pesan('Rentang cuti maksimal ' + MAKS_HARI + ' hari.');
+            if (jumlah > MAKS_HARI) return pesan('Rentang cuti maksimal ' + MAKS_HARI + ' hari.', true);
 
             let html = '';
             for (let i = 0; i < jumlah; i++) {
                 const d = new Date(awal);
                 d.setDate(awal.getDate() + i);
                 const tgl = keString(d);
-                const label = NAMA_HARI[d.getDay()] + ', ' + pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
-                const cek = existing[tgl] ? 'checked' : '';
+                const half = !!existing[tgl];
+                const nama = 'details[' + i + '][setengah_hari]';
+                const hari = NAMA_HARI[d.getDay()];
+                const label = pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
 
-                // input hidden value 0 dulu, lalu checkbox value 1 (kalau dicentang, nilai 1 yang menang)
-                html += '<div class="permintaan-detail-row" data-tanggal="' + tgl + '">'
-                    + '<span>' + label + '</span>'
+                // Radio 0/1 menggantikan checkbox + hidden lama: nilainya selalu terkirim (0 atau 1)
+                html += '<div class="cuti-detail-row' + (half ? ' is-half' : '') + '" data-tanggal="' + tgl + '">'
+                    + '<div class="cuti-detail-date">'
+                    + '<span class="cuti-detail-day">' + hari + '</span>'
+                    + '<span class="cuti-detail-full">' + label + '</span>'
+                    + '</div>'
                     + '<input type="hidden" name="details[' + i + '][tanggal]" value="' + tgl + '">'
-                    + '<input type="hidden" name="details[' + i + '][setengah_hari]" value="0">'
-                    + '<div class="form-check form-switch mb-0">'
-                    + '<input class="form-check-input" type="checkbox" role="switch" name="details[' + i + '][setengah_hari]" value="1" ' + cek + '>'
-                    + '<label class="form-check-label small">Setengah hari</label>'
+                    + '<div class="cuti-segmented" role="radiogroup" aria-label="Lama cuti ' + hari + ' ' + label + '">'
+                    + '<label class="cuti-segmented__opt">'
+                    + '<input type="radio" name="' + nama + '" value="0"' + (half ? '' : ' checked') + '>'
+                    + '<span>Sehari penuh</span></label>'
+                    + '<label class="cuti-segmented__opt">'
+                    + '<input type="radio" name="' + nama + '" value="1"' + (half ? ' checked' : '') + '>'
+                    + '<span>Setengah hari</span></label>'
                     + '</div></div>';
             }
             box.innerHTML = html;
+            bulk.hidden = false;
+            perbaruiRingkasan();
         }
 
-        onChange(mulai, () => render(statusSekarang()));
-        onChange(selesai, () => render(statusSekarang()));
+        // Ganti pilihan di salah satu baris -> hitung ulang ringkasan
+        box.addEventListener('change', perbaruiRingkasan);
 
-        form.addEventListener('form:reset', () => render());
+        // Tombol "Semua sehari penuh" / "Semua setengah hari"
+        bulk.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-bulk]');
+            if (!btn) return;
+            baris().forEach(function (row) {
+                row.querySelector('input[type="radio"][value="' + btn.dataset.bulk + '"]').checked = true;
+            });
+            perbaruiRingkasan();
+        });
+
+        // Tanggal berubah. Kalau selesai jadi lebih awal dari mulai -> kosongkan selesai.
+        // (Air Datepicker sudah memblokir lewat atribut after="tanggal_mulai"; ini lapis kedua
+        //  supaya aman juga untuk data edit / nilai yang diisi lewat script.)
+        let pesanTahan = false; // true = selesai baru saja dikosongkan karena lebih awal dari mulai
+
+        function tanggalBerubah() {
+            if (urutanSalah()) {
+                pesanTahan = true;
+                if (selesai._datepicker) selesai._datepicker.clear({ silent: true });
+                selesai.value = '';
+                render();
+                tampilError(PESAN_URUTAN);
+                return;
+            }
+
+            // Air Datepicker ikut memicu event "change" saat selesai dikosongkan; jangan sampai
+            // pesan error tadi langsung terhapus. Pesan hilang setelah user memilih tanggal selesai baru.
+            if (pesanTahan && !selesai.value) {
+                render();
+                tampilError(PESAN_URUTAN);
+                return;
+            }
+
+            pesanTahan = false;
+            render(statusSekarang());
+        }
+
+        // Air Datepicker tidak memicu event "change", tapi "date:change" (lihat input-date.js)
+        [mulai, selesai].forEach(function (el) {
+            el.addEventListener('date:change', tanggalBerubah);
+            onChange(el, tanggalBerubah);
+        });
+
+        // Cegah submit kalau urutan tanggal salah / rincian belum ada
+        form.addEventListener('submit', function (e) {
+            if (urutanSalah()) {
+                e.preventDefault();
+                tampilError(PESAN_URUTAN);
+                return;
+            }
+            if (!baris().length) {
+                e.preventDefault();
+                tampilError('Pilih tanggal mulai dan selesai dulu supaya rincian tanggal cuti terisi.');
+            }
+        });
+
+        // Create: ditutup lewat data-reset-on-close (event form:reset).
+        // Edit: form.reset() dipanggil offcanvas-edit.js tiap kali tombol edit diklik.
+        form.addEventListener('form:reset', () => { pesanTahan = false; render(); });
+        form.addEventListener('reset', function () {
+            pesanTahan = false;
+            setTimeout(() => render(), 0);
+        });
 
         // Mode edit: render daftar dari data lama
         form.addEventListener('edit-data:loaded', function (event) {
+            pesanTahan = false;
             const d = event.detail || {};
             const map = {};
             (d.details || []).forEach(function (row) {
@@ -296,6 +430,90 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         render();
+    });
+
+    /* =====================================================================
+     * 6b. LEMBUR: jam dipilih lewat time picker (lihat time-picker.js)
+     *     Jam selesai <= jam mulai = lembur lewat tengah malam (selesai besok).
+     *     Yang dicek di sini cuma durasinya (4 - 10 jam), sama dengan PermintaanLemburRequest.
+     * ===================================================================== */
+    document.querySelectorAll('form[data-lembur-form]').forEach(function (form) {
+        const mulai = form.querySelector('[name="jam_mulai"]');
+        const selesai = form.querySelector('[name="jam_selesai"]');
+        const info = form.querySelector('[data-lembur-info]');
+        if (!mulai || !selesai) return;
+
+        const MIN_JAM = 4;
+        const MAKS_JAM = 10;
+        const teksAwal = info ? info.textContent : '';
+
+        const formatJam = (v) => /^([01]\d|2[0-3]):[0-5]\d$/.test(v || '');
+        const keMenit = (v) => {
+            const p = v.split(':');
+            return Number(p[0]) * 60 + Number(p[1]);
+        };
+
+        function tampil(teks, status) {
+            if (!info) return;
+            info.textContent = teks;
+            info.classList.toggle('is-ok', status === 'ok');
+            info.classList.toggle('is-error', status === 'error');
+        }
+
+        function namaDurasi(menit) {
+            const j = Math.floor(menit / 60);
+            const m = menit % 60;
+            return (j ? j + ' jam' : '') + (j && m ? ' ' : '') + (m ? m + ' menit' : '');
+        }
+
+        // Return true kalau durasi valid. Kosong / belum lengkap -> false (biar "required" yang bicara).
+        function periksa() {
+            if (!formatJam(mulai.value) || !formatJam(selesai.value)) {
+                tampil(teksAwal, '');
+                return false;
+            }
+
+            const a = keMenit(mulai.value);
+            let b = keMenit(selesai.value);
+            const besok = b <= a;
+            if (besok) b += 24 * 60; // lintas hari
+
+            const d = b - a;
+            const ket = besok ? ' (selesai di hari berikutnya)' : '';
+
+            if (d < MIN_JAM * 60 || d > MAKS_JAM * 60) {
+                tampil('Durasi ' + namaDurasi(d) + ket + '. Durasi lembur harus antara ' + MIN_JAM + ' sampai ' + MAKS_JAM + ' jam.', 'error');
+                return false;
+            }
+
+            tampil('Durasi lembur: ' + namaDurasi(d) + ket, 'ok');
+            return true;
+        }
+
+        // 'change' = pilih dari dropdown / selesai mengetik. 'blur' jalan SETELAH time-picker.js
+        // membersihkan isian yang formatnya salah.
+        [mulai, selesai].forEach(function (el) {
+            el.addEventListener('change', periksa);
+            el.addEventListener('blur', periksa);
+        });
+
+        form.addEventListener('submit', function (e) {
+            if (!formatJam(mulai.value) || !formatJam(selesai.value)) return; // "required" bawaan browser yang jalan
+            if (!periksa()) {
+                e.preventDefault();
+                selesai.focus();
+            }
+        });
+
+        // Create: form.reset() saat offcanvas ditutup. Edit: reset tiap klik tombol edit.
+        form.addEventListener('reset', function () {
+            setTimeout(periksa, 0);
+        });
+
+        // Mode edit: jam sudah diisi dari server
+        form.addEventListener('edit-data:loaded', periksa);
+
+        periksa();
     });
 
     /* =====================================================================

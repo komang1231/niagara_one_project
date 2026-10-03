@@ -7,9 +7,6 @@
 
         <x-form.input name="kode" label="Kode Permintaan" readonly />
 
-        <x-form.select name="karyawan_id" id="pr_edit_karyawan_id" label="Pemohon"
-            :options="$karyawans->pluck('nama', 'id')" nullable required />
-
         <x-form.input-date name="tanggal_efektif" label="Tanggal Efektif Resign" required />
 
         <x-form.textarea name="alasan" label="Alasan" rows="4" maxlength="255" required />

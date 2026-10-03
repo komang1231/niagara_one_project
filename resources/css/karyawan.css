@@ -1,6 +1,151 @@
 /* =========================================================
-   KARYAWAN DETAIL OFFCANVAS
-   Minimal • Modern • Clean
+   KARYAWAN
+   1. Tabel index (Data Karyawan)
+   2. Ringkasan error validasi form + popup
+   3. Detail offcanvas (header, tab, isi)
+========================================================= */
+
+
+/* =========================================================
+   1. TABEL INDEX
+   Tiap baris info diberi label (dl/dt/dd) supaya jelas
+   mana departemen, divisi, section, level, dst.
+========================================================= */
+
+/* NIP: kapsul kecil di bawah nama */
+.karyawan-cell__code {
+    align-self: flex-start;
+
+    padding: 1px 8px;
+
+    border: 1px solid var(--primary-100);
+    border-radius: 6px;
+
+    background: var(--primary-25);
+    color: var(--primary-900);
+
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+}
+
+.karyawan-cell__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    min-width: 0;
+
+    color: var(--color-text-500);
+
+    font-size: 0.8125rem;
+}
+
+.karyawan-cell__meta i {
+    font-size: 0.8rem;
+}
+
+/* Daftar "label : isi" */
+.karyawan-kv {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 3px;
+
+    margin: 0;
+
+    font-size: 0.8125rem;
+    line-height: 1.45;
+}
+
+.karyawan-kv dt {
+    color: var(--color-text-500);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.karyawan-kv dd {
+    margin: 0;
+
+    min-width: 0;
+
+    color: var(--color-text-900);
+}
+
+.karyawan-kv dd.is-strong {
+    font-weight: 700;
+}
+
+.karyawan-kv dd.is-empty {
+    color: var(--neutral-300);
+}
+
+/* Status kepegawaian (PKWT, PKWTT, dst.) */
+.karyawan-chip {
+    display: inline-block;
+
+    padding: 1px 10px;
+
+    border: 1px solid var(--primary-100);
+    border-radius: 999px;
+
+    background: var(--primary-50);
+    color: var(--primary-900);
+
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   2. RINGKASAN ERROR VALIDASI
+========================================================= */
+
+.karyawan-form-errors {
+    margin: 4px 0 0;
+
+    border-radius: 12px;
+
+    font-size: 0.875rem;
+}
+
+.karyawan-form-errors__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 6px;
+
+    font-weight: 600;
+}
+
+.karyawan-form-errors__list {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.karyawan-form-errors__list li + li {
+    margin-top: 2px;
+}
+
+/* Daftar error di dalam popup SweetAlert */
+.karyawan-swal-errors {
+    max-height: 280px;
+    margin: 0;
+    padding-left: 1.25rem;
+
+    overflow-y: auto;
+
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   3. DETAIL OFFCANVAS
 ========================================================= */
 
 .app-offcanvas-detail {
@@ -9,9 +154,7 @@
 }
 
 
-/* =========================================================
-   HEADER
-========================================================= */
+/* ---------- Header ---------- */
 
 .app-offcanvas-detail__header {
     position: relative;
@@ -19,15 +162,14 @@
     display: flex;
     align-items: center;
 
-    min-height: 116px;
+    min-height: 124px;
 
-    padding: 24px 56px 24px 28px;
+    padding: 26px 60px 22px 28px;
 
-    background: #ffffff;
+    background: linear-gradient(135deg, var(--primary-25) 0%, #ffffff 65%);
 
     border-bottom: 1px solid var(--neutral-100);
 }
-
 
 .app-offcanvas-detail__close {
     position: absolute;
@@ -58,16 +200,10 @@
         border-color 0.15s ease;
 }
 
-
 .app-offcanvas-detail__close:hover {
     background-color: var(--neutral-25);
     border-color: var(--neutral-200);
 }
-
-
-/* =========================================================
-   HEADER CONTENT
-========================================================= */
 
 .karyawan-detail__header-content {
     display: flex;
@@ -75,74 +211,66 @@
 
     width: 100%;
 
-    gap: 16px;
+    gap: 18px;
 }
-
-
-/* Avatar */
 
 .karyawan-detail__avatar {
     flex: 0 0 auto;
 
-    width: 52px;
-    height: 52px;
+    width: 62px;
+    height: 62px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 14px;
+    border-radius: 18px;
 
-    background: var(--primary-50);
-    color: var(--primary-900);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-900) 100%);
+    color: #ffffff;
 
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 700;
 
-    letter-spacing: -0.02em;
+    box-shadow: 0 6px 14px rgba(18, 114, 84, 0.22);
 }
-
-
-/* Summary */
 
 .karyawan-detail__summary {
     min-width: 0;
 }
 
-
 .karyawan-detail__name-row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
 
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
-
 
 .karyawan-detail__summary h4 {
     margin: 0;
 
     color: var(--neutral-1000);
 
-    font-size: 19px;
+    font-size: 20px;
     line-height: 1.25;
     font-weight: 700;
 
     letter-spacing: -0.02em;
 }
 
-
 .karyawan-detail__meta {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
 
-    color: var(--neutral-500);
+    color: var(--neutral-700);
 
     font-size: 12.5px;
     line-height: 1.4;
 }
-
 
 .karyawan-detail__meta-divider {
     width: 3px;
@@ -153,17 +281,45 @@
     background: var(--neutral-300);
 }
 
+/* NIP */
+.karyawan-detail__code {
+    padding: 2px 8px;
 
-/* =========================================================
-   STATUS PILL
-========================================================= */
+    border: 1px solid var(--neutral-100);
+    border-radius: 6px;
 
-.karyawan-detail__status {
+    background: #ffffff;
+    color: var(--neutral-900);
+
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+}
+
+/* Status kepegawaian */
+.karyawan-detail__chip {
+    padding: 2px 10px;
+
+    border: 1px solid var(--primary-100);
+    border-radius: 999px;
+
+    background: var(--primary-50);
+    color: var(--primary-900);
+
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+
+/* ---------- Status pill (Aktif / Nonaktif / Resign) ---------- */
+
+.karyawan-detail__status,
+.karyawan-detail__status-inline {
     display: inline-flex;
     align-items: center;
     gap: 6px;
 
-    padding: 4px 9px;
+    padding: 4px 10px;
 
     border: 1px solid var(--color-success-border);
     border-radius: 999px;
@@ -171,35 +327,41 @@
     background: var(--color-success-soft);
     color: var(--color-success);
 
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 600;
 
     white-space: nowrap;
 }
 
-
 .karyawan-detail__status-dot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
 
     border-radius: 50%;
 
     background: currentColor;
 }
 
+/* Nonaktif */
+.karyawan-detail__status.is-inactive,
+.karyawan-detail__status-inline.is-inactive {
+    border-color: var(--neutral-100);
 
-.karyawan-detail__status.is-inactive {
-    color: var(--color-danger);
+    background: var(--neutral-25);
+    color: var(--neutral-700);
+}
+
+/* Resign */
+.karyawan-detail__status.is-resign,
+.karyawan-detail__status-inline.is-resign {
+    border-color: var(--color-danger-border);
 
     background: var(--color-danger-soft);
-
-    border-color: var(--color-danger-border);
+    color: var(--color-danger);
 }
 
 
-/* =========================================================
-   TABS
-========================================================= */
+/* ---------- Tabs ---------- */
 
 .app-offcanvas-detail__tabs {
     padding: 0 28px;
@@ -209,11 +371,10 @@
     border-bottom: 1px solid var(--neutral-100);
 }
 
-
 .karyawan-detail__tabs {
     display: flex;
 
-    gap: 28px;
+    gap: 26px;
 
     margin: 0;
     padding: 0;
@@ -221,14 +382,16 @@
     list-style: none;
 }
 
-
 .karyawan-detail__tabs .nav-item {
     margin: 0;
 }
 
-
 .karyawan-detail__tabs .nav-link {
     position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
 
     padding: 15px 0 13px;
 
@@ -242,15 +405,16 @@
     font-size: 13px;
     font-weight: 500;
 
-    transition:
-        color 0.15s ease;
+    transition: color 0.15s ease;
 }
 
+.karyawan-detail__tabs .nav-link i {
+    font-size: 14px;
+}
 
 .karyawan-detail__tabs .nav-link:hover {
     color: var(--primary-900);
 }
-
 
 .karyawan-detail__tabs .nav-link.active {
     color: var(--primary-900);
@@ -258,8 +422,9 @@
     background: transparent;
 
     border: none;
-}
 
+    font-weight: 600;
+}
 
 .karyawan-detail__tabs .nav-link.active::after {
     content: "";
@@ -278,131 +443,281 @@
 }
 
 
-/* =========================================================
-   BODY
-========================================================= */
+/* ---------- Body ---------- */
 
 .app-offcanvas-detail .offcanvas-body {
     padding: 0;
 
-    background: #ffffff;
+    background: var(--color-bg-25);
 }
-
 
 .app-offcanvas-detail .tab-content {
-    padding: 28px;
+    padding: 24px 28px 32px;
+
+    transition: opacity 0.15s ease;
+}
+
+/* Saat data sedang diambil dari server */
+.app-offcanvas-detail.is-loading .tab-content {
+    opacity: 0.45;
 }
 
 
-/* =========================================================
-   SECTION
-========================================================= */
+/* ---------- Section ---------- */
 
-.karyawan-detail__section {
-    width: 100%;
+.karyawan-detail__section + .karyawan-detail__section {
+    margin-top: 26px;
 }
-
-
-.karyawan-detail__section-heading {
-    display: flex;
-    flex-direction: column;
-
-    gap: 3px;
-
-    margin-bottom: 20px;
-}
-
 
 .karyawan-detail__section-title {
-    color: var(--neutral-1000);
+    display: block;
 
-    font-size: 14px;
-    font-weight: 650;
+    margin-bottom: 12px;
 
-    letter-spacing: -0.01em;
+    color: var(--neutral-700);
+
+    font-size: 11.5px;
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
-
-.karyawan-detail__section-description {
-    color: var(--neutral-500);
-
-    font-size: 12px;
-}
-
-
-/* =========================================================
-   FIELD GRID
-========================================================= */
-
-.karyawan-detail__field-grid {
+.karyawan-detail__grid {
     display: grid;
 
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
-    column-gap: 36px;
-    row-gap: 0;
+    gap: 12px;
+}
+
+.karyawan-detail__grid--single {
+    grid-template-columns: minmax(0, 1fr);
 }
 
 
-.karyawan-detail__field {
+/* ---------- Item (ikon + label + isi) ---------- */
+
+.karyawan-detail__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
     min-width: 0;
 
-    padding: 16px 0;
+    padding: 12px 14px;
 
-    border-bottom: 1px solid var(--neutral-100);
+    border: 1px solid var(--neutral-100);
+    border-radius: 12px;
+
+    background: #ffffff;
 }
 
+.karyawan-detail__icon {
+    flex: 0 0 auto;
 
-.karyawan-detail__field .label {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--primary-50);
+    color: var(--primary-900);
+
+    font-size: 16px;
+}
+
+.karyawan-detail__item-body {
+    flex: 1 1 auto;
+
+    min-width: 0;
+}
+
+.karyawan-detail__item .label {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom: 2px;
 
     color: var(--neutral-500);
 
     font-size: 11.5px;
     line-height: 1.3;
-
     font-weight: 500;
 }
 
-
-.karyawan-detail__field .value {
+.karyawan-detail__item .value {
     display: block;
 
     color: var(--neutral-1000);
 
     font-size: 13.5px;
-    line-height: 1.5;
-
+    line-height: 1.45;
     font-weight: 600;
 
     overflow-wrap: anywhere;
 }
 
-
 .value-number {
     font-variant-numeric: tabular-nums;
 
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
+}
+
+/* Tombol salin */
+.karyawan-detail__copy {
+    flex: 0 0 auto;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid var(--neutral-100);
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: var(--neutral-500);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.15s ease,
+        border-color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.karyawan-detail__copy:hover {
+    color: var(--primary-900);
+
+    border-color: var(--primary-200);
+
+    background: var(--primary-25);
+}
+
+.karyawan-detail__copy.is-copied {
+    color: var(--color-success);
+
+    border-color: var(--color-success-border);
+
+    background: var(--color-success-soft);
 }
 
 
-/* =========================================================
-   JOIN BOX
-   Satu-satunya area yang diberi sedikit background.
-   Bukan card berat.
-========================================================= */
+/* ---------- Struktur organisasi (Departemen > Divisi > Section > Posisi) ---------- */
 
-.karyawan-detail__join-box {
+.karyawan-detail__path {
+    position: relative;
+
+    margin: 0;
+    padding: 18px 18px 18px 22px;
+
+    list-style: none;
+
+    border: 1px solid var(--neutral-100);
+    border-radius: 12px;
+
+    background: #ffffff;
+}
+
+.karyawan-detail__path li {
+    position: relative;
+
+    padding: 0 0 18px 26px;
+}
+
+.karyawan-detail__path li:last-child {
+    padding-bottom: 0;
+}
+
+/* garis penghubung */
+.karyawan-detail__path li::before {
+    content: "";
+
+    position: absolute;
+
+    left: 5px;
+    top: 14px;
+    bottom: -4px;
+
+    width: 2px;
+
+    background: var(--primary-100);
+}
+
+.karyawan-detail__path li:last-child::before {
+    display: none;
+}
+
+/* titik */
+.karyawan-detail__path li::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 3px;
+
+    width: 12px;
+    height: 12px;
+
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+
+    background: #ffffff;
+}
+
+.karyawan-detail__path li:last-child::after {
+    background: var(--primary);
+
+    box-shadow: 0 0 0 4px var(--primary-50);
+}
+
+.karyawan-detail__path .label {
+    display: block;
+
+    color: var(--neutral-500);
+
+    font-size: 11.5px;
+    font-weight: 500;
+}
+
+.karyawan-detail__path .value {
+    display: block;
+
+    color: var(--neutral-1000);
+
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.karyawan-detail__path li:last-child .value {
+    color: var(--primary-900);
+
+    font-size: 14.5px;
+    font-weight: 700;
+}
+
+
+/* ---------- Gaji ---------- */
+
+.karyawan-detail__salary {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
 
-    gap: 24px;
-
-    margin-bottom: 4px;
-    padding: 17px 18px;
+    padding: 16px 18px;
 
     border: 1px solid var(--primary-100);
     border-radius: 12px;
@@ -410,272 +725,176 @@
     background: var(--primary-25);
 }
 
+.karyawan-detail__salary .label {
+    display: block;
 
-.karyawan-detail__join-box > div:first-child {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    margin-bottom: 3px;
+
+    color: var(--neutral-700);
+
+    font-size: 11.5px;
+    font-weight: 500;
+}
+
+.karyawan-detail__salary .value {
+    display: block;
+
+    color: var(--primary-950);
+
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    letter-spacing: -0.01em;
+}
+
+.karyawan-detail__salary > i {
+    color: var(--primary-300);
+
+    font-size: 30px;
 }
 
 
-.karyawan-detail__eyebrow {
+/* ---------- Kartu rekening ---------- */
+
+.karyawan-detail__bankcard {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 22px 24px;
+
+    border-radius: 16px;
+
+    background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-1000) 100%);
+    color: #ffffff;
+
+    box-shadow: 0 10px 24px rgba(6, 55, 39, 0.22);
+}
+
+.karyawan-detail__bankcard::before,
+.karyawan-detail__bankcard::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    pointer-events: none;
+}
+
+.karyawan-detail__bankcard::before {
+    width: 190px;
+    height: 190px;
+
+    top: -80px;
+    right: -50px;
+}
+
+.karyawan-detail__bankcard::after {
+    width: 130px;
+    height: 130px;
+
+    bottom: -70px;
+    right: 70px;
+}
+
+.karyawan-detail__bankcard > * {
+    position: relative;
+    z-index: 1;
+}
+
+.karyawan-detail__bankcard-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+.karyawan-detail__bankcard-bank {
+    font-size: 15px;
+    font-weight: 700;
+
+    letter-spacing: 0.01em;
+}
+
+.karyawan-detail__bankcard-top i {
+    font-size: 22px;
+
+    opacity: 0.8;
+}
+
+.karyawan-detail__bankcard .label {
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 
-    color: var(--neutral-500);
+    color: rgba(255, 255, 255, 0.7);
 
     font-size: 11px;
     font-weight: 500;
 }
 
-
-.karyawan-detail__join-box strong {
+.karyawan-detail__bankcard-number {
     display: block;
 
-    color: var(--neutral-1000);
+    margin-bottom: 20px;
 
-    font-size: 14px;
-    font-weight: 650;
+    font-size: 21px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+
+    letter-spacing: 0.08em;
+
+    overflow-wrap: anywhere;
 }
 
-
-.karyawan-detail__join-duration {
-    min-width: 120px;
-
-    padding-left: 20px;
-
-    border-left: 1px solid var(--primary-200);
+.karyawan-detail__bankcard-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-
-.karyawan-detail__join-duration span {
+.karyawan-detail__bankcard-bottom strong {
     display: block;
 
-    margin-bottom: 4px;
-
-    color: var(--neutral-500);
-
-    font-size: 11px;
-}
-
-
-.karyawan-detail__join-duration strong {
-    color: var(--primary-900);
-
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   PLACEMENT
-========================================================= */
-
-.karyawan-detail__placement {
-    margin-bottom: 4px;
-
-    padding: 17px 0;
-
-    border-top: 1px solid var(--neutral-100);
-    border-bottom: 1px solid var(--neutral-100);
-}
-
-
-.karyawan-detail__placement strong {
-    display: block;
-
-    color: var(--neutral-1000);
-
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13.5px;
     font-weight: 600;
 }
 
+.karyawan-detail__bankcard .karyawan-detail__copy {
+    border-color: rgba(255, 255, 255, 0.28);
 
-/* =========================================================
-   STATUS INLINE
-========================================================= */
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
 
-.karyawan-detail__status-inline {
-    display: inline-flex;
+.karyawan-detail__bankcard .karyawan-detail__copy:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+
+/* ---------- Catatan kecil di bawah ---------- */
+
+.karyawan-detail__foot {
+    display: flex;
     align-items: center;
+    gap: 8px;
 
-    padding: 4px 9px;
+    margin-top: 22px;
 
-    border-radius: 999px;
+    color: var(--neutral-500);
 
-    background: var(--color-success-soft);
+    font-size: 12px;
+}
 
-    color: var(--color-success);
+.karyawan-detail__foot strong {
+    color: var(--neutral-700);
 
-    font-size: 11.5px;
     font-weight: 600;
 }
 
-
-.karyawan-detail__status-inline.is-inactive {
-    background: var(--color-danger-soft);
-    color: var(--color-danger);
-}
-
-
-/* =========================================================
-   BANK
-========================================================= */
-
-.karyawan-detail__bank {
-    display: grid;
-
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-
-    gap: 32px;
-
-    margin-bottom: 4px;
-    padding: 18px 0;
-
-    border-top: 1px solid var(--neutral-100);
-    border-bottom: 1px solid var(--neutral-100);
-}
-
-
-.karyawan-detail__bank > div {
-    min-width: 0;
-}
-
-
-.karyawan-detail__bank strong {
-    display: block;
-
-    color: var(--neutral-1000);
-
-    font-size: 14px;
-    font-weight: 650;
-}
-
-
-.karyawan-detail__bank-account {
-    padding-left: 24px;
-
-    border-left: 1px solid var(--neutral-100);
-}
-
-
-.karyawan-detail__bank-account .label {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: var(--neutral-500);
-
-    font-size: 11px;
-}
-
-
-.karyawan-detail__bank-account .value {
-    display: block;
-
-    color: var(--neutral-1000);
-
-    font-size: 15px;
-    font-weight: 650;
-}
-
-
-.karyawan-detail__bank-account .sub {
-    display: block;
-
-    margin-top: 3px;
-
-    color: var(--neutral-500);
-
-    font-size: 11.5px;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 700px) {
-
-    .app-offcanvas-detail__header {
-        padding-left: 20px;
-        padding-right: 48px;
-    }
-
-    .app-offcanvas-detail__tabs {
-        padding: 0 20px;
-
-        overflow-x: auto;
-    }
-
-    .karyawan-detail__tabs {
-        gap: 22px;
-
-        min-width: max-content;
-    }
-
-    .app-offcanvas-detail .tab-content {
-        padding: 22px 20px;
-    }
-
-    .karyawan-detail__field-grid {
-        grid-template-columns: 1fr;
-
-        column-gap: 0;
-    }
-
-    .karyawan-detail__bank {
-        grid-template-columns: 1fr;
-
-        gap: 18px;
-    }
-
-    .karyawan-detail__bank-account {
-        padding-left: 0;
-        padding-top: 16px;
-
-        border-left: none;
-        border-top: 1px solid var(--neutral-100);
-    }
-
-}
-
-
-@media (max-width: 480px) {
-
-    .karyawan-detail__avatar {
-        width: 46px;
-        height: 46px;
-
-        border-radius: 12px;
-    }
-
-    .karyawan-detail__summary h4 {
-        font-size: 17px;
-    }
-
-    .karyawan-detail__name-row {
-        flex-wrap: wrap;
-    }
-
-    .karyawan-detail__meta {
-        flex-wrap: wrap;
-    }
-
-    .karyawan-detail__join-box {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .karyawan-detail__join-duration {
-        width: 100%;
-
-        padding-left: 0;
-        padding-top: 12px;
-
-        border-left: none;
-        border-top: 1px solid var(--primary-200);
-    }
-
-}

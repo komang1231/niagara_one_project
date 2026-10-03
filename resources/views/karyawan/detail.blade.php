@@ -1,850 +1,427 @@
+{{--
+    DETAIL KARYAWAN (offcanvas, 3 tab).
+    Isi tiap elemen bertanda data-field="..." diisi JS dari JSON KaryawanController@show
+    (nama key JSON = nilai data-field).
+--}}
+@php
+    // Kontak
+    $kontak = [
+        ['key' => 'email', 'label' => 'Email', 'icon' => 'bi-envelope'],
+        ['key' => 'no_tlp', 'label' => 'No. Telepon', 'icon' => 'bi-telephone', 'number' => true],
+    ];
+
+    // Identitas & latar belakang
+    $identitas = [
+        ['key' => 'nik', 'label' => 'NIK', 'icon' => 'bi-person-vcard', 'number' => true, 'copy' => true],
+        ['key' => 'jenjang_pendidikan', 'label' => 'Jenjang Pendidikan', 'icon' => 'bi-mortarboard'],
+        ['key' => 'status_kawin', 'label' => 'Status Pernikahan', 'icon' => 'bi-heart'],
+        ['key' => 'agama', 'label' => 'Agama', 'icon' => 'bi-journal-text'],
+    ];
+
+    // Struktur organisasi (urut dari atas ke bawah)
+    $struktur = [
+        ['key' => 'departemen', 'label' => 'Departemen'],
+        ['key' => 'divisi', 'label' => 'Divisi'],
+        ['key' => 'section', 'label' => 'Section'],
+        ['key' => 'job_position', 'label' => 'Posisi / Job Position'],
+    ];
+
+    // Dokumen legal
+    $legal = [
+        ['key' => 'no_npwp', 'label' => 'NPWP', 'icon' => 'bi-file-earmark-text'],
+        ['key' => 'no_bpjs_ketenagakerjaan', 'label' => 'BPJS Ketenagakerjaan', 'icon' => 'bi-shield-check'],
+        ['key' => 'no_bpjs_kesehatan', 'label' => 'BPJS Kesehatan', 'icon' => 'bi-heart-pulse'],
+    ];
+@endphp
+
 <x-offcanvas.detail id="offcanvas-karyawan-detail" size="lg">
 
+    {{-- =========================================================
+        HEADER: avatar, nama, status, NIP, posisi, status kepegawaian
+    ========================================================== --}}
     <x-slot:header>
         <div class="karyawan-detail__header-content">
 
-            <div class="karyawan-detail__avatar" id="detail-avatar">
-                -
-            </div>
+            <div class="karyawan-detail__avatar" data-field="inisial">-</div>
 
             <div class="karyawan-detail__summary">
+
                 <div class="karyawan-detail__name-row">
+                    <h4 data-field="nama">-</h4>
 
-                    <h4 id="detail-nama">-</h4>
-
-                    <span class="karyawan-detail__status">
+                    <span class="karyawan-detail__status" data-status-pill>
                         <span class="karyawan-detail__status-dot"></span>
-                        Aktif
+                        <span data-status-pill-text>-</span>
                     </span>
-
                 </div>
 
                 <div class="karyawan-detail__meta">
-
-                    <span id="detail-nip">
-                        NIP : -
-                    </span>
+                    <span class="karyawan-detail__code" data-field="nip" title="Kode karyawan (NIP)">-</span>
 
                     <span class="karyawan-detail__meta-divider"></span>
 
-                    <span id="detail-jabatan">
-                        -
-                    </span>
+                    <span data-field="job_position">-</span>
 
+                    <span class="karyawan-detail__meta-divider"></span>
+
+                    <span class="karyawan-detail__chip" data-field="status_kepegawaian" title="Status kepegawaian">-</span>
                 </div>
+
             </div>
 
         </div>
     </x-slot:header>
 
 
+    {{-- =========================================================
+        TAB
+    ========================================================== --}}
     <x-slot:tabs>
-
-        <ul
-            class="karyawan-detail__tabs nav"
-            role="tablist"
-        >
+        <ul class="karyawan-detail__tabs nav" role="tablist">
 
             <li class="nav-item">
-
-                <button
-                    class="nav-link active"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab-data-pribadi"
-                    type="button"
-                >
-                    Data Pribadi
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data-pribadi"
+                    type="button">
+                    <i class="bi bi-person"></i> Data Pribadi
                 </button>
-
             </li>
 
             <li class="nav-item">
-
-                <button
-                    class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab-penempatan"
-                    type="button"
-                >
-                    Penempatan & Jabatan
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-penempatan" type="button">
+                    <i class="bi bi-diagram-3"></i> Penempatan &amp; Jabatan
                 </button>
-
             </li>
 
             <li class="nav-item">
-
-                <button
-                    class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab-rekening"
-                    type="button"
-                >
-                    Rekening & Legal
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-rekening" type="button">
+                    <i class="bi bi-wallet2"></i> Rekening &amp; Legal
                 </button>
-
             </li>
 
         </ul>
-
     </x-slot:tabs>
 
 
     <div class="tab-content">
 
-
         {{-- =========================================================
             TAB DATA PRIBADI
         ========================================================== --}}
-
-        <div
-            class="tab-pane fade show active"
-            id="tab-data-pribadi"
-            role="tabpanel"
-        >
+        <div class="tab-pane fade show active" id="tab-data-pribadi" role="tabpanel">
 
             <div class="karyawan-detail__section">
+                <span class="karyawan-detail__section-title">Kontak</span>
 
-                <div class="karyawan-detail__section-heading">
+                <div class="karyawan-detail__grid karyawan-detail__grid--single">
+                    @foreach ($kontak as $f)
+                        <div class="karyawan-detail__item">
+                            <span class="karyawan-detail__icon"><i class="bi {{ $f['icon'] }}"></i></span>
 
-                    <span class="karyawan-detail__section-title">
-                        Informasi pribadi
-                    </span>
-
-                    <span class="karyawan-detail__section-description">
-                        Informasi dasar karyawan
-                    </span>
-
+                            <div class="karyawan-detail__item-body">
+                                <span class="label">{{ $f['label'] }}</span>
+                                <span class="value {{ !empty($f['number']) ? 'value-number' : '' }}"
+                                    data-field="{{ $f['key'] }}">-</span>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+            </div>
 
+            <div class="karyawan-detail__section">
+                <span class="karyawan-detail__section-title">Identitas &amp; latar belakang</span>
 
-                {{-- TANGGAL DATA DIBUAT --}}
+                <div class="karyawan-detail__grid">
+                    @foreach ($identitas as $f)
+                        <div class="karyawan-detail__item">
+                            <span class="karyawan-detail__icon"><i class="bi {{ $f['icon'] }}"></i></span>
 
-                <div class="karyawan-detail__join-box">
+                            <div class="karyawan-detail__item-body">
+                                <span class="label">{{ $f['label'] }}</span>
+                                <span class="value {{ !empty($f['number']) ? 'value-number' : '' }}"
+                                    data-field="{{ $f['key'] }}">-</span>
+                            </div>
 
-                    <div>
-
-                        <span class="karyawan-detail__eyebrow">
-                            Data dibuat pada
-                        </span>
-
-                        <strong id="detail-data-dibuat">
-                            -
-                        </strong>
-
-                    </div>
-
+                            @if (!empty($f['copy']))
+                                <button type="button" class="karyawan-detail__copy" data-copy-field="{{ $f['key'] }}"
+                                    title="Salin {{ $f['label'] }}">
+                                    <i class="bi bi-copy"></i>
+                                </button>
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
+            </div>
 
-
-                {{-- DATA PRIBADI --}}
-
-                <div class="karyawan-detail__field-grid">
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Email
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-email"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            No. Telepon
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-no-tlp"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            NIK
-                        </span>
-
-                        <span
-                            class="value value-number"
-                            id="detail-nik"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Jenjang Pendidikan
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-jenjang-pendidikan"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Status Pernikahan
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-status-kawin"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Agama
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-agama"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                </div>
-
+            {{-- created_at = waktu record dibuat di database, BUKAN tanggal mulai bekerja --}}
+            <div class="karyawan-detail__foot">
+                <i class="bi bi-clock-history"></i>
+                <span>Data dibuat pada <strong data-field="data_dibuat">-</strong></span>
             </div>
 
         </div>
-
 
 
         {{-- =========================================================
             TAB PENEMPATAN & JABATAN
         ========================================================== --}}
-
-        <div
-            class="tab-pane fade"
-            id="tab-penempatan"
-            role="tabpanel"
-        >
+        <div class="tab-pane fade" id="tab-penempatan" role="tabpanel">
 
             <div class="karyawan-detail__section">
+                <span class="karyawan-detail__section-title">Struktur organisasi</span>
 
-                <div class="karyawan-detail__section-heading">
+                <ol class="karyawan-detail__path">
+                    @foreach ($struktur as $f)
+                        <li>
+                            <span class="label">{{ $f['label'] }}</span>
+                            <span class="value" data-field="{{ $f['key'] }}">-</span>
+                        </li>
+                    @endforeach
+                </ol>
+            </div>
 
-                    <span class="karyawan-detail__section-title">
-                        Penempatan & jabatan
-                    </span>
+            <div class="karyawan-detail__section">
+                <span class="karyawan-detail__section-title">Jabatan &amp; kepegawaian</span>
 
-                    <span class="karyawan-detail__section-description">
-                        Posisi dan struktur organisasi karyawan
-                    </span>
+                <div class="karyawan-detail__grid">
+
+                    <div class="karyawan-detail__item">
+                        <span class="karyawan-detail__icon"><i class="bi bi-bar-chart-steps"></i></span>
+                        <div class="karyawan-detail__item-body">
+                            <span class="label">Job Level</span>
+                            <span class="value" data-field="job_level">-</span>
+                        </div>
+                    </div>
+
+                    <div class="karyawan-detail__item">
+                        <span class="karyawan-detail__icon"><i class="bi bi-geo-alt"></i></span>
+                        <div class="karyawan-detail__item-body">
+                            <span class="label">Cabang Kantor</span>
+                            <span class="value" data-field="cabang_kantor">-</span>
+                        </div>
+                    </div>
+
+                    <div class="karyawan-detail__item">
+                        <span class="karyawan-detail__icon"><i class="bi bi-briefcase"></i></span>
+                        <div class="karyawan-detail__item-body">
+                            <span class="label">Status Kepegawaian</span>
+                            <span class="value" data-field="status_kepegawaian_full">-</span>
+                        </div>
+                    </div>
+
+                    <div class="karyawan-detail__item">
+                        <span class="karyawan-detail__icon"><i class="bi bi-activity"></i></span>
+                        <div class="karyawan-detail__item-body">
+                            <span class="label">Status</span>
+                            <span class="karyawan-detail__status-inline" data-status-inline
+                                data-field="status_aktif">-</span>
+                        </div>
+                    </div>
 
                 </div>
+            </div>
 
+            <div class="karyawan-detail__section">
+                <span class="karyawan-detail__section-title">Kompensasi</span>
 
-                {{-- PENEMPATAN --}}
+                <div class="karyawan-detail__salary">
+                    <div>
+                        <span class="label">Gaji</span>
+                        <span class="value value-number" data-field="gaji">-</span>
+                    </div>
 
-                <div class="karyawan-detail__placement">
-
-                    <span class="karyawan-detail__eyebrow">
-                        Penempatan
-                    </span>
-
-                    <strong id="detail-penempatan">
-                        -
-                    </strong>
-
+                    <i class="bi bi-cash-stack"></i>
                 </div>
-
-
-                <div class="karyawan-detail__field-grid">
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Job Position · Level
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-job-position-level"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Cabang Kantor
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-cabang-kantor"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Status Kepegawaian
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-status-kepegawaian-full"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Status Aktif
-                        </span>
-
-                        <span
-                            class="karyawan-detail__status-inline"
-                            id="detail-status-aktif"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            Gaji
-                        </span>
-
-                        <span
-                            class="value"
-                            id="detail-gaji"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                </div>
-
             </div>
 
         </div>
-
 
 
         {{-- =========================================================
             TAB REKENING & LEGAL
         ========================================================== --}}
-
-        <div
-            class="tab-pane fade"
-            id="tab-rekening"
-            role="tabpanel"
-        >
+        <div class="tab-pane fade" id="tab-rekening" role="tabpanel">
 
             <div class="karyawan-detail__section">
+                <span class="karyawan-detail__section-title">Rekening bank</span>
 
-                <div class="karyawan-detail__section-heading">
+                <div class="karyawan-detail__bankcard">
+                    <div class="karyawan-detail__bankcard-top">
+                        <span class="karyawan-detail__bankcard-bank" data-field="bank">-</span>
+                        <i class="bi bi-bank2"></i>
+                    </div>
 
-                    <span class="karyawan-detail__section-title">
-                        Rekening & legal
-                    </span>
+                    <span class="label">Nomor rekening</span>
+                    <span class="karyawan-detail__bankcard-number" data-field="no_rekening">-</span>
 
-                    <span class="karyawan-detail__section-description">
-                        Informasi rekening dan dokumen administrasi
-                    </span>
+                    <div class="karyawan-detail__bankcard-bottom">
+                        <div>
+                            <span class="label">Atas nama</span>
+                            <strong data-field="nama_bank">-</strong>
+                        </div>
 
+                        <button type="button" class="karyawan-detail__copy" data-copy-field="no_rekening"
+                            title="Salin nomor rekening">
+                            <i class="bi bi-copy"></i>
+                        </button>
+                    </div>
                 </div>
+            </div>
 
+            <div class="karyawan-detail__section">
+                <span class="karyawan-detail__section-title">Dokumen legal</span>
 
-                {{-- BANK --}}
+                <div class="karyawan-detail__grid karyawan-detail__grid--single">
+                    @foreach ($legal as $f)
+                        <div class="karyawan-detail__item">
+                            <span class="karyawan-detail__icon"><i class="bi {{ $f['icon'] }}"></i></span>
 
-                <div class="karyawan-detail__bank">
+                            <div class="karyawan-detail__item-body">
+                                <span class="label">{{ $f['label'] }}</span>
+                                <span class="value value-number" data-field="{{ $f['key'] }}">-</span>
+                            </div>
 
-                    <div>
-
-                        <span class="karyawan-detail__eyebrow">
-                            Bank
-                        </span>
-
-                        <strong id="detail-bank">
-                            -
-                        </strong>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__bank-account">
-
-                        <span class="label">
-                            Nomor rekening
-                        </span>
-
-                        <strong
-                            class="value-number"
-                            id="detail-no-rekening"
-                        >
-                            -
-                        </strong>
-
-                        <span
-                            class="sub"
-                            id="detail-nama-bank"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
+                            <button type="button" class="karyawan-detail__copy" data-copy-field="{{ $f['key'] }}"
+                                title="Salin {{ $f['label'] }}">
+                                <i class="bi bi-copy"></i>
+                            </button>
+                        </div>
+                    @endforeach
                 </div>
-
-
-                {{-- LEGAL --}}
-
-                <div class="karyawan-detail__field-grid">
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            NPWP
-                        </span>
-
-                        <span
-                            class="value value-number"
-                            id="detail-no-npwp"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            BPJS Ketenagakerjaan
-                        </span>
-
-                        <span
-                            class="value value-number"
-                            id="detail-no-bpjs-tk"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                    <div class="karyawan-detail__field">
-
-                        <span class="label">
-                            BPJS Kesehatan
-                        </span>
-
-                        <span
-                            class="value value-number"
-                            id="detail-no-bpjs-kes"
-                        >
-                            -
-                        </span>
-
-                    </div>
-
-
-                </div>
-
             </div>
 
         </div>
-
 
     </div>
 
 </x-offcanvas.detail>
 
 
-
 <script>
+    (function() {
 
-(function () {
+        const root = document.getElementById('offcanvas-karyawan-detail');
+        if (!root) return;
 
-    const offcanvasEl =
-        document.getElementById(
-            'offcanvas-karyawan-detail'
-        );
+        const fields = root.querySelectorAll('[data-field]');
+        const statusPill = root.querySelector('[data-status-pill]');
+        const statusPillText = root.querySelector('[data-status-pill-text]');
+        const statusInline = root.querySelector('[data-status-inline]');
 
-    if (!offcanvasEl) return;
+        // Hanya respons terbaru yang boleh mengisi (kalau user klik detail baris lain dengan cepat)
+        let requestId = 0;
 
+        /* ---------- Isi / reset ---------- */
 
-    /* =========================================================
-       LOAD DETAIL
-    ========================================================== */
+        function setStatus(status, label) {
+            const stateClass = status === 'aktif' ? '' : (status === 'resign' ? 'is-resign' : 'is-inactive');
 
-    offcanvasEl.addEventListener(
-        'show.bs.offcanvas',
-        function (event) {
+            [statusPill, statusInline].forEach(function(el) {
+                if (!el) return;
+                el.classList.remove('is-inactive', 'is-resign');
+                if (stateClass) el.classList.add(stateClass);
+            });
 
-            const trigger =
-                event.relatedTarget;
+            if (statusPillText) statusPillText.textContent = label;
+            if (statusInline) statusInline.textContent = label;
+        }
 
-            if (!trigger) return;
+        function resetContent() {
+            fields.forEach((el) => el.textContent = '-');
+            setStatus('aktif', '-');
+        }
 
+        function fillContent(data) {
+            fields.forEach(function(el) {
+                const value = data[el.dataset.field];
+                el.textContent = (value === null || value === undefined || value === '') ? '-' : value;
+            });
 
-            const url =
-                trigger.getAttribute(
-                    'data-detail-url'
-                );
+            setStatus(data.status, data.status_aktif || '-');
+        }
+
+        /* ---------- Load detail saat offcanvas dibuka ---------- */
+
+        root.addEventListener('show.bs.offcanvas', function(event) {
+            const trigger = event.relatedTarget;
+            const url = trigger?.getAttribute('data-detail-url');
 
             if (!url) return;
 
+            const thisRequest = ++requestId;
 
-            fetch(url)
+            resetContent();
+            root.classList.add('is-loading');
 
-                .then(res => {
-
-                    if (!res.ok) {
-                        throw new Error(
-                            'Gagal mengambil data karyawan.'
-                        );
+            fetch(url, {
+                    headers: {
+                        Accept: 'application/json'
                     }
-
+                })
+                .then(function(res) {
+                    if (!res.ok) throw new Error('Gagal mengambil data karyawan.');
                     return res.json();
-
                 })
-
-                .then(data => {
-
-
-                    /* ================================
-                       HEADER
-                    ================================= */
-
-                    document.getElementById(
-                        'detail-avatar'
-                    ).textContent =
-                        data.inisial;
-
-
-                    document.getElementById(
-                        'detail-nama'
-                    ).textContent =
-                        data.nama;
-
-
-                    document.getElementById(
-                        'detail-nip'
-                    ).textContent =
-                        'NIP : ' + data.nip;
-
-
-                    document.getElementById(
-                        'detail-jabatan'
-                    ).textContent =
-                        data.job_position +
-                        ' · ' +
-                        data.status_kepegawaian;
-
-
-
-                    /* ================================
-                       DATA PRIBADI
-                    ================================= */
-
-                    document.getElementById(
-                        'detail-data-dibuat'
-                    ).textContent =
-                        data.data_dibuat;
-
-
-                    document.getElementById(
-                        'detail-email'
-                    ).textContent =
-                        data.email;
-
-
-                    document.getElementById(
-                        'detail-no-tlp'
-                    ).textContent =
-                        data.no_tlp;
-
-
-                    document.getElementById(
-                        'detail-nik'
-                    ).textContent =
-                        data.nik;
-
-
-                    document.getElementById(
-                        'detail-jenjang-pendidikan'
-                    ).textContent =
-                        data.jenjang_pendidikan;
-
-
-                    document.getElementById(
-                        'detail-status-kawin'
-                    ).textContent =
-                        data.status_kawin;
-
-
-                    document.getElementById(
-                        'detail-agama'
-                    ).textContent =
-                        data.agama;
-
-
-
-                    /* ================================
-                       PENEMPATAN
-                    ================================= */
-
-                    document.getElementById(
-                        'detail-penempatan'
-                    ).textContent =
-                        data.penempatan_breadcrumb;
-
-
-                    document.getElementById(
-                        'detail-job-position-level'
-                    ).textContent =
-                        data.job_position_level;
-
-
-                    document.getElementById(
-                        'detail-cabang-kantor'
-                    ).textContent =
-                        data.cabang_kantor;
-
-
-                    document.getElementById(
-                        'detail-status-kepegawaian-full'
-                    ).textContent =
-                        data.status_kepegawaian_full;
-
-
-                    document.getElementById(
-                        'detail-status-aktif'
-                    ).textContent =
-                        data.status_aktif;
-
-
-                    document.getElementById(
-                        'detail-gaji'
-                    ).textContent =
-                        data.gaji;
-
-
-
-                    /* ================================
-                       REKENING & LEGAL
-                    ================================= */
-
-                    document.getElementById(
-                        'detail-bank'
-                    ).textContent =
-                        data.bank;
-
-
-                    document.getElementById(
-                        'detail-no-rekening'
-                    ).textContent =
-                        data.no_rekening;
-
-
-                    document.getElementById(
-                        'detail-nama-bank'
-                    ).textContent =
-                        data.nama_bank !== '-'
-                            ? 'a.n. ' + data.nama_bank
-                            : '-';
-
-
-                    document.getElementById(
-                        'detail-no-npwp'
-                    ).textContent =
-                        data.no_npwp;
-
-
-                    document.getElementById(
-                        'detail-no-bpjs-tk'
-                    ).textContent =
-                        data.no_bpjs_ketenagakerjaan;
-
-
-                    document.getElementById(
-                        'detail-no-bpjs-kes'
-                    ).textContent =
-                        data.no_bpjs_kesehatan;
-
-
-
-                    /* ================================
-                       STATUS HEADER
-                    ================================= */
-
-                    const status =
-                        data.status_aktif;
-
-
-                    const statusElement =
-                        document.querySelector(
-                            '.karyawan-detail__status'
-                        );
-
-
-                    if (statusElement) {
-
-                        statusElement.innerHTML = `
-                            <span class="karyawan-detail__status-dot"></span>
-                            ${status}
-                        `;
-
-
-                        statusElement.classList.toggle(
-                            'is-inactive',
-                            status !== 'Aktif'
-                        );
-
-                    }
-
-
-
-                    /* ================================
-                       STATUS INLINE
-                    ================================= */
-
-                    const inlineStatus =
-                        document.getElementById(
-                            'detail-status-aktif'
-                        );
-
-
-                    if (inlineStatus) {
-
-                        inlineStatus.classList.toggle(
-                            'is-inactive',
-                            status !== 'Aktif'
-                        );
-
-                    }
-
+                .then(function(data) {
+                    if (thisRequest !== requestId) return;
+                    fillContent(data);
                 })
+                .catch(function(err) {
+                    console.error('Gagal ambil detail karyawan:', err);
 
-                .catch(err => {
+                    if (thisRequest !== requestId) return;
 
-                    console.error(
-                        'Gagal ambil detail karyawan:',
-                        err
-                    );
-
+                    Swal.fire({
+                        title: 'Terjadi Kesalahan',
+                        text: 'Detail karyawan gagal dimuat. Silakan coba lagi.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: 'btn btn-success popup-ok'
+                        },
+                    });
+                })
+                .finally(function() {
+                    if (thisRequest === requestId) root.classList.remove('is-loading');
                 });
+        });
 
-        }
-    );
+        /* ---------- Salin nomor (NIK, rekening, NPWP, BPJS) ---------- */
 
+        root.addEventListener('click', function(e) {
+            const btn = e.target.closest('[data-copy-field]');
+            if (!btn) return;
 
+            const source = root.querySelector('[data-field="' + btn.dataset.copyField + '"]');
+            const text = (source?.textContent || '').replace(/\s+/g, '');
 
-    /* =========================================================
-       RESET TAB SAAT OFFCANVAS DITUTUP
-    ========================================================== */
+            if (!text || text === '-') return;
 
-    offcanvasEl.addEventListener(
-        'hidden.bs.offcanvas',
-        function () {
+            navigator.clipboard?.writeText(text).then(function() {
+                const icon = btn.querySelector('i');
 
-            const firstTabTrigger =
-                offcanvasEl.querySelector(
-                    '.karyawan-detail__tabs .nav-link'
-                );
+                btn.classList.add('is-copied');
+                icon?.classList.replace('bi-copy', 'bi-check2');
 
+                setTimeout(function() {
+                    btn.classList.remove('is-copied');
+                    icon?.classList.replace('bi-check2', 'bi-copy');
+                }, 1200);
+            });
+        });
 
-            const firstTabPane =
-                offcanvasEl.querySelector(
-                    '.tab-pane'
-                );
+        /* ---------- Reset ke tab pertama saat ditutup ---------- */
 
+        root.addEventListener('hidden.bs.offcanvas', function() {
+            root.querySelectorAll('.karyawan-detail__tabs .nav-link')
+                .forEach((el) => el.classList.remove('active'));
 
-            offcanvasEl
-                .querySelectorAll(
-                    '.karyawan-detail__tabs .nav-link'
-                )
-                .forEach(el =>
-                    el.classList.remove(
-                        'active'
-                    )
-                );
+            root.querySelectorAll('.tab-pane')
+                .forEach((el) => el.classList.remove('show', 'active'));
 
+            root.querySelector('.karyawan-detail__tabs .nav-link')?.classList.add('active');
+            root.querySelector('.tab-pane')?.classList.add('show', 'active');
+        });
 
-            offcanvasEl
-                .querySelectorAll(
-                    '.tab-pane'
-                )
-                .forEach(el =>
-                    el.classList.remove(
-                        'show',
-                        'active'
-                    )
-                );
-
-
-            firstTabTrigger?.classList.add(
-                'active'
-            );
-
-
-            firstTabPane?.classList.add(
-                'show',
-                'active'
-            );
-
-        }
-    );
-
-
-})();
-
+    })();
 </script>

@@ -1,7 +1,7 @@
 @props([
     'name',
     'label' => null,
-    'value' => 0,
+    'value' => null, // kosong -> mulai dari nilai min
     'min' => 0,
     'max' => 365,
     'step' => 1,
@@ -23,7 +23,7 @@
             id="{{ $name }}"
             name="{{ $name }}"
             class="form-control input-stepper-field"
-            value="{{ old($name, $value) }}"
+            value="{{ old($name, $value ?? $min) }}"
             min="{{ $min }}"
             max="{{ $max }}"
             step="{{ $step }}"

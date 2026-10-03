@@ -52,3 +52,10 @@
 .stepper-btn:active {
     background-color: var(--accent-100);
 }
+
+.stepper-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: var(--neutral-50);
+    color: var(--neutral-500);
+}

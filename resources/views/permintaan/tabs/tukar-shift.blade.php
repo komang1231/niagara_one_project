@@ -51,10 +51,11 @@
                     <td>
                         <x-table.cell-stack :avatar="$row->karyawanPengaju?->avatar" :lines="[$row->karyawanPengaju?->nama ?? '-']" />
                     </td>
-                    <x-table.cell-stack :lines="[
-                        'Ditukar dengan ' . $row->karyawanPengganti?->nama,
-                        $row->tanggal_tujuan . ' • ' . $row->shift_pengaju . ' ⇄ ' . $row->shift_pengganti,
-                    ]" />
+                    <td>
+                        <x-table.cell-stack :lines="[
+                            'Ditukar dengan ' . ($row->karyawanPengganti?->nama ?? '-'),
+                            $row->tanggal_tujuan . ' • ' . $row->shift_pengaju . ' ⇄ ' . $row->shift_pengganti,
+                        ]" />
                     </td>
                     <td>@include('permintaan.partials.status', ['row' => $row])</td>
                     <td>@include('permintaan.partials.aksi', [
@@ -64,7 +65,7 @@
                     ])</td>
                 </tr>
             @empty
-                <x-table.empty-row :colspan="5" text="Belum ada permintaan tukar shift." />
+                <x-table.empty-row :colspan="6" text="Belum ada permintaan tukar shift." />
             @endforelse
         </tbody>
     </x-table.table>

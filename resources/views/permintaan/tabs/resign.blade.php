@@ -60,7 +60,7 @@
                     ])</td>
                 </tr>
             @empty
-                <x-table.empty-row :colspan="5" text="Belum ada permintaan resign." />
+                <x-table.empty-row :colspan="6" text="Belum ada permintaan resign." />
             @endforelse
         </tbody>
     </x-table.table>
