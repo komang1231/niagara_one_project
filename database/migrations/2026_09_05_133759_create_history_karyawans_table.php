@@ -16,25 +16,45 @@ return new class extends Migration
             $table->string('nomor_sk', 50)->unique();
             $table->string('file_sk', 255);
             $table->unsignedBigInteger('karyawan_id');
-            $table->unsignedInteger('level_lama');
-            $table->unsignedInteger('level_baru');
-            $table->unsignedInteger('posisi_lama');
-            $table->unsignedInteger('posisi_baru');
+
+            // Cabang (Lokasi Kerja)
             $table->unsignedInteger('cabang_lama')->nullable();
             $table->unsignedInteger('cabang_baru')->nullable();
+
+            // Organisasi (Chained Relationship)
+            $table->unsignedInteger('departemen_lama');
+            $table->unsignedInteger('departemen_baru');
+            $table->unsignedInteger('divisi_lama');
+            $table->unsignedInteger('divisi_baru');
+            $table->unsignedInteger('section_lama');
+            $table->unsignedInteger('section_baru');
+
+            // Jabatan & Tingkatan
+            $table->unsignedInteger('posisi_lama');
+            $table->unsignedInteger('posisi_baru');
+            $table->unsignedInteger('level_lama');
+            $table->unsignedInteger('level_baru');
+
             $table->enum('jenis_perubahan', ['promosi', 'demosi', 'rotasi', 'mutasi']);
             $table->date('tanggal_efektif');
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();
 
+            // Foreign Keys
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
-            $table->foreign('level_lama')->references('id')->on('job_levels');
-            $table->foreign('level_baru')->references('id')->on('job_levels');
-            $table->foreign('posisi_lama')->references('id')->on('job_positions');
-            $table->foreign('posisi_baru')->references('id')->on('job_positions');
             $table->foreign('cabang_lama')->references('id')->on('cabang_kantors');
             $table->foreign('cabang_baru')->references('id')->on('cabang_kantors');
+            $table->foreign('departemen_lama')->references('id')->on('departemens');
+            $table->foreign('departemen_baru')->references('id')->on('departemens');
+            $table->foreign('divisi_lama')->references('id')->on('divisis');
+            $table->foreign('divisi_baru')->references('id')->on('divisis');
+            $table->foreign('section_lama')->references('id')->on('sections');
+            $table->foreign('section_baru')->references('id')->on('sections');
+            $table->foreign('posisi_lama')->references('id')->on('job_positions');
+            $table->foreign('posisi_baru')->references('id')->on('job_positions');
+            $table->foreign('level_lama')->references('id')->on('job_levels');
+            $table->foreign('level_baru')->references('id')->on('job_levels');
         });
     }
 

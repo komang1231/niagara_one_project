@@ -48,14 +48,27 @@ class PermintaanCutiSeeder extends Seeder
             [
                 'kode' => '',
                 'karyawan_id' => $karyawanMap['5171012345670002'] ?? null,
-                'cuti_id' => $cutiMap['Cuti Sakit'] ?? null,
-                'tanggal_mulai' => '2026-10-05',
-                'tanggal_selesai' => '2026-10-06',
-                'alasan' => 'Pemulihan kondisi kesehatan.',
+                'cuti_id' => $cutiMap['Cuti Tahunan'] ?? null,
+                'tanggal_mulai' => '2026-12-05',
+                'tanggal_selesai' => '2026-12-06',
+                'alasan' => 'Liburan ke Bali.',
                 'pengganti_karyawan_id' => null,
                 'detail' => [
-                    ['tanggal' => '2026-10-05', 'setengah_hari' => false],
-                    ['tanggal' => '2026-10-06', 'setengah_hari' => false],
+                    ['tanggal' => '2026-12-05', 'setengah_hari' => false],
+                    ['tanggal' => '2026-12-06', 'setengah_hari' => false],
+                ],
+            ],
+            [
+                'kode' => '',
+                'karyawan_id' => $karyawanMap['5171012345670002'] ?? null,
+                'cuti_id' => $cutiMap['Cuti Tahunan'] ?? null,
+                'tanggal_mulai' => '2026-12-05',
+                'tanggal_selesai' => '2026-12-19',
+                'alasan' => 'Liburan ke Hawaii.',
+                'pengganti_karyawan_id' => null,
+                'detail' => [
+                    ['tanggal' => '2026-12-05', 'setengah_hari' => false],
+                    ['tanggal' => '2026-12-19', 'setengah_hari' => false],
                 ],
             ],
             [

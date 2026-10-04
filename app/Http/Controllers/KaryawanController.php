@@ -245,6 +245,21 @@ class KaryawanController extends Controller
 
     public function toggleStatus(Karyawan $karyawan)
     {
+        if ($karyawan->status === 'nonaktif') {
+            $adaSP3Aktif = $karyawan->suratPeringatans()
+                ->where('jenis_surat', 'SP3')
+                ->where('status', 'aktif')
+                ->whereDate('masa_berlaku', '>=', now()->toDateString())
+                ->exists();
+
+            if ($adaSP3Aktif) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Karyawan tidak dapat diaktifkan karena masih memiliki SP3 yang aktif dan masih berlaku.',
+                ], 422);
+            }
+        }
+
         $karyawan->update([
             'status' => $karyawan->status === 'aktif'
                 ? 'nonaktif'

@@ -24,6 +24,9 @@ use App\Models\PermintaanLembur;
 use App\Models\PermintaanKaryawan;
 use App\Models\PermintaanTukarShift;
 use App\Models\HistoryKaryawan;
+use App\Models\PermintaanResign;
+use App\Models\SuratPeringatan;
+use App\Models\KontrakKaryawan;
 
 class Karyawan extends Model
 {
@@ -138,6 +141,17 @@ class Karyawan extends Model
     {
         return $this->hasMany(PermintaanResign::class, 'karyawan_id');
     }
+
+    public function suratPeringatans()
+    {
+        return $this->hasMany(SuratPeringatan::class, 'karyawan_id');
+    }
+
+    public function kontrakKaryawan()
+    {
+        return $this->hasMany(KontrakKaryawan::class, 'karyawan_id');
+    }
+    
     protected $table = 'karyawans';
 
     protected $fillable = [

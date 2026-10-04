@@ -8,6 +8,8 @@ use App\Models\PermintaanLembur;
 use App\Models\PermintaanResign;
 use App\Models\PermintaanTukarShift;
 use App\Services\ApprovalService;
+use App\Models\SaldoCuti;
+use Carbon\Carbon;
 
 class ApprovalController extends Controller
 {
@@ -53,8 +55,7 @@ class ApprovalController extends Controller
             ->paginate(10, ['*'], 'karyawan_page')
             ->withQueryString();
 
-        $permintaanCuti = PermintaanCuti::
-            WhereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
+        $permintaanCuti = PermintaanCuti::WhereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
                 $query->whereIn('nama', $allowedRequesterRoles);
             })
             ->latest('id')
@@ -172,6 +173,49 @@ class ApprovalController extends Controller
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
+        }
+
+        /*
+     * Cuti Tahunan wajib memiliki saldo cuti.
+     */
+        $isCutiTahunan = $permintaan->cuti
+            && strtolower(trim($permintaan->cuti->nama)) === 'cuti tahunan';
+
+        if ($isCutiTahunan) {
+            $tahun = Carbon::parse($permintaan->tanggal_mulai)->year;
+
+            $saldoCuti = SaldoCuti::where('karyawan_id', $permintaan->karyawan_id)
+                ->where('tahun', $tahun)
+                ->first();
+
+            if (!$saldoCuti) {
+                return redirect()
+                    ->route('approval.index')
+                    ->with(
+                        'error',
+                        'Permintaan Cuti tidak dapat disetujui karena karyawan belum memenuhi masa kerja 1 tahun untuk mendapatkan saldo Cuti Tahunan.'
+                    );
+            }
+
+            $tanggalMulai = Carbon::parse($permintaan->tanggal_mulai);
+            $tanggalSelesai = Carbon::parse($permintaan->tanggal_selesai);
+
+            $jumlahHari = $tanggalMulai->diffInDays($tanggalSelesai) + 1;
+
+            $sisaSaldo = $saldoCuti->saldo - $saldoCuti->terpakai;
+
+            if ($jumlahHari > $sisaSaldo) {
+                return redirect()
+                    ->route('approval.index')
+                    ->with(
+                        'error',
+                        "Permintaan Cuti tidak dapat disetujui karena sisa Cuti Tahunan hanya {$sisaSaldo} hari, sedangkan pengajuan membutuhkan {$jumlahHari} hari."
+                    );
+            }
+
+            $saldoCuti->update([
+                'terpakai' => $saldoCuti->terpakai + $jumlahHari,
+            ]);
         }
 
         $permintaan->processed_by = auth()->id();

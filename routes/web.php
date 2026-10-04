@@ -319,7 +319,6 @@ Route::middleware('auth')->group(function () {
     Route::view('/surat-peringatan', 'surat-peringatan.index')->name('surat-peringatan.index');
 
     // Kehadiran
-    // Kehadiran
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])
         ->name('attendance.check-in');
@@ -363,16 +362,12 @@ Route::middleware('auth')->group(function () {
     Route::view('/tukar-shift', 'tukar-shift.index')->name('tukar-shift.index');
     Route::view('/lembur', 'lembur.index')->name('lembur.index');
 
-    // Route::view('/permintaan-cuti', 'permintaan-cuti.index')->name('permintaan-cuti.index');
+    // SALDO CUTI
+    Route::get('saldo-cuti', [SaldoCutiController::class, 'index'])
+        ->name('saldo-cuti.index');
 
-    // test front end
-    // Route::get('/departemen/{departemen}/edit', [DepartemenController::class, 'edit']);
-    // Route::view('/departemen/trash', 'departemen.trash')->name('departemen.trash');
-
-    // Route::view('/permintaan-karyawan', 'permintaan-karyawan.index')->name('permintaan-karyawan.index');
-
+        
     // Struktur Organisasi
-
     // Departemen
     Route::resource('departemen', DepartemenController::class)
         ->parameters(['departemen' => 'departemen']);
@@ -397,7 +392,7 @@ Route::middleware('auth')->group(function () {
         ->name('surat-peringatan.restore');
     Route::delete('surat-peringatan/{id}/force-delete', [SuratPeringatanController::class, 'forceDelete'])
         ->name('surat-peringatan.force-delete');
-    Route::patch('surat-peringatan/{surat-peringatan}/toggle-status', [SuratPeringatanController::class, 'toggleStatus'])
+    Route::patch('surat-peringatan/{suratPeringatan}/toggle-status', [SuratPeringatanController::class, 'toggleStatus'])
         ->name('surat-peringatan.toggle-status');
 
     Route::resource('perubahan-karyawan', HistoryKaryawansController::class)

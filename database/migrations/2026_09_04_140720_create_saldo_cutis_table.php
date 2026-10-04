@@ -9,8 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('saldo_cutis', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('cuti_id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('karyawan_id');
             $table->unsignedSmallInteger('tahun');
             $table->unsignedInteger('saldo');
@@ -18,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('cuti_id')->references('id')->on('cutis');
+            $table->unique(['karyawan_id', 'tahun']);
         });
     }
 

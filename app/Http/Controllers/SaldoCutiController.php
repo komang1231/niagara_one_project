@@ -2,64 +2,182 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GeneralSetting;
+use App\Models\Karyawan;
 use App\Models\SaldoCuti;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SaldoCutiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // public function index(Request $request)
+    // {
+    //     $tahun = now()->year;
+    //     $historySaya = $request->boolean('history');
+
+    //     if ($historySaya) {
+    //         $this->buatSaldoJikaBerhak(auth()->user()->karyawan);
+
+    //         $saldoCutis = SaldoCuti::with('karyawan')
+    //             ->where('karyawan_id', auth()->user()->karyawan_id)
+    //             ->orderByDesc('tahun')
+    //             ->get();
+    //     } else {
+    //         $this->buatSaldoTahunBerjalan();
+
+    //         $saldoCutis = SaldoCuti::with('karyawan')
+    //             ->where('tahun', $tahun)
+    //             ->orderByDesc('tahun')
+    //             ->get();
+    //     }
+
+    //     return view('saldo-cuti.index', compact(
+    //         'saldoCutis',
+    //         'tahun',
+    //         'historySaya'
+    //     ));
+    // }
+
+    public function index(Request $request)
     {
-        //
+        $tahun = now()->year;
+
+        // Buat saldo tahun berjalan untuk karyawan yang sudah berhak
+        $this->buatSaldoTahunBerjalan();
+
+        $query = SaldoCuti::with([
+            'karyawan.departemen',
+        ])
+            ->where('tahun', $tahun)
+            ->orderByDesc('tahun');
+
+        // Pencarian berdasarkan nama atau NIP karyawan
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->whereHas('karyawan', function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nip', 'like', "%{$search}%");
+            });
+        }
+
+        $saldoCuti = $query
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('saldo-cuti.index', compact(
+            'saldoCuti',
+            'tahun'
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    private function buatSaldoTahunBerjalan(): void
     {
-        //
+        $tahun = now()->year;
+
+        $karyawans = Karyawan::query()
+            ->where('status', 'aktif')
+            ->with([
+                'kontrakKaryawan' => function ($query) {
+                    $query->orderBy('tanggal_mulai');
+                },
+            ])
+            ->get();
+
+        foreach ($karyawans as $karyawan) {
+            $this->buatSaldoJikaBerhak($karyawan, $tahun);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    private function buatSaldoJikaBerhak(?Karyawan $karyawan, ?int $tahun = null): ?SaldoCuti
     {
-        //
+        if (!$karyawan) {
+            return null;
+        }
+
+        $tahun ??= now()->year;
+
+        if ($karyawan->status !== 'aktif') {
+            return null;
+        }
+
+        $kontrakPertama = $karyawan->KontrakKaryawan
+            ->sortBy('tanggal_mulai')
+            ->first();
+
+        if (!$kontrakPertama) {
+            return null;
+        }
+
+        $tanggalMulaiKerja = Carbon::parse($kontrakPertama->tanggal_mulai);
+        $tanggalBerhakCuti = $tanggalMulaiKerja->copy()->addYear();
+
+        if (now()->lt($tanggalBerhakCuti)) {
+            return null;
+        }
+
+        $saldo = SaldoCuti::firstOrCreate(
+            [
+                'karyawan_id' => $karyawan->id,
+                'tahun' => $tahun,
+            ],
+            [
+                'saldo' => $this->ambilKuotaTahunan(),
+                'terpakai' => 0,
+            ]
+        );
+
+        $this->sinkronkanTerpakai($saldo);
+
+        return $saldo->fresh();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(SaldoCuti $saldoCuti)
+    private function ambilKuotaTahunan(): int
     {
-        //
+        return (int) (
+            GeneralSetting::where('key', 'annual_leave_kuota')
+            ->value('value') ?? 0
+        );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SaldoCuti $saldoCuti)
+    private function sinkronkanTerpakai(SaldoCuti $saldo): void
     {
-        //
-    }
+        $mulaiTahun = Carbon::create($saldo->tahun, 1, 1)->startOfDay();
+        $akhirTahun = Carbon::create($saldo->tahun, 12, 31)->endOfDay();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, SaldoCuti $saldoCuti)
-    {
-        //
-    }
+        $terpakai = 0;
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SaldoCuti $saldoCuti)
-    {
-        //
+        $permintaanCutis = $saldo->karyawan
+            ->permintaanCuti()
+            ->with('cuti')
+            ->whereNotNull('approved_at')
+            ->whereNull('rejected_at')
+            ->whereDate('tanggal_mulai', '<=', $akhirTahun)
+            ->whereDate('tanggal_selesai', '>=', $mulaiTahun)
+            ->get();
+
+        foreach ($permintaanCutis as $permintaanCuti) {
+            if (!$permintaanCuti->cuti) {
+                continue;
+            }
+
+            if (strtolower(trim($permintaanCuti->cuti->nama)) !== 'cuti tahunan') {
+                continue;
+            }
+
+            $tanggalMulai = Carbon::parse($permintaanCuti->tanggal_mulai)
+                ->max($mulaiTahun);
+
+            $tanggalSelesai = Carbon::parse($permintaanCuti->tanggal_selesai)
+                ->min($akhirTahun);
+
+            if ($tanggalMulai->lte($tanggalSelesai)) {
+                $terpakai += $tanggalMulai->diffInDays($tanggalSelesai) + 1;
+            }
+        }
+
+        $saldo->update([
+            'terpakai' => $terpakai,
+        ]);
     }
 }

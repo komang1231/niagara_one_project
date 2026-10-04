@@ -9,23 +9,18 @@ use App\Models\Cuti;
 use App\Models\Karyawan;
 
 class SaldoCuti extends Model {
-    use SoftDeletes, HasGeneratedCode;
+    use SoftDeletes;
 
-    protected function getCodePrefix(): string
-    {
-        return 'SLDCUTI';
-    }
+    // public function cuti()
+    // {
+    //     return $this->belongsTo(Cuti::class, 'cuti_id');
+    // }
 
-    protected function cuti()
-    {
-        return $this->belongsTo(Cuti::class, 'cuti_id');
-    }
-
-    protected function karyawan()
+    public function karyawan()
     {
         return $this->belongsTo(Karyawan::class, 'karyawan_id');
     }
     
     protected $table = 'saldo_cutis';
-    protected $fillable = ['cuti_id', 'karyawan_id', 'tahun', 'saldo', 'terpakai'];
+    protected $fillable = ['karyawan_id', 'tahun', 'saldo', 'terpakai'];
 }
