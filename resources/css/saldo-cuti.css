@@ -1,0 +1,27 @@
+/* =========================================================
+   SALDO CUTI
+   ========================================================= */
+
+/* Kolom angka: rata tengah supaya angka antar baris sejajar */
+.sc-col-num {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.sc-unit {
+    font-size: 0.75rem;
+    color: var(--color-text-500);
+}
+
+/* ---------- Sisa: angka saja, warna mengikuti kondisi ---------- */
+.sc-sisa {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-success);
+}
+.sc-sisa--warning {
+    color: var(--accent-700);
+}
+.sc-sisa--danger {
+    color: var(--color-danger);
+}

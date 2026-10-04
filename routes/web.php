@@ -27,7 +27,8 @@ use App\Http\Controllers\RekrutmenController;
 use App\Http\Controllers\JadwalKaryawanController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\SuratPeringatanController;
-
+use App\Http\Controllers\SaldoCutiController;
+use App\Models\SaldoCuti;
 
 Route::get('/test-laravel', function () {
     return 'Laravel OK';
@@ -236,6 +237,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('cuti/{cuti}/toggle-status', [CutiController::class, 'toggleStatus'])
         ->name('cuti.toggle-status');
 
+    Route::resource('saldo-cuti', SaldoCutiController::class)
+        ->parameters(['saldo-cuti' => 'saldo-cuti']);
+    Route::get('saldo-cuti/{id}/edit-data', [SaldoCutiController::class, 'editData'])
+        ->name('saldo-cuti.edit-data');
+    Route::get('saldo-cuti-trash', [SaldoCutiController::class, 'trash'])
+        ->name('saldo-cuti.trash');
+    Route::patch('saldo-cuti/{id}/restore', [SaldoCutiController::class, 'restore'])
+        ->name('saldo-cuti.restore');
+    Route::delete('saldo-cuti/{id}/force-delete', [SaldoCutiController::class, 'forceDelete'])
+        ->name('saldo-cuti.force-delete');
+    Route::patch('saldo-cuti/{saldoCuti}/toggle-status', [SaldoCutiController::class, 'toggleStatus'])
+        ->name('saldo-cuti.toggle-status');
+
     Route::resource('shift', ShiftController::class)
         ->parameters(['shift' => 'shift']);
     Route::get('shift/{id}/edit-data', [ShiftController::class, 'editData'])
@@ -350,8 +364,6 @@ Route::middleware('auth')->group(function () {
     Route::view('/tukar-shift', 'tukar-shift.index')->name('tukar-shift.index');
     Route::view('/lembur', 'lembur.index')->name('lembur.index');
 
-    // Cuti
-    Route::view('/saldo-cuti', 'saldo-cuti.index')->name('saldo-cuti.index');
     // Route::view('/permintaan-cuti', 'permintaan-cuti.index')->name('permintaan-cuti.index');
 
     // test front end

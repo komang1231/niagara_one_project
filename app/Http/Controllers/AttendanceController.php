@@ -11,6 +11,114 @@ use Illuminate\Http\RedirectResponse;
 
 class AttendanceController extends Controller
 {
+    /**
+     * Halaman Attendance.
+     */
+    public function index()
+    {
+        return view('attendance.index', $this->todayStatus());
+    }
+
+    /**
+     * Kondisi absensi user yang login untuk HARI INI (hanya membaca, tidak menulis).
+     * Dipakai view Attendance dan Dashboard supaya tombol Check-in/Check-out tahu kapan aktif.
+     * Urutan cek mengikuti checkIn() / checkOut() di bawah.
+     *
+     * $state: no_karyawan | no_jadwal | cuti | ready | working | done | recorded
+     */
+    public function todayStatus(): array
+    {
+        $now = now();
+        $tanggal = $now->toDateString();
+
+        $data = [
+            'state' => 'no_karyawan',
+            'now' => $now,
+            'attendance' => null,
+            'shift' => null,
+            'canCheckIn' => false,
+            'canCheckOut' => false,
+            'earlyCheckout' => false,
+            'message' => null,
+        ];
+
+        $karyawan = auth()->user()?->karyawan;
+
+        if (!$karyawan) {
+            $data['message'] = 'Akun kamu belum terhubung dengan data karyawan, jadi absensi belum bisa dilakukan. Hubungi HR/Admin.';
+            return $data;
+        }
+
+        $attendance = Attendance::query()
+            ->with('shift')
+            ->where('karyawan_id', $karyawan->id)
+            ->whereDate('tanggal', $tanggal)
+            ->first();
+
+        if ($attendance) {
+            $data['attendance'] = $attendance;
+            $data['shift'] = $attendance->shift;
+
+            if ($attendance->jam_masuk && !$attendance->jam_keluar) {
+                $data['state'] = 'working';
+                $data['canCheckOut'] = true;
+
+                if ($attendance->shift) {
+                    $pulang = Carbon::parse($attendance->shift->jam_pulang);
+                    $waktuPulang = Carbon::today()->setTime($pulang->hour, $pulang->minute, $pulang->second);
+
+                    if ($attendance->shift->lintas_hari) {
+                        $waktuPulang->addDay();
+                    }
+
+                    $data['earlyCheckout'] = $now->lessThan($waktuPulang);
+                }
+            } elseif ($attendance->jam_masuk && $attendance->jam_keluar) {
+                $data['state'] = 'done';
+            } else {
+                $data['state'] = 'recorded';
+            }
+
+            return $data;
+        }
+
+        $jadwal = JadwalKaryawan::query()
+            ->with('shift')
+            ->where('karyawan_id', $karyawan->id)
+            ->whereDate('tanggal', $tanggal)
+            ->where('status', 'aktif')
+            ->first();
+
+        if (!$jadwal || !$jadwal->shift) {
+            $data['state'] = 'no_jadwal';
+            $data['message'] = !$jadwal
+                ? 'Kamu tidak memiliki jadwal kerja hari ini.'
+                : 'Shift pada jadwal hari ini tidak ditemukan.';
+            return $data;
+        }
+
+        $data['shift'] = $jadwal->shift;
+
+        $sedangCuti = PermintaanCuti::query()
+            ->where('karyawan_id', $karyawan->id)
+            ->whereDate('tanggal_mulai', '<=', $tanggal)
+            ->whereDate('tanggal_selesai', '>=', $tanggal)
+            ->whereNotNull('approved_at')
+            ->whereNull('rejected_at')
+            ->exists();
+
+        if ($sedangCuti) {
+            $data['state'] = 'cuti';
+            $data['message'] = 'Kamu sedang dalam masa cuti yang telah disetujui.';
+            return $data;
+        }
+
+        $data['state'] = 'ready';
+        $data['canCheckIn'] = true;
+
+        return $data;
+    }
+
     public function checkIn(AttendanceRequest $request): RedirectResponse
     {
         $user = auth()->user();

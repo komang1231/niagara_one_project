@@ -20,6 +20,7 @@ import './jadwal-karyawan';
 import './jadwal-form';
 import './attendance';
 import './surat-peringatan';
+import './filter-date-range';
 
 
 // Ganti ikon chevron (down <-> up) mengikuti status collapse Bootstrap.
