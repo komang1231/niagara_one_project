@@ -1,0 +1,150 @@
+/* =========================================================
+   SURAT PERINGATAN
+   Warna badge SP1/SP2/SP3 diatur lewat token --sp*-* di app.css
+   ========================================================= */
+
+/* ---------- Badge jenis surat ----------
+   Dua class supaya menang atas .badge-neutral bawaan <x-badge> */
+.app-badge.sp-badge {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+.app-badge.sp-badge--sp1 {
+    background-color: var(--sp1-bg);
+    color: var(--sp1-text);
+    border-color: var(--sp1-border);
+}
+.app-badge.sp-badge--sp2 {
+    background-color: var(--sp2-bg);
+    color: var(--sp2-text);
+    border-color: var(--sp2-border);
+}
+.app-badge.sp-badge--sp3 {
+    background-color: var(--sp3-bg);
+    color: var(--sp3-text);
+    border-color: var(--sp3-border);
+}
+
+/* ---------- Badge status: titik kecil di depan teks ---------- */
+.app-badge.sp-status .bi-circle-fill {
+    font-size: 7px;
+}
+
+/* ---------- Kolom Surat: badge, kode, file ---------- */
+.sp-surat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    min-width: 0;
+}
+.sp-surat__kode {
+    font-weight: 600;
+    color: var(--color-text-900);
+}
+.sp-surat__file {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8125rem;
+    color: var(--color-text-500);
+    text-decoration: none;
+}
+.sp-surat__file:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+/* ---------- Kolom Masa Berlaku: tanggal + teks bantu ---------- */
+.sp-expiry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+.sp-expiry__date {
+    font-weight: 700;
+    color: var(--color-text-900);
+}
+.sp-expiry__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-500);
+}
+.sp-expiry--ok .sp-expiry__hint {
+    color: var(--color-success);
+}
+.sp-expiry--warning .sp-expiry__hint {
+    color: var(--accent-800);
+    font-weight: 600;
+}
+.sp-expiry--danger .sp-expiry__hint {
+    color: var(--color-danger);
+    font-weight: 600;
+}
+
+/* ---------- Offcanvas: file saat ini ---------- */
+.sp-current-file {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--neutral-100);
+    border-radius: 8px;
+    background: var(--color-bg-th);
+}
+.sp-current-file__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 8px;
+    background: var(--primary-100);
+    color: var(--primary-900);
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+.sp-current-file__info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.sp-current-file__label {
+    font-size: 0.75rem;
+    color: var(--color-text-500);
+}
+.sp-current-file__name {
+    font-weight: 600;
+    color: var(--color-text-900);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ---------- Mode lihat: field terkunci ---------- */
+[data-sp-form][data-mode="view"] .form-control:disabled,
+[data-sp-form][data-mode="view"] .form-select:disabled {
+    background-color: var(--color-bg-th);
+    color: var(--color-text-900);
+    opacity: 1; /* teks tetap terbaca, bukan pudar */
+}
+[data-sp-form][data-mode="view"] .select2-container--disabled .select2-selection {
+    background-color: var(--color-bg-th);
+}
+[data-sp-form][data-mode="view"] .input-date,
+[data-sp-form][data-mode="view"] .input-date-icon {
+    cursor: default;
+}
+[data-sp-form][data-mode="view"] .file-upload {
+    display: none; /* upload hanya relevan saat edit */
+}
+[data-sp-form][data-mode="view"] .app-form-switch {
+    pointer-events: none;
+    opacity: 0.7;
+}

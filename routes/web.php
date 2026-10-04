@@ -26,6 +26,7 @@ use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\RekrutmenController;
 use App\Http\Controllers\JadwalKaryawanController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\SuratPeringatanController;
 
 
 Route::get('/test-laravel', function () {
@@ -374,6 +375,19 @@ Route::middleware('auth')->group(function () {
         ->name('departemen.force-delete');
     Route::patch('departemen/{departemen}/toggle-status', [DepartemenController::class, 'toggleStatus'])
         ->name('departemen.toggle-status');
+
+    Route::resource('surat-peringatan', SuratPeringatanController::class)
+        ->parameters(['surat-peringatan' => 'surat-peringatan']);
+    Route::get('surat-peringatan/{id}/edit-data', [SuratPeringatanController::class, 'editData'])
+        ->name('surat-peringatan.edit-data');
+    Route::get('surat-peringatan-trash', [SuratPeringatanController::class, 'trash'])
+        ->name('surat-peringatan.trash');
+    Route::patch('surat-peringatan/{id}/restore', [SuratPeringatanController::class, 'restore'])
+        ->name('surat-peringatan.restore');
+    Route::delete('surat-peringatan/{id}/force-delete', [SuratPeringatanController::class, 'forceDelete'])
+        ->name('surat-peringatan.force-delete');
+    Route::patch('surat-peringatan/{surat-peringatan}/toggle-status', [SuratPeringatanController::class, 'toggleStatus'])
+        ->name('surat-peringatan.toggle-status');
 
     // Divisi
     Route::resource('divisi', DivisiController::class)
