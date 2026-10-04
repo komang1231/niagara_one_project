@@ -1,0 +1,116 @@
+/* =========================================================
+   PERUBAHAN KARYAWAN - tabel index
+   Pola sama dengan surat-peringatan.css (kolom bertumpuk: nilai utama + teks bantu).
+   Badge jenis & status memakai <x-badge> bawaan, jadi tidak ada style badge di sini.
+   ========================================================= */
+
+/* ---------- Kolom Perubahan: label di kiri, "lama -> baru" di kanan ---------- */
+.pk-col-change {
+    min-width: 18rem;
+}
+.pk-change-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+.pk-change {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    column-gap: 0.5rem;
+    align-items: baseline;
+    line-height: 1.35;
+}
+.pk-change__label {
+    font-size: 0.75rem;
+    color: var(--color-text-500);
+    white-space: nowrap;
+}
+.pk-change__flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.125rem 0.375rem;
+    min-width: 0;
+}
+.pk-change__old {
+    color: var(--color-text-500);
+}
+.pk-change__arrow {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    color: var(--color-text-500);
+}
+.pk-change__new {
+    font-weight: 600;
+    color: var(--color-text-900);
+}
+.pk-more {
+    display: inline-block;
+    margin-top: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary);
+    cursor: help;
+}
+
+/* ---------- Kolom Tanggal Efektif: tanggal + teks bantu ---------- */
+.pk-date {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    white-space: nowrap;
+}
+.pk-date__value {
+    font-weight: 700;
+    color: var(--color-text-900);
+}
+.pk-date__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-500);
+}
+.pk-date--soon .pk-date__hint {
+    color: var(--accent-800);
+    font-weight: 600;
+}
+.pk-date--today .pk-date__hint {
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+/* ---------- Kolom Nomor SK: nomor + file ---------- */
+.pk-sk {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+    min-width: 0;
+}
+.pk-sk__nomor {
+    font-weight: 600;
+    color: var(--color-text-900);
+    white-space: nowrap;
+}
+.pk-sk__file {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 13rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-500);
+    text-decoration: none;
+}
+.pk-sk__file span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+a.pk-sk__file:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+.pk-sk__file--empty {
+    font-style: italic;
+}

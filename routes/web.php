@@ -26,6 +26,7 @@ use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\RekrutmenController;
 use App\Http\Controllers\JadwalKaryawanController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\HistoryKaryawansController;
 use App\Http\Controllers\SuratPeringatanController;
 use App\Http\Controllers\SaldoCutiController;
 use App\Models\SaldoCuti;
@@ -314,8 +315,6 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-karyawan.force-delete');
     Route::patch('permintaan-karyawan/{permintaanKaryawan}/toggle-status', [PermintaanKaryawanController::class, 'toggleStatus'])
         ->name('permintaan-karyawan.toggle-status');
-
-    Route::view('/perubahan-karyawan', 'perubahan-karyawan.index')->name('perubahan-karyawan.index');
     // Route::view('/permintaan-resign', 'permintaan-resign.index')->name('permintaan-resign.index');
     Route::view('/surat-peringatan', 'surat-peringatan.index')->name('surat-peringatan.index');
 
@@ -400,6 +399,19 @@ Route::middleware('auth')->group(function () {
         ->name('surat-peringatan.force-delete');
     Route::patch('surat-peringatan/{surat-peringatan}/toggle-status', [SuratPeringatanController::class, 'toggleStatus'])
         ->name('surat-peringatan.toggle-status');
+
+    Route::resource('perubahan-karyawan', HistoryKaryawansController::class)
+        ->parameters(['perubahan-karyawan' => 'perubahan-karyawan']);
+    Route::get('perubahan-karyawan/{id}/edit-data', [HistoryKaryawansController::class, 'editData'])
+        ->name('perubahan-karyawan.edit-data');
+    Route::get('perubahan-karyawan-trash', [HistoryKaryawansController::class, 'trash'])
+        ->name('perubahan-karyawan.trash');
+    Route::patch('perubahan-karyawan/{id}/restore', [HistoryKaryawansController::class, 'restore'])
+        ->name('perubahan-karyawan.restore');
+    Route::delete('perubahan-karyawan/{id}/force-delete', [HistoryKaryawansController::class, 'forceDelete'])
+        ->name('perubahan-karyawan.force-delete');
+    Route::patch('perubahan-karyawan/{perubahan-karyawan}/toggle-status', [HistoryKaryawansController::class, 'toggleStatus'])
+        ->name('perubahan-karyawan.toggle-status');
 
     // Divisi
     Route::resource('divisi', DivisiController::class)
