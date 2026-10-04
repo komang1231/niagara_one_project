@@ -305,10 +305,13 @@ Route::middleware('auth')->group(function () {
     Route::view('/surat-peringatan', 'surat-peringatan.index')->name('surat-peringatan.index');
 
     // Kehadiran
+    // Kehadiran
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])
-    ->name('attendance.check-in');
+        ->name('attendance.check-in');
     Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])
-    ->name('attendance.check-out');
+        ->name('attendance.check-out');
+
 
     // Jadwal Karyawan
     Route::get('jadwal-karyawan', [JadwalKaryawanController::class, 'index'])

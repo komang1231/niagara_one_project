@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Attendance')
 
 @section('content')
-    {{-- <x-page-header eyebrow="Dashboard" title="Dashboard"
-        :description="'Halo, ' . (auth()->user()->nama ?? '') . '. Jangan lupa check-in dan check-out hari ini.'"
-        icon="bi-grid-fill">
+    <x-page-header eyebrow="Attendance" title="Attendance" description="Pantau kehadiran karyawan secara terpusat."
+        icon="bi-clock-fill">
         <x-slot:badges>
             @include('attendance.partials.badges')
         </x-slot:badges>
@@ -17,5 +16,5 @@
 
     @include('attendance.partials.today')
 
-    Bakal lnjutnoverview Attendance, KPI, dan chart. --}}
+    {{-- Tahap 2 (setelah check-in/check-out disetujui): filter, summary, tabel monitoring, detail. --}}
 @endsection

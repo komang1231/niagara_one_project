@@ -39,6 +39,7 @@
             'icon' => 'bi-clock-fill',
             'slug' => 'kehadiran',
             'children' => [
+                ['label' => 'Attendance', 'slug' => 'attendance'],
                 ['label' => 'Jadwal Karyawan', 'slug' => 'jadwal-karyawan'],
                 ['label' => 'Shift', 'slug' => 'shift'],
                 ['label' => 'Pola Shift', 'slug' => 'pola-shift'],

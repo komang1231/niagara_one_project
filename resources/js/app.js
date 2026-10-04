@@ -18,6 +18,7 @@ import './file-upload';
 import './permintaan';
 import './jadwal-karyawan';
 import './jadwal-form';
+import './attendance';
 
 
 // Ganti ikon chevron (down <-> up) mengikuti status collapse Bootstrap.

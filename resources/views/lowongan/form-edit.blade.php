@@ -68,7 +68,7 @@
 
         <x-form.rich-text-editor name="kualifikasi" label="Kualifikasi" />
 
-        <x-form.textarea name="deskripsi" label="Deskripsi Pekerjaan" rows="4" required />
+        <x-form.rich-text-editor name="deskripsi" label="Deskripsi Pekerjaan" />
 
         <x-form.switch name="status" label="Status Aktif" />
     </form>

@@ -25,6 +25,7 @@
 @import "approval.css";
 @import "permintaan.css";
 @import "jadwal-karyawan.css";
+@import "attendance.css";
 @import "select2/dist/css/select2.min.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

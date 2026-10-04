@@ -1,0 +1,148 @@
+/* ============================================
+   ATTENDANCE (check-in / check-out)
+   Dipakai oleh resources/views/attendance/partials (Dashboard & Attendance)
+   ============================================ */
+
+/* ----- Tombol di page header ----- */
+.attendance-punch-form {
+    margin: 0;
+}
+
+.attendance-spin {
+    display: inline-block;
+    animation: attendance-spin 0.9s linear infinite;
+}
+
+@keyframes attendance-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Saat sedang mencari lokasi, tombol tidak boleh terlihat "mati" setengah transparan */
+.attendance-punch-form .btn-app:disabled:has(.attendance-spin) {
+    opacity: 0.85;
+}
+
+/* ----- Panel ringkasan hari ini ----- */
+.attendance-today {
+    gap: 1.1rem;
+}
+
+.attendance-today__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.attendance-today__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-1000);
+}
+
+.attendance-today__meta {
+    margin: 2px 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+}
+
+.attendance-today__clock-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.attendance-today__clock-wrap .app-badge {
+    align-self: center;
+    margin-right: 6px;
+}
+
+.attendance-today__clock {
+    font-size: 1.375rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--primary-950);
+}
+
+.attendance-today__tz {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+.attendance-today__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--neutral-50);
+}
+
+.attendance-today__item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.attendance-today__label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.attendance-today__value {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-text-1000);
+}
+
+.attendance-today__value.is-empty {
+    font-weight: 400;
+    color: var(--neutral-300);
+}
+
+.attendance-today__loc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+/* ----- Pesan info / error di dalam panel ----- */
+.attendance-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.8125rem;
+    background: var(--accent-25);
+    color: var(--accent-900);
+}
+
+.attendance-notice i {
+    margin-top: 1px;
+}
+
+.attendance-notice--danger {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+}
+
+@media (max-width: 1100px) {
+    .attendance-today__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Pemisah halus antara badge info dan tombol Check-in/Check-out di page header */
+.page-header-actions:has(.attendance-punch-form) {
+    margin-left: 6px;
+    padding-left: 16px;
+    border-left: 1px solid var(--primary-300);
+}
