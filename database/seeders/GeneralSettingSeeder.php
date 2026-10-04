@@ -19,6 +19,7 @@ class GeneralSettingSeeder extends Seeder
             ['key' => 'logo', 'name' => 'Logo', 'value' => null],
             ['key' => 'title', 'name' => 'Judul', 'value' => 'Niagara One'],
             ['key' => 'default_password', 'name' => 'Password Default', 'value' => 'Niagara@123'],
+            ['key' => 'tanggal_closing_absensi', 'name' => 'Tanggal Closing Absensi', 'value' => '28'],
         ];
 
         foreach ($settings as $data) {

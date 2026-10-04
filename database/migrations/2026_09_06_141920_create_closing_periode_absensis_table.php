@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('closing_periode_absensis', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('bulan');
-            $table->integer('tahun');
+            $table->unsignedInteger('bulan');
+            $table->unsignedInteger('tahun');
             $table->unsignedBigInteger('closed_by');
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();

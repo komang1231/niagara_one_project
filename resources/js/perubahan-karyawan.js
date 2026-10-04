@@ -281,7 +281,13 @@ class FormPerubahan {
 
     kosongkanBaru() {
         this.otomatis.clear();
-        RANTAI.forEach((f) => this.kosongkan(f));
+
+        // Departemen tidak dikosongkan karena option-nya berasal dari server.
+        // Yang di-reset hanya child dari chained dropdown.
+        RANTAI.slice(1).forEach((f) => this.kosongkan(f));
+
+        this.setVal(this.baru.departemen, "");
+
         ["level", "cabang"].forEach((f) => this.setVal(this.baru[f], ""));
     }
 
@@ -455,12 +461,12 @@ class FormPerubahan {
             isi.append(
                 baru
                     ? buat(
-                          "span",
-                          berubah
-                              ? "pk-summary__new is-changed"
-                              : "pk-summary__new",
-                          baru,
-                      )
+                        "span",
+                        berubah
+                            ? "pk-summary__new is-changed"
+                            : "pk-summary__new",
+                        baru,
+                    )
                     : buat("span", "pk-summary__empty", "Belum dipilih"),
             );
             baris(LABEL_FIELD[f], isi);
@@ -714,6 +720,11 @@ class FormPerubahan {
         this.render(); // sinkronkan hidden input field disabled sebelum dikirim
 
         const error = this.validasi();
+        console.log("HASIL VALIDASI SUBMIT:", error);
+        console.log("NILAI this.mock:", this.mock);
+        console.log("TIPE this.mock:", typeof this.mock);
+        console.log("HASIL VALIDASI SUBMIT:", error);
+
         if (error.length) {
             e.preventDefault();
             const pertama = error[0][0];

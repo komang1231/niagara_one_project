@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('history_karyawans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nomor_sk', 50)->unique();
+            $table->string('kode', 50)->unique();
             $table->string('file_sk', 255);
             $table->unsignedBigInteger('karyawan_id');
 

@@ -22,6 +22,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            //TAMBAH//karyawan A,PKWTT,1 JAN 2025,1 JAN 2026(BISA)
+            //TAMBAH//karyawan A,PKWTT,1 JAN 2026,1 JAN 2027(GABISA)
+            //GABISA TAMBAH KONTRAK YG KARYAWANNYA SUDAH ADA DATA KONTRAK(GA MUNCUL DI FORM CREATE)
+            //TOMBOL PERPANJANG BISA DI KLIK SAAT H-30
+            //PERPANJANG//karyawan A,PKWTT,1 JAN 2026,1 JAN 2027(BISA)
+
             $table->foreign('karyawan_id')->references('id')->on('karyawans');
             $table->foreign('status_kepegawaian_id')->references('id')->on('status_kepegawaians');
         });

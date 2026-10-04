@@ -1,7 +1,7 @@
 @php
     $user = Auth::user();
 
-    $userName = $user?->nama ?? 'User';
+    $userName = $user?->karyawan?->nama ?? 'User';
     $userEmail = $user?->email ?? '-';
     $userRole = $user?->role?->nama ?? '-';
 

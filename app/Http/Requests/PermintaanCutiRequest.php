@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\PermintaanCuti;
 
 class PermintaanCutiRequest extends FormRequest
 {
@@ -68,10 +69,44 @@ class PermintaanCutiRequest extends FormRequest
         ];
     }
 
-    // protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
-    // {
-    //     dd($this->allFiles());
-    // }
+    protected function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                return;
+            }
+
+            $karyawanId = auth()->user()?->karyawan_id;
+
+            if (!$karyawanId) {
+                return;
+            }
+
+            $tanggalMulai = $this->input('tanggal_mulai');
+            $tanggalSelesai = $this->input('tanggal_selesai');
+
+            if (!$tanggalMulai || !$tanggalSelesai) {
+                return;
+            }
+
+            $bentrok = PermintaanCuti::query()
+                ->where('karyawan_id', $karyawanId)
+                ->whereNull('rejected_at')
+                ->where(function ($query) use ($tanggalMulai, $tanggalSelesai) {
+                    $query
+                        ->whereDate('tanggal_mulai', '<=', $tanggalSelesai)
+                        ->whereDate('tanggal_selesai', '>=', $tanggalMulai);
+                })
+                ->exists();
+
+            if ($bentrok) {
+                $validator->errors()->add(
+                    'tanggal_mulai',
+                    'Tanggal cuti yang diajukan bentrok dengan permintaan cuti lain yang masih aktif atau sedang menunggu approval.'
+                );
+            }
+        });
+    }
 
     protected function prepareForValidation(): void
     {
