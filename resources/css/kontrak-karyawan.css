@@ -1,0 +1,100 @@
+/* =========================================================
+   KONTRAK KARYAWAN
+   ========================================================= */
+
+/* ---------- Toolbar di atas tabel (pengganti tombol tambah di page header) ---------- */
+.kontrak-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.kontrak-toolbar__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.kontrak-toolbar__desc {
+    margin: 2px 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-text-500);
+}
+
+/* ---------- Tabel ---------- */
+.kontrak-col-date {
+    white-space: nowrap;
+}
+
+/* Tombol Perpanjang di baris tabel: dibuat ringkas supaya kolom aksi tidak penuh */
+.kontrak-btn-perpanjang {
+    padding-block: 6px;
+    font-size: 0.8125rem;
+}
+
+/* Info "belum masuk periode perpanjangan" */
+.kontrak-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--color-text-500);
+    white-space: nowrap;
+}
+
+/* ---------- Konfirmasi Perpanjang (SweetAlert) ---------- */
+.kontrak-confirm__lead {
+    margin: 0 0 1rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-500);
+}
+
+.kontrak-confirm {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    background: var(--color-text-25);
+    border: 1px solid var(--neutral-100);
+    border-radius: 12px;
+}
+
+.kontrak-confirm > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+}
+
+.kontrak-confirm > div + div {
+    border-top: 1px solid var(--neutral-100);
+}
+
+.kontrak-confirm dt {
+    font-weight: 500;
+    color: var(--color-text-500);
+}
+
+.kontrak-confirm dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* Periode sesudah diperpanjang: ditonjolkan */
+.kontrak-confirm__next dd {
+    color: var(--color-success);
+}
+
+@media (max-width: 575.98px) {
+    .kontrak-confirm > div {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .kontrak-confirm dd {
+        text-align: left;
+    }
+}

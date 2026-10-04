@@ -29,6 +29,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\HistoryKaryawansController;
 use App\Http\Controllers\SuratPeringatanController;
 use App\Http\Controllers\SaldoCutiController;
+use App\Http\Controllers\KontrakKaryawanController;
 use App\Models\SaldoCuti;
 
 Route::get('/test-laravel', function () {
@@ -210,7 +211,13 @@ Route::middleware('auth')->group(function () {
         ->name('karyawan.get-job-position');
 
 
-    Route::view('/kontrak-karyawan', 'kontrak-karyawan.index')->name('kontrak-karyawan.index');
+    Route::resource('kontrak-karyawan', KontrakKaryawanController::class)
+        ->only(['index', 'store', 'update'])
+        ->parameters(['kontrak-karyawan' => 'kontrakKaryawan']);
+    Route::get('kontrak-karyawan/{id}/edit-data', [KontrakKaryawanController::class, 'editData'])
+        ->name('kontrak-karyawan.edit-data');
+    Route::patch('kontrak-karyawan/{kontrakKaryawan}/perpanjang', [KontrakKaryawanController::class, 'perpanjang'])
+        ->name('kontrak-karyawan.perpanjang');
 
     Route::resource('hari-libur', HariLiburController::class)
         ->parameters(['hari-libur' => 'hari-libur']);
