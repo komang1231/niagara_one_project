@@ -3,7 +3,7 @@
     <form id="offcanvas-kontrak-edit-form" method="POST" data-edit-form novalidate data-kontrak-form
         data-durasi-bulan="{{ $durasiBulan }}">
         @csrf
-        @method('PUT')
+        @method('PATCH')
 
         <x-form.input name="nomor_kontrak" id="kt_edit_nomor" label="Nomor Kontrak" disabled />
 
@@ -18,7 +18,8 @@
             data-kontrak-akhir />
 
         <p class="text-muted small mb-0">
-            Tanggal berakhir ditentukan otomatis oleh sistem. Untuk memperpanjang kontrak, gunakan aksi Perpanjang di tabel.
+            Tanggal berakhir ditentukan otomatis oleh sistem. Untuk memperpanjang kontrak, gunakan aksi Perpanjang di
+            tabel.
         </p>
     </form>
 </x-offcanvas.form>

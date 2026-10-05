@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasGeneratedCode;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Karyawan;
+use App\Models\StatusKepegawaian;
 
 class KontrakKaryawan extends Model
 {
@@ -18,6 +20,19 @@ class KontrakKaryawan extends Model
     protected function getCodeField(): string
     {
         return 'nomor_kontrak';
+    }
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'karyawan_id');
+    }
+
+    public function statusKepegawaian()
+    {
+        return $this->belongsTo(
+            StatusKepegawaian::class,
+            'status_kepegawaian_id'
+        );
     }
 
     protected $table = 'kontrak_karyawans';

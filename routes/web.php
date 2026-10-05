@@ -213,8 +213,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('kontrak-karyawan', KontrakKaryawanController::class)
         ->only(['index', 'store', 'update'])
         ->parameters(['kontrak-karyawan' => 'kontrakKaryawan']);
+
     Route::get('kontrak-karyawan/{id}/edit-data', [KontrakKaryawanController::class, 'editData'])
         ->name('kontrak-karyawan.edit-data');
+
     Route::patch('kontrak-karyawan/{kontrakKaryawan}/perpanjang', [KontrakKaryawanController::class, 'perpanjang'])
         ->name('kontrak-karyawan.perpanjang');
 
@@ -372,7 +374,7 @@ Route::middleware('auth')->group(function () {
     Route::get('saldo-cuti', [SaldoCutiController::class, 'index'])
         ->name('saldo-cuti.index');
 
-        
+
     // Struktur Organisasi
     // Departemen
     Route::resource('departemen', DepartemenController::class)
