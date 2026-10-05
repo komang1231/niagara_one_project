@@ -27,7 +27,8 @@ function labelPilihan(select) {
 
 document.addEventListener('submit', (e) => {
     const form = e.target;
-    if (!form.matches?.('[data-closing-form]')) return;
+
+    if (form.id !== 'offcanvas-closing-form') return;
 
     e.preventDefault();
 
@@ -41,8 +42,11 @@ document.addEventListener('submit', (e) => {
             icon: 'warning',
             confirmButtonText: 'OK',
             buttonsStyling: false,
-            customClass: { confirmButton: 'btn btn-success popup-ok' },
+            customClass: {
+                confirmButton: 'btn btn-success popup-ok',
+            },
         });
+
         return;
     }
 
@@ -59,20 +63,11 @@ document.addEventListener('submit', (e) => {
     }).then((hasil) => {
         if (!hasil.isConfirmed) return;
 
-        // Tutup offcanvas form closing
         Offcanvas.getInstance(form.closest('.offcanvas'))?.hide();
 
-        window.Swal.fire({
-            title: 'Menunggu backend',
-            text: 'Closing periode akan diproses oleh backend.',
-            icon: 'info',
-            confirmButtonText: 'OK',
-            buttonsStyling: false,
-            customClass: { confirmButton: 'btn btn-success popup-ok' },
-        });
+        form.submit();
     });
 });
-
 // ---------------------------------------------------------------
 // 2) Export PDF di halaman detail (window.print)
 // ---------------------------------------------------------------

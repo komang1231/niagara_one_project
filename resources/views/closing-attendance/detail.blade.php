@@ -3,7 +3,7 @@
 @section('title', 'Detail Rekapan Absensi')
 
 @section('content')
-    @php
+    {{-- @php
         $namaBulan = [
             1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
             7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
@@ -98,11 +98,52 @@
                 'ket' => $status === 'terlambat' ? "Terlambat {$telat} menit" : $ketStatus[$status],
             ];
         }
+    @endphp --}}
+    @php
+        $namaBulan = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+
+        $periodeBulan = $namaBulan[$closing->bulan] ?? '-';
+
+        $closedBy = $closing->user?->nama ?? '-';
+
+        $tanggalClosing = $closing->created_at
+            ? \Carbon\Carbon::parse($closing->created_at)->locale('id')->translatedFormat('d F Y')
+            : '-';
+
+        $jamClosing = $closing->created_at
+            ? \Carbon\Carbon::parse($closing->created_at)->locale('id')->translatedFormat('H:i') . ' WIB'
+            : '-';
+
+        $stack = fn(...$lines) => array_values(array_filter($lines, 'filled'));
+
+        $periode = [
+            'label' => $periodeBulan . ' ' . $closing->tahun,
+
+            'rentang' => $awal->translatedFormat('d F Y') . ' - ' . $akhir->translatedFormat('d F Y'),
+
+            'closed_by' => $closedBy,
+
+            'closed_at' => $tanggalClosing . ' ' . $jamClosing,
+
+            'closed_tgl' => $tanggalClosing,
+        ];
     @endphp
 
     {{-- Page header: hanya tampil di layar (disembunyikan saat print) --}}
-    <x-page-header eyebrow="Attendance" title="Rekapan Absensi" :description="'Detail hasil absensi karyawan untuk periode ' . $periode['label'] . '.'"
-        icon="bi-calendar-check-fill">
+    <x-page-header eyebrow="Attendance" title="Rekapan Absensi" :description="'Detail hasil absensi karyawan untuk periode ' . $periode['label'] . '.'" icon="bi-calendar-check-fill">
         <x-slot:badges>
             <x-badge variant="success" icon="bi-lock-fill">{{ $periode['label'] }}</x-badge>
         </x-slot:badges>
@@ -143,14 +184,47 @@
 
         {{-- Summary --}}
         <div class="ca-summary">
-            @foreach ($summary as $s)
-                <div class="ca-summary-card">
-                    <div class="ca-summary-label">
-                        <i class="bi {{ $s['icon'] }} ca-tone--{{ $s['tone'] }}"></i>{{ $s['label'] }}
-                    </div>
-                    <div class="ca-summary-value">{{ $s['value'] }}</div>
+            <div class="ca-summary-card">
+                <div class="ca-summary-label">
+                    <i class="bi bi-people-fill"></i>Total Karyawan
                 </div>
-            @endforeach
+                <div class="ca-summary-value">{{ $summary['total_karyawan'] }}</div>
+            </div>
+
+            <div class="ca-summary-card">
+                <div class="ca-summary-label">
+                    <i class="bi bi-check-circle-fill"></i>Hadir
+                </div>
+                <div class="ca-summary-value">{{ $summary['hadir'] }}</div>
+            </div>
+
+            <div class="ca-summary-card">
+                <div class="ca-summary-label">
+                    <i class="bi bi-clock-fill"></i>Terlambat
+                </div>
+                <div class="ca-summary-value">{{ $summary['terlambat'] }}</div>
+            </div>
+
+            <div class="ca-summary-card">
+                <div class="ca-summary-label">
+                    <i class="bi bi-calendar-check-fill"></i>Cuti
+                </div>
+                <div class="ca-summary-value">{{ $summary['cuti'] }}</div>
+            </div>
+
+            <div class="ca-summary-card">
+                <div class="ca-summary-label">
+                    <i class="bi bi-info-circle-fill"></i>Izin
+                </div>
+                <div class="ca-summary-value">{{ $summary['izin'] }}</div>
+            </div>
+
+            <div class="ca-summary-card">
+                <div class="ca-summary-label">
+                    <i class="bi bi-x-circle-fill"></i>Alpa
+                </div>
+                <div class="ca-summary-value">{{ $summary['alpa'] }}</div>
+            </div>
         </div>
 
         {{-- Tabel hasil absensi --}}
@@ -170,18 +244,37 @@
                 </thead>
 
                 <tbody>
-                    @forelse ($absensi as $i => $a)
+                    @forelse ($attendances as $i => $a)
                         <tr>
                             <td class="app-table__col-no">{{ $i + 1 }}</td>
+
                             <td>
-                                <x-table.cell-stack :avatar="$a['nama']" :lines="$stack($a['nama'], 'NIP. ' . $a['nip'], $a['jabatan'] . ' · ' . $a['dept'])" />
+                                <x-table.cell-stack :avatar="$a->karyawan?->nama ?? '-'" :lines="$stack($a->karyawan?->nama ?? '-', 'NIP. ' . ($a->karyawan?->nip ?? '-'))" />
                             </td>
-                            <td class="ca-col-date">{{ $a['tanggal'] }}</td>
-                            <td>{{ $a['shift'] }}</td>
-                            <td>{{ $a['masuk'] }}</td>
-                            <td>{{ $a['keluar'] }}</td>
-                            <td><x-attendance.status-badge :status="$a['status']" /></td>
-                            <td>{{ $a['ket'] }}</td>
+
+                            <td class="ca-col-date">
+                                {{ \Carbon\Carbon::parse($a->tanggal)->locale('id')->translatedFormat('d M Y') }}
+                            </td>
+
+                            <td>
+                                {{ $a->shift?->nama ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $a->jam_masuk ? \Carbon\Carbon::parse($a->jam_masuk)->format('H:i') : '-' }}
+                            </td>
+
+                            <td>
+                                {{ $a->jam_keluar ? \Carbon\Carbon::parse($a->jam_keluar)->format('H:i') : '-' }}
+                            </td>
+
+                            <td>
+                                <x-attendance.status-badge :status="$a->status" />
+                            </td>
+
+                            <td>
+                                {{ $a->keterangan ?? '-' }}
+                            </td>
                         </tr>
                     @empty
                         <x-table.empty-row colspan="8" text="Belum ada data absensi pada periode ini." />

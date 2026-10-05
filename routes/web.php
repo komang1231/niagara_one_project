@@ -30,6 +30,7 @@ use App\Http\Controllers\SuratPeringatanController;
 use App\Http\Controllers\SaldoCutiController;
 use App\Http\Controllers\KontrakKaryawanController;
 use App\Models\SaldoCuti;
+use App\Http\Controllers\ClosingPeriodeAbsensiController;
 
 Route::get('/test-laravel', function () {
     return 'Laravel OK';
@@ -83,8 +84,14 @@ Route::middleware('auth')->group(function () {
     Route::get('permintaan-karyawan/get-job-position/{section}', [PermintaanKaryawanController::class, 'getJobPosition'])
         ->name('permintaan-karyawan.get-job-position');
 
-    Route::view('/closing-attendance', 'closing-attendance.index')->name('closing-attendance.index');
-    Route::view('/closing-attendance/{id}', 'closing-attendance.detail')->name('closing-attendance.show');
+    Route::get('closing-attendance', [ClosingPeriodeAbsensiController::class, 'index'])
+        ->name('closing-attendance.index');
+
+    Route::post('closing-attendance', [ClosingPeriodeAbsensiController::class, 'store'])
+        ->name('closing-attendance.store');
+
+    Route::get('closing-attendance/{id}', [ClosingPeriodeAbsensiController::class, 'show'])
+        ->name('closing-attendance.show');
     // ============================================================================
     // PERMINTAAN CUTI
     // ============================================================================

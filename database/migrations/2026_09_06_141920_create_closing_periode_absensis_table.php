@@ -21,7 +21,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unique(['bulan', 'tahun']); // memastikan tidak ada duplicate bulan dan tahun
-            $table->foreign('closed_by')->references('id')->on('users');
+            $table->foreign('closed4_by')->references('id')->on('users');
         });
     }
 

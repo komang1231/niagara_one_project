@@ -402,4 +402,114 @@ class PermintaanController extends Controller
             'shift_pengganti' => $permintaanTukarShift->shift_pengganti,
         ]);
     }
+
+    public function destroyKaryawan()
+    {
+        $permintaanKaryawan = PermintaanKaryawan::findOrFail(request('id'));
+
+        if (
+            $permintaanKaryawan->approved_at ||
+            $permintaanKaryawan->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Karyawan yang sudah diproses tidak dapat dihapus.',
+            ], 422);
+        }
+
+        $permintaanKaryawan->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permintaan Karyawan berhasil dihapus.',
+        ]);
+    }
+
+    public function destroyCuti()
+    {
+        $permintaanCuti = PermintaanCuti::findOrFail(request('id'));
+
+        if (
+            $permintaanCuti->approved_at ||
+            $permintaanCuti->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Cuti yang sudah diproses tidak dapat dihapus.',
+            ], 422);
+        }
+
+        $permintaanCuti->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permintaan Cuti berhasil dihapus.',
+        ]);
+    }
+
+    public function destroyLembur()
+    {
+        $permintaanLembur = PermintaanLembur::findOrFail(request('id'));
+
+        if (
+            $permintaanLembur->approved_at ||
+            $permintaanLembur->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Lembur yang sudah diproses tidak dapat dihapus.',
+            ], 422);
+        }
+
+        $permintaanLembur->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permintaan Lembur berhasil dihapus.',
+        ]);
+    }
+
+    public function destroyResign()
+    {
+        $permintaanResign = PermintaanResign::findOrFail(request('id'));
+
+        if (
+            $permintaanResign->approved_at ||
+            $permintaanResign->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Resign yang sudah diproses tidak dapat dihapus.',
+            ], 422);
+        }
+
+        $permintaanResign->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permintaan Resign berhasil dihapus.',
+        ]);
+    }
+
+    public function destroyTukarShift()
+    {
+        $permintaanTukarShift = PermintaanTukarShift::findOrFail(request('id'));
+
+        if (
+            $permintaanTukarShift->approved_at ||
+            $permintaanTukarShift->rejected_at
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Permintaan Tukar Shift yang sudah diproses tidak dapat dihapus.',
+            ], 422);
+        }
+
+        $permintaanTukarShift->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permintaan Tukar Shift berhasil dihapus.',
+        ]);
+    }
 }
