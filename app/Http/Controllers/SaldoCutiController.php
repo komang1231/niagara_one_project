@@ -10,34 +10,6 @@ use Illuminate\Http\Request;
 
 class SaldoCutiController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $tahun = now()->year;
-    //     $historySaya = $request->boolean('history');
-
-    //     if ($historySaya) {
-    //         $this->buatSaldoJikaBerhak(auth()->user()->karyawan);
-
-    //         $saldoCutis = SaldoCuti::with('karyawan')
-    //             ->where('karyawan_id', auth()->user()->karyawan_id)
-    //             ->orderByDesc('tahun')
-    //             ->get();
-    //     } else {
-    //         $this->buatSaldoTahunBerjalan();
-
-    //         $saldoCutis = SaldoCuti::with('karyawan')
-    //             ->where('tahun', $tahun)
-    //             ->orderByDesc('tahun')
-    //             ->get();
-    //     }
-
-    //     return view('saldo-cuti.index', compact(
-    //         'saldoCutis',
-    //         'tahun',
-    //         'historySaya'
-    //     ));
-    // }
-
     public function index(Request $request)
     {
         $tahun = now()->year;

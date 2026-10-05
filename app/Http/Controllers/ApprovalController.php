@@ -44,6 +44,10 @@ class ApprovalController extends Controller
                 'Admin Tenant',
             ],
 
+            'Super Admin' => [
+                'Super Admin',
+            ],
+
             default => [],
         };
 
