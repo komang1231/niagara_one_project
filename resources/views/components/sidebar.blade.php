@@ -40,6 +40,9 @@
             'slug' => 'kehadiran',
             'children' => [
                 ['label' => 'Attendance', 'slug' => 'attendance'],
+                // Menu baru: Rekapan Absensi
+                // 'match' dipakai supaya menu tetap aktif di halaman detail (closing-attendance.show)
+                ['label' => 'Rekapan Absensi', 'slug' => 'closing-attendance', 'match' => 'closing-attendance.*'],
                 ['label' => 'Jadwal Karyawan', 'slug' => 'jadwal-karyawan'],
                 ['label' => 'Shift', 'slug' => 'shift'],
                 ['label' => 'Pola Shift', 'slug' => 'pola-shift'],
@@ -141,7 +144,8 @@
 
                         foreach ($item['children'] as $child) {
                             $childRouteName = $child['slug'] . '.index';
-                            if (Route::is($childRouteName)) {
+                            // 'match' (opsional) = pola route tambahan, mis. halaman detail
+                            if (Route::is($childRouteName) || (isset($child['match']) && Route::is($child['match']))) {
                                 $isSectionActive = true;
                             }
                         }
@@ -173,7 +177,9 @@
                             @foreach ($item['children'] as $child)
                                 @php
                                     $childRouteName = $child['slug'] . '.index';
-                                    $isChildActive = Route::is($childRouteName);
+                                    $isChildActive =
+                                        Route::is($childRouteName) ||
+                                        (isset($child['match']) && Route::is($child['match']));
                                 @endphp
 
                                 <li class="submenu-item @if ($isChildActive) active @endif">

@@ -83,7 +83,8 @@ Route::middleware('auth')->group(function () {
     Route::get('permintaan-karyawan/get-job-position/{section}', [PermintaanKaryawanController::class, 'getJobPosition'])
         ->name('permintaan-karyawan.get-job-position');
 
-
+    Route::view('/closing-attendance', 'closing-attendance.index')->name('closing-attendance.index');
+    Route::view('/closing-attendance/{id}', 'closing-attendance.detail')->name('closing-attendance.show');
     // ============================================================================
     // PERMINTAAN CUTI
     // ============================================================================
@@ -372,7 +373,7 @@ Route::middleware('auth')->group(function () {
     Route::get('saldo-cuti', [SaldoCutiController::class, 'index'])
         ->name('saldo-cuti.index');
 
-        
+
     // Struktur Organisasi
     // Departemen
     Route::resource('departemen', DepartemenController::class)

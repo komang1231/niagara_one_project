@@ -1,0 +1,221 @@
+/* ---------- Kolom tanggal: jangan turun baris ---------- */
+.ca-col-date {
+    white-space: nowrap;
+}
+
+/* ---------- Empty state (belum ada closing) ---------- */
+.ca-empty {
+    text-align: center;
+    padding: 3.5rem 1rem;
+}
+
+.ca-empty__icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: var(--primary-50);
+    color: var(--primary);
+}
+
+.ca-empty__title {
+    margin: 0 0 0.25rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text-900);
+}
+
+.ca-empty__desc {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-500);
+}
+
+/* ---------- Detail: info periode ---------- */
+.ca-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    background: #fff;
+    border: 0.0625rem solid var(--color-bg-50);
+    border-radius: var(--panel-radius);
+    box-shadow: var(--panel-shadow);
+}
+
+.ca-info-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-text-500);
+}
+
+.ca-info-value {
+    margin-top: 0.125rem;
+    font-weight: 600;
+    color: var(--color-text-900);
+}
+
+/* ---------- Detail: summary cards ---------- */
+.ca-summary {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.ca-summary-card {
+    padding: 0.875rem 1rem;
+    background: #fff;
+    border: 0.0625rem solid var(--color-bg-50);
+    border-radius: var(--panel-radius);
+    box-shadow: var(--panel-shadow);
+}
+
+.ca-summary-label {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-500);
+}
+
+.ca-summary-value {
+    margin-top: 0.125rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text-900);
+}
+
+/* Warna ikon & angka: pakai token status yang sama dengan badge */
+.ca-tone--success { color: var(--color-success); }
+.ca-tone--warning { color: var(--accent-800); }
+.ca-tone--danger  { color: var(--color-danger); }
+.ca-tone--neutral { color: var(--color-text-700); }
+
+/* Blok khusus cetak: sembunyi di layar */
+.ca-print-only {
+    display: none;
+}
+
+/* =========================================================
+   PRINT / EXPORT PDF  (A4 Landscape)
+   ========================================================= */
+@page {
+    size: A4 landscape;
+    margin: 12mm 10mm 14mm 10mm;
+
+    /* Nomor halaman (didukung Chrome/Edge) */
+    @bottom-right {
+        content: "Halaman " counter(page) " dari " counter(pages);
+        font-size: 9pt;
+        color: #555;
+    }
+}
+
+@media print {
+    /* Elemen non-laporan disembunyikan lewat JS (class .ca-print-hide) */
+    .ca-print-hide {
+        display: none !important;
+    }
+
+    /* Ancestor laporan di-reset supaya margin/padding layout app tidak ikut tercetak */
+    .ca-print-ancestor {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+    }
+
+    body {
+        background: #fff !important;
+    }
+
+    .ca-print-only {
+        display: block !important;
+    }
+
+    /* Warna badge & background tetap tercetak */
+    .attendance-report,
+    .attendance-report * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .attendance-report {
+        font-size: 10pt;
+    }
+
+    .ca-print-header {
+        display: flex !important;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+        border-bottom: 2px solid var(--primary);
+    }
+    .ca-print-header img {
+        height: 44px;
+        width: auto;
+    }
+    .ca-print-title {
+        margin: 0;
+        font-size: 15pt;
+        font-weight: 700;
+        color: var(--color-text);
+    }
+    .ca-print-subtitle {
+        margin: 0;
+        color: var(--color-text-700);
+    }
+
+    .ca-info-grid,
+    .ca-summary-card {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+    .ca-summary {
+        gap: 8px;
+    }
+
+    /* Tabel: header diulang tiap halaman, baris tidak terpotong */
+    .ca-report-table {
+        font-size: 9pt;
+    }
+    .ca-report-table thead {
+        display: table-header-group;
+    }
+    .ca-report-table tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .app-table-wrapper {
+        overflow: visible !important;
+    }
+
+    .ca-print-footer {
+        display: block !important;
+        margin-top: 14px;
+        padding-top: 6px;
+        font-size: 8.5pt;
+        text-align: center;
+        color: var(--color-text-700);
+        border-top: 1px solid var(--neutral-200);
+    }
+}
