@@ -30,6 +30,7 @@
 @import "saldo-cuti.css";
 @import "perubahan-karyawan.css";
 @import "kontrak-karyawan.css";
+@import "closing-attendance.css";
 @import "select2/dist/css/select2.min.css";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
