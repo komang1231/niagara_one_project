@@ -25,6 +25,8 @@ class KaryawanRequest extends FormRequest
                 Rule::unique('karyawans', 'nip')->ignore($this->karyawan),
             ],
 
+            'role_id' => 'required|integer|exists:roles,id',
+
             'rekrutmen_id' => [
                 'nullable',
                 'exists:rekrutmens,id',

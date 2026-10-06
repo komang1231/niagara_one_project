@@ -65,7 +65,7 @@ class RekrutmenController extends Controller
             ->get();
 
         $jenjangPendidikans = JenjangPendidikan::where('status', 'aktif')
-            ->orderBy('nama')
+            ->orderByDesc('kode')
             ->get();
 
         $sumberPelamars = SumberPelamar::where('status', 'aktif')
@@ -160,7 +160,7 @@ class RekrutmenController extends Controller
     }
     public function edit(Rekrutmen $rekrutmen)
     {
-        return view('rekrutmen.form-edit', compact('rekrutmen'));
+        //
     }
     public function editData($id)
     {
@@ -170,7 +170,7 @@ class RekrutmenController extends Controller
             'id' => $rekrutmen->id,
             'kode' => $rekrutmen->kode,
             'lowongan_id' => $rekrutmen->lowongan_id,
-            'departement_id' => $rekrutmen->departement_id,
+            'departemen_id' => $rekrutmen->departemen_id,
             'divisi_id' => $rekrutmen->divisi_id,
             'section_id' => $rekrutmen->section_id,
             'job_position_id' => $rekrutmen->job_position_id,
@@ -179,7 +179,9 @@ class RekrutmenController extends Controller
             'nama' => $rekrutmen->nama,
             'email' => $rekrutmen->email,
             'no_tlp' => $rekrutmen->no_tlp,
-            'file_cv' => $rekrutmen->file_cv,
+            'cv_name' => $rekrutmen->file_cv
+                ? basename($rekrutmen->file_cv)
+                : null,
             'jenjang_pendidikan_id' => $rekrutmen->jenjang_pendidikan_id,
             'sumber_pelamar_id' => $rekrutmen->sumber_pelamar_id,
             'status_rekrutmen' => $rekrutmen->status_rekrutmen,
@@ -190,6 +192,7 @@ class RekrutmenController extends Controller
 
     public function update(RekrutmenRequest $request, Rekrutmen $rekrutmen)
     {
+        // dd($request->all());
         $data = $request->validated();
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
 

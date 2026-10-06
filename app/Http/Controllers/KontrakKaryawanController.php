@@ -60,6 +60,7 @@ class KontrakKaryawanController extends Controller
 
     public function store(KontrakKaryawanRequest $request)
     {
+        // dd($request->all());
         $data = $request->validated();
 
         /*
@@ -156,30 +157,38 @@ class KontrakKaryawanController extends Controller
         $kontrakLama = KontrakKaryawan::findOrFail($id);
 
         /*
-     * Perpanjangan hanya boleh dilakukan
-     * ketika sudah masuk H-30.
+     * Perpanjangan hanya boleh dilakukan H-7.
      */
         $tanggalBerakhirLama = Carbon::parse($kontrakLama->tanggal_berakhir);
-        $batasPerpanjangan = $tanggalBerakhirLama->copy()->subDays(30);
+        $batasPerpanjangan = $tanggalBerakhirLama->copy()->subDays(7);
 
         if (now()->startOfDay()->lt($batasPerpanjangan->startOfDay())) {
             return redirect()
                 ->route('kontrak-karyawan.index')
                 ->with(
                     'error',
-                    'Kontrak belum dapat diperpanjang. Perpanjangan hanya dapat dilakukan saat H-30.'
+                    'Kontrak belum dapat diperpanjang. Perpanjangan hanya dapat dilakukan saat H-7.'
                 );
         }
 
         /*
-     * Kontrak baru dimulai tepat pada tanggal
-     * berakhirnya kontrak lama.
+     * Cegah kontrak yang sama diperpanjang lebih dari satu kali.
+     * Kontrak baru dimulai tepat pada tanggal berakhir kontrak lama.
      */
-        $tanggalMulaiBaru = $tanggalBerakhirLama->copy();
+        $sudahDiperpanjang = KontrakKaryawan::where('karyawan_id', $kontrakLama->karyawan_id)
+            ->whereDate('tanggal_mulai', $tanggalBerakhirLama->toDateString())
+            ->exists();
 
-        /*
-     * Kontrak baru berlaku selama 1 tahun.
-     */
+        if ($sudahDiperpanjang) {
+            return redirect()
+                ->route('kontrak-karyawan.index')
+                ->with(
+                    'error',
+                    'Kontrak ini sudah diperpanjang.'
+                );
+        }
+
+        $tanggalMulaiBaru = $tanggalBerakhirLama->copy();
         $tanggalBerakhirBaru = $tanggalMulaiBaru->copy()->addYear();
 
         DB::transaction(function () use (

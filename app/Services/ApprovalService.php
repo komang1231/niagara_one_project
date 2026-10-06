@@ -36,4 +36,13 @@ class ApprovalService
             $query->where('nama', $approverRole);
         })->get();
     }
+
+    public static function canAccess(User $user): bool
+    {
+        return in_array($user->role->nama, [
+            'HR Manager',
+            'Admin Tenant',
+            'Super Admin',
+        ]);
+    }
 }

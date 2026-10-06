@@ -119,12 +119,12 @@ class SumberPelamarController extends Controller
     {
         $sumberPelamar = SumberPelamar::findOrFail($id);
 
-        if ($sumberPelamar->divisi()->exists()) {
+        if ($sumberPelamar->rekrutmen()->exists()) {
             return redirect()
                 ->route('sumber-pelamar.index')
                 ->with(
                     'error',
-                    'Sumber Pelamar tidak dapat dihapus karena masih digunakan oleh data Divisi.'
+                    'Sumber Pelamar tidak dapat dihapus karena masih digunakan oleh data Rekrutmen.'
                 );
         }
 

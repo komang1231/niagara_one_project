@@ -36,6 +36,10 @@
                 <x-form.input name="nik" id="edit_nik" label="NIK" inputmode="numeric" required />
             </div>
 
+            <div class="col-md-4">
+                <x-form.select name="role_id" id="edit_role_id" label="Role" :options="$roles->pluck('nama', 'id')" nullable required />
+            </div>
+
         </div>
 
 
@@ -49,8 +53,8 @@
         <div class="row">
 
             <div class="col-md-4">
-                <x-form.select name="departemen_id" id="edit_departemen_id" label="Departemen"
-                    :options="$departemens->pluck('nama', 'id')" nullable required />
+                <x-form.select name="departemen_id" id="edit_departemen_id" label="Departemen" :options="$departemens->pluck('nama', 'id')"
+                    nullable required />
             </div>
 
             <div class="col-md-4">
@@ -64,13 +68,13 @@
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="job_position_id" id="edit_job_position_id" label="Job Position"
-                    :options="[]" nullable disabled />
+                <x-form.select name="job_position_id" id="edit_job_position_id" label="Job Position" :options="[]"
+                    nullable disabled />
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="job_level_id" id="edit_job_level_id" label="Job Level"
-                    :options="$jobLevels->pluck('nama', 'id')" nullable required />
+                <x-form.select name="job_level_id" id="edit_job_level_id" label="Job Level" :options="$jobLevels->pluck('nama', 'id')" nullable
+                    required />
             </div>
 
             <div class="col-md-4">
@@ -89,8 +93,8 @@
         <div class="row">
 
             <div class="col-md-4">
-                <x-form.select name="status_kepegawaian_id" id="edit_status_kepegawaian_id"
-                    label="Status Kepegawaian" :options="$statusKepegawaians->pluck('nama', 'id')" nullable required />
+                <x-form.select name="status_kepegawaian_id" id="edit_status_kepegawaian_id" label="Status Kepegawaian"
+                    :options="$statusKepegawaians->pluck('nama', 'id')" nullable required />
             </div>
 
             <div class="col-md-4">
@@ -107,18 +111,17 @@
         <div class="row">
 
             <div class="col-md-4">
-                <x-form.select name="jenjang_pendidikan_id" id="edit_jenjang_pendidikan_id"
-                    label="Jenjang Pendidikan" :options="$jenjangPendidikans->pluck('nama', 'id')" nullable required />
+                <x-form.select name="jenjang_pendidikan_id" id="edit_jenjang_pendidikan_id" label="Jenjang Pendidikan"
+                    :options="$jenjangPendidikans->pluck('nama', 'id')" nullable required />
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="status_kawin_id" id="edit_status_kawin_id" label="Status Kawin"
-                    :options="$statusKawins->pluck('nama', 'id')" nullable required />
-            </div>
-
-            <div class="col-md-4">
-                <x-form.select name="agama_id" id="edit_agama_id" label="Agama" :options="$agamas->pluck('nama', 'id')"
+                <x-form.select name="status_kawin_id" id="edit_status_kawin_id" label="Status Kawin" :options="$statusKawins->pluck('nama', 'id')"
                     nullable required />
+            </div>
+
+            <div class="col-md-4">
+                <x-form.select name="agama_id" id="edit_agama_id" label="Agama" :options="$agamas->pluck('nama', 'id')" nullable required />
             </div>
 
         </div>
@@ -165,7 +168,8 @@
             </div>
 
             <div class="col-md-4">
-                <x-form.input name="no_rekening" id="edit_no_rekening" label="No. Rekening" inputmode="numeric" required />
+                <x-form.input name="no_rekening" id="edit_no_rekening" label="No. Rekening" inputmode="numeric"
+                    required />
             </div>
 
         </div>
@@ -223,6 +227,8 @@
         // Select2 hanya memicu event "change" lewat jQuery (bukan event native), jadi listener
         // WAJIB dipasang pakai jQuery. Kalau jQuery belum ada, jatuh ke event native.
         const $ = window.jQuery;
+
+        const roleSelect = form.querySelector('#edit_role_id');
 
         const departemenSelect = form.querySelector('#edit_departemen_id');
         const divisiSelect = form.querySelector('#edit_divisi_id');
@@ -321,6 +327,7 @@
             const {
                 id,
                 status,
+                role_id,
                 departemen_id,
                 divisi_id,
                 section_id,
@@ -329,6 +336,9 @@
 
             editIdInput.value = id ?? '';
             applyStatus(status);
+
+            roleSelect.value = role_id ?? '';
+            refreshUi(roleSelect);
 
             try {
                 resetSelect(divisiSelect);
@@ -342,7 +352,8 @@
                     await fetchChildren(routes.getSection, divisi_id, sectionSelect, section_id);
                 }
                 if (section_id) {
-                    await fetchChildren(routes.getJobPosition, section_id, jobPositionSelect, job_position_id);
+                    await fetchChildren(routes.getJobPosition, section_id, jobPositionSelect,
+                        job_position_id);
                 }
             } catch (err) {
                 console.error('Gagal mengisi chained dropdown edit karyawan:', err);

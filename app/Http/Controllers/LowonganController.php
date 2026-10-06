@@ -139,6 +139,7 @@ class LowonganController extends Controller
 
     public function store(LowonganRequest $request)
     {
+        // dd($request->all());
         $start = microtime(true);
         $data = $request->validated();
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';

@@ -139,6 +139,15 @@ class RoleController extends Controller
 
     public function toggleStatus(Role $role)
     {
+        if ($role->users()->exists()) {
+            return redirect()
+                ->route('role.index')
+                ->with(
+                    'error',
+                    'Role tidak dapat diubah statusnya karena masih digunakan oleh data User.'
+                );
+        }
+
         $role->update([
             'status' => $role->status === 'aktif' ? 'nonaktif' : 'aktif',
         ]);
@@ -149,10 +158,27 @@ class RoleController extends Controller
         ]);
     }
 
-    public function destroy(Role $role)
+    public function destroy($id)
     {
+        $role = Role::findOrFail($id);
+
+        if ($role->users()->exists()) {
+            return redirect()
+                ->route('role.index')
+                ->with(
+                    'error',
+                    'Role tidak dapat dihapus karena masih digunakan oleh data User.'
+                );
+        }
+
         $role->delete();
-        return redirect()->route('role.index')->with('success', 'Role berhasil dihapus.');
+
+        return redirect()
+            ->route('role.index')
+            ->with(
+                'success',
+                'Role berhasil dipindahkan ke Trash.'
+            );
     }
 
     public function trash()

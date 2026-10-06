@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Karyawan;
 
 class KontrakKaryawanRequest extends FormRequest
 {
@@ -36,16 +37,22 @@ class KontrakKaryawanRequest extends FormRequest
                 'date',
                 'after:tanggal_mulai',
             ],
-
-            'status' => [
-                'nullable',
-                'in:aktif,nonaktif',
-            ],
         ];
     }
 
+
     protected function prepareForValidation(): void
     {
+        $data = [];
+
+        if ($this->filled('karyawan_id')) {
+            $karyawan = Karyawan::find($this->input('karyawan_id'));
+
+            if ($karyawan) {
+                $data['status_kepegawaian_id'] = $karyawan->status_kepegawaian_id;
+            }
+        }
+
         if ($this->filled('tanggal_mulai')) {
             $tanggalMulai = $this->input('tanggal_mulai');
 
@@ -80,9 +87,9 @@ class KontrakKaryawanRequest extends FormRequest
                 );
             }
 
-            $this->merge([
-                'tanggal_mulai' => $tanggalMulai,
-            ]);
+            $data['tanggal_mulai'] = $tanggalMulai;
         }
+
+        $this->merge($data);
     }
 }

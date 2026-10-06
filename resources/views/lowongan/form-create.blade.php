@@ -69,7 +69,7 @@
 
         <x-form.rich-text-editor name="kualifikasi" label="Kualifikasi" placeholder="Tulis kualifikasi kandidat..." />
         
-        <x-form.rich-text-editor name="deskripsxi" label="Deskripsi Pekerjaan" placeholder="Tulis deskripsi pekerjaan..." />
+        <x-form.rich-text-editor name="deskripsi" label="Deskripsi Pekerjaan" placeholder="Tulis deskripsi pekerjaan..." />
 
         <x-form.switch name="status" label="Status Aktif" :checked="true" />
     </form>

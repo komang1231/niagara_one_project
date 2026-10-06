@@ -16,9 +16,14 @@ use App\Models\StatusKawin;
 use App\Models\Agama;
 use App\Models\StatusKepegawaian;
 use App\Models\Bank;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\GeneralSetting;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Services\CodeGenerator;
+use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
@@ -32,6 +37,11 @@ class KaryawanController extends Controller
             'nip'
         );
 
+        $previewKodeUser = CodeGenerator::generate(
+            User::class,
+            'USR'
+        );
+
         $statusOptions = [
             'aktif' => 'Aktif',
             'nonaktif' => 'Nonaktif',
@@ -39,6 +49,7 @@ class KaryawanController extends Controller
 
         $karyawan = $this->filter($request)
             ->with([
+                'user',
                 'departemen',
                 'divisi',
                 'section',
@@ -50,6 +61,11 @@ class KaryawanController extends Controller
             // ->latest()
             ->paginate(10)
             ->withQueryString();
+
+        $users = User::with('role')
+            ->get([
+                'role_id',
+            ]);
 
         $departemens = Departemen::where('status', 'aktif')
             ->orderBy('nama')
@@ -99,6 +115,10 @@ class KaryawanController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
+        $roles = Role::where('status', 'aktif')
+            ->orderBy('nama')
+            ->get();
+
         if ($request->ajax() || $request->wantsJson()) {
             Log::debug('Karyawan index timings', [
                 'ajax' => true,
@@ -110,7 +130,7 @@ class KaryawanController extends Controller
 
             return view(
                 'components.table.table',
-                compact('karyawan', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors', 'jenjangPendidikans', 'statusKawins', 'agamas', 'statusKepegawaians', 'banks', 'lowongans')
+                compact('karyawan', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors', 'jenjangPendidikans', 'statusKawins', 'agamas', 'statusKepegawaians', 'banks', 'lowongans', 'role')
             );
         }
 
@@ -124,7 +144,9 @@ class KaryawanController extends Controller
 
         return view('karyawan.index', compact(
             'karyawan',
+            'users',
             'statusOptions',
+            'previewKodeUser',
             'previewNip',
             'departemens',
             'divisis',
@@ -137,7 +159,8 @@ class KaryawanController extends Controller
             'agamas',
             'statusKepegawaians',
             'banks',
-            'lowongans'
+            'lowongans',
+            'roles'
         ));
     }
 
@@ -168,9 +191,29 @@ class KaryawanController extends Controller
 
         $data = $request->validated();
 
+        $roleId = $data['role_id'];
+        unset($data['role_id']);
+
+        $passwordDefault = GeneralSetting::where('key', 'default_password')
+            ->value('value');
+
         $before = microtime(true);
 
-        $karyawan = Karyawan::create($data);
+        $karyawan = DB::transaction(function () use ($data, $roleId, $passwordDefault) {
+            $karyawan = Karyawan::create($data);
+
+            User::create([
+                'kode' => '',
+                'role_id' => $roleId,
+                'karyawan_id' => $karyawan->id,
+                'nama' => $karyawan->nama,
+                'no_tlp' => $karyawan->no_tlp,
+                'email' => $karyawan->email,
+                'password' => Hash::make($passwordDefault),
+            ]);
+
+            return $karyawan;
+        });
 
         $after = microtime(true);
 
@@ -198,6 +241,7 @@ class KaryawanController extends Controller
         return response()->json([
             'id' => $karyawan->id,
             'nip' => $karyawan->nip,
+            'role_id' => $karyawan->user?->role_id,
             'rekrutmen_id' => $karyawan->rekrutmen_id,
             'lowongan_id' => $karyawan->lowongan_id,
             'departemen_id' => $karyawan->departemen_id,
@@ -231,12 +275,27 @@ class KaryawanController extends Controller
     ) {
         $data = $request->validated();
 
+        $roleId = $data['role_id'];
+        unset($data['role_id']);
+
         Log::debug('Data update karyawan', [
             'id' => $karyawan->id,
             'data' => $data,
+            'role_id' => $roleId,
         ]);
 
-        $karyawan->update($data);
+        DB::transaction(function () use ($karyawan, $data, $roleId) {
+            $karyawan->update($data);
+
+            if ($karyawan->user) {
+                $karyawan->user->update([
+                    'role_id' => $roleId,
+                    'nama' => $karyawan->nama,
+                    'no_tlp' => $karyawan->no_tlp,
+                    'email' => $karyawan->email,
+                ]);
+            }
+        });
 
         return redirect()
             ->route('karyawan.index')
@@ -396,8 +455,20 @@ class KaryawanController extends Controller
                 mb_substr($karyawan->nama, 0, 1)
             ),
 
+            'departemen' =>
+            $karyawan->departemen?->nama ?? '-',
+
+            'divisi' =>
+            $karyawan->divisi?->nama ?? '-',
+
+            'section' =>
+            $karyawan->section?->nama ?? '-',
+
             'job_position' =>
             $karyawan->jobPosition?->nama ?? '-',
+
+            'job_level' =>
+            $karyawan->jobLevel?->nama ?? '-',
 
             'status_kepegawaian' =>
             $karyawan->statusKepegawaian?->nama ?? '-',

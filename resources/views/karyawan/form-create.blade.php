@@ -20,7 +20,8 @@
         <div class="row">
 
             <div class="col-md-4">
-                <x-form.input name="nama" id="create_nama" label="Nama Karyawan" placeholder="Contoh: Andrew" required />
+                <x-form.input name="nama" id="create_nama" label="Nama Karyawan" placeholder="Contoh: Andrew"
+                    required />
             </div>
 
             <div class="col-md-4">
@@ -38,6 +39,10 @@
                     placeholder="16 digit angka" required />
             </div>
 
+            <div class="col-md-4">
+                <x-form.select name="role_id" id="create_role_id" label="Role" :options="$roles->pluck('nama', 'id')" nullable required />
+            </div>
+
         </div>
 
 
@@ -51,8 +56,8 @@
         <div class="row">
 
             <div class="col-md-4">
-                <x-form.select name="departemen_id" id="create_departemen_id" label="Departemen"
-                    :options="$departemens->pluck('nama', 'id')" nullable required />
+                <x-form.select name="departemen_id" id="create_departemen_id" label="Departemen" :options="$departemens->pluck('nama', 'id')"
+                    nullable required />
             </div>
 
             <div class="col-md-4">
@@ -66,13 +71,13 @@
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="job_position_id" id="create_job_position_id" label="Job Position"
-                    :options="[]" nullable disabled />
+                <x-form.select name="job_position_id" id="create_job_position_id" label="Job Position" :options="[]"
+                    nullable disabled />
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="job_level_id" id="create_job_level_id" label="Job Level"
-                    :options="$jobLevels->pluck('nama', 'id')" nullable required />
+                <x-form.select name="job_level_id" id="create_job_level_id" label="Job Level" :options="$jobLevels->pluck('nama', 'id')" nullable
+                    required />
             </div>
 
             <div class="col-md-4">
@@ -91,8 +96,8 @@
         <div class="row">
 
             <div class="col-md-4">
-                <x-form.select name="status_kepegawaian_id" id="create_status_kepegawaian_id"
-                    label="Status Kepegawaian" :options="$statusKepegawaians->pluck('nama', 'id')" nullable required />
+                <x-form.select name="status_kepegawaian_id" id="create_status_kepegawaian_id" label="Status Kepegawaian"
+                    :options="$statusKepegawaians->pluck('nama', 'id')" nullable required />
             </div>
 
             <div class="col-md-4">
@@ -109,18 +114,18 @@
         <div class="row">
 
             <div class="col-md-4">
-                <x-form.select name="jenjang_pendidikan_id" id="create_jenjang_pendidikan_id"
-                    label="Jenjang Pendidikan" :options="$jenjangPendidikans->pluck('nama', 'id')" nullable required />
+                <x-form.select name="jenjang_pendidikan_id" id="create_jenjang_pendidikan_id" label="Jenjang Pendidikan"
+                    :options="$jenjangPendidikans->pluck('nama', 'id')" nullable required />
             </div>
 
             <div class="col-md-4">
-                <x-form.select name="status_kawin_id" id="create_status_kawin_id" label="Status Kawin"
-                    :options="$statusKawins->pluck('nama', 'id')" nullable required />
-            </div>
-
-            <div class="col-md-4">
-                <x-form.select name="agama_id" id="create_agama_id" label="Agama" :options="$agamas->pluck('nama', 'id')"
+                <x-form.select name="status_kawin_id" id="create_status_kawin_id" label="Status Kawin" :options="$statusKawins->pluck('nama', 'id')"
                     nullable required />
+            </div>
+
+            <div class="col-md-4">
+                <x-form.select name="agama_id" id="create_agama_id" label="Agama" :options="$agamas->pluck('nama', 'id')" nullable
+                    required />
             </div>
 
         </div>
@@ -202,7 +207,8 @@
             <input type="hidden" name="status" value="nonaktif">
 
             <label class="app-form-switch">
-                <input type="checkbox" name="status" value="aktif" id="create_status" @checked(old('status', 'aktif') === 'aktif')>
+                <input type="checkbox" name="status" value="aktif" id="create_status"
+                    @checked(old('status', 'aktif') === 'aktif')>
                 <span class="app-form-switch__slider"></span>
             </label>
 
@@ -329,13 +335,16 @@
         (async function restoreOldValues() {
             try {
                 if (oldValues.departemen_id) {
-                    await fetchChildren(routes.getDivisi, oldValues.departemen_id, divisiSelect, oldValues.divisi_id);
+                    await fetchChildren(routes.getDivisi, oldValues.departemen_id, divisiSelect,
+                        oldValues.divisi_id);
                 }
                 if (oldValues.divisi_id) {
-                    await fetchChildren(routes.getSection, oldValues.divisi_id, sectionSelect, oldValues.section_id);
+                    await fetchChildren(routes.getSection, oldValues.divisi_id, sectionSelect, oldValues
+                        .section_id);
                 }
                 if (oldValues.section_id) {
-                    await fetchChildren(routes.getJobPosition, oldValues.section_id, jobPositionSelect, oldValues.job_position_id);
+                    await fetchChildren(routes.getJobPosition, oldValues.section_id, jobPositionSelect,
+                        oldValues.job_position_id);
                 }
             } catch (err) {
                 console.error('Gagal memulihkan chained dropdown create karyawan:', err);

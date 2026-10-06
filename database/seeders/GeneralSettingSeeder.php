@@ -18,7 +18,7 @@ class GeneralSettingSeeder extends Seeder
             ['key' => 'annual_leave_kuota', 'name' => 'Kuota Cuti Tahunan', 'value' => '12'],
             ['key' => 'logo', 'name' => 'Logo', 'value' => null],
             ['key' => 'title', 'name' => 'Judul', 'value' => 'Niagara One'],
-            ['key' => 'default_password', 'name' => 'Password Default', 'value' => 'Niagara@123'],
+            ['key' => 'default_password', 'name' => 'Password Default', 'value' => '1234567890'],
             ['key' => 'tanggal_closing_absensi', 'name' => 'Tanggal Closing Absensi', 'value' => '28'],
         ];
 

@@ -28,8 +28,8 @@
             'children' => [
                 ['label' => 'Data Karyawan', 'slug' => 'karyawan'],
                 ['label' => 'Kontrak Karyawan', 'slug' => 'kontrak-karyawan'],
-                ['label' => 'Perubahan Karyawan', 'slug' => 'perubahan-karyawan'],
-                ['label' => 'Permintaan Resign', 'slug' => 'permintaan-resign'],
+                // ['label' => 'Perubahan Karyawan', 'slug' => 'perubahan-karyawan'],
+                // ['label' => 'Permintaan Resign', 'slug' => 'permintaan-resign'],
                 ['label' => 'Surat Peringatan', 'slug' => 'surat-peringatan'],
             ],
         ],
@@ -45,10 +45,10 @@
                 ['label' => 'Rekapan Absensi', 'slug' => 'closing-attendance', 'match' => 'closing-attendance.*'],
                 ['label' => 'Jadwal Karyawan', 'slug' => 'jadwal-karyawan'],
                 ['label' => 'Shift', 'slug' => 'shift'],
-                ['label' => 'Pola Shift', 'slug' => 'pola-shift'],
+                // ['label' => 'Pola Shift', 'slug' => 'pola-shift'],
                 ['label' => 'Hari Libur', 'slug' => 'hari-libur'],
-                ['label' => 'Permintaan Tukar Shift', 'slug' => 'tukar-shift'],
-                ['label' => 'Permintaan Lembur', 'slug' => 'lembur'],
+                // ['label' => 'Permintaan Tukar Shift', 'slug' => 'tukar-shift'],
+                // ['label' => 'Permintaan Lembur', 'slug' => 'lembur'],
             ],
         ],
 
@@ -59,7 +59,7 @@
             'children' => [
                 ['label' => 'Cuti', 'slug' => 'cuti'],
                 ['label' => 'Saldo Cuti', 'slug' => 'saldo-cuti'],
-                ['label' => 'Permintaan Cuti', 'slug' => 'permintaan-cuti'],
+                // ['label' => 'Permintaan Cuti', 'slug' => 'permintaan-cuti'],
             ],
         ],
 
@@ -70,7 +70,7 @@
             'children' => [
                 ['label' => 'Rekrutmen', 'slug' => 'rekrutmen'],
                 ['label' => 'Lowongan', 'slug' => 'lowongan'],
-                ['label' => 'Permintaan Karyawan', 'slug' => 'permintaan-karyawan'],
+                // ['label' => 'Permintaan Karyawan', 'slug' => 'permintaan-karyawan'],
             ],
         ],
 
@@ -84,7 +84,7 @@
                 ['label' => 'Section', 'slug' => 'section'],
                 ['label' => 'Job Level', 'slug' => 'job-level'],
                 ['label' => 'Job Position', 'slug' => 'job-position'],
-                ['label' => 'Cabang Kantor', 'slug' => 'cabang-kantor'],
+                // ['label' => 'Cabang Kantor', 'slug' => 'cabang-kantor'],
             ],
         ],
 
@@ -95,10 +95,10 @@
             'children' => [
                 ['label' => 'Sumber Pelamar', 'slug' => 'sumber-pelamar'],
                 ['label' => 'Status Kepegawaian', 'slug' => 'status-kepegawaian'],
-                ['label' => 'Status Kawin', 'slug' => 'status-kawin'],
-                ['label' => 'Jenjang Pendidikan', 'slug' => 'jenjang-pendidikan'],
-                ['label' => 'Agama', 'slug' => 'agama'],
-                ['label' => 'Bank', 'slug' => 'bank'],
+                // ['label' => 'Status Kawin', 'slug' => 'status-kawin'],
+                // ['label' => 'Jenjang Pendidikan', 'slug' => 'jenjang-pendidikan'],
+                // ['label' => 'Agama', 'slug' => 'agama'],
+                // ['label' => 'Bank', 'slug' => 'bank'],
             ],
         ],
 
@@ -106,7 +106,10 @@
             'label' => 'Akses & Pengguna',
             'icon' => 'bi-shield-lock-fill',
             'slug' => 'akses-pengguna',
-            'children' => [['label' => 'User', 'slug' => 'user'], ['label' => 'Role', 'slug' => 'role']],
+            'children' => [
+                // ['label' => 'User', 'slug' => 'user'],
+                ['label' => 'Role', 'slug' => 'role'],
+            ],
         ],
     ];
 @endphp
@@ -124,6 +127,9 @@
         <ul class="nav-list">
 
             @foreach ($menu as $item)
+                @if ($item['slug'] === 'approval' && !\App\Services\ApprovalService::canAccess(auth()->user()))
+                    @continue
+                @endif
                 @if (count($item['children']) === 0)
                     @php
                         $routeName = $item['slug'] . '.index';

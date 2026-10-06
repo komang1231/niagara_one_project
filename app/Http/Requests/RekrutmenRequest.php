@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RekrutmenRequest extends FormRequest
 {
@@ -22,6 +23,7 @@ class RekrutmenRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->all());
         return [
             // $table->string('kode', 20)->unique();
             // $table->unsignedInteger('lowongan_id')->nullable();
@@ -41,7 +43,12 @@ class RekrutmenRequest extends FormRequest
             // $table->enum('pool_talent', ['rehire', 'blacklist'])->nullable();
             // $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
 
-            'kode' => 'required|string|max:20|unique:rekrutmens,kode',
+            'kode' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('rekrutmens', 'kode')->ignore($this->route('rekrutmen')),
+            ],
             'lowongan_id' => 'nullable|integer|exists:lowongans,id',
             'departemen_id' => 'required|integer|exists:departemens,id',
             'divisi_id' => 'nullable|integer|exists:divisis,id',
@@ -50,9 +57,26 @@ class RekrutmenRequest extends FormRequest
             'job_level_id' => 'required|integer|exists:job_levels,id',
             'cabang_kantor_id' => 'required|integer|exists:cabang_kantors,id',
             'nama' => 'required|string|max:100',
-            'email' => 'required|string|email|max:150|unique:rekrutmens,email',
-            'no_tlp' => 'required|string|max:20|unique:rekrutmens,no_tlp',
-            'file_cv' => 'required|file|mimes:pdf,doc,docx|max:20480',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:150',
+                Rule::unique('rekrutmens', 'email')->ignore($this->route('rekrutmen')),
+            ],
+            'no_tlp' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('rekrutmens', 'no_tlp')->ignore($this->route('rekrutmen')),
+            ],
+            // 'file_cv' => 'required|file|mimes:pdf,doc,docx|max:20480',
+            'file_cv' => [
+                $this->isMethod('post') ? 'required' : 'nullable',
+                'file',
+                'mimes:pdf,jpg,jpeg,png',
+                'max:5120',
+            ],
             'jenjang_pendidikan_id' => 'required|integer|exists:jenjang_pendidikans,id',
             'sumber_pelamar_id' => 'required|integer|exists:sumber_pelamars,id',
             'status_rekrutmen' => 'required|in:pelamar,screening,interview,offering,diterima,ditolak',

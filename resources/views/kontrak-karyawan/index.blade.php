@@ -21,7 +21,7 @@
 
         // Aturan kontrak. Ikuti backend: ubah di sini kalau backend memakai angka lain.
         $durasiBulan = 12; // masa satu periode kontrak (bulan)
-        $hariSebelumBerakhir = 30; // perpanjangan dibuka H-30
+        $hariSebelumBerakhir = 7; // perpanjangan dibuka H-7
 
         $stack = fn(...$lines) => array_values(array_filter($lines, 'filled'));
         $tgl = fn($v, $format = 'd F Y') => $v
@@ -80,7 +80,14 @@
                                 ? \Carbon\Carbon::parse($row->perpanjangan_mulai)->startOfDay()
                                 : $berakhir->copy()->subDays($hariSebelumBerakhir);
 
-                            $bisaPerpanjang = $row->bisa_diperpanjang ?? now()->startOfDay()->gte($bukaPerpanjangan);
+                            $sudahDiperpanjang = $row->karyawan
+                                ?->kontrakKaryawan()
+                                ->whereDate('tanggal_mulai', $row->tanggal_berakhir)
+                                ->exists();
+
+                            $bisaPerpanjang =
+                                !$sudahDiperpanjang &&
+                                ($row->bisa_diperpanjang ?? now()->startOfDay()->gte($bukaPerpanjangan));
                         @endphp
 
                         <tr>
@@ -104,12 +111,17 @@
                             <td class="app-table__col-actions">
                                 <div class="app-table__actions">
                                     {{-- Edit (offcanvas) --}}
-                                    <x-button variant="icon-edit" icon="bi-pencil" title="Edit" data-bs-toggle="offcanvas"
+                                    {{-- <x-button variant="icon-edit" icon="bi-pencil" title="Edit" data-bs-toggle="offcanvas"
                                         data-bs-target="#offcanvas-kontrak-edit"
                                         data-edit-url="{{ route('kontrak-karyawan.edit-data', $row->id) }}"
-                                        data-update-url="{{ route('kontrak-karyawan.update', $row->id) }}" />
+                                        data-update-url="{{ route('kontrak-karyawan.update', $row->id) }}" /> --}}
 
-                                    @if ($bisaPerpanjang)
+                                    @if ($sudahDiperpanjang)
+                                        <span class="kontrak-hint" style="color: var(--bs-success)" title="Kontrak sudah diperpanjang">
+                                            <i class="bi bi-check-circle"></i>
+                                            Diperpanjang
+                                        </span>
+                                    @elseif ($bisaPerpanjang)
                                         {{-- Perpanjang: tidak langsung submit, konfirmasi dulu (kontrak-karyawan.js).
                                              Tidak ada input tanggal/karyawan: backend yang menentukan periode baru. --}}
                                         <form action="{{ route('kontrak-karyawan.perpanjang', $row->id) }}" method="POST"

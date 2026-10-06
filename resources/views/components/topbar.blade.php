@@ -1,9 +1,10 @@
 @php
     $user = Auth::user();
 
-    $userName = $user?->karyawan?->nama ?? 'User';
+    $userName = $user?->nama ?? 'User';
     $userEmail = $user?->email ?? '-';
     $userRole = $user?->role?->nama ?? '-';
+    $userNoTlp = $user?->no_tlp ?? '-';
 
     $userInitials = collect(explode(' ', $userName))
         ->filter()
@@ -15,6 +16,7 @@
         'Nama' => $userName,
         'Email' => $userEmail,
         'Role' => $userRole,
+        'No. Tlp' => $userNoTlp,
     ];
 @endphp
 
