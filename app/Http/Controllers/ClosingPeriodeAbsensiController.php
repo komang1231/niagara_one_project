@@ -7,6 +7,7 @@ use App\Models\ClosingPeriodeAbsensi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ClosingPeriodeAbsensiController extends Controller
 {
@@ -133,6 +134,27 @@ class ClosingPeriodeAbsensiController extends Controller
 
     public function show($id)
     {
+        $data = $this->getClosingData($id);
+
+        return view('closing-attendance.detail', $data);
+    }
+
+    public function exportPdf($id)
+    {
+        $data = $this->getClosingData($id);
+
+        $pdf = Pdf::loadView('closing-attendance.pdf', $data);
+
+        return $pdf->download(
+            'rekapan-absensi-' .
+                $data['closing']->tahun . '-' .
+                str_pad($data['closing']->bulan, 2, '0', STR_PAD_LEFT) .
+                '.pdf'
+        );
+    }
+
+    private function getClosingData($id)
+    {
         $closing = ClosingPeriodeAbsensi::query()
             ->with('user')
             ->findOrFail($id);
@@ -157,6 +179,51 @@ class ClosingPeriodeAbsensiController extends Controller
             ->orderBy('tanggal')
             ->orderBy('karyawan_id')
             ->get();
+
+        $namaBulan = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+
+        $periodeBulan = $namaBulan[$closing->bulan] ?? '-';
+
+        $closedBy = $closing->user?->nama ?? '-';
+
+        $tanggalClosing = $closing->created_at
+            ? $closing->created_at
+            ->locale('id')
+            ->translatedFormat('d F Y')
+            : '-';
+
+        $jamClosing = $closing->created_at
+            ? $closing->created_at
+            ->locale('id')
+            ->translatedFormat('H:i') . ' WIB'
+            : '-';
+
+        $periode = [
+            'label' => $periodeBulan . ' ' . $closing->tahun,
+
+            'rentang' => $awal->locale('id')->translatedFormat('d F Y')
+                . ' - '
+                . $akhir->locale('id')->translatedFormat('d F Y'),
+
+            'closed_by' => $closedBy,
+
+            'closed_at' => $tanggalClosing . ' ' . $jamClosing,
+
+            'closed_tgl' => $tanggalClosing,
+        ];
 
         $summary = [
             'total_karyawan' => $attendances
@@ -185,12 +252,18 @@ class ClosingPeriodeAbsensiController extends Controller
                 ->count(),
         ];
 
-        return view('closing-attendance.detail', compact(
+        $stack = fn(...$lines) => array_values(
+            array_filter($lines, 'filled')
+        );
+
+        return compact(
             'closing',
             'awal',
             'akhir',
             'attendances',
-            'summary'
-        ));
+            'summary',
+            'periode',
+            'stack'
+        );
     }
 }

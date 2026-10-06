@@ -142,54 +142,6 @@
                     </thead>
 
                     <tbody>
-                        {{-- @forelse ($closingAttendances as $i => $row)
-                            @php
-                                $awal = \Carbon\Carbon::create($row['tahun'], $row['bulan'], 1);
-                                $akhir = $awal->copy()->endOfMonth();
-                            @endphp
-
-                            <tr>
-                                <td class="app-table__col-no">{{ $closingAttendances->firstItem() + $i }}</td>
-
-                                // Periode
-                                <td>
-                                    <x-table.cell-stack :lines="$stack(
-                                        $namaBulan[$row['bulan']],
-                                        'Periode ' . $tgl($awal, 'd M') . ' - ' . $tgl($akhir),
-                                    )" />
-                                </td>
-
-                                // Tahun
-                                <td><x-badge>{{ $row['tahun'] }}</x-badge></td>
-
-                                // Di-close oleh
-                                <td>
-                                    <x-table.cell-stack :avatar="$row['closed_by']" :lines="$stack($row['closed_by'], $row['role'])" />
-                                </td>
-
-                                // Tanggal closing
-                                <td class="ca-col-date">
-                                    <x-table.cell-stack :lines="$stack($tgl($row['closed_at']), $tgl($row['closed_at'], 'H:i') . ' WIB')" />
-                                </td>
-
-                                // Aksi: hanya lihat & export, tidak ada edit/hapus/status
-                                <td class="app-table__col-actions">
-                                    <div class="app-table__actions">
-                                        <x-button variant="icon-view" icon="bi-eye" title="Lihat detail absensi"
-                                            :href="route('closing-attendance.show', $row['id'])" />
-
-                                        // Export PDF: buka detail lalu otomatis window.print() (closing-attendance.js)
-                                        <x-button variant="icon-danger" icon="bi-file-earmark-pdf" title="Export PDF"
-                                            :href="route('closing-attendance.show', [
-                                                'id' => $row['id'],
-                                                'print' => 1,
-                                            ])" />
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <x-table.empty-row colspan="6" text="Tidak ada rekapan yang sesuai dengan filter." />
-                        @endforelse --}}
                         @forelse ($closingAttendances as $i => $row)
                             @php
                                 $awal = \Carbon\Carbon::create($row->tahun, $row->bulan, 1);
@@ -233,10 +185,7 @@
 
                                         {{-- Export PDF --}}
                                         <x-button variant="icon-danger" icon="bi-file-earmark-pdf" title="Export PDF"
-                                            :href="route('closing-attendance.show', [
-                                                'id' => $row->id,
-                                                'print' => 1,
-                                            ])" />
+                                            :href="route('closing-attendance.export-pdf', $row->id)" />
                                     </div>
                                 </td>
                             </tr>

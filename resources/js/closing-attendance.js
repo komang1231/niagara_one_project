@@ -72,43 +72,43 @@ document.addEventListener('submit', (e) => {
 // 2) Export PDF di halaman detail (window.print)
 // ---------------------------------------------------------------
 
-document.addEventListener('DOMContentLoaded', () => {
-    const report = document.querySelector('.attendance-report');
-    if (!report) return; // bukan halaman detail
+// document.addEventListener('DOMContentLoaded', () => {
+//     const report = document.querySelector('.attendance-report');
+//     if (!report) return; // bukan halaman detail
 
-    // Sebelum cetak: sembunyikan semua yang ada di luar laporan (sidebar, topbar, page header),
-    // dan reset ancestor laporan supaya margin/padding layout aplikasi tidak ikut tercetak.
-    // Dipanggil lewat event "beforeprint" jadi berlaku juga untuk Ctrl+P.
-    function siapkanCetak() {
-        let node = report;
+//     // Sebelum cetak: sembunyikan semua yang ada di luar laporan (sidebar, topbar, page header),
+//     // dan reset ancestor laporan supaya margin/padding layout aplikasi tidak ikut tercetak.
+//     // Dipanggil lewat event "beforeprint" jadi berlaku juga untuk Ctrl+P.
+//     function siapkanCetak() {
+//         let node = report;
 
-        while (node && node !== document.documentElement) {
-            node.classList.add('ca-print-ancestor');
+//         while (node && node !== document.documentElement) {
+//             node.classList.add('ca-print-ancestor');
 
-            Array.from(node.parentElement?.children ?? []).forEach((saudara) => {
-                if (saudara !== node && !['SCRIPT', 'STYLE', 'LINK'].includes(saudara.tagName)) {
-                    saudara.classList.add('ca-print-hide');
-                }
-            });
+//             Array.from(node.parentElement?.children ?? []).forEach((saudara) => {
+//                 if (saudara !== node && !['SCRIPT', 'STYLE', 'LINK'].includes(saudara.tagName)) {
+//                     saudara.classList.add('ca-print-hide');
+//                 }
+//             });
 
-            node = node.parentElement;
-        }
-    }
+//             node = node.parentElement;
+//         }
+//     }
 
-    // Kembalikan tampilan normal setelah dialog cetak ditutup
-    function bersihkanCetak() {
-        document.querySelectorAll('.ca-print-hide').forEach((el) => el.classList.remove('ca-print-hide'));
-        document.querySelectorAll('.ca-print-ancestor').forEach((el) => el.classList.remove('ca-print-ancestor'));
-    }
+//     // Kembalikan tampilan normal setelah dialog cetak ditutup
+//     function bersihkanCetak() {
+//         document.querySelectorAll('.ca-print-hide').forEach((el) => el.classList.remove('ca-print-hide'));
+//         document.querySelectorAll('.ca-print-ancestor').forEach((el) => el.classList.remove('ca-print-ancestor'));
+//     }
 
-    window.addEventListener('beforeprint', siapkanCetak);
-    window.addEventListener('afterprint', bersihkanCetak);
+//     window.addEventListener('beforeprint', siapkanCetak);
+//     window.addEventListener('afterprint', bersihkanCetak);
 
-    // Tombol Export PDF -> dialog print browser (pilih "Save as PDF")
-    document.getElementById('btnExportPdf')?.addEventListener('click', () => window.print());
+//     // Tombol Export PDF -> dialog print browser (pilih "Save as PDF")
+//     document.getElementById('btnExportPdf')?.addEventListener('click', () => window.print());
 
-    // Datang dari aksi Export PDF di halaman index (?print=1)
-    if (new URLSearchParams(window.location.search).get('print') === '1') {
-        setTimeout(() => window.print(), 400);
-    }
-});
+//     // Datang dari aksi Export PDF di halaman index (?print=1)
+//     if (new URLSearchParams(window.location.search).get('print') === '1') {
+//         setTimeout(() => window.print(), 400);
+//     }
+// });

@@ -80,8 +80,9 @@ class PermintaanController extends Controller
         | Permintaan Karyawan
         |--------------------------------------------------------------------------
         */
-
+//aku mau ambil data pemrmintaan withTrashed. jadi data di index data yg deleted_at nya null dan terisi
         $permintaanKaryawan = PermintaanKaryawan::query()
+            ->withTrashed()
             ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_karyawan'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_karyawan . '%');
@@ -98,6 +99,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanCuti = PermintaanCuti::query()
+            ->withTrashed()
             ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_cuti'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_cuti . '%');
@@ -114,6 +116,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanLembur = PermintaanLembur::query()
+            ->withTrashed()
             ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_lembur'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_lembur . '%');
@@ -130,6 +133,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanResign = PermintaanResign::query()
+            ->withTrashed()
             ->where('karyawan_id', $user->karyawan->id)
             ->when($request->filled('search_resign'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_resign . '%');
@@ -146,6 +150,7 @@ class PermintaanController extends Controller
         */
 
         $permintaanTukarShift = PermintaanTukarShift::query()
+            ->withTrashed()
             ->where('karyawan_pengaju', $user->karyawan->id)
             ->when($request->filled('search_tukar_shift'), function ($query) use ($request) {
                 $query->where('kode', 'like', '%' . $request->search_tukar_shift . '%');

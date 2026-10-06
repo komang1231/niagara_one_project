@@ -83,15 +83,18 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-karyawan.get-section');
     Route::get('permintaan-karyawan/get-job-position/{section}', [PermintaanKaryawanController::class, 'getJobPosition'])
         ->name('permintaan-karyawan.get-job-position');
+    Route::delete('permintaan/karyawan/{id}', [PermintaanController::class, 'destroyKaryawan'])
+        ->name('permintaan.karyawan.destroy');
 
     Route::get('closing-attendance', [ClosingPeriodeAbsensiController::class, 'index'])
         ->name('closing-attendance.index');
-
     Route::post('closing-attendance', [ClosingPeriodeAbsensiController::class, 'store'])
         ->name('closing-attendance.store');
-
     Route::get('closing-attendance/{id}', [ClosingPeriodeAbsensiController::class, 'show'])
         ->name('closing-attendance.show');
+    Route::get('closing-attendance/{id}/export-pdf', [ClosingPeriodeAbsensiController::class, 'exportPdf'])
+        ->name('closing-attendance.export-pdf');
+
     // ============================================================================
     // PERMINTAAN CUTI
     // ============================================================================
@@ -110,6 +113,8 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-cuti.restore');
     Route::delete('permintaan-cuti/{id}/force-delete', [PermintaanCutiController::class, 'forceDelete'])
         ->name('permintaan-cuti.force-delete');
+    Route::delete('permintaan/cuti/{id}', [PermintaanController::class, 'destroyCuti'])
+        ->name('permintaan.cuti.destroy');
 
 
     // ============================================================================
@@ -130,6 +135,8 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-lembur.restore');
     Route::delete('permintaan-lembur/{id}/force-delete', [PermintaanLemburController::class, 'forceDelete'])
         ->name('permintaan-lembur.force-delete');
+    Route::delete('permintaan/lembur/{id}', [PermintaanController::class, 'destroyLembur'])
+        ->name('permintaan.lembur.destroy');
 
 
     // ============================================================================
@@ -150,6 +157,8 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-resign.restore');
     Route::delete('permintaan-resign/{id}/force-delete', [PermintaanResignController::class, 'forceDelete'])
         ->name('permintaan-resign.force-delete');
+    Route::delete('permintaan/resign/{id}', [PermintaanController::class, 'destroyResign'])
+        ->name('permintaan.resign.destroy');
 
 
     // ============================================================================
@@ -168,8 +177,8 @@ Route::middleware('auth')->group(function () {
         ->name('permintaan-tukar-shift.edit-data');
     Route::patch('permintaan-tukar-shift/{id}/restore', [PermintaanTukarShiftController::class, 'restore'])
         ->name('permintaan-tukar-shift.restore');
-    Route::delete('permintaan-tukar-shift/{id}/force-delete', [PermintaanTukarShiftController::class, 'forceDelete'])
-        ->name('permintaan-tukar-shift.force-delete');
+    Route::delete('permintaan/tukar-shift/{id}', [PermintaanController::class, 'destroyTukarShift'])
+        ->name('permintaan.tukar-shift.destroy');
 
 
     //APPROVAL SEMUA PERMINTAAN

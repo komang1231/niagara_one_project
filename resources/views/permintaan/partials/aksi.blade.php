@@ -15,6 +15,16 @@
         {{-- Batalkan (buka modal konfirmasi bersama) --}}
         <x-button variant="icon-danger" icon="bi-x-circle" title="Batalkan" data-delete-url="{{ route($slug . '.destroy', $row->id) }}"
             data-delete-label="{{ $label }} {{ $row->kode }}" />
+        {{-- <x-button variant="icon-danger" icon="bi-x-circle" title="Batalkan" 
+            data-bs-toggle="modal" data-bs-target="#modal-batalkan-permintaan"
+            data-delete-url="{{ route($slug . '.destroy', $row->id) }}"
+            data-delete-label="{{ $label }} {{ $row->kode }}" /> --}}
+        <form action="{{ route($slug . '.destroy', $row->id) }}" method="POST" class="d-inline">
+            @csrf
+            @method('DELETE')
+
+            <x-button variant="icon-danger" icon="bi-x-circle" title="Batalkan" type="submit" />
+        </form>
     @else
         <span class="text-muted">-</span>
     @endif
