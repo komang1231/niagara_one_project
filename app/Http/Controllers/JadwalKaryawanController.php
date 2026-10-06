@@ -313,8 +313,8 @@ class JadwalKaryawanController extends Controller
     {
         $data = $request->validated();
 
-        foreach ($data['karyawan_id'] as $karyawanId) {
-            foreach ($data['jadwal'] as $jadwal) {
+        foreach ($data['jadwal'] as $jadwal) {
+            foreach ($jadwal['karyawan_id'] as $karyawanId) {
                 $sudahAda = JadwalKaryawan::query()
                     ->where('karyawan_id', $karyawanId)
                     ->whereDate('tanggal', $jadwal['tanggal'])
@@ -332,8 +332,8 @@ class JadwalKaryawanController extends Controller
             }
         }
 
-        foreach ($data['karyawan_id'] as $karyawanId) {
-            foreach ($data['jadwal'] as $jadwal) {
+        foreach ($data['jadwal'] as $jadwal) {
+            foreach ($jadwal['karyawan_id'] as $karyawanId) {
                 JadwalKaryawan::create([
                     'karyawan_id' => $karyawanId,
                     'shift_id' => $jadwal['shift_id'],

@@ -14,14 +14,42 @@ class JadwalKaryawanRequest extends FormRequest
 
     public function rules(): array
     {
+        if ($this->isMethod('post')) {
+            return [
+                'jadwal' => [
+                    'required',
+                    'array',
+                    'min:1',
+                ],
+
+                'jadwal.*.karyawan_id' => [
+                    'required',
+                    'array',
+                    'min:1',
+                ],
+
+                'jadwal.*.karyawan_id.*' => [
+                    'required',
+                    'exists:karyawans,id',
+                    Rule::exists('karyawans', 'id')->where(function ($query) {
+                        $query->where('status', 'aktif');
+                    }),
+                ],
+
+                'jadwal.*.shift_id' => [
+                    'required',
+                    'exists:shifts,id',
+                ],
+
+                'jadwal.*.tanggal' => [
+                    'required',
+                    'date',
+                ],
+            ];
+        }
+
         return [
             'karyawan_id' => [
-                'required',
-                'array',
-                'min:1',
-            ],
-
-            'karyawan_id.*' => [
                 'required',
                 'exists:karyawans,id',
                 Rule::exists('karyawans', 'id')->where(function ($query) {
@@ -29,18 +57,12 @@ class JadwalKaryawanRequest extends FormRequest
                 }),
             ],
 
-            'jadwal' => [
-                'required',
-                'array',
-                'min:1',
-            ],
-
-            'jadwal.*.shift_id' => [
+            'shift_id' => [
                 'required',
                 'exists:shifts,id',
             ],
 
-            'jadwal.*.tanggal' => [
+            'tanggal' => [
                 'required',
                 'date',
             ],
@@ -71,8 +93,6 @@ class JadwalKaryawanRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $jadwal = $this->input('jadwal', []);
-
         $bulan = [
             'Januari' => '01',
             'Februari' => '02',
@@ -87,6 +107,9 @@ class JadwalKaryawanRequest extends FormRequest
             'November' => '11',
             'Desember' => '12',
         ];
+
+        // Form tambah
+        $jadwal = $this->input('jadwal', []);
 
         foreach ($jadwal as $index => $item) {
             $tanggal = $item['tanggal'] ?? null;
@@ -108,8 +131,25 @@ class JadwalKaryawanRequest extends FormRequest
             }
         }
 
+        // Form edit
+        $tanggal = $this->input('tanggal');
+
+        if (
+            $tanggal &&
+            preg_match('/^(\d{1,2}) ([A-Za-z]+) (\d{4})$/', $tanggal, $match)
+            && isset($bulan[$match[2]])
+        ) {
+            $tanggal = sprintf(
+                '%04d-%02d-%02d',
+                $match[3],
+                $bulan[$match[2]],
+                $match[1]
+            );
+        }
+
         $this->merge([
             'jadwal' => $jadwal,
+            'tanggal' => $tanggal,
         ]);
     }
 }
