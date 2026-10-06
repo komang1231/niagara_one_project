@@ -7,6 +7,13 @@
         </script>
     @endif
 
+    {{-- Error validasi dari form edit (form tambah menampilkan errornya sendiri di dalam offcanvas) --}}
+    @if ($errors->any() && old('_form') === 'offcanvas-jadwal-edit')
+        <script>
+            alert(@json($errors->first()));
+        </script>
+    @endif
+
     <x-page-header eyebrow="Kehadiran" title="Jadwal Karyawan"
         description="Atur dan pantau jadwal shift karyawan per minggu." icon="bi-calendar-week-fill">
         <x-slot:badges>
@@ -195,10 +202,14 @@
                                     @foreach ($jadwal->get($k->id . '|' . $h['iso'], []) as $c)
                                         <div class="jadwal-chip @if ($c['lintas']) is-lintas @endif"
                                             style="--c-bg: var(--shift-{{ $c['warna'] }}-bg); --c-text: var(--shift-{{ $c['warna'] }}-text); --c-border: var(--shift-{{ $c['warna'] }}-border); --s: {{ $c['start'] }}%; --w: {{ $c['lebar'] }}%;"
+                                            role="button" tabindex="0" data-jadwal-edit
+                                            data-bs-toggle="offcanvas" data-bs-target="#offcanvas-jadwal-edit"
+                                            data-edit-url="{{ route('jadwal-karyawan.edit-data', $c['id']) }}"
+                                            data-update-url="{{ route('jadwal-karyawan.update', $c['id']) }}"
                                             data-jadwal-id="{{ $c['id'] }}" data-date="{{ $h['iso'] }}"
                                             data-karyawan="{{ $k->id }}" data-masuk="{{ $c['masuk'] }}"
                                             data-pulang="{{ $c['pulang'] }}" data-lintas="{{ $c['lintas'] ? 1 : 0 }}"
-                                            title="{{ $k->nama }} · {{ $c['nama'] }} {{ $c['masuk'] }} - {{ $c['pulang'] }}{{ $c['lintas'] ? ' (+1 hari)' : '' }}">
+                                            title="{{ $k->nama }} · {{ $c['nama'] }} {{ $c['masuk'] }} - {{ $c['pulang'] }}{{ $c['lintas'] ? ' (+1 hari)' : '' }} · klik untuk lihat / edit">
                                             <span class="jadwal-chip__name">{{ $c['nama'] }}@if ($c['lintas'])<i class="bi bi-moon-stars-fill jadwal-chip__moon"></i>@endif</span>
                                             <span class="jadwal-chip__time">
                                                 {{ $c['masuk'] }}–{{ $c['pulang'] }}@if ($c['lintas'])
@@ -233,4 +244,5 @@
     </x-panel>
 
     @includeIf('jadwal-karyawan.form-create')
+    @include('jadwal-karyawan.form-edit')
 @endsection

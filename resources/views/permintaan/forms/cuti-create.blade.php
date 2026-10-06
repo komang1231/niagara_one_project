@@ -26,7 +26,7 @@
         <div class="form-inline-error" data-cuti-error hidden></div>
 
         {{-- Daftar tanggal dibuat otomatis oleh JS dari rentang tanggal di atas --}}
-        <div class="mb-3">
+        <div class="mb-3 data-cuti-detail-wrapper">
             <div class="cuti-detail-head">
                 <label class="form-label fw-semibold mb-0">Rincian Tanggal Cuti <span
                         class="text-danger">*</span></label>

@@ -1,5 +1,5 @@
 /* ============================================
-   JADWAL KARYAWAN — form tambah (baris shift + tanggal),
+   JADWAL KARYAWAN — form tambah (karyawan kiri, baris shift + tanggal sejajar kanan),
    legend scroll horizontal, dan penanda LINTAS HARI.
    Warna shift ngikut token --shift-{warna}-* di app.css
    ============================================ */
@@ -37,12 +37,38 @@
     color: var(--color-text-muted);
 }
 
+/* ===== Form: judul kolom (Shift | Tanggal), sama grid-nya dengan baris ===== */
+.jadwal-rows-head,
+.jadwal-form-row {
+    display: grid;
+    grid-template-columns: 26px repeat(3, minmax(0, 1fr)) 32px;
+    column-gap: 10px;
+    align-items: start;
+}
+
+.jadwal-rows-head {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 4px 8px 6px;
+    background: #fff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-1000);
+}
+
+/* ===== Form: daftar baris (rapat, nambah terus ke bawah) ===== */
+.jadwal-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
 /* ===== Form: 1 baris shift + tanggal ===== */
 .jadwal-form-row {
-    padding: 14px;
-    margin-bottom: 12px;
+    padding: 6px 8px;
     border: 1px solid var(--neutral-100);
-    border-radius: 12px;
+    border-radius: 10px;
     background: var(--neutral-25);
     transition: border-color 0.15s ease, background-color 0.15s ease;
 }
@@ -52,30 +78,32 @@
     background: var(--color-danger-soft);
 }
 
-.jadwal-form-row__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.jadwal-form-row__title {
+.jadwal-form-row__no {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    width: 26px;
+    height: 38px; /* sama tinggi dengan input */
     font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
     color: var(--primary-900);
+}
+
+.jadwal-form-row__field {
+    min-width: 0; /* biar select2 / datepicker tidak melebarkan kolom */
+}
+
+.jadwal-form-row .invalid-feedback {
+    margin-top: 2px;
+    font-size: 0.75rem;
 }
 
 .jadwal-form-row__remove {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 38px;
     padding: 0;
     border: 0;
     border-radius: 8px;
@@ -89,15 +117,24 @@
     color: var(--color-danger);
 }
 
+/* minimal 1 baris: tombol hapus disembunyikan tapi kolomnya tetap ada (layout tidak geser) */
 .jadwal-form-row__remove[hidden] {
-    display: none;
+    display: inline-flex;
+    visibility: hidden;
 }
 
-/* ===== Form: info shift terpilih (jam + lintas hari) ===== */
+/* ===== Form: info shift LINTAS HARI (1 baris tipis di bawah Shift & Tanggal) ===== */
 .jadwal-info {
-    padding: 8px 12px;
+    grid-column: 2 / 5;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 3px 10px;
     border: 1px solid var(--c-border);
-    border-radius: 10px;
+    border-left: 4px solid var(--shift-indigo-text);
+    border-radius: 8px;
     background: var(--c-bg);
     color: var(--c-text);
     font-size: 12px;
@@ -108,49 +145,19 @@
     display: none;
 }
 
-.jadwal-info__main {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.jadwal-info__sub {
-    margin-top: 2px;
-    opacity: 0.85;
-}
-
-/* lintas hari: garis tepi kiri indigo biar langsung kelihatan beda */
-.jadwal-info.is-lintas {
-    border-left: 4px solid var(--shift-indigo-text);
-}
-
-/* ===== Form: grid kartu (2-3 kartu per baris di offcanvas xl) ===== */
-.jadwal-rows {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
-}
-
-.jadwal-rows .jadwal-form-row {
-    margin-bottom: 0;
-    min-width: 0; /* biar select2 / datepicker tidak melebarkan kolom */
-}
-
-/* ===== Form: kartu placeholder "Tambah Shift" ===== */
+/* ===== Form: tombol tipis "Tambah Shift" di bawah baris terakhir ===== */
 .jadwal-add-card {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    min-height: 220px;
-    padding: 16px;
+    padding: 8px 12px;
     border: 1.5px dashed var(--primary-300);
-    border-radius: 12px;
+    border-radius: 10px;
     background: var(--primary-25);
     color: var(--primary-900);
-    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -161,27 +168,6 @@
 .jadwal-add-card:hover {
     background: var(--primary-50);
     border-color: var(--primary);
-}
-
-.jadwal-add-card__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--primary-100);
-    font-size: 1.1rem;
-}
-
-.jadwal-add-card__title {
-    font-size: 0.875rem;
-    font-weight: 700;
-}
-
-.jadwal-add-card__hint {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
 }
 
 .jadwal-summary {
@@ -196,6 +182,84 @@
 
 .jadwal-summary[hidden] {
     display: none;
+}
+
+/* Layar sempit: karyawan, shift & tanggal ditumpuk biar tetap muat */
+@media (max-width: 767.98px) {
+    .jadwal-rows-head {
+        display: none;
+    }
+
+    .jadwal-form-row {
+        grid-template-columns: 26px minmax(0, 1fr) 32px;
+        row-gap: 6px;
+    }
+
+    .jadwal-form-row__no {
+        grid-row: 1;
+    }
+
+    .jadwal-form-row__remove {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .jadwal-form-row > .jadwal-form-row__field:nth-of-type(1) {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .jadwal-form-row > .jadwal-form-row__field:nth-of-type(2) {
+        grid-column: 2 / 4;
+        grid-row: 2;
+    }
+
+    .jadwal-form-row > .jadwal-form-row__field:nth-of-type(3) {
+        grid-column: 2 / 4;
+        grid-row: 3;
+    }
+
+    .jadwal-info {
+        grid-column: 2 / 4;
+    }
+}
+
+/* ===== Select2 karyawan (multiple): tampil ringkas 1 baris =====
+   Tag per karyawan disembunyikan, yang tampil cuma ringkasan ("Andi +2 lainnya" / "Semua karyawan (5)").
+   Biar baris tidak membengkak waktu pilih banyak karyawan / "Pilih semua". */
+.jadwal-karyawan-select + .select2-container .select2-selection--multiple {
+    min-height: 38px;
+}
+
+.jadwal-karyawan-select + .select2-container .select2-selection__choice ~ .select2-selection__choice {
+    display: none;
+}
+
+.jadwal-karyawan-select + .select2-container .select2-selection__choice__remove {
+    display: none;
+}
+
+.jadwal-karyawan-select + .select2-container .select2-selection__choice {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Opsi "Pilih semua karyawan" di dropdown */
+.jadwal-opt-all {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--primary-900);
+}
+
+.jadwal-opt-all__count {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-muted);
 }
 
 /* ===== Select2 shift: tampilan opsi ===== */
@@ -327,6 +391,16 @@
 .jadwal-legend__empty {
     font-size: 12px;
     color: var(--color-text-muted);
+}
+
+/* ===== Kalender: chip shift bisa diklik -> buka offcanvas edit ===== */
+.jadwal-chip[data-jadwal-edit] {
+    cursor: pointer;
+}
+
+.jadwal-chip[data-jadwal-edit]:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 /* ===== Kalender: chip shift LINTAS HARI ===== */

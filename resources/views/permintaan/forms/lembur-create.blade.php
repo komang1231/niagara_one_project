@@ -18,8 +18,8 @@
             </div>
         </div>
         <p class="lembur-durasi" data-lembur-info>Durasi lembur 4 sampai 10 jam. Jam selesai lebih kecil dari jam mulai = selesai di hari berikutnya.</p>
-
-        <x-form.input name="pengali" label="Pengali" type="number" step="0.01" min="0" placeholder="Contoh: 1.5" required />
+{{-- 
+        <x-form.input name="pengali" label="Pengali" type="number" step="0.01" min="0" placeholder="Contoh: 1.5" required /> --}}
 
         <x-form.textarea name="alasan" label="Alasan" rows="3" placeholder="Tulis alasan lembur..." required />
     </form>

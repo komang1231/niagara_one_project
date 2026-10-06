@@ -83,8 +83,7 @@
                                     <form action="{{ route('section.destroy', $row->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <x-button type="submit" variant="icon-danger" icon="bi-trash"
-                                            />
+                                        <x-button type="submit" variant="icon-danger" icon="bi-trash"/>
                                     </form>
 
                                     {{-- Status --}}

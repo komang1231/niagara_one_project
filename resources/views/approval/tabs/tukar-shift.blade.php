@@ -1,5 +1,5 @@
-<x-page-header eyebrow="Persetujuan" title="Tukar Shift"
-    description="Setujui atau tolak pengajuan tukar shift karyawan." icon="bi-arrow-left-right">
+<x-page-header eyebrow="Persetujuan" title="Tukar Shift" description="Setujui atau tolak pengajuan tukar shift karyawan."
+    icon="bi-arrow-left-right">
     <x-slot:badges>
         <x-badge>{{ $permintaanTukarShift->count() }} permintaan</x-badge>
     </x-slot:badges>

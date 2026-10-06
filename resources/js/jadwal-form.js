@@ -1,12 +1,12 @@
 /**
- * Jadwal Karyawan — form Tambah Jadwal (banyak baris shift + tanggal)
+ * Jadwal Karyawan — form Tambah Jadwal (tiap baris = karyawan + shift + tanggal)
  * dan legend shift yang bisa di-scroll horizontal.
  *
  * Kontrak data yang dikirim ke server:
- *   karyawan_id[]            = [1, 2, ...]
- *   jadwal[0][shift_id]      = 3
- *   jadwal[0][tanggal]       = "15 Oktober 2026"  (atau Y-m-d, sama seperti sebelumnya)
- *   jadwal[1][shift_id] ...
+ *   jadwal[0][karyawan_id][]  = [1, 2, ...]   (boleh banyak karyawan per baris)
+ *   jadwal[0][shift_id]       = 3
+ *   jadwal[0][tanggal]        = "15 Oktober 2026"  (atau Y-m-d)
+ *   jadwal[1][karyawan_id][] ...
  */
 
 import '../css/jadwal-form.css';
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Select2 shift: tiap opsi tampil dengan titik warna + jam + penanda lintas hari
 // ---------------------------------------------------------------
 
-function formatShift(state) {
+export function formatShift(state) {
     if (!state.id) return state.text; // placeholder
     const d = state.element?.dataset;
     if (!d || !d.nama) return state.text;
@@ -64,7 +64,7 @@ function formatShift(state) {
     return window.jQuery(wrap);
 }
 
-function initSelectShift(select) {
+export function initSelectShift(select) {
     const $ = window.jQuery;
     const $select = $(select);
     const $offcanvas = $select.closest('.offcanvas');
@@ -82,6 +82,89 @@ function initSelectShift(select) {
 }
 
 // ---------------------------------------------------------------
+// Select2 karyawan (multiple) + opsi "Pilih semua karyawan"
+// ---------------------------------------------------------------
+
+const SEMUA = '__all__'; // nilai opsi "Pilih semua" (tidak pernah ikut terkirim ke server)
+
+const daftarKaryawan = (select) => Array.from(select.options).map((o) => o.value).filter((v) => v && v !== SEMUA);
+const terpilihKaryawan = (select) => (window.jQuery(select).val() || []).filter((v) => v !== SEMUA);
+
+// Tampilan opsi di dropdown: "Pilih semua" dibuat beda dari opsi karyawan biasa
+function formatKaryawanOpsi(state) {
+    if (state.id !== SEMUA) return state.text;
+
+    const select = state.element?.parentElement;
+    const total = select ? daftarKaryawan(select).length : 0;
+    const penuh = select && total > 0 && terpilihKaryawan(select).length === total;
+
+    const wrap = buat('span', 'jadwal-opt-all');
+    wrap.append(buat('i', 'bi bi-check2-all'), buat('span', null, penuh ? 'Batalkan semua' : 'Pilih semua karyawan'), buat('span', 'jadwal-opt-all__count', `${total} orang`));
+
+    return window.jQuery(wrap);
+}
+
+// Tampilan di kotak (tertutup): 1 ringkasan saja, tag lain disembunyikan lewat CSS.
+function formatKaryawanTerpilih(state) {
+    if (!state.id) return state.text; // placeholder
+
+    const select = state.element?.parentElement;
+    const nama = String(state.text).trim();
+    if (!select) return nama;
+
+    const terpilih = terpilihKaryawan(select);
+    const total = daftarKaryawan(select).length;
+
+    if (terpilih[0] !== state.id) return nama; // bukan tag pertama -> disembunyikan CSS
+    if (terpilih.length > 1 && terpilih.length === total) return `Semua karyawan (${total})`;
+    if (terpilih.length > 1) return `${nama} +${terpilih.length - 1} lainnya`;
+
+    return nama;
+}
+
+function initSelectKaryawan(select) {
+    const $ = window.jQuery;
+    const $select = $(select);
+    const $offcanvas = $select.closest('.offcanvas');
+
+    // opsi "Pilih semua" selalu paling atas
+    if (!select.querySelector(`option[value="${SEMUA}"]`)) {
+        select.insertAdjacentHTML('afterbegin', `<option value="${SEMUA}">Pilih semua karyawan</option>`);
+    }
+
+    $select.select2({
+        width: '100%',
+        placeholder: select.dataset.placeholder || 'Pilih karyawan',
+        allowClear: true,
+        closeOnSelect: false, // bisa pilih banyak karyawan tanpa dropdown menutup terus
+        dropdownParent: $offcanvas.length ? $offcanvas : $(document.body),
+        templateResult: formatKaryawanOpsi,
+        templateSelection: formatKaryawanTerpilih,
+        language: { noResults: () => 'Tidak ada hasil' },
+    });
+
+    // Klik "Pilih semua": semua terpilih. Klik lagi saat sudah semua: dikosongkan.
+    $select.on('select2:selecting', (e) => {
+        if (e.params.args.data.id !== SEMUA) return;
+
+        e.preventDefault(); // opsi ini cuma tombol, tidak ikut jadi nilai
+        const semua = daftarKaryawan(select);
+        const penuh = semua.length > 0 && terpilihKaryawan(select).length === semua.length;
+
+        $select.val(penuh ? [] : semua).trigger('change');
+        $select.select2('close');
+    });
+
+    // Tooltip: daftar nama lengkap (karena kotaknya cuma menampilkan ringkasan)
+    $select.on('change', () => {
+        const nama = Array.from(select.selectedOptions)
+            .filter((o) => o.value !== SEMUA)
+            .map((o) => o.textContent.trim());
+        $select.next('.select2-container').find('.select2-selection').attr('title', nama.join(', '));
+    });
+}
+
+// ---------------------------------------------------------------
 // Form
 // ---------------------------------------------------------------
 
@@ -94,7 +177,6 @@ function initFormJadwal(form) {
     const tombolTambah = Array.from(offcanvas.querySelectorAll('[data-add-row]'));
     const placeholder = rows.querySelector('[data-add-card]');
     const summary = form.querySelector('[data-jadwal-summary]');
-    const karyawan = form.querySelector('#jadwal_karyawan_id');
 
     if (!rows || !tpl || !tombolTambah.length) return;
 
@@ -111,7 +193,9 @@ function initFormJadwal(form) {
         box.classList.toggle('d-block', Boolean(pesan));
     }
 
-    // ---------- info shift terpilih (jam + lintas hari + tanggal selesai) ----------
+    // ---------- info shift LINTAS HARI (jam shift sudah tampil di dropdown) ----------
+    // Shift biasa: tidak ada info tambahan (hemat tempat). Lintas hari: 1 baris tipis
+    // yang bilang kapan shift-nya selesai.
     function perbaruiInfo(row) {
         const select = row.querySelector('.jadwal-shift-select');
         const input = row.querySelector('[data-air-datepicker]');
@@ -119,50 +203,48 @@ function initFormJadwal(form) {
         const opt = select.selectedOptions[0];
 
         box.replaceChildren();
-        box.classList.remove('is-lintas');
 
-        if (!opt || !opt.value) {
+        if (!opt || !opt.value || opt.dataset.lintas !== '1') {
             box.hidden = true;
             return;
         }
 
-        const { warna, masuk, pulang, lintas } = opt.dataset;
-        const isLintas = lintas === '1';
+        const { warna, pulang } = opt.dataset;
         const tgl = parseTanggal(input.value);
 
         pakaiWarna(box, warna);
-        box.classList.toggle('is-lintas', isLintas);
 
-        const baris1 = buat('div', 'jadwal-info__main');
-        baris1.append(buat('strong', null, `${masuk} – ${pulang}`));
-        if (isLintas) baris1.append(badgeLintas());
-
-        let teks2;
-        if (isLintas) {
-            if (tgl) {
-                const esok = new Date(tgl.getFullYear(), tgl.getMonth(), tgl.getDate() + 1);
-                teks2 = `Mulai ${labelTanggal(tgl)} ${masuk}, selesai ${labelTanggal(esok)} ${pulang} (hari berikutnya)`;
-            } else {
-                teks2 = `Selesai di hari berikutnya pukul ${pulang}`;
-            }
+        let teks;
+        if (tgl) {
+            const esok = new Date(tgl.getFullYear(), tgl.getMonth(), tgl.getDate() + 1);
+            teks = `Selesai ${labelTanggal(esok)} pukul ${pulang}`;
         } else {
-            teks2 = tgl ? `Mulai & selesai ${labelTanggal(tgl)}` : 'Selesai di hari yang sama';
+            teks = `Selesai di hari berikutnya pukul ${pulang}`;
         }
 
-        box.append(baris1, buat('div', 'jadwal-info__sub', teks2));
+        box.append(badgeLintas(), buat('span', null, teks));
         box.hidden = false;
     }
 
-    // ---------- tanggal kembar antar baris ----------
+    // ---------- karyawan terpilih di 1 baris ----------
+    const karyawanBaris = (row) => terpilihKaryawan(row.querySelector('.jadwal-karyawan-select'));
+
+    // ---------- karyawan yang sama di tanggal yang sama (beda baris) ----------
+    const PESAN_KEMBAR = 'Ada karyawan yang sudah dipakai di tanggal ini pada baris lain.';
+
     function cekKembar() {
-        const peta = new Map();
+        const peta = new Map(); // "tanggal|karyawan" -> baris-baris yang memakainya
 
         semuaBaris().forEach((row) => {
-            const tgl = parseTanggal(row.querySelector('[data-air-datepicker]').value);
             row.classList.remove('is-duplicate');
+
+            const tgl = parseTanggal(row.querySelector('[data-air-datepicker]').value);
             if (!tgl) return;
-            const key = keISO(tgl);
-            peta.set(key, [...(peta.get(key) || []), row]);
+
+            karyawanBaris(row).forEach((id) => {
+                const key = `${keISO(tgl)}|${id}`;
+                peta.set(key, [...(peta.get(key) || []), row]);
+            });
         });
 
         let adaKembar = false;
@@ -171,7 +253,7 @@ function initFormJadwal(form) {
             adaKembar = true;
             list.forEach((row) => {
                 row.classList.add('is-duplicate');
-                tampilError(row, 'tanggal', 'Tanggal ini sudah dipakai di baris lain.');
+                tampilError(row, 'tanggal', PESAN_KEMBAR);
             });
         });
 
@@ -179,7 +261,7 @@ function initFormJadwal(form) {
         semuaBaris().forEach((row) => {
             if (!row.classList.contains('is-duplicate')) {
                 const box = row.querySelector('[data-error="tanggal"]');
-                if (box?.textContent === 'Tanggal ini sudah dipakai di baris lain.') tampilError(row, 'tanggal', '');
+                if (box?.textContent === PESAN_KEMBAR) tampilError(row, 'tanggal', '');
             }
         });
 
@@ -189,21 +271,23 @@ function initFormJadwal(form) {
     // ---------- ringkasan + nomor baris ----------
     function perbaruiRingkasan() {
         const list = semuaBaris();
-        const jumlahKaryawan = $(karyawan).val()?.length || 0;
-        const jumlahJadwal = list.filter((row) => row.querySelector('.jadwal-shift-select').value && row.querySelector('[data-air-datepicker]').value).length;
+
+        // baris yang sudah lengkap (karyawan + shift + tanggal) -> dihitung ke ringkasan
+        const lengkap = list.filter((row) => karyawanBaris(row).length && row.querySelector('.jadwal-shift-select').value && row.querySelector('[data-air-datepicker]').value);
+        const jumlahEntri = lengkap.reduce((total, row) => total + karyawanBaris(row).length, 0);
 
         list.forEach((row, i) => {
             row.querySelector('[data-row-number]').textContent = i + 1;
             row.querySelector('[data-remove-row]').hidden = list.length === 1; // minimal 1 baris
         });
 
-        // sudah mentok maksimal: tombol footer mati, kartu placeholder disembunyikan
+        // sudah mentok maksimal: tombol footer mati, tombol placeholder disembunyikan
         const penuh = list.length >= MAX;
         tombolTambah.forEach((btn) => (btn.disabled = penuh));
         if (placeholder) placeholder.hidden = penuh;
 
-        if (jumlahKaryawan && jumlahJadwal) {
-            summary.textContent = `${jumlahKaryawan} karyawan × ${jumlahJadwal} jadwal = ${jumlahKaryawan * jumlahJadwal} entri akan disimpan`;
+        if (jumlahEntri) {
+            summary.textContent = `${lengkap.length} baris jadwal · ${jumlahEntri} entri akan disimpan`;
             summary.hidden = false;
         } else {
             summary.hidden = true;
@@ -213,10 +297,18 @@ function initFormJadwal(form) {
     // ---------- 1 baris ----------
     function initBaris(row) {
         const select = row.querySelector('.jadwal-shift-select');
+        const selectKaryawan = row.querySelector('.jadwal-karyawan-select');
         const input = row.querySelector('[data-air-datepicker]');
 
+        initSelectKaryawan(selectKaryawan);
         initSelectShift(select);
         initDatePicker(input);
+
+        $(selectKaryawan).on('change', () => {
+            tampilError(row, 'karyawan', '');
+            cekKembar();
+            perbaruiRingkasan();
+        });
 
         $(select).on('change', () => {
             tampilError(row, 'shift', '');
@@ -254,9 +346,11 @@ function initFormJadwal(form) {
         if (semuaBaris().length === 1) return;
 
         const select = row.querySelector('.jadwal-shift-select');
+        const selectKaryawan = row.querySelector('.jadwal-karyawan-select');
         const input = row.querySelector('[data-air-datepicker]');
 
         $(select).select2('destroy');
+        $(selectKaryawan).select2('destroy');
         input._datepicker?.destroy();
         row.remove();
 
@@ -268,12 +362,11 @@ function initFormJadwal(form) {
     form.addEventListener('submit', (e) => {
         let valid = true;
 
-        if (!($(karyawan).val()?.length)) {
-            tampilError(form, 'karyawan', 'Pilih minimal 1 karyawan.');
-            valid = false;
-        }
-
         semuaBaris().forEach((row) => {
+            if (!karyawanBaris(row).length) {
+                tampilError(row, 'karyawan', 'Pilih minimal 1 karyawan.');
+                valid = false;
+            }
             if (!row.querySelector('.jadwal-shift-select').value) {
                 tampilError(row, 'shift', 'Shift wajib dipilih.');
                 valid = false;
@@ -291,11 +384,6 @@ function initFormJadwal(form) {
             const pertama = form.querySelector('.invalid-feedback.d-block, .is-duplicate');
             pertama?.scrollIntoView({ block: 'center', behavior: 'smooth' });
         }
-    });
-
-    $(karyawan).on('change', () => {
-        tampilError(form, 'karyawan', '');
-        perbaruiRingkasan();
     });
 
     tombolTambah.forEach((btn) => btn.addEventListener('click', tambahBaris));
