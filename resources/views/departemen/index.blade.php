@@ -1,9 +1,4 @@
 @extends('layouts.app')
-@if (session('error'))
-    <script>
-        alert(@json(session('error')));
-    </script>
-@endif
 @section('content')
     <x-page-header eyebrow="Struktur Karyawan" title="Departemen"
         description="Kelola data departemen dan status departemen perusahaan." icon="bi-diagram-3-fill">
@@ -79,7 +74,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash"
-                                        />
+                                            />
                                     </form>
 
                                     {{-- Status --}}
