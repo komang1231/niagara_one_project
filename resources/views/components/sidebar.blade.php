@@ -107,7 +107,8 @@
             'icon' => 'bi-shield-lock-fill',
             'slug' => 'akses-pengguna',
             'children' => [
-                // ['label' => 'User', 'slug' => 'user'],
+            
+                ['label' => 'User', 'slug' => 'user'],
                 ['label' => 'Role', 'slug' => 'role'],
             ],
         ],
@@ -150,8 +151,13 @@
 
                         foreach ($item['children'] as $child) {
                             $childRouteName = $child['slug'] . '.index';
-                            // 'match' (opsional) = pola route tambahan, mis. halaman detail
-                            if (Route::is($childRouteName) || (isset($child['match']) && Route::is($child['match']))) {
+
+                            // 'match' (opsional) = pola route tambahan,
+                            // misalnya halaman detail closing-attendance.show
+                            if (
+                                Route::is($childRouteName) ||
+                                (isset($child['match']) && Route::is($child['match']))
+                            ) {
                                 $isSectionActive = true;
                             }
                         }
@@ -162,7 +168,8 @@
                         <a href="#{{ $collapseId }}"
                             class="nav-link d-flex justify-content-between align-items-center
                                   @if ($isSectionActive) nav-link-active @else collapsed @endif"
-                            data-bs-toggle="collapse" role="button"
+                            data-bs-toggle="collapse"
+                            role="button"
                             aria-expanded="{{ $isSectionActive ? 'true' : 'false' }}"
                             aria-controls="{{ $collapseId }}">
 
@@ -170,6 +177,7 @@
                                 <i class="bi {{ $item['icon'] }} nav-icon"></i>
                                 <span class="nav-text">{{ $item['label'] }}</span>
                             </span>
+
                             <i class="bi bi-chevron-up chevron"></i>
                         </a>
 
@@ -186,6 +194,7 @@
                                 @endif
                                 @php
                                     $childRouteName = $child['slug'] . '.index';
+
                                     $isChildActive =
                                         Route::is($childRouteName) ||
                                         (isset($child['match']) && Route::is($child['match']));
@@ -194,7 +203,9 @@
                                 <li class="submenu-item @if ($isChildActive) active @endif">
                                     <a href="{{ route($childRouteName) }}">
                                         <span class="active-indicator"></span>
-                                        <span class="submenu-label">{{ $child['label'] }}</span>
+                                        <span class="submenu-label">
+                                            {{ $child['label'] }}
+                                        </span>
                                     </a>
                                 </li>
                             @endforeach
@@ -209,7 +220,9 @@
 
     {{-- ===== FOOTER ===== --}}
     <footer class="sidebar-footer">
-        <a href="#" class="see-all-link">See All Service</a>
+        <a href="{{ route('service.index') }}" class="see-all-link">
+            See All Service
+        </a>
     </footer>
 
 </aside>
