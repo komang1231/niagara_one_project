@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\PermintaanCuti;
+use Illuminate\Validation\Rule;
 
 class PermintaanCutiRequest extends FormRequest
 {
@@ -51,7 +52,12 @@ class PermintaanCutiRequest extends FormRequest
             ],
 
             'details' => [
-                'required',
+                Rule::requiredIf(function () {
+                    $cuti = \App\Models\Cuti::find($this->input('cuti_id'));
+
+                    return !$cuti
+                        || strtolower(trim($cuti->nama)) !== 'cuti tahunan';
+                }),
                 'array',
                 'min:1',
             ],
@@ -63,7 +69,12 @@ class PermintaanCutiRequest extends FormRequest
             ],
 
             'details.*.setengah_hari' => [
-                'required',
+                Rule::requiredIf(function () {
+                    $cuti = \App\Models\Cuti::find($this->input('cuti_id'));
+
+                    return !$cuti
+                        || strtolower(trim($cuti->nama)) !== 'cuti tahunan';
+                }),
                 'boolean',
             ],
         ];

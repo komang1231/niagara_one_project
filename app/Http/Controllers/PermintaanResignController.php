@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\PermintaanResignRequest;
 use App\Models\PermintaanResign;
+use Illuminate\Support\Facades\DB;
 
 class PermintaanResignController extends Controller
 {
@@ -31,8 +32,27 @@ class PermintaanResignController extends Controller
 
         $data['karyawan_id'] = auth()->user()->karyawan_id;
 
+        // Super Admin langsung disetujui.
+        if (auth()->user()->role?->nama === 'Super Admin') {
+            $data['processed_by'] = auth()->id();
+            $data['approved_at'] = now();
+            $data['rejected_at'] = null;
+        }
+
         $before = microtime(true);
-        $permintaanResign = PermintaanResign::create($data);
+        $permintaanResign = DB::transaction(function () use ($data) {
+
+            $permintaanResign = PermintaanResign::create($data);
+
+            // Super Admin langsung mengubah status karyawan menjadi resign.
+            if (auth()->user()->role?->nama === 'Super Admin') {
+                $permintaanResign->karyawan->update([
+                    'status' => 'resign',
+                ]);
+            }
+
+            return $permintaanResign;
+        });
         $after = microtime(true);
 
         Log::debug('PermintaanResign store timings', [
@@ -41,27 +61,18 @@ class PermintaanResignController extends Controller
             'id' => $permintaanResign->id ?? null,
         ]);
 
-        return redirect()->route('permintaan.index')->with('success', 'Permintaan Resign berhasil ditambahkan.');
+        $message = auth()->user()->role?->nama === 'Super Admin'
+            ? 'Permintaan Resign berhasil diajukan dan langsung disetujui.'
+            : 'Permintaan Resign berhasil ditambahkan.';
+
+        return redirect()
+            ->route('permintaan.index')
+            ->with('success', $message);
     }
 
     public function edit(PermintaanResign $permintaanResign)
     {
-        // if (
-        //     $permintaanResign->approved_at ||
-        //     $permintaanResign->rejected_at
-        // ) {
-        //     return redirect()
-        //         ->route('permintaan-resign.index')
-        //         ->with(
-        //             'error',
-        //             'Permintaan Resign yang sudah diproses tidak dapat diubah.'
-        //         );
-        // }
-
-        // return view(
-        //     'permintaan-resign.form-edit',
-        //     compact('permintaanResign')
-        // );
+        //
     }
     public function editData($id)
     {

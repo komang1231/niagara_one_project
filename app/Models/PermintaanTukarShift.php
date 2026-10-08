@@ -7,7 +7,8 @@ use App\Traits\HasGeneratedCode;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Karyawan;
 
-class PermintaanTukarShift extends Model {
+class PermintaanTukarShift extends Model
+{
     use HasGeneratedCode, SoftDeletes;
 
     protected function getCodePrefix(): string
@@ -41,6 +42,17 @@ class PermintaanTukarShift extends Model {
     }
 
     protected $table = 'permintaan_tukar_shifts';
-    protected $fillable = ['kode', 'karyawan_pengaju', 'karyawan_pengganti', 'tanggal_tujuan', 'shift_pengaju', 'shift_pengganti'];
+    protected $fillable = [
+        'kode',
+        'karyawan_pengaju',
+        'karyawan_pengganti',
+        'tanggal_tujuan',
+        'shift_pengaju',
+        'shift_pengganti',
+        'processed_by',
+        'processed_at',
+        'approved_at',
+        'rejected_at',
+    ];
     // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable
 }

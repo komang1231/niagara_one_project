@@ -178,59 +178,70 @@ class ApprovalController extends Controller
 
         $pemohon = $permintaan->karyawan?->user;
 
-        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+        if (
+            !$pemohon ||
+            !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())
+        ) {
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
-        /*
-     * Cuti Tahunan wajib memiliki saldo cuti.
-     */
-        $isCutiTahunan = $permintaan->cuti
-            && strtolower(trim($permintaan->cuti->nama)) === 'cuti tahunan';
+        $berhasil = DB::transaction(function () use ($permintaan) {
 
-        if ($isCutiTahunan) {
-            $tahun = Carbon::parse($permintaan->tanggal_mulai)->year;
+            /*
+         * Cuti Tahunan wajib memiliki saldo cuti.
+         */
+            $isCutiTahunan = $permintaan->cuti
+                && strtolower(trim($permintaan->cuti->nama)) === 'cuti tahunan';
 
-            $saldoCuti = SaldoCuti::where('karyawan_id', $permintaan->karyawan_id)
-                ->where('tahun', $tahun)
-                ->first();
+            if ($isCutiTahunan) {
+                $tahun = Carbon::parse($permintaan->tanggal_mulai)->year;
 
-            if (!$saldoCuti) {
-                return redirect()
-                    ->route('approval.index')
-                    ->with(
-                        'error',
-                        'Permintaan Cuti tidak dapat disetujui karena karyawan belum memenuhi masa kerja 1 tahun untuk mendapatkan saldo Cuti Tahunan.'
-                    );
+                $saldoCuti = SaldoCuti::where(
+                    'karyawan_id',
+                    $permintaan->karyawan_id
+                )
+                    ->where('tahun', $tahun)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$saldoCuti) {
+                    return false;
+                }
+
+                $tanggalMulai = Carbon::parse($permintaan->tanggal_mulai);
+                $tanggalSelesai = Carbon::parse($permintaan->tanggal_selesai);
+
+                $jumlahHari = $tanggalMulai->diffInDays($tanggalSelesai) + 1;
+
+                $sisaSaldo = $saldoCuti->saldo - $saldoCuti->terpakai;
+
+                if ($jumlahHari > $sisaSaldo) {
+                    return false;
+                }
+
+                $saldoCuti->update([
+                    'terpakai' => $saldoCuti->terpakai + $jumlahHari,
+                ]);
             }
 
-            $tanggalMulai = Carbon::parse($permintaan->tanggal_mulai);
-            $tanggalSelesai = Carbon::parse($permintaan->tanggal_selesai);
+            $permintaan->processed_by = auth()->id();
+            $permintaan->approved_at = now();
+            $permintaan->rejected_at = null;
+            $permintaan->save();
 
-            $jumlahHari = $tanggalMulai->diffInDays($tanggalSelesai) + 1;
+            return true;
+        });
 
-            $sisaSaldo = $saldoCuti->saldo - $saldoCuti->terpakai;
-
-            if ($jumlahHari > $sisaSaldo) {
-                return redirect()
-                    ->route('approval.index')
-                    ->with(
-                        'error',
-                        "Permintaan Cuti tidak dapat disetujui karena sisa Cuti Tahunan hanya {$sisaSaldo} hari, sedangkan pengajuan membutuhkan {$jumlahHari} hari."
-                    );
-            }
-
-            $saldoCuti->update([
-                'terpakai' => $saldoCuti->terpakai + $jumlahHari,
-            ]);
+        if (!$berhasil) {
+            return redirect()
+                ->route('approval.index')
+                ->with(
+                    'error',
+                    'Permintaan Cuti tidak dapat disetujui karena saldo Cuti Tahunan tidak tersedia atau tidak mencukupi.'
+                );
         }
-
-        $permintaan->processed_by = auth()->id();
-        $permintaan->approved_at = now();
-        $permintaan->rejected_at = null;
-        $permintaan->save();
 
         return redirect()
             ->route('approval.index')
@@ -344,10 +355,6 @@ class ApprovalController extends Controller
             $permintaan->approved_at = now();
             $permintaan->rejected_at = null;
             $permintaan->save();
-
-            $permintaan->karyawan->update([
-                'status' => 'resign',
-            ]);
         });
 
         return redirect()
@@ -395,27 +402,35 @@ class ApprovalController extends Controller
 
         $pemohon = $permintaan->karyawanPengaju?->user;
 
-        if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
+        if (
+            !$pemohon ||
+            !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())
+        ) {
             return redirect()
                 ->route('approval.index')
                 ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
         $berhasil = DB::transaction(function () use ($permintaan) {
-            $jadwalPengaju = JadwalKaryawan::where('karyawan_id', $permintaan->karyawan_pengaju)
+            $jadwalPengaju = JadwalKaryawan::where(
+                'karyawan_id',
+                $permintaan->karyawan_pengaju
+            )
                 ->whereDate('tanggal', $permintaan->tanggal_tujuan)
                 ->where('status', 'aktif')
                 ->lockForUpdate()
                 ->first();
 
-            $jadwalPengganti = JadwalKaryawan::where('karyawan_id', $permintaan->karyawan_pengganti)
+            $jadwalPengganti = JadwalKaryawan::where(
+                'karyawan_id',
+                $permintaan->karyawan_pengganti
+            )
                 ->whereDate('tanggal', $permintaan->tanggal_tujuan)
                 ->where('status', 'aktif')
                 ->lockForUpdate()
                 ->first();
 
-            // Jadwal bisa saja berubah setelah permintaan dibuat,
-            // jadi cek ulang sebelum melakukan pertukaran.
+            // Jadwal bisa berubah setelah permintaan dibuat.
             if (!$jadwalPengaju || !$jadwalPengganti) {
                 return false;
             }

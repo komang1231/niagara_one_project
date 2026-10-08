@@ -16,8 +16,7 @@ class ApprovalService
 
             'HR Manager' => 'Admin Tenant',
 
-            'Admin Tenant' => 'Super Admin',
-
+            'Admin Tenant',
             'Super Admin' => 'Super Admin',
 
             default => null,

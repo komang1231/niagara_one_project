@@ -40,6 +40,16 @@ class PermintaanTukarShiftRequest extends FormRequest
                 'required',
                 'date',
             ],
+
+            'shift_pengaju' => [
+                'required',
+                'exists:shifts,id',
+            ],
+
+            'shift_pengganti' => [
+                'required',
+                'exists:shifts,id',
+            ],
         ];
     }
 

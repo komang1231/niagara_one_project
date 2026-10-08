@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\HistoryKaryawan;
+use App\Models\PermintaanResign;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -43,8 +44,36 @@ class TerapkanPerubahanKaryawan extends Command
             });
         }
 
+        $resigns = PermintaanResign::query()
+            ->whereNotNull('approved_at')
+            ->whereNull('rejected_at')
+            ->whereDate('tanggal_efektif', '<=', today())
+            ->whereHas('karyawan', function ($query) {
+                $query->where('status', '!=', 'resign');
+            })
+            ->with('karyawan')
+            ->get();
+
+        foreach ($resigns as $resign) {
+            DB::transaction(function () use ($resign) {
+                $karyawan = $resign->karyawan;
+
+                if (!$karyawan) {
+                    return;
+                }
+
+                $karyawan->update([
+                    'status' => 'resign',
+                ]);
+            });
+        }
+
         $this->info(
             "{$histories->count()} perubahan karyawan berhasil diproses."
+        );
+
+        $this->info(
+            "{$resigns->count()} resign berhasil diterapkan."
         );
 
         return self::SUCCESS;

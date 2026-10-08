@@ -9,26 +9,6 @@ use App\Models\PermintaanLembur;
 
 class PermintaanLemburController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $startIndex = microtime(true);
-    //     $previewKode = \App\Services\CodeGenerator::generate(\App\Models\PermintaanLembur::class, 'PML');
-
-    //     $permintaanLembur = $this->filter($request)
-    //         ->orderByDesc('kode')
-    //         // ->latest()
-    //         ->paginate(10)
-    //         ->withQueryString();
-
-    //     if ($request->ajax() || $request->wantsJson()) {
-    //         Log::debug('PermintaanLembur index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //         return view('components.table.table', compact('permintaanLembur'));
-    //     }
-
-    //     Log::debug('PermintaanLembur index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //     return view('permintaan-lembur.index', compact('permintaanLembur', 'previewKode'));
-    // }
-
     private function filter(Request $request)
     {
         $search = $request->query('search');
@@ -51,6 +31,13 @@ class PermintaanLemburController extends Controller
 
         $data['karyawan_id'] = auth()->user()->karyawan_id;
 
+        // Super Admin langsung disetujui.
+        if (auth()->user()->role?->nama === 'Super Admin') {
+            $data['processed_by'] = auth()->id();
+            $data['approved_at'] = now();
+            $data['rejected_at'] = null;
+        }
+
         $before = microtime(true);
         $permintaanLembur = PermintaanLembur::create($data);
         $after = microtime(true);
@@ -61,27 +48,18 @@ class PermintaanLemburController extends Controller
             'id' => $permintaanLembur->id ?? null,
         ]);
 
-        return redirect()->route('permintaan.index')->with('success', 'Permintaan Lembur berhasil ditambahkan.');
+        $message = auth()->user()->role?->nama === 'Super Admin'
+            ? 'Permintaan Lembur berhasil diajukan dan langsung disetujui.'
+            : 'Permintaan Lembur berhasil ditambahkan.';
+
+        return redirect()
+            ->route('permintaan.index')
+            ->with('success', $message);
     }
 
     public function edit(PermintaanLembur $permintaanLembur)
     {
-        // if (
-        //     $permintaanLembur->approved_at ||
-        //     $permintaanLembur->rejected_at
-        // ) {
-        //     return redirect()
-        //         ->route('permintaan-lembur.index')
-        //         ->with(
-        //             'error',
-        //             'Permintaan Lembur yang sudah diproses tidak dapat diubah.'
-        //         );
-        // }
-
-        // return view(
-        //     'permintaan-lembur.form-edit',
-        //     compact('permintaanLembur')
-        // );
+        //
     }
     public function editData($id)
     {

@@ -9,55 +9,13 @@ use Illuminate\Support\Facades\Log;
 use App\Models\PermintaanCuti;
 use App\Models\PermintaanCutiDetail;
 use App\Services\CodeGenerator;
+use App\Models\SaldoCuti;
+use Carbon\Carbon;
+use App\Models\Cuti;
+use Illuminate\Validation\ValidationException;
 
 class PermintaanCutiController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $startIndex = microtime(true);
-
-    //     $previewKode = CodeGenerator::generate(
-    //         PermintaanCuti::class,
-    //         'PMC'
-    //     );
-
-    //     $permintaanCuti = $this->filter($request)
-    //         ->orderByDesc('kode')
-    //         ->paginate(10)
-    //         ->withQueryString();
-
-    //     if ($request->ajax() || $request->wantsJson()) {
-    //         Log::debug('PermintaanCuti index timings', [
-    //             'ajax' => true,
-    //             'ms' => round(
-    //                 (microtime(true) - $startIndex) * 1000,
-    //                 2
-    //             ),
-    //         ]);
-
-    //         return view(
-    //             'components.table.table',
-    //             compact('permintaanCuti')
-    //         );
-    //     }
-
-    //     Log::debug('PermintaanCuti index timings', [
-    //         'ajax' => false,
-    //         'ms' => round(
-    //             (microtime(true) - $startIndex) * 1000,
-    //             2
-    //         ),
-    //     ]);
-
-    //     return view(
-    //         'permintaan.cuti.index',
-    //         compact(
-    //             'permintaanCuti',
-    //             'previewKode'
-    //         )
-    //     );
-    // }
-
     private function filter(Request $request)
     {
         $search = $request->query('search');
@@ -80,10 +38,76 @@ class PermintaanCutiController extends Controller
 
         $data['karyawan_id'] = auth()->user()->karyawan_id;
 
-        $details = $data['details'];
+        /*
+     * Tentukan jenis cuti.
+     */
+        $cuti = Cuti::find($data['cuti_id']);
+
+        $isCutiTahunan = $cuti
+            && preg_replace('/\s+/', ' ', trim($cuti->nama)) === 'Cuti Tahunan';
+        
+
+        /*
+     * Cuti Tahunan tidak mengisi details dari form.
+     * Detail tanggal dibuat otomatis berdasarkan tanggal mulai - selesai.
+     *
+     * Cuti selain Tahunan tetap menggunakan details dari form.
+     */
+        if ($isCutiTahunan) {
+            $details = [];
+
+            $tanggalMulai = Carbon::parse($data['tanggal_mulai']);
+            $tanggalSelesai = Carbon::parse($data['tanggal_selesai']);
+
+            for (
+                $tanggal = $tanggalMulai->copy();
+                $tanggal->lte($tanggalSelesai);
+                $tanggal->addDay()
+            ) {
+                $details[] = [
+                    'tanggal' => $tanggal->format('Y-m-d'),
+                    'setengah_hari' => false,
+                ];
+            }
+        } else {
+            $details = $data['details'];
+        }
+
         unset($data['details']);
 
-        $permintaanCuti = DB::transaction(function () use ($data, $details) {
+        /*
+     * Validasi saldo Cuti Tahunan sebelum permintaan dibuat.
+     */
+        if ($isCutiTahunan) {
+            $tahun = Carbon::parse($data['tanggal_mulai'])->year;
+
+            $saldoCuti = SaldoCuti::where('karyawan_id', $data['karyawan_id'])
+                ->where('tahun', $tahun)
+                ->first();
+
+            if (!$saldoCuti) {
+                throw ValidationException::withMessages([
+                    'tanggal_mulai' =>
+                    'Kamu belum memiliki saldo Cuti Tahunan karena belum memenuhi masa kerja 1 tahun.',
+                ]);
+            }
+
+            $tanggalMulai = Carbon::parse($data['tanggal_mulai']);
+            $tanggalSelesai = Carbon::parse($data['tanggal_selesai']);
+
+            $jumlahHari = $tanggalMulai->diffInDays($tanggalSelesai) + 1;
+
+            $sisaSaldo = $saldoCuti->saldo - $saldoCuti->terpakai;
+
+            if ($jumlahHari > $sisaSaldo) {
+                throw ValidationException::withMessages([
+                    'tanggal_mulai' =>
+                    "Sisa Cuti Tahunan kamu hanya {$sisaSaldo} hari, sedangkan pengajuan membutuhkan {$jumlahHari} hari.",
+                ]);
+            }
+        }
+
+        $permintaanCuti = DB::transaction(function () use ($data, $details, $isCutiTahunan) {
 
             $permintaanCuti = PermintaanCuti::create($data);
 
@@ -92,6 +116,50 @@ class PermintaanCutiController extends Controller
                     'tanggal' => $detail['tanggal'],
                     'setengah_hari' => $detail['setengah_hari'],
                 ]);
+            }
+
+            // Super Admin langsung disetujui.
+            if (auth()->user()->role?->nama === 'Super Admin') {
+
+                if ($isCutiTahunan) {
+                    $tahun = Carbon::parse($permintaanCuti->tanggal_mulai)->year;
+
+                    $saldoCuti = SaldoCuti::where(
+                        'karyawan_id',
+                        $permintaanCuti->karyawan_id
+                    )
+                        ->where('tahun', $tahun)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (!$saldoCuti) {
+                        throw new \RuntimeException(
+                            'Permintaan Cuti tidak dapat disetujui karena saldo Cuti Tahunan tidak tersedia.'
+                        );
+                    }
+
+                    $tanggalMulai = Carbon::parse($permintaanCuti->tanggal_mulai);
+                    $tanggalSelesai = Carbon::parse($permintaanCuti->tanggal_selesai);
+
+                    $jumlahHari = $tanggalMulai->diffInDays($tanggalSelesai) + 1;
+
+                    $sisaSaldo = $saldoCuti->saldo - $saldoCuti->terpakai;
+
+                    if ($jumlahHari > $sisaSaldo) {
+                        throw new \RuntimeException(
+                            "Permintaan Cuti tidak dapat disetujui karena sisa Cuti Tahunan hanya {$sisaSaldo} hari, sedangkan pengajuan membutuhkan {$jumlahHari} hari."
+                        );
+                    }
+
+                    $saldoCuti->update([
+                        'terpakai' => $saldoCuti->terpakai + $jumlahHari,
+                    ]);
+                }
+
+                $permintaanCuti->processed_by = auth()->id();
+                $permintaanCuti->approved_at = now();
+                $permintaanCuti->rejected_at = null;
+                $permintaanCuti->save();
             }
 
             return $permintaanCuti;
@@ -105,13 +173,15 @@ class PermintaanCutiController extends Controller
             'id' => $permintaanCuti->id,
         ]);
 
+        $message = auth()->user()->role?->nama === 'Super Admin'
+            ? 'Permintaan Cuti berhasil diajukan dan langsung disetujui.'
+            : 'Permintaan Cuti berhasil ditambahkan.';
+
         return redirect()
             ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Cuti berhasil ditambahkan.'
-            );
+            ->with('success', $message);
     }
+
 
     public function edit(PermintaanCuti $permintaanCuti)
     {
@@ -154,7 +224,8 @@ class PermintaanCutiController extends Controller
         ]);
     }
 
-    public function update(PermintaanCutiRequest $request, PermintaanCuti $permintaanCuti) {
+    public function update(PermintaanCutiRequest $request, PermintaanCuti $permintaanCuti)
+    {
         dd($request->all());
 
         if (

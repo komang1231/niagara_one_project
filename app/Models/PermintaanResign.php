@@ -26,6 +26,15 @@ class PermintaanResign extends Model
     }
 
     protected $table = 'permintaan_resigns';
-    protected $fillable = ['kode', 'karyawan_id', 'tanggal_efektif', 'alasan'];
+    protected $fillable = [
+        'kode',
+        'karyawan_id',
+        'tanggal_efektif',
+        'alasan',
+        'processed_by',
+        'processed_at',
+        'approved_at',
+        'rejected_at',
+    ];
     // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable
 }

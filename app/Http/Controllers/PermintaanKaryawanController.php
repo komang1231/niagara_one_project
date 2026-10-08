@@ -12,26 +12,6 @@ use App\Models\JobPosition;
 
 class PermintaanKaryawanController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $startIndex = microtime(true);
-    //     $previewKode = \App\Services\CodeGenerator::generate(\App\Models\PermintaanKaryawan::class, 'PMK');
-
-    //     $permintaanKaryawan = $this->filter($request)
-    //         ->orderByDesc('kode')
-    //         // ->latest()
-    //         ->paginate(10)
-    //         ->withQueryString();
-
-    //     if ($request->ajax() || $request->wantsJson()) {
-    //         Log::debug('PermintaanKaryawan index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //         return view('components.table.table', compact('permintaanKaryawan'));
-    //     }
-
-    //     Log::debug('PermintaanKaryawan index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //     return view('permintaan.index', compact('permintaanKaryawan', 'previewKode'));
-    // }
-
     private function filter(Request $request)
     {
         $search = $request->query('search');
@@ -54,6 +34,13 @@ class PermintaanKaryawanController extends Controller
 
         $data['karyawan_id'] = auth()->user()->karyawan_id;
 
+        // Super Admin langsung disetujui.
+        if (auth()->user()->role?->nama === 'Super Admin') {
+            $data['processed_by'] = auth()->id();
+            $data['approved_at'] = now();
+            $data['rejected_at'] = null;
+        }
+
         $before = microtime(true);
         $permintaanKaryawan = PermintaanKaryawan::create($data);
         $after = microtime(true);
@@ -64,27 +51,18 @@ class PermintaanKaryawanController extends Controller
             'id' => $permintaanKaryawan->id ?? null,
         ]);
 
-        return redirect()->route('permintaan.index')->with('success', 'Permintaan Karyawan berhasil ditambahkan.');
+        $message = auth()->user()->role?->nama === 'Super Admin'
+            ? 'Permintaan Karyawan berhasil diajukan dan langsung disetujui.'
+            : 'Permintaan Karyawan berhasil ditambahkan.';
+
+        return redirect()
+            ->route('permintaan.index')
+            ->with('success', $message);
     }
 
     public function edit(PermintaanKaryawan $permintaanKaryawan)
     {
-        // if (
-        //     $permintaanKaryawan->approved_at ||
-        //     $permintaanKaryawan->rejected_at
-        // ) {
-        //     return redirect()
-        //         ->route('permintaan-karyawan.index')
-        //         ->with(
-        //             'error',
-        //             'Permintaan Karyawan yang sudah diproses tidak dapat diubah.'
-        //         );
-        // }
-
-        // return view(
-        //     'permintaan-karyawan.form-edit',
-        //     compact('permintaanKaryawan')
-        // );
+        //
     }
     public function editData($id)
     {

@@ -48,22 +48,22 @@ Route::post('/login', [AuthController::class, 'login'])
 
 Route::middleware('auth')->group(function () {
 
-   // ========================================================================
-// SERVICE / DASHBOARD
-// ========================================================================
+    // ========================================================================
+    // SERVICE / DASHBOARD
+    // ========================================================================
 
-// Halaman Service
-Route::view('/service', 'service.index')
-    ->name('service.index');
+    // Halaman Service
+    Route::view('/service', 'service.index')
+        ->name('service.index');
 
-// Jika membuka "/", arahkan ke halaman Service
-Route::get('/', function () {
-    return redirect()->route('service.index');
-});
+    // Jika membuka "/", arahkan ke halaman Service
+    Route::get('/', function () {
+        return redirect()->route('service.index');
+    });
 
-// Route khusus Dashboard (menampilkan halaman dashboard)
-Route::view('/dashboard', 'dashboard')
-    ->name('dashboard.index');
+    // Route khusus Dashboard (menampilkan halaman dashboard)
+    Route::view('/dashboard', 'dashboard')
+        ->name('dashboard.index');
 
 
     // ========================================================================
@@ -451,25 +451,24 @@ Route::view('/dashboard', 'dashboard')
 
     Route::get('rekrutmen/{id}/edit-data', [RekrutmenController::class, 'editData'])
         ->name('rekrutmen.edit-data');
-
+    // Route::get('rekrutmen/{rekrutmen}/lengkapi-karyawan', [RekrutmenController::class, 'lengkapiKaryawan'])
+    //     ->name('rekrutmen.lengkapi-karyawan');
+    // Route::post(
+    //     'rekrutmen/{rekrutmen}/lengkapi-karyawan',
+    //     [RekrutmenController::class, 'storeKaryawanDariRekrutmen']
+    // )->name('rekrutmen.store-karyawan');
     Route::get('rekrutmen-trash', [RekrutmenController::class, 'trash'])
         ->name('rekrutmen.trash');
-
     Route::patch('rekrutmen/{id}/restore', [RekrutmenController::class, 'restore'])
         ->name('rekrutmen.restore');
-
     Route::delete('rekrutmen/{id}/force-delete', [RekrutmenController::class, 'forceDelete'])
         ->name('rekrutmen.force-delete');
-
     Route::patch('rekrutmen/{rekrutmen}/toggle-status', [RekrutmenController::class, 'toggleStatus'])
         ->name('rekrutmen.toggle-status');
-
     Route::get('rekrutmen/{departemen}/get-divisi', [RekrutmenController::class, 'getDivisi'])
         ->name('rekrutmen.get-divisi');
-
     Route::get('rekrutmen/{divisi}/get-section', [RekrutmenController::class, 'getSection'])
         ->name('rekrutmen.get-section');
-
     Route::get('rekrutmen/{section}/get-job-position', [RekrutmenController::class, 'getJobPosition'])
         ->name('rekrutmen.get-job-position');
 
@@ -655,16 +654,13 @@ Route::view('/dashboard', 'dashboard')
     Route::delete('perubahan-karyawan/{id}/force-delete', [HistoryKaryawanController::class, 'forceDelete'])
         ->name('perubahan-karyawan.force-delete');
 
-    // Route::patch('perubahan-karyawan/{perubahan-karyawan}/toggle-status', [HistoryKaryawanController::class, 'toggleStatus'])
-    //     ->name('perubahan-karyawan.toggle-status');
-    // Route::patch(
-    //     'perubahan-karyawan/{id}/toggle-status',
-    //     [HistoryKaryawanController::class, 'toggleStatus']
-    // )->name('perubahan-karyawan.toggle-status');
     Route::patch(
-    'perubahan-karyawan/{perubahanKaryawan}/toggle-status',
-    [HistoryKaryawanController::class, 'toggleStatus']
-)->name('perubahan-karyawan.toggle-status');
+        'perubahan-karyawan/{perubahanKaryawan}/toggle-status',
+        [HistoryKaryawanController::class, 'toggleStatus']
+    )->name('perubahan-karyawan.toggle-status');
+
+    Route::get('/permintaan-tukar-shift/jadwal', [PermintaanController::class, 'getJadwalTukarShift'])
+        ->name('permintaan-tukar-shift.jadwal');
 
 
     Route::patch('perubahan-karyawan/{perubahan-karyawan}/toggle-status', [HistoryKaryawanController::class, 'toggleStatus'])
@@ -900,5 +896,4 @@ Route::view('/dashboard', 'dashboard')
 
     Route::patch('role/{role}/toggle-status', [RoleController::class, 'toggleStatus'])
         ->name('role.toggle-status');
-
 });

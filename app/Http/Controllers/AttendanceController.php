@@ -8,15 +8,55 @@ use App\Models\JadwalKaryawan;
 use App\Models\PermintaanCuti;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
     /**
      * Halaman Attendance.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('attendance.index', $this->todayStatus());
+        $data = $this->todayStatus();
+
+        $query = Attendance::query()
+            ->with([
+                'karyawan',
+                'shift',
+            ])
+            ->orderByDesc('tanggal')
+            ->orderByDesc('karyawan_id');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->whereHas('karyawan', function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nip', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+            $status = (array) $request->status;
+
+            if (!empty($status)) {
+                $query->whereIn('status', $status);
+            }
+        }
+
+        if ($request->filled('tanggal_from')) {
+            $query->whereDate('tanggal', '>=', $request->tanggal_from);
+        }
+
+        if ($request->filled('tanggal_to')) {
+            $query->whereDate('tanggal', '<=', $request->tanggal_to);
+        }
+
+        $data['attendances'] = $query
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('attendance.index', $data);
     }
 
     /**

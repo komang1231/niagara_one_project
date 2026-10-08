@@ -18,6 +18,7 @@ use App\Models\CabangKantor;
 use App\Models\Cuti;
 use App\Models\Karyawan;
 use App\Models\Shift;
+use App\Models\JadwalKaryawan;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -81,7 +82,7 @@ class PermintaanController extends Controller
         | Permintaan Karyawan
         |--------------------------------------------------------------------------
         */
-//aku mau ambil data pemrmintaan withTrashed. jadi data di index data yg deleted_at nya null dan terisi
+        //aku mau ambil data pemrmintaan withTrashed. jadi data di index data yg deleted_at nya null dan terisi
         $permintaanKaryawan = PermintaanKaryawan::query()
             ->withTrashed()
             ->where('karyawan_id', $user->karyawan->id)
@@ -176,6 +177,10 @@ class PermintaanController extends Controller
         $jobLevels = JobLevel::where('status', 'aktif')->get();
         $cutis = Cuti::where('status', 'aktif')->get();
         $shifts = Shift::where('status', 'aktif')->get();
+        $jadwalKaryawans = JadwalKaryawan::where('status', 'aktif')
+            ->get(['karyawan_id', 'shift_id', 'tanggal']);
+        $jadwalKaryawansJson = $jadwalKaryawans->values()->toJson();
+        $shiftsJson = $shifts->pluck('nama', 'id')->toJson();
 
 
         /*
@@ -211,6 +216,9 @@ class PermintaanController extends Controller
             'jobLevels',
             'cutis',
             'shifts',
+            'jadwalKaryawans',
+            'jadwalKaryawansJson',
+            'shiftsJson',
         ));
     }
 
@@ -379,6 +387,76 @@ class PermintaanController extends Controller
             'karyawan_id' => $permintaanResign->karyawan_id,
             'tanggal_efektif' => $permintaanResign->tanggal_efektif,
             'alasan' => $permintaanResign->alasan,
+        ]);
+    }
+
+    public function getJadwalTukarShift(Request $request)
+    {
+        $request->validate([
+            'tanggal' => [
+                'required',
+                'date',
+            ],
+            'karyawan_pengganti' => [
+                'required',
+                'exists:karyawans,id',
+            ],
+        ]);
+
+        $karyawanPengaju = auth()->user()->karyawan_id;
+
+        if (!$karyawanPengaju) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun kamu belum terhubung dengan data karyawan.',
+            ], 422);
+        }
+
+        if ((int) $karyawanPengaju === (int) $request->karyawan_pengganti) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Karyawan pengganti tidak boleh sama dengan pengaju.',
+            ], 422);
+        }
+
+        $jadwalPengaju = JadwalKaryawan::with('shift')
+            ->where('karyawan_id', $karyawanPengaju)
+            ->whereDate('tanggal', $request->tanggal)
+            ->where('status', 'aktif')
+            ->first();
+
+        $jadwalPengganti = JadwalKaryawan::with('shift')
+            ->where('karyawan_id', $request->karyawan_pengganti)
+            ->whereDate('tanggal', $request->tanggal)
+            ->where('status', 'aktif')
+            ->first();
+
+        if (!$jadwalPengaju) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kamu tidak memiliki jadwal aktif pada tanggal tersebut.',
+            ], 422);
+        }
+
+        if (!$jadwalPengganti) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Karyawan pengganti tidak memiliki jadwal aktif pada tanggal tersebut.',
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'shift_pengaju' => [
+                    'id' => $jadwalPengganti->shift_id,
+                    'nama' => $jadwalPengganti->shift?->nama,
+                ],
+                'shift_pengganti' => [
+                    'id' => $jadwalPengaju->shift_id,
+                    'nama' => $jadwalPengaju->shift?->nama,
+                ],
+            ],
         ]);
     }
 

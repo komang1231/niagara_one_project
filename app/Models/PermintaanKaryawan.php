@@ -73,6 +73,20 @@ class PermintaanKaryawan extends Model
         'approved_at' => 'datetime',
         'rejected_at' => 'datetime',
     ];
-    protected $fillable = ['kode', 'nama', 'karyawan_id', 'cabang_kantor_id', 'departemen_id', 'divisi_id', 'section_id', 'job_position_id', 'job_level_id', 'jumlah'];
-    // processed_by, processed_at & rejected_at DIKELUARKAN dari fillable
+    protected $fillable = [
+        'kode',
+        'nama',
+        'karyawan_id',
+        'cabang_kantor_id',
+        'departemen_id',
+        'divisi_id',
+        'section_id',
+        'job_position_id',
+        'job_level_id',
+        'jumlah',
+        'processed_by',
+        'processed_at',
+        'approved_at',
+        'rejected_at',
+    ];
 }

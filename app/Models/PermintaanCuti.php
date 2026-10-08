@@ -29,14 +29,27 @@ class PermintaanCuti extends Model
     {
         return $this->belongsTo(Cuti::class);
     }
-    
+
     public function details()
     {
         return $this->hasMany(PermintaanCutiDetail::class, 'permintaan_cuti_id', 'id');
     }
 
     protected $table = 'permintaan_cutis';
-    protected $fillable = ['kode', 'cuti_id', 'karyawan_id', 'tanggal_mulai', 'tanggal_selesai', 'alasan', 'lampiran', 'pengganti_karyawan_id'];
+    protected $fillable = [
+        'kode',
+        'cuti_id',
+        'karyawan_id',
+        'tanggal_mulai',
+        'tanggal_selesai',
+        'alasan',
+        'lampiran',
+        'pengganti_karyawan_id',
+        'processed_by',
+        'processed_at',
+        'approved_at',
+        'rejected_at',
+    ];
     // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable
 
 }

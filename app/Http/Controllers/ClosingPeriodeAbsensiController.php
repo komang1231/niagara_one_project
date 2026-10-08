@@ -94,17 +94,17 @@ class ClosingPeriodeAbsensiController extends Controller
             ->select('bulan', 'tahun')
             ->get()
             ->groupBy('tahun')
-            ->map(fn ($rows) => $rows->pluck('bulan')->map(fn ($b) => (int) $b)->values()->all())
+            ->map(fn($rows) => $rows->pluck('bulan')->map(fn($b) => (int) $b)->values()->all())
             ->all();
 
         // Tahun yang bisa di-closing: tahun ini + tahun yang pernah di-closing (tanpa tahun depan)
         $tahunClosingOptions = collect(array_keys($periodeClosed))
             ->push($tahunSekarang)
-            ->map(fn ($t) => (int) $t)
-            ->filter(fn ($t) => $t <= $tahunSekarang)
+            ->map(fn($t) => (int) $t)
+            ->filter(fn($t) => $t <= $tahunSekarang)
             ->unique()
             ->sortDesc()
-            ->mapWithKeys(fn ($t) => [$t => (string) $t])
+            ->mapWithKeys(fn($t) => [$t => (string) $t])
             ->all();
 
         return view('closing-attendance.index', compact(
@@ -178,11 +178,29 @@ class ClosingPeriodeAbsensiController extends Controller
 
         $pdf = Pdf::loadView('closing-attendance.pdf', $data);
 
+        $namaBulan = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+
+        $periode = $namaBulan[$data['closing']->bulan]
+            . '_' .
+            $data['closing']->tahun;
+
+        $waktu = now()->format('His');
+
         return $pdf->download(
-            'rekapan-absensi-' .
-                $data['closing']->tahun . '-' .
-                str_pad($data['closing']->bulan, 2, '0', STR_PAD_LEFT) .
-                '.pdf'
+            'Recap_Attendance_' . $periode . '_' . $waktu . '.pdf'
         );
     }
 

@@ -1,6 +1,7 @@
 <x-offcanvas.form id="offcanvas-rekrutmen-diterima" title="Data Karyawan Baru"
     description="Lengkapi data berikut untuk membuat akun karyawan dari kandidat yang diterima." size="xl">
-    <form id="offcanvas-rekrutmen-diterima-form" action="#" method="POST" novalidate>
+    <form id="offcanvas-rekrutmen-diterima-form" action="{{ route('rekrutmen.store-karyawan', $rekrutmen) }}"
+        method="POST" novalidate>
         @csrf
 
         {{-- Penanda form mana yang disubmit (dipakai buat buka lagi offcanvas kalau validasi gagal) --}}
@@ -18,7 +19,7 @@
 
             <div class="col-md-4">
                 {{-- Input currency: yang dikirim ke backend angka mentah tanpa titik --}}
-                <x-form.currency name="gaji" label="Gaji" required />
+                <x-form.currency name="gaji" label="Gaji" />
             </div>
 
             <div class="col-md-4">
@@ -106,8 +107,7 @@
             <input type="hidden" name="status" value="nonaktif">
 
             <label class="app-form-switch">
-                <input type="checkbox" name="status" value="aktif" id="diterima_status"
-                    @checked(old('status', 'aktif') === 'aktif')>
+                <input type="checkbox" name="status" value="aktif" id="diterima_status" @checked(old('status', 'aktif') === 'aktif')>
                 <span class="app-form-switch__slider"></span>
             </label>
         </div>

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\PermintaanTukarShiftRequest;
 use App\Models\PermintaanTukarShift;
+use App\Models\JadwalKaryawan;
+use Illuminate\Support\Facades\DB;
 
 class PermintaanTukarShiftController extends Controller
 {
@@ -27,11 +29,32 @@ class PermintaanTukarShiftController extends Controller
     public function store(PermintaanTukarShiftRequest $request)
     {
         $start = microtime(true);
-
         $data = $request->validated();
 
+        $data['karyawan_pengaju'] = auth()->user()->karyawan_id;
+
         $before = microtime(true);
-        $permintaanTukarShift = PermintaanTukarShift::create($data);
+
+        $permintaanTukarShift = DB::transaction(function () use ($data) {
+            $permintaan = PermintaanTukarShift::create($data);
+
+            // Super Admin langsung disetujui.
+            if (auth()->user()->role?->nama === 'Super Admin') {
+                $berhasil = $this->prosesApprovalTukarShift(
+                    $permintaan,
+                    auth()->id()
+                );
+
+                if (!$berhasil) {
+                    throw new \RuntimeException(
+                        'Permintaan Tukar Shift tidak dapat disetujui karena jadwal aktif salah satu karyawan sudah tidak tersedia.'
+                    );
+                }
+            }
+
+            return $permintaan;
+        });
+
         $after = microtime(true);
 
         Log::debug('PermintaanTukarShift store timings', [
@@ -40,29 +63,62 @@ class PermintaanTukarShiftController extends Controller
             'id' => $permintaanTukarShift->id ?? null,
         ]);
 
+        $message = auth()->user()->role?->nama === 'Super Admin'
+            ? 'Permintaan Tukar Shift berhasil diajukan dan langsung disetujui.'
+            : 'Permintaan Tukar Shift berhasil ditambahkan.';
+
         return redirect()
             ->route('permintaan.index')
-            ->with('success', 'Permintaan Tukar Shift berhasil ditambahkan.');
+            ->with('success', $message);
     }
+
+    private function prosesApprovalTukarShift(
+        PermintaanTukarShift $permintaan,
+        int $processedBy
+    ): bool {
+        $jadwalPengaju = JadwalKaryawan::where(
+            'karyawan_id',
+            $permintaan->karyawan_pengaju
+        )
+            ->whereDate('tanggal', $permintaan->tanggal_tujuan)
+            ->where('status', 'aktif')
+            ->lockForUpdate()
+            ->first();
+
+        $jadwalPengganti = JadwalKaryawan::where(
+            'karyawan_id',
+            $permintaan->karyawan_pengganti
+        )
+            ->whereDate('tanggal', $permintaan->tanggal_tujuan)
+            ->where('status', 'aktif')
+            ->lockForUpdate()
+            ->first();
+
+        if (!$jadwalPengaju || !$jadwalPengganti) {
+            return false;
+        }
+
+        $shiftPengaju = $jadwalPengaju->shift_id;
+
+        $jadwalPengaju->shift_id = $jadwalPengganti->shift_id;
+        $jadwalPengganti->shift_id = $shiftPengaju;
+
+        $jadwalPengaju->save();
+        $jadwalPengganti->save();
+
+        $permintaan->processed_by = $processedBy;
+        $permintaan->approved_at = now();
+        $permintaan->rejected_at = null;
+        $permintaan->save();
+
+        return true;
+    }
+
+
 
     public function edit(PermintaanTukarShift $permintaanTukarShift)
     {
-        // if (
-        //     $permintaanTukarShift->approved_at ||
-        //     $permintaanTukarShift->rejected_at
-        // ) {
-        //     return redirect()
-        //         ->route('permintaan-tukar-shift.index')
-        //         ->with(
-        //             'error',
-        //             'Permintaan Tukar Shift yang sudah diproses tidak dapat diubah.'
-        //         );
-        // }
-
-        // return view(
-        //     'permintaan-tukar-shift.form-edit',
-        //     compact('permintaanTukarShift')
-        // );
+        //
     }
     public function editData($id)
     {

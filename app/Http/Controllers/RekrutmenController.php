@@ -16,6 +16,8 @@ use App\Models\Section;
 use App\Models\JenjangPendidikan;
 use App\Models\SumberPelamar;
 use App\Services\CodeGenerator;
+use App\Models\Karyawan;
+use App\Models\Role;
 
 class RekrutmenController extends Controller
 {
