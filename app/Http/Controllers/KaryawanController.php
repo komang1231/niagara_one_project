@@ -433,6 +433,9 @@ class KaryawanController extends Controller
             'agama',
             'statusKepegawaian',
             'bank',
+            'kontrakKaryawan' => function ($query) {
+                $query->orderBy('tanggal_mulai');
+            },
         ]);
 
         $penempatan = collect([
@@ -442,6 +445,34 @@ class KaryawanController extends Controller
         ])
             ->filter()
             ->implode(' › ');
+
+        $kontrakPertama = $karyawan->kontrakKaryawan->first();
+
+        $masaKerja = '-';
+
+        if ($kontrakPertama?->tanggal_mulai) {
+            $tanggalMulai = \Carbon\Carbon::parse($kontrakPertama->tanggal_mulai);
+            $sekarang = now();
+
+            $selisih = $tanggalMulai->diff($sekarang);
+
+            $tahun = $selisih->y;
+            $bulan = $selisih->m;
+
+            $bagian = [];
+
+            if ($tahun > 0) {
+                $bagian[] = $tahun . ' tahun';
+            }
+
+            if ($bulan > 0) {
+                $bagian[] = $bulan . ' bulan';
+            }
+
+            $masaKerja = $bagian
+                ? implode(' ', $bagian)
+                : 'Belum 1 bulan';
+        }
 
         return response()->json([
 
@@ -472,6 +503,8 @@ class KaryawanController extends Controller
 
             'status_kepegawaian' =>
             $karyawan->statusKepegawaian?->nama ?? '-',
+
+            'masa_kerja' => $masaKerja,
 
             'status' =>
             $karyawan->status,

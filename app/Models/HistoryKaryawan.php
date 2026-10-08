@@ -15,7 +15,7 @@ use App\Models\JobLevel;
 
 class HistoryKaryawan extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasGeneratedCode;
 
     protected function getCodePrefix(): string
     {

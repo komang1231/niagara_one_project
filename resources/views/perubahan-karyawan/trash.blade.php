@@ -2,24 +2,6 @@
 
 @section('content')
     @php
-        /* TODO BACKEND: kirim $perubahanKaryawans (paginator data yang di-soft delete).
-           Key tiap item sama dengan di index: id, karyawan_nama, karyawan_nip, jenis_perubahan,
-           status, nomor_sk, tanggal_efektif.
-           Selama belum dikirim, halaman memakai DATA CONTOH di bawah (hapus blok ini nanti). */
-        if (!isset($perubahanKaryawans)) {
-            $mockTrash = [
-                ['id' => 7, 'karyawan_nama' => 'Ni Luh Ayu', 'karyawan_nip' => 'NIP-2303', 'jenis_perubahan' => 'rotasi', 'status' => 'nonaktif', 'nomor_sk' => 'SK/HRD/007/VI/2026', 'tanggal_efektif' => '2026-06-01'],
-                ['id' => 8, 'karyawan_nama' => 'Kadek Wirawan', 'karyawan_nip' => 'NIP-2305', 'jenis_perubahan' => 'promosi', 'status' => 'aktif', 'nomor_sk' => 'SK/HRD/008/V/2026', 'tanggal_efektif' => '2026-05-10'],
-            ];
-            $perubahanKaryawans = new \Illuminate\Pagination\LengthAwarePaginator(
-                $mockTrash,
-                count($mockTrash),
-                10,
-                1,
-                ['path' => request()->url()],
-            );
-        }
-
         // Badge jenis perubahan: [variant badge, icon] (sama dengan index)
         $jenisBadge = [
             'promosi' => ['success', 'bi-graph-up-arrow'],
@@ -32,7 +14,7 @@
     <x-page-header eyebrow="Karyawan" title="Perubahan Karyawan"
         description="Perubahan karyawan yang telah dihapus. Pulihkan atau hapus permanen di sini." icon="bi-trash-fill">
         <x-slot:badges>
-            <x-badge>{{ $perubahanKaryawans->total() }} perubahan</x-badge>
+            <x-badge>{{ $perubahanKaryawan->total() }} perubahan</x-badge>
         </x-slot:badges>
 
         <x-slot:actions>
@@ -57,7 +39,7 @@
             </thead>
 
             <tbody>
-                @forelse ($perubahanKaryawans as $i => $row)
+                @forelse ($perubahanKaryawan as $i => $row)
                     @php
                         $jenis = data_get($row, 'jenis_perubahan');
                         [$badgeVariant, $badgeIcon] = $jenisBadge[$jenis] ?? ['neutral', 'bi-circle'];
@@ -66,11 +48,11 @@
 
                     <tr>
                         <td class="app-table__col-no">
-                            {{ $perubahanKaryawans->firstItem() + $i }}
+                            {{ $perubahanKaryawan->firstItem() + $i }}
                         </td>
 
                         <td>
-                            <x-table.cell-stack :avatar="data_get($row, 'karyawan_nama')" :lines="array_values(array_filter([data_get($row, 'karyawan_nama'), data_get($row, 'karyawan_nip')], 'filled'))" />
+                            <x-table.cell-stack :avatar="$row->karyawan?->nama" :lines="array_values(array_filter([$row->karyawan?->nama, $row->karyawan?->nip4], 'filled'))" />
                         </td>
 
                         <td>
@@ -84,7 +66,7 @@
                         </td>
 
                         <td class="fw-semibold">
-                            {{ data_get($row, 'nomor_sk') }}
+                            {{$row->kode}}
                         </td>
 
                         <td>
@@ -124,13 +106,13 @@
         <div class="app-table-footer">
             <span>
                 Menampilkan
-                {{ $perubahanKaryawans->firstItem() ?? 0 }}–{{ $perubahanKaryawans->lastItem() ?? 0 }}
+                {{ $perubahanKaryawan->firstItem() ?? 0 }}–{{ $perubahanKaryawan->lastItem() ?? 0 }}
                 dari
-                {{ $perubahanKaryawans->total() }}
+                {{ $perubahanKaryawan->total() }}
                 entri
             </span>
 
-            <x-pagination :paginator="$perubahanKaryawans" />
+            <x-pagination :paginator="$perubahanKaryawan" />
         </div>
     </x-panel>
 @endsection

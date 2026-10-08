@@ -10,10 +10,11 @@ use App\Models\PermintaanTukarShift;
 use App\Services\ApprovalService;
 use App\Models\SaldoCuti;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ApprovalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $tabs = [
             'karyawan' => 'Karyawan',
@@ -22,10 +23,20 @@ class ApprovalController extends Controller
             'resign' => 'Resign',
             'tukar-shift' => 'Tukar Shift',
         ];
-        $tab = collect($tabs)->map(fn($label, $key) => [
-            'key' => $key,
-            'label' => $label,
-        ])->values();
+        // $tab = collect($tabs)->map(fn($label, $key) => [
+        //     'key' => $key,
+        //     'label' => $label,
+        // ])->values();
+
+
+        // $tabs = [
+        //     'karyawan' => 'Karyawan',
+        //     'cuti' => 'Cuti',
+        //     'lembur' => 'Lembur',
+        //     'resign' => 'Resign',
+        //     'tukar-shift' => 'Tukar Shift',
+        // ];
+        $tab = $request->get('tab', 'karyawan');
         $user = auth()->user();
 
         $allowedRequesterRoles = match ($user->role->nama) {
@@ -60,8 +71,8 @@ class ApprovalController extends Controller
             ->withQueryString();
 
         $permintaanCuti = PermintaanCuti::WhereHas('karyawan.user.role', function ($query) use ($allowedRequesterRoles) {
-                $query->whereIn('nama', $allowedRequesterRoles);
-            })
+            $query->whereIn('nama', $allowedRequesterRoles);
+        })
             ->latest('id')
             ->paginate(10, ['*'], 'cuti_page')
             ->withQueryString();

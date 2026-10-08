@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 
 class HistoryKaryawanController extends Controller
 {
+
     public function index(Request $request)
     {
         $previewKode = \App\Services\CodeGenerator::generate(\App\Models\HistoryKaryawan::class, 'SK');
@@ -87,7 +88,7 @@ class HistoryKaryawanController extends Controller
 
         $cabangOptions = CabangKantor::orderBy('nama')
             ->pluck('nama', 'id');
-            // dd($departemenOptions);
+        // dd($departemenOptions);
 
         return view('perubahan-karyawan.index', compact(
             'previewKode',
@@ -121,7 +122,7 @@ class HistoryKaryawanController extends Controller
         return HistoryKaryawan::query()
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('nomor_sk', 'like', "%{$search}%")
+                    $q->where('kode', 'like', "%{$search}%")
                         ->orWhereHas('karyawan', function ($karyawan) use ($search) {
                             $karyawan
                                 ->where('nama', 'like', "%{$search}%")
@@ -150,8 +151,18 @@ class HistoryKaryawanController extends Controller
     }
 
     public function store(HistoryKaryawanRequest $request)
-    {dd($request->all());
+    {
         $data = $request->validated();
+
+        $karyawan = Karyawan::findOrFail($data['karyawan_id']);
+
+        // Simpan data organisasi karyawan sebelum perubahan
+        $data['cabang_lama'] = $karyawan->cabang_kantor_id;
+        $data['departemen_lama'] = $karyawan->departemen_id;
+        $data['divisi_lama'] = $karyawan->divisi_id;
+        $data['section_lama'] = $karyawan->section_id;
+        $data['posisi_lama'] = $karyawan->job_position_id;
+        $data['level_lama'] = $karyawan->job_level_id;
 
         if ($request->hasFile('file_sk')) {
             $data['file_sk'] = $request
@@ -186,52 +197,78 @@ class HistoryKaryawanController extends Controller
 
         return response()->json([
             'id' => $history->id,
-            'nomor_sk' => $history->nomor_sk,
+
+            // Kode SK dari HasGeneratedCode
+            'kode' => $history->kode,
+
+            // File SK
             'file_sk' => $history->file_sk,
-
-            'karyawan_id' => $history->karyawan_id,
-
-            'departemen_lama' => $history->departemen_lama,
-            'departemen_baru' => $history->departemen_baru,
-
-            'divisi_lama' => $history->divisi_lama,
-            'divisi_baru' => $history->divisi_baru,
-
-            'section_lama' => $history->section_lama,
-            'section_baru' => $history->section_baru,
-
-            'posisi_lama' => $history->posisi_lama,
-            'posisi_baru' => $history->posisi_baru,
-
-            'level_lama' => $history->level_lama,
-            'level_baru' => $history->level_baru,
-
-            'cabang_lama' => $history->cabang_lama,
-            'cabang_baru' => $history->cabang_baru,
-
-            'jenis_perubahan' => $history->jenis_perubahan,
-            'tanggal_efektif' => $history->tanggal_efektif,
-            'status' => $history->status,
-
             'file_sk_url' => $history->file_sk
                 ? Storage::disk('public')->url($history->file_sk)
                 : null,
-
             'file_sk_name' => $history->file_sk
                 ? basename($history->file_sk)
                 : null,
+
+            // Karyawan
+            'karyawan_id' => $history->karyawan_id,
+            'karyawan_nama' => $history->karyawan?->nama,
+            'karyawan_nip' => $history->karyawan?->nip,
+
+            // Data lama
+            'departemen_lama' => $history->departemen_lama,
+            'departemen_lama_nama' => $history->departemenLama?->nama,
+
+            'divisi_lama' => $history->divisi_lama,
+            'divisi_lama_nama' => $history->divisiLama?->nama,
+
+            'section_lama' => $history->section_lama,
+            'section_lama_nama' => $history->sectionLama?->nama,
+
+            'posisi_lama' => $history->posisi_lama,
+            'posisi_lama_nama' => $history->posisiLama?->nama,
+
+            'level_lama' => $history->level_lama,
+            'level_lama_nama' => $history->levelLama?->nama,
+
+            'cabang_lama' => $history->cabang_lama,
+            'cabang_lama_nama' => $history->cabangLama?->nama,
+
+            // Data baru
+            'departemen_baru' => $history->departemen_baru,
+            'departemen_baru_nama' => $history->departemenBaru?->nama,
+
+            'divisi_baru' => $history->divisi_baru,
+            'divisi_baru_nama' => $history->divisiBaru?->nama,
+
+            'section_baru' => $history->section_baru,
+            'section_baru_nama' => $history->sectionBaru?->nama,
+
+            'posisi_baru' => $history->posisi_baru,
+            'posisi_baru_nama' => $history->posisiBaru?->nama,
+
+            'level_baru' => $history->level_baru,
+            'level_baru_nama' => $history->levelBaru?->nama,
+
+            'cabang_baru' => $history->cabang_baru,
+            'cabang_baru_nama' => $history->cabangBaru?->nama,
+
+            // Perubahan
+            'jenis_perubahan' => $history->jenis_perubahan,
+            'tanggal_efektif' => $history->tanggal_efektif,
+            'status' => $history->status,
         ]);
     }
 
     public function update(
         HistoryKaryawanRequest $request,
-        HistoryKaryawan $historyKaryawan
+        HistoryKaryawan $perubahanKaryawan
     ) {
         $data = $request->validated();
 
         if ($request->hasFile('file_sk')) {
-            if ($historyKaryawan->file_sk) {
-                Storage::disk('public')->delete($historyKaryawan->file_sk);
+            if ($perubahanKaryawan->file_sk) {
+                Storage::disk('public')->delete($perubahanKaryawan->file_sk);
             }
 
             $data['file_sk'] = $request
@@ -239,24 +276,29 @@ class HistoryKaryawanController extends Controller
                 ->store('history-karyawan/sk', 'public');
         }
 
-        $historyKaryawan->update($data);
+        $perubahanKaryawan->update($data);
 
         return redirect()
             ->route('perubahan-karyawan.index')
             ->with('success', 'Perubahan karyawan berhasil diperbarui.');
     }
 
-    public function toggleStatus(HistoryKaryawan $historyKaryawan)
+    public function toggleStatus(HistoryKaryawan $perubahanKaryawan)
     {
-        $historyKaryawan->update([
-            'status' => $historyKaryawan->status === 'aktif'
+        dd([
+        'id' => $perubahanKaryawan->id,
+        'kode' => $perubahanKaryawan->kode,
+        'status_sebelum' => $perubahanKaryawan->status,
+    ]);
+        $perubahanKaryawan->update([
+            'status' => $perubahanKaryawan->status === 'aktif'
                 ? 'nonaktif'
                 : 'aktif',
         ]);
 
         return response()->json([
             'success' => true,
-            'status' => $historyKaryawan->status,
+            'status' => $perubahanKaryawan->status,
         ]);
     }
 

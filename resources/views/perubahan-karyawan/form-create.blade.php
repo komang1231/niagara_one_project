@@ -144,10 +144,10 @@
                 <div class="pk-section-title"><i class="bi bi-file-earmark-text"></i> Dokumen Perubahan</div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <x-form.input name="nomor_sk" id="pk_create_nomor_sk" label="Nomor SK"
                             placeholder="Contoh: SK/HRD/001/X/2026" required />
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <x-form.input-date name="tanggal_efektif" id="pk_create_tanggal_efektif" label="Tanggal Efektif"
                             required />

@@ -430,8 +430,16 @@ Route::middleware('auth')->group(function () {
         ->name('perubahan-karyawan.restore');
     Route::delete('perubahan-karyawan/{id}/force-delete', [HistoryKaryawanController::class, 'forceDelete'])
         ->name('perubahan-karyawan.force-delete');
-    Route::patch('perubahan-karyawan/{perubahan-karyawan}/toggle-status', [HistoryKaryawanController::class, 'toggleStatus'])
-        ->name('perubahan-karyawan.toggle-status');
+    // Route::patch('perubahan-karyawan/{perubahan-karyawan}/toggle-status', [HistoryKaryawanController::class, 'toggleStatus'])
+    //     ->name('perubahan-karyawan.toggle-status');
+    // Route::patch(
+    //     'perubahan-karyawan/{id}/toggle-status',
+    //     [HistoryKaryawanController::class, 'toggleStatus']
+    // )->name('perubahan-karyawan.toggle-status');
+    Route::patch(
+    'perubahan-karyawan/{perubahanKaryawan}/toggle-status',
+    [HistoryKaryawanController::class, 'toggleStatus']
+)->name('perubahan-karyawan.toggle-status');
 
     // Divisi
     Route::resource('divisi', DivisiController::class)

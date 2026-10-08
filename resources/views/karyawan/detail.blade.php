@@ -64,7 +64,8 @@
 
                     <span class="karyawan-detail__meta-divider"></span>
 
-                    <span class="karyawan-detail__chip" data-field="status_kepegawaian" title="Status kepegawaian">-</span>
+                    <span class="karyawan-detail__chip" data-field="status_kepegawaian"
+                        title="Status kepegawaian">-</span>
                 </div>
 
             </div>
@@ -80,8 +81,7 @@
         <ul class="karyawan-detail__tabs nav" role="tablist">
 
             <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data-pribadi"
-                    type="button">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-data-pribadi" type="button">
                     <i class="bi bi-person"></i> Data Pribadi
                 </button>
             </li>
@@ -142,8 +142,8 @@
                             </div>
 
                             @if (!empty($f['copy']))
-                                <button type="button" class="karyawan-detail__copy" data-copy-field="{{ $f['key'] }}"
-                                    title="Salin {{ $f['label'] }}">
+                                <button type="button" class="karyawan-detail__copy"
+                                    data-copy-field="{{ $f['key'] }}" title="Salin {{ $f['label'] }}">
                                     <i class="bi bi-copy"></i>
                                 </button>
                             @endif
@@ -155,7 +155,7 @@
             {{-- created_at = waktu record dibuat di database, BUKAN tanggal mulai bekerja --}}
             <div class="karyawan-detail__foot">
                 <i class="bi bi-clock-history"></i>
-                <span>Data dibuat pada <strong data-field="data_dibuat">-</strong></span>
+                <span>Masa kerja <strong data-field="masa_kerja">-</strong></span>
             </div>
 
         </div>
@@ -280,8 +280,8 @@
                                 <span class="value value-number" data-field="{{ $f['key'] }}">-</span>
                             </div>
 
-                            <button type="button" class="karyawan-detail__copy" data-copy-field="{{ $f['key'] }}"
-                                title="Salin {{ $f['label'] }}">
+                            <button type="button" class="karyawan-detail__copy"
+                                data-copy-field="{{ $f['key'] }}" title="Salin {{ $f['label'] }}">
                                 <i class="bi bi-copy"></i>
                             </button>
                         </div>

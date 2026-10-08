@@ -18,7 +18,7 @@ class ApprovalService
 
             'Admin Tenant' => 'Super Admin',
 
-            'Super Admin' => null,
+            'Super Admin' => 'Super Admin',
 
             default => null,
         };
@@ -37,7 +37,7 @@ class ApprovalService
         })->get();
     }
 
-    public static function canAccess(User $user): bool
+    public static function canAccessApprovalAndKontrakKaryawan(User $user): bool
     {
         return in_array($user->role->nama, [
             'HR Manager',
@@ -45,4 +45,47 @@ class ApprovalService
             'Super Admin',
         ]);
     }
+
+    public static function canAccessExclusiveFeatures(User $user): bool
+    {
+        return in_array($user->role->nama, [
+            'Admin Tenant',
+            'Super Admin',
+        ]);
+    }
+
+    public static function getDataKaryawan(string $roleName): ?string
+    {
+        return match ($roleName) {
+            'Employee',
+            'Head of Departemen',
+            'Recruiter',
+            'HR Staff',
+            'HR Manager' => 'Admin Tenant',
+
+            'Employee',
+            'Head of Departemen',
+            'Recruiter',
+            'HR Staff',
+            'HR Manager',
+            'Admin Tenant',
+            'Super Admin', => 'Super Admin',
+
+            default => null,
+        };
+    }
+
+    public static function canAccessPermintaanKaryawan(User $user): bool
+    {
+        return in_array($user->role->nama, [
+            'Head of Departemen',
+            'Recruiter',
+            'HR Staff',
+            'HR Manager',
+            'Admin Tenant',
+            'Super Admin',
+        ]);
+    }
+
+
 }

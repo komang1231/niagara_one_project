@@ -98,13 +98,14 @@ class FormPerubahan {
 
         const q = (sel) => form.querySelector(sel);
         this.karyawan = q("[data-pk-karyawan]");
+        this.karyawanHidden = q("#pk_edit_karyawan_id_hidden");
         this.jenis = q("[data-pk-jenis]");
         this.after = q("[data-pk-after]");
         this.kosong = q("[data-pk-empty]");
         this.hint = q("[data-pk-rule-hint]");
         this.ringkasan = q("[data-pk-summary]");
         this.ringkasanList = q("[data-pk-summary-list]");
-        this.nomorSk = q('[name="nomor_sk"]');
+        this.nomorSk = q('[name="kode"]');
         this.tanggal = q('[name="tanggal_efektif"]');
         this.tanggalTrigger = this.tanggal
             ?.closest(".input-date-wrapper")
@@ -527,57 +528,95 @@ class FormPerubahan {
     }
 
     async isiDariRow(row) {
+        console.log("DATA ROW DARI TOMBOL:", row);
         const token = ++this.tokenBuka;
 
         // reset sisa tampilan sebelumnya
         this.form
             .querySelectorAll("[data-file-remove]")
             .forEach((t) => t.click());
+
         this.otomatis.clear();
 
-        // Data Saat Ini = snapshot yang tersimpan di baris ini (bukan data karyawan hari ini)
+        // Data Saat Ini = snapshot yang tersimpan di history
         this.lama = {};
+
         SEMUA.forEach((f) => {
             this.lama[f] = {
-                id: row[`${f}_lama_id`] ?? "",
-                nama: row[`${f}_lama`] ?? "",
+                id: row[`${f}_lama`] ?? "",
+                nama: row[`${f}_lama_nama`] ?? "",
             };
         });
+
         this.isiLama();
 
-        this.pastikanOpsi(this.karyawan, row.karyawan_id, row.karyawan_nama);
+        // Karyawan
+        this.pastikanOpsi(
+            this.karyawan,
+            row.karyawan_id,
+            row.karyawan_nama
+                ? `${row.karyawan_nama}${row.karyawan_nip ? ` · ${row.karyawan_nip}` : ""}`
+                : ""
+        );
+
         this.setVal(this.karyawan, row.karyawan_id);
+
+        if (this.karyawanHidden) {
+            this.karyawanHidden.value = row.karyawan_id ?? "";
+        }
+
+        // Jenis perubahan
         this.setVal(this.jenis, row.jenis_perubahan);
 
-        // Job Level & Cabang punya daftar statis
+        // Job Level & Cabang
+        // Nilainya diambil dari data yang tersimpan di history.
         ["level", "cabang"].forEach((f) => {
             this.pastikanOpsi(
                 this.baru[f],
-                row[`${f}_baru_id`],
                 row[`${f}_baru`],
+                row[`${f}_baru_nama`],
             );
-            this.setVal(this.baru[f], row[`${f}_baru_id`]);
+
+            this.setVal(this.baru[f], row[`${f}_baru`]);
         });
 
         // Dokumen
-        this.nomorSk.value = row.nomor_sk ?? "";
+        if (this.nomorSk) {
+            this.nomorSk.value = row.kode ?? "";
+        }
         this.tanggal.value = row.tanggal_efektif ?? "";
-        // minta datepicker menyelaraskan tampilan dengan value (hook ada di input-date.js)
+
+        // Sinkronisasi datepicker
         this.form.dispatchEvent(
-            new CustomEvent("edit-data:loaded", { detail: row }),
+            new CustomEvent("edit-data:loaded", {
+                detail: row,
+            }),
         );
+
+        // File SK
         this.tampilkanFile(row);
 
+        // Terapkan aturan jenis perubahan
         this.terapkanAturan();
 
-        // Chained dropdown: isi berurutan sesuai data tersimpan
+        // ---------------------------------------------------------
+        // Chained dropdown:
+        // Departemen > Divisi > Section > Job Position
+        // ---------------------------------------------------------
+
         this.pastikanOpsi(
             this.baru.departemen,
-            row.departemen_baru_id,
+            row.departemen_baru,
+            row.departemen_baru_nama,
+        );
+
+        this.setVal(
+            this.baru.departemen,
             row.departemen_baru,
         );
-        this.setVal(this.baru.departemen, row.departemen_baru_id);
+
         RANTAI.slice(1).forEach((f) => this.kosongkan(f));
+
         this.render();
 
         const langkah = [
@@ -585,16 +624,20 @@ class FormPerubahan {
             ["section", "divisi"],
             ["posisi", "section"],
         ];
+
         for (const [anak, induk] of langkah) {
-            const indukId = row[`${induk}_baru_id`];
+            const indukId = row[`${induk}_baru`];
+
             if (!indukId) break;
+
             await this.muat(
                 anak,
                 indukId,
-                row[`${anak}_baru_id`] ?? "",
                 row[`${anak}_baru`] ?? "",
+                row[`${anak}_baru_nama`] ?? "",
             );
-            if (token !== this.tokenBuka) return; // user keburu membuka baris lain
+
+            if (token !== this.tokenBuka) return;
         }
 
         this.render();

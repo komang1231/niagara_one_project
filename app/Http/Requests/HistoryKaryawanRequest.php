@@ -28,22 +28,10 @@ class HistoryKaryawanRequest extends FormRequest
                 'exists:karyawans,id',
             ],
 
-            'cabang_lama' => [
-                'nullable',
-                'integer',
-                'exists:cabang_kantors,id',
-            ],
-
             'cabang_baru' => [
                 'nullable',
                 'integer',
                 'exists:cabang_kantors,id',
-            ],
-
-            'departemen_lama' => [
-                'required',
-                'integer',
-                'exists:departemens,id',
             ],
 
             'departemen_baru' => [
@@ -52,22 +40,10 @@ class HistoryKaryawanRequest extends FormRequest
                 'exists:departemens,id',
             ],
 
-            'divisi_lama' => [
-                'required',
-                'integer',
-                'exists:divisis,id',
-            ],
-
             'divisi_baru' => [
                 'required',
                 'integer',
                 'exists:divisis,id',
-            ],
-
-            'section_lama' => [
-                'required',
-                'integer',
-                'exists:sections,id',
             ],
 
             'section_baru' => [
@@ -76,22 +52,10 @@ class HistoryKaryawanRequest extends FormRequest
                 'exists:sections,id',
             ],
 
-            'posisi_lama' => [
-                'required',
-                'integer',
-                'exists:job_positions,id',
-            ],
-
             'posisi_baru' => [
                 'required',
                 'integer',
                 'exists:job_positions,id',
-            ],
-
-            'level_lama' => [
-                'required',
-                'integer',
-                'exists:job_levels,id',
             ],
 
             'level_baru' => [
@@ -109,16 +73,16 @@ class HistoryKaryawanRequest extends FormRequest
                 'required',
                 'date',
             ],
-
-            'status' => [
-                'required',
-                Rule::in(['aktif', 'nonaktif']),
-            ],
         ];
     }
 
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+{
+    dd($validator->errors()->toArray());
+}
     protected function prepareForValidation(): void
     {
+        // dd($this->all());
         if ($this->filled('tanggal_efektif')) {
             $tanggal = $this->input('tanggal_efektif');
 

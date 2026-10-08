@@ -28,7 +28,7 @@
             'children' => [
                 ['label' => 'Data Karyawan', 'slug' => 'karyawan'],
                 ['label' => 'Kontrak Karyawan', 'slug' => 'kontrak-karyawan'],
-                // ['label' => 'Perubahan Karyawan', 'slug' => 'perubahan-karyawan'],
+                ['label' => 'Perubahan Karyawan', 'slug' => 'perubahan-karyawan'],
                 // ['label' => 'Permintaan Resign', 'slug' => 'permintaan-resign'],
                 ['label' => 'Surat Peringatan', 'slug' => 'surat-peringatan'],
             ],
@@ -127,7 +127,7 @@
         <ul class="nav-list">
 
             @foreach ($menu as $item)
-                @if ($item['slug'] === 'approval' && !\App\Services\ApprovalService::canAccess(auth()->user()))
+                @if ($item['slug'] === 'approval' && !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
                     @continue
                 @endif
                 @if (count($item['children']) === 0)
@@ -181,6 +181,9 @@
                             <div class="submenu-trunk"></div>
 
                             @foreach ($item['children'] as $child)
+                                @if ($child['slug'] === 'jadwal-karyawan' && !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
+                                    @continue
+                                @endif
                                 @php
                                     $childRouteName = $child['slug'] . '.index';
                                     $isChildActive =
