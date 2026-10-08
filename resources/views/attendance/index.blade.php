@@ -14,7 +14,5 @@
         </x-slot:actions>
     </x-page-header>
 
-    @include('attendance.partials.today')
-
-    {{-- Tahap 2 (setelah check-in/check-out disetujui): filter, summary, tabel monitoring, detail. --}}
+    @include('attendance.partials.monitoring')
 @endsection

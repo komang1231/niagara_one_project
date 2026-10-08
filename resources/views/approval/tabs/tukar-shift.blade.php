@@ -35,7 +35,7 @@
                         $pengganti = $namaKaryawan[$row->karyawan_pengganti] ?? '-';
                         $shiftA = $namaShift[$row->shift_pengaju] ?? '-';
                         $shiftB = $namaShift[$row->shift_pengganti] ?? '-';
-                        $tanggal = \Carbon\Carbon::parse($row->tanggal_tujuan)->format('d/m/Y');
+                        $tanggal = \Carbon\Carbon::parse($row->tanggal_tujuan)->format('d M Y');
                     @endphp
                     <tr>
                         <td class="app-table__col-no">

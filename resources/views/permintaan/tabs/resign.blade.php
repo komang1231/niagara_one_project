@@ -43,6 +43,24 @@
         </thead>
         <tbody>
             @forelse ($permintaanResign as $i => $row)
+                @php
+                    $tanggalEfektif = \Carbon\Carbon::parse($row->tanggal_efektif);
+
+                    $bulan = [
+                        1 => 'Jan',
+                        2 => 'Feb',
+                        3 => 'Mar',
+                        4 => 'Apr',
+                        5 => 'Mei',
+                        6 => 'Jun',
+                        7 => 'Jul',
+                        8 => 'Agu',
+                        9 => 'Sep',
+                        10 => 'Okt',
+                        11 => 'Nov',
+                        12 => 'Des',
+                    ];
+                @endphp
                 <tr>
                     <td class="app-table__col-no">
                         {{ $permintaanResign->firstItem() + $i }}
@@ -51,7 +69,17 @@
                     <td>
                         <x-table.cell-stack :avatar="$row->karyawan?->avatar" :lines="[$row->karyawan?->nama ?? '-']" />
                     </td>
-                    <td><x-table.cell-stack :lines="['Efektif ' . $row->tanggal_efektif, \Illuminate\Support\Str::limit($row->alasan, 40)]" /></td>
+                    <td>
+                        <x-table.cell-stack :lines="[
+                            'Efektif ' .
+                            $tanggalEfektif->day .
+                            ' ' .
+                            $bulan[$tanggalEfektif->month] .
+                            ' ' .
+                            $tanggalEfektif->year,
+                            \Illuminate\Support\Str::limit($row->alasan, 40),
+                        ]" />
+                    </td>
                     <td>@include('permintaan.partials.status', ['row' => $row])</td>
                     <td>@include('permintaan.partials.aksi', [
                         'row' => $row,

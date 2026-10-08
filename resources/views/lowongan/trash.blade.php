@@ -42,8 +42,8 @@
 
                         <td>
                             <x-table.cell-stack :lines="[
-                                \Carbon\Carbon::parse($row->tanggal_buka)->translatedFormat('d M Y'),
-                                \Carbon\Carbon::parse($row->tanggal_tutup)->translatedFormat('d M Y'),
+                                \Carbon\Carbon::parse($row->tanggal_buka)->format('d M Y'),
+                                \Carbon\Carbon::parse($row->tanggal_tutup)->format('d M Y'),
                             ]" />
                         </td>
 
@@ -58,15 +58,13 @@
                                 <form action="{{ route('lowongan.restore', $row->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <x-button type="submit" variant="icon-success" icon="bi-arrow-counterclockwise"
-                                         />
+                                    <x-button type="submit" variant="icon-success" icon="bi-arrow-counterclockwise" />
                                 </form>
 
                                 <form action="{{ route('lowongan.force-delete', $row->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <x-button type="submit" variant="icon-danger" icon="bi-trash3-fill"
-                                         />
+                                    <x-button type="submit" variant="icon-danger" icon="bi-trash3-fill" />
                                 </form>
                             </div>
                         </td>

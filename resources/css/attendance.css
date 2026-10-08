@@ -146,3 +146,47 @@
     padding-left: 16px;
     border-left: 1px solid var(--primary-300);
 }
+
+/* ----- Tabel monitoring aktivitas absensi ----- */
+.attendance-monitor__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.attendance-monitor__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-1000);
+}
+
+.attendance-monitor__desc {
+    margin: 2px 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+}
+
+.attendance-monitor__nowrap {
+    white-space: nowrap;
+}
+
+.attendance-monitor__status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.attendance-monitor__working {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8125rem;
+    color: var(--color-success);
+}
+
+.attendance-monitor__working i {
+    font-size: 0.4rem;
+}

@@ -43,30 +43,60 @@
         </thead>
         <tbody>
             @forelse ($permintaanTukarShift as $i => $row)
+                @php
+                    $tanggalTujuan = $row->tanggal_tujuan ? \Carbon\Carbon::parse($row->tanggal_tujuan) : null;
+
+                    $bulan = [
+                        1 => 'Jan',
+                        2 => 'Feb',
+                        3 => 'Mar',
+                        4 => 'Apr',
+                        5 => 'Mei',
+                        6 => 'Jun',
+                        7 => 'Jul',
+                        8 => 'Agu',
+                        9 => 'Sep',
+                        10 => 'Okt',
+                        11 => 'Nov',
+                        12 => 'Des',
+                    ];
+                @endphp
+
                 <tr>
                     <td class="app-table__col-no">
                         {{ $permintaanTukarShift->firstItem() + $i }}
                     </td>
+
                     <td class="fw-semibold">{{ $row->kode }}</td>
+
                     <td>
                         <x-table.cell-stack :avatar="$row->karyawanPengaju?->avatar" :lines="[$row->karyawanPengaju?->nama ?? '-']" />
                     </td>
+
                     <td>
                         <x-table.cell-stack :lines="[
                             'Ditukar dengan ' . ($row->karyawanPengganti?->nama ?? '-'),
-                            ($row->tanggal_tujuan ?? '-') .
+                            ($tanggalTujuan
+                                ? $tanggalTujuan->day . ' ' . $bulan[$tanggalTujuan->month] . ' ' . $tanggalTujuan->year
+                                : '-') .
                             ' • ' .
                             ($row->shiftPengaju?->nama ?? '-') .
                             ' ⇄ ' .
                             ($row->shiftPengganti?->nama ?? '-'),
                         ]" />
                     </td>
-                    <td>@include('permintaan.partials.status', ['row' => $row])</td>
-                    <td>@include('permintaan.partials.aksi', [
-                        'row' => $row,
-                        'slug' => 'permintaan-tukar-shift',
-                        'label' => 'Permintaan Tukar Shift',
-                    ])</td>
+
+                    <td>
+                        @include('permintaan.partials.status', ['row' => $row])
+                    </td>
+
+                    <td>
+                        @include('permintaan.partials.aksi', [
+                            'row' => $row,
+                            'slug' => 'permintaan-tukar-shift',
+                            'label' => 'Permintaan Tukar Shift',
+                        ])
+                    </td>
                 </tr>
             @empty
                 <x-table.empty-row :colspan="6" text="Belum ada permintaan tukar shift." />

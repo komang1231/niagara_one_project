@@ -45,7 +45,7 @@
                 <x-form.select name="departemen_id" id="edit_departemen_id" label="Departemen"
                     :options="$departemens->pluck('nama', 'id')" nullable required />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6"> 
                 <x-form.select name="divisi_id" id="edit_divisi_id" label="Divisi" :options="[]" nullable
                     disabled />
             </div>

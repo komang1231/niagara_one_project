@@ -2,7 +2,8 @@
 //
 // Alur:
 //   - klik shift (chip) di kalender -> offcanvas terbuka MODE LIHAT (semua field disabled, Simpan disabled)
-//   - klik [Edit] di footer         -> MODE EDIT (field terbuka, tombol Edit hilang, Simpan aktif)
+//   - klik [Edit] di footer         -> MODE EDIT (field terbuka, tombol Edit & Hapus hilang, Simpan aktif)
+//   - klik [Hapus] di footer        -> konfirmasi (popup global), lalu DELETE jadwal-karyawan/{id} (soft delete)
 //
 // Pengisian field & pengisian form.action dilakukan offcanvas-edit.js (fetch data-edit-url,
 // pakai data-update-url). Setelah selesai ia mengirim event "edit-data:loaded", yang dipakai
@@ -12,6 +13,7 @@
 import { initSelectShift } from './jadwal-form';
 
 const FORM_ID = 'offcanvas-jadwal-edit-form';
+const DELETE_FORM_ID = 'offcanvas-jadwal-delete-form';
 
 const getForm = () => document.getElementById(FORM_ID);
 const getPanel = (form) => form.closest('.offcanvas');
@@ -32,7 +34,8 @@ function setMode(form, mode) {
             }
         });
 
-    panel.querySelector('[data-jadwal-action="edit"]')?.classList.toggle('d-none', editing);
+    // Edit & Hapus hanya tampil di mode lihat
+    panel.querySelector('[data-jadwal-view-actions]')?.classList.toggle('d-none', editing);
 
     const simpan = panel.querySelector(`button[type="submit"][form="${form.id}"]`);
     if (simpan) simpan.disabled = !editing;
@@ -49,6 +52,10 @@ document.addEventListener('click', (e) => {
 
     const form = getForm();
     if (!form) return;
+
+    // Arahkan form Hapus ke jadwal yang diklik (DELETE jadwal-karyawan/{id}, path sama dengan update)
+    const deleteForm = document.getElementById(DELETE_FORM_ID);
+    if (deleteForm && tombol.dataset.updateUrl) deleteForm.action = tombol.dataset.updateUrl;
 
     setMode(form, 'view');
     window.jQuery?.(form).find('.jadwal-shift-select').val('').trigger('change');

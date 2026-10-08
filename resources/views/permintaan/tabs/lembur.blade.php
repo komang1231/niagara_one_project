@@ -52,6 +52,24 @@
                 @php
                     $jamMulai = substr((string) $row->jam_mulai, 0, 5);
                     $jamSelesai = substr((string) $row->jam_selesai, 0, 5);
+
+                    $tanggalTujuan = \Carbon\Carbon::parse($row->tanggal_tujuan);
+
+                    $bulan = [
+                        1 => 'Jan',
+                        2 => 'Feb',
+                        3 => 'Mar',
+                        4 => 'Apr',
+                        5 => 'Mei',
+                        6 => 'Jun',
+                        7 => 'Jul',
+                        8 => 'Agu',
+                        9 => 'Sep',
+                        10 => 'Okt',
+                        11 => 'Nov',
+                        12 => 'Des',
+                    ];
+
                     $lintasHari = $jamSelesai < $jamMulai;
 
                     [$jamMulaiHour, $jamMulaiMinute] = array_map('intval', explode(':', $jamMulai));
@@ -97,7 +115,10 @@
                     </td>
 
                     <td>
-                        <x-table.cell-stack :lines="[$row->tanggal_tujuan, $jamMulai . ' - ' . $jamSelesai . ' • x' . $row->pengali]" />
+                        <x-table.cell-stack :lines="[
+                            $tanggalTujuan->day . ' ' . $bulan[$tanggalTujuan->month] . ' ' . $tanggalTujuan->year,
+                            $jamMulai . ' - ' . $jamSelesai,
+                        ]" />
 
                         <div class="mt-2 d-flex flex-wrap gap-1">
                             <span class="badge bg-light text-dark border">

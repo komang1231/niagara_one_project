@@ -32,8 +32,8 @@
                 @forelse ($permintaanCuti as $i => $row)
                     @php
                         $pemohon = $row->karyawan->nama ?? '-';
-                        $mulai = \Carbon\Carbon::parse($row->tanggal_mulai)->format('d/m/Y');
-                        $selesai = \Carbon\Carbon::parse($row->tanggal_selesai)->format('d/m/Y');
+                        $mulai = \Carbon\Carbon::parse($row->tanggal_mulai)->format('d M Y');
+                        $selesai = \Carbon\Carbon::parse($row->tanggal_selesai)->format('d M Y');
                         $jumlahHari = optional($row->details)->count() ?? 0;
                     @endphp
                     <tr>
@@ -47,7 +47,7 @@
                         <td>
                             <x-table.cell-stack :lines="[
                                 $row->cuti->nama ?? '-',
-                                $mulai . ' - ' . $selesai . ' • ' . $jumlahHari . ' hari',
+                                $mulai . ' – ' . $selesai . ' • ' . $jumlahHari . ' hari',
                             ]" />
                         </td>
 

@@ -2,23 +2,6 @@
 
 @section('content')
     @php
-        /* =====================================================================
-           CONTRACT DATA UNTUK BACKEND  (TODO BACKEND)
-           Controller cukup mengirim variabel di bawah ini. Selama $perubahanKaryawan
-           belum dikirim, halaman memakai DATA CONTOH (mock) di bagian bawah blok ini
-           supaya tampilan bisa dilihat dan diuji dulu.
-
-           $perubahanKaryawan : paginator, tiap item punya key (boleh array / object / ->through()):
-               id, karyawan_id, karyawan_nama, karyawan_nip,
-               jenis_perubahan (promosi|demosi|rotasi|mutasi), status (aktif|nonaktif),
-               nomor_sk, tanggal_efektif (Y-m-d), file_sk_name, file_sk_url (null kalau belum ada),
-               {departemen|divisi|section|posisi|level|cabang}_lama_id & _lama (nama),
-               {departemen|divisi|section|posisi|level|cabang}_baru_id & _baru (nama)
-           $karyawanOptions   : daftar karyawan + data saat ini:
-               id, nama, nip, {departemen|divisi|section|posisi|level|cabang}_id & nama-nya
-           $departemenOptions, $levelOptions, $cabangOptions : array [id => nama]
-           $jenisOptions, $statusOptions : array [value => label] (opsional, ada default)
-           ===================================================================== */
 
         $isMock = !isset($perubahanKaryawan);
 

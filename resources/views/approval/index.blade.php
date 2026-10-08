@@ -4,13 +4,17 @@
 @section('title', 'Persetujuan')
 
 @section('content')
-        <div id="approval-root">
+    @php
+        $activeTab = array_key_exists((string) request('tab'), $tabs) ? request('tab') : array_key_first($tabs);
+    @endphp
+
+    <div id="approval-root">
 
         {{-- ===== NAV TAB ===== --}}
         <ul class="nav nav-tabs approval-tabs" role="tablist">
             @foreach ($tabs as $key => $label)
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link @if ($tab === $key) active @endif"
+                    <button type="button" class="nav-link @if ($activeTab === $key) active @endif"
                         data-approval-tab="{{ $key }}" data-bs-toggle="tab"
                         data-bs-target="#tab-{{ $key }}" role="tab">
                         {{ $label }}
@@ -22,7 +26,7 @@
         {{-- ===== ISI TAB (tiap tab = 1 file include) ===== --}}
         <div class="tab-content">
             @foreach ($tabs as $key => $label)
-                <div class="tab-pane fade @if ($tab === $key) show active @endif" id="tab-{{ $key }}"
+                <div class="tab-pane fade @if ($activeTab === $key) show active @endif" id="tab-{{ $key }}"
                     data-tab="{{ $key }}" role="tabpanel">
                     @include('approval.tabs.' . $key)
                 </div>

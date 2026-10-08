@@ -2,7 +2,8 @@
     Offcanvas lihat/edit Jadwal Karyawan.
     Alur sama dengan Surat Peringatan (logic-nya ada di resources/js/jadwal-edit.js):
       1. Dibuka dengan klik shift di kalender -> semua field TERKUNCI (mode lihat), Simpan nonaktif.
-      2. Footer kiri: [Edit]. Klik Edit -> field terbuka, tombol Edit hilang, Simpan aktif.
+      2. Footer kiri: [Edit] [Hapus]. Klik Edit -> field terbuka, tombol Edit & Hapus hilang, Simpan aktif.
+      3. Hapus = soft delete (masuk Trash), konfirmasi lewat popup global.
 --}}
 @php
     // Samakan bentuk data shift (bisa berupa model Shift atau array) -> id, nama, masuk, pulang, lintas, warna
@@ -56,6 +57,16 @@
 
     {{-- Tombol di kiri footer, berseberangan dengan Batal & Simpan --}}
     <x-slot:extra>
-        <x-button variant="outline" icon="bi-pencil" data-jadwal-action="edit">Edit</x-button>
+        <div class="d-flex align-items-center gap-2" data-jadwal-view-actions>
+            <x-button variant="outline" icon="bi-pencil" data-jadwal-action="edit">Edit</x-button>
+
+            {{-- Hapus (soft delete). action diisi JS dari data-update-url chip yang diklik (URL sama, method DELETE).
+                 Konfirmasi "Apakah Anda yakin?" ditangani popup global karena ada @method('DELETE'). --}}
+            <form id="offcanvas-jadwal-delete-form" method="POST" class="m-0" data-jadwal-delete-form>
+                @csrf
+                @method('DELETE')
+                <x-button type="submit" variant="danger" icon="bi-trash" data-jadwal-action="delete">Hapus</x-button>
+            </form>
+        </div>
     </x-slot:extra>
 </x-offcanvas.form>

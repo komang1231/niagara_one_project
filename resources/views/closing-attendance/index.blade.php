@@ -142,6 +142,54 @@
                     </thead>
 
                     <tbody>
+                        {{-- @forelse ($closingAttendances as $i => $row)
+                            @php
+                                $awal = \Carbon\Carbon::create($row['tahun'], $row['bulan'], 1);
+                                $akhir = $awal->copy()->endOfMonth();
+                            @endphp
+
+                            <tr>
+                                <td class="app-table__col-no">{{ $closingAttendances->firstItem() + $i }}</td>
+
+                                // Periode
+                                <td>
+                                    <x-table.cell-stack :lines="$stack(
+                                        $namaBulan[$row['bulan']],
+                                        'Periode ' . $tgl($awal, 'd M') . ' - ' . $tgl($akhir),
+                                    )" />
+                                </td>
+
+                                // Tahun
+                                <td><x-badge>{{ $row['tahun'] }}</x-badge></td>
+
+                                // Di-close oleh
+                                <td>
+                                    <x-table.cell-stack :avatar="$row['closed_by']" :lines="$stack($row['closed_by'], $row['role'])" />
+                                </td>
+
+                                // Tanggal closing
+                                <td class="ca-col-date">
+                                    <x-table.cell-stack :lines="$stack($tgl($row['closed_at']), $tgl($row['closed_at'], 'H:i') . ' WIB')" />
+                                </td>
+
+                                // Aksi: hanya lihat & export, tidak ada edit/hapus/status
+                                <td class="app-table__col-actions">
+                                    <div class="app-table__actions">
+                                        <x-button variant="icon-view" icon="bi-eye" title="Lihat detail absensi"
+                                            :href="route('closing-attendance.show', $row['id'])" />
+
+                                        // Export PDF: buka detail lalu otomatis window.print() (closing-attendance.js)
+                                        <x-button variant="icon-danger" icon="bi-file-earmark-pdf" title="Export PDF"
+                                            :href="route('closing-attendance.show', [
+                                                'id' => $row['id'],
+                                                'print' => 1,
+                                            ])" />
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <x-table.empty-row colspan="6" text="Tidak ada rekapan yang sesuai dengan filter." />
+                        @endforelse --}}
                         @forelse ($closingAttendances as $i => $row)
                             @php
                                 $awal = \Carbon\Carbon::create($row->tahun, $row->bulan, 1);
@@ -183,8 +231,7 @@
                                         <x-button variant="icon-view" icon="bi-eye" title="Lihat detail absensi"
                                             :href="route('closing-attendance.show', $row->id)" />
 
-                                        {{-- Export PDF --}}
-                                        <x-button variant="icon-danger" icon="bi-file-earmark-pdf" title="Export PDF"
+                                             <x-button variant="icon-danger" icon="bi-file-earmark-pdf" title="Export PDF"
                                             :href="route('closing-attendance.export-pdf', $row->id)" />
                                     </div>
                                 </td>
@@ -210,17 +257,52 @@
         @endif
     </x-panel>
 
-    {{-- OFFCANVAS CLOSING PERIODE (dummy: belum ada proses backend, lihat closing-attendance.js) --}}
+    {{-- OFFCANVAS CLOSING PERIODE --}}
     <x-offcanvas.form id="offcanvas-closing" title="Closing Periode"
         description="Tutup periode absensi agar hasilnya dapat dilihat sebagai rekapan." size="md">
         <form id="offcanvas-closing-form" action="{{ route('closing-attendance.store') }}" method="POST" novalidate>
             @csrf
 
-            {{-- TODO backend: ganti action dengan route closing, lalu hapus data-closing-form
-                 (atribut itu hanya untuk simulasi di frontend) --}}
-            <x-form.select name="bulan_closing" id="closing_bulan" label="Bulan" :options="$namaBulan" nullable required />
+            {{-- Bulan: hanya Januari s/d bulan berjalan (untuk tahun terpilih), bulan yang sudah di-closing disabled.
+                 Opsi dibangun ulang saat tahun berubah (lihat closing-attendance.js). --}}
+            @php
+                $tahunDefault = (string) old('tahun_closing', $tahunSekarang);
+                $bulanDefault = (string) old('bulan_closing', '');
+                $bulanMaks =
+                    $tahunDefault < $tahunSekarang ? 12 : ($tahunDefault == $tahunSekarang ? $bulanSekarang : 0);
+                $bulanClosed = $periodeClosed[$tahunDefault] ?? [];
+            @endphp
 
-            <x-form.select name="tahun_closing" id="closing_tahun" label="Tahun" :options="$tahunOptions" nullable required />
+            <div class="mb-3">
+                <label for="closing_bulan" class="form-label fw-semibold">
+                    Bulan <span class="text-danger">*</span>
+                </label>
+
+                <select name="bulan_closing" id="closing_bulan" class="form-select select2" data-placeholder="Pilih Bulan"
+                    data-search-placeholder="Cari bulan..." data-bulan='@json($namaBulan)'
+                    data-closed='@json($periodeClosed)' data-tahun-sekarang="{{ $tahunSekarang }}"
+                    data-bulan-sekarang="{{ $bulanSekarang }}">
+                    <option value=""></option>
+
+                    @foreach ($namaBulan as $no => $nama)
+                        @continue($no > $bulanMaks)
+
+                        @php $closed = in_array($no, $bulanClosed, true); @endphp
+
+                        <option value="{{ $no }}" {{ $closed ? 'disabled' : '' }}
+                            {{ !$closed && $bulanDefault === (string) $no ? 'selected' : '' }}>
+                            {{ $nama }}{{ $closed ? ' (sudah di-closing)' : '' }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error('bulan_closing')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <x-form.select name="tahun_closing" id="closing_tahun" label="Tahun" :options="$tahunClosingOptions" :selected="$tahunSekarang"
+                nullable required />
 
             <p class="text-muted small mb-0">
                 Setelah ditutup, data absensi periode tersebut tidak dapat diubah lagi.

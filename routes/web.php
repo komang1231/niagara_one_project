@@ -10,6 +10,7 @@ use App\Http\Controllers\JobLevelController;
 use App\Http\Controllers\CabangKantorController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusKepegawaianController;
+use App\Http\Controllers\SumberPelamarController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\HariLiburController;
 use App\Http\Controllers\CutiController;
@@ -811,8 +812,23 @@ Route::view('/dashboard', 'dashboard')
     // MASTER DATA
     // ========================================================================
 
-    Route::view('/sumber-pelamar', 'sumber-pelamar.index')
-        ->name('sumber-pelamar.index');
+    Route::resource('sumber-pelamar', SumberPelamarController::class)
+        ->parameters(['sumber-pelamar' => 'sumberPelamar']);
+
+    Route::get('sumber-pelamar/{id}/edit-data', [SumberPelamarController::class, 'editData'])
+        ->name('sumber-pelamar.edit-data');
+
+    Route::get('sumber-pelamar-trash', [SumberPelamarController::class, 'trash'])
+        ->name('sumber-pelamar.trash');
+
+    Route::patch('sumber-pelamar/{id}/restore', [SumberPelamarController::class, 'restore'])
+        ->name('sumber-pelamar.restore');
+
+    Route::delete('sumber-pelamar/{id}/force-delete', [SumberPelamarController::class, 'forceDelete'])
+        ->name('sumber-pelamar.force-delete');
+
+    Route::patch('sumber-pelamar/{sumberPelamar}/toggle-status', [SumberPelamarController::class, 'toggleStatus'])
+        ->name('sumber-pelamar.toggle-status');
 
 
     // ========================================================================

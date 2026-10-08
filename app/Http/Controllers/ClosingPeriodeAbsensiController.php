@@ -85,10 +85,36 @@ class ClosingPeriodeAbsensiController extends Controller
             ]);
         }
 
+        // Data untuk dropdown di offcanvas Closing Periode
+        $tahunSekarang = now()->year;
+        $bulanSekarang = now()->month;
+
+        // Periode yang sudah di-closing per tahun: [2026 => [1, 2, 3]]
+        $periodeClosed = ClosingPeriodeAbsensi::query()
+            ->select('bulan', 'tahun')
+            ->get()
+            ->groupBy('tahun')
+            ->map(fn ($rows) => $rows->pluck('bulan')->map(fn ($b) => (int) $b)->values()->all())
+            ->all();
+
+        // Tahun yang bisa di-closing: tahun ini + tahun yang pernah di-closing (tanpa tahun depan)
+        $tahunClosingOptions = collect(array_keys($periodeClosed))
+            ->push($tahunSekarang)
+            ->map(fn ($t) => (int) $t)
+            ->filter(fn ($t) => $t <= $tahunSekarang)
+            ->unique()
+            ->sortDesc()
+            ->mapWithKeys(fn ($t) => [$t => (string) $t])
+            ->all();
+
         return view('closing-attendance.index', compact(
             'closingAttendances',
             'namaBulan',
-            'tahunOptions'
+            'tahunOptions',
+            'tahunSekarang',
+            'bulanSekarang',
+            'periodeClosed',
+            'tahunClosingOptions'
         ));
     }
 
@@ -101,6 +127,13 @@ class ClosingPeriodeAbsensiController extends Controller
 
         $bulan = (int) $validated['bulan_closing'];
         $tahun = (int) $validated['tahun_closing'];
+
+        // Periode yang belum berjalan (setelah bulan ini) tidak boleh di-closing
+        if (($tahun * 100 + $bulan) > (now()->year * 100 + now()->month)) {
+            return redirect()
+                ->route('closing-attendance.index')
+                ->with('error', 'Periode yang belum berjalan tidak dapat di-closing.');
+        }
 
         $sudahClosing = ClosingPeriodeAbsensi::query()
             ->where('bulan', $bulan)
