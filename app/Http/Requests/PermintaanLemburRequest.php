@@ -20,7 +20,7 @@ class PermintaanLemburRequest extends FormRequest
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i',
             'alasan' => 'required|string',
-            'pengali' => 'required|numeric|min:0',
+            // 'pengali' => 'required|numeric|min:0',
         ];
     }
 

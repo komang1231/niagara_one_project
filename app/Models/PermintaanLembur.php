@@ -26,6 +26,8 @@ class PermintaanLembur extends Model
     }
 
     protected $table = 'permintaan_lemburs';
-    protected $fillable = ['kode', 'karyawan_id', 'tanggal_tujuan', 'jam_mulai', 'jam_selesai', 'alasan', 'pengali'];
+    protected $fillable = ['kode', 'karyawan_id', 'tanggal_tujuan', 'jam_mulai', 'jam_selesai', 'alasan', 
+    // 'pengali'
+    ];
     // processed_by, approved_at & rejected_at DIKELUARKAN dari fillable
 }

@@ -29,7 +29,6 @@ class PermintaanLemburSeeder extends Seeder
                 'jam_mulai' => '17:00',
                 'jam_selesai' => '21:00',
                 'alasan' => 'Penyelesaian pekerjaan yang harus diselesaikan pada hari yang sama.',
-                'pengali' => 1.5,
             ],
             [
                 'kode' => '',
@@ -38,7 +37,6 @@ class PermintaanLemburSeeder extends Seeder
                 'jam_mulai' => '18:00',
                 'jam_selesai' => '22:00',
                 'alasan' => 'Maintenance dan deployment sistem.',
-                'pengali' => 1.5,
             ],
             [
                 'kode' => '',
@@ -47,7 +45,6 @@ class PermintaanLemburSeeder extends Seeder
                 'jam_mulai' => '19:00',
                 'jam_selesai' => '23:00',
                 'alasan' => 'Penyelesaian laporan dan pekerjaan operasional.',
-                'pengali' => 2,
             ],
             [
                 'kode' => '',
@@ -56,7 +53,6 @@ class PermintaanLemburSeeder extends Seeder
                 'jam_mulai' => '17:30',
                 'jam_selesai' => '21:30',
                 'alasan' => 'Persiapan kebutuhan operasional.',
-                'pengali' => 1.5,
             ],
             [
                 'kode' => '',
@@ -65,7 +61,6 @@ class PermintaanLemburSeeder extends Seeder
                 'jam_mulai' => '18:00',
                 'jam_selesai' => '22:00',
                 'alasan' => 'Penyelesaian pekerjaan administrasi.',
-                'pengali' => 1.5,
             ],
         ];
 

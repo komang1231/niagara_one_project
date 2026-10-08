@@ -41,6 +41,7 @@ class PermintaanController extends Controller
         $tab = $request->get('tab', 'karyawan');
 
         $user = auth()->user();
+        $namaKaryawan = $user->karyawan->nama;
 
 
         /*
@@ -186,6 +187,7 @@ class PermintaanController extends Controller
         return view('permintaan.index', compact(
             'tab',
             'tabs',
+            'namaKaryawan',
 
             'previewKodeKaryawan',
             'previewKodeCuti',

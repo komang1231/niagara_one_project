@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('karyawan_id');
             $table->unsignedInteger('shift_id');
             $table->date('tanggal');
-            $table->decimal('latitude', 12, 8);
-            $table->decimal('longitude', 12, 8);
+            $table->decimal('latitude', 12, 8)->nullable();
+            $table->decimal('longitude', 12, 8)->nullable();
             $table->boolean('is_manual')->default(false);
             $table->text('keterangan')->nullable();
             $table->time('jam_masuk')->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('total_menit_terlambat')->nullable();
             $table->integer('total_menit_pulang_cepat')->nullable();
             $table->integer('total_menit_kerja')->nullable();
-            $table->unsignedBigInteger('input_by');
+            $table->unsignedBigInteger('input_by')->nullable();
             $table->enum('status', ['hadir', 'terlambat', 'sakit', 'cuti', 'alpa', 'izin', 'libur', 'libur_nasional'])->default('hadir');
             // $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();

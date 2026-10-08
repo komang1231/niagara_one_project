@@ -19,7 +19,7 @@ return new class extends Migration
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->text('alasan');
-            $table->decimal('pengali', 2, 1);
+            // $table->decimal('pengali', 2, 1);
             $table->unsignedBigInteger('processed_by')->nullable(); // FK ke users — ditambahkan belakangan (circular)
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('rejected_at')->nullable();

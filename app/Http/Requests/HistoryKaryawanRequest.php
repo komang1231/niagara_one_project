@@ -76,10 +76,45 @@ class HistoryKaryawanRequest extends FormRequest
         ];
     }
 
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $user = auth()->user();
+            $karyawanId = $this->input('karyawan_id');
+
+            if (!$user || !$karyawanId) {
+                return;
+            }
+
+            $karyawan = \App\Models\Karyawan::with('user')->find($karyawanId);
+
+            if (!$karyawan || !$karyawan->user) {
+                return;
+            }
+
+            $userRoleId = $user->role_id;
+            $karyawanRoleId = $karyawan->user->role_id;
+
+            $boleh = match ($userRoleId) {
+                1 => $karyawanRoleId >= 1 && $karyawanRoleId <= 7,
+                2 => $karyawanRoleId >= 3 && $karyawanRoleId <= 7,
+                3 => $karyawanRoleId >= 4 && $karyawanRoleId <= 7,
+                default => false,
+            };
+
+            if (!$boleh) {
+                $validator->errors()->add(
+                    'karyawan_id',
+                    'Kamu tidak memiliki akses untuk memilih karyawan tersebut.'
+                );
+            }
+        });
+    }
+
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
-{
-    dd($validator->errors()->toArray());
-}
+    {
+        dd($validator->errors()->toArray());
+    }
     protected function prepareForValidation(): void
     {
         // dd($this->all());

@@ -9,26 +9,6 @@ use App\Models\PermintaanResign;
 
 class PermintaanResignController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $startIndex = microtime(true);
-    //     $previewKode = \App\Services\CodeGenerator::generate(\App\Models\PermintaanResign::class, 'PMR');
-
-    //     $permintaanResign = $this->filter($request)
-    //         ->orderByDesc('kode')
-    //         // ->latest()
-    //         ->paginate(10)
-    //         ->withQueryString();
-
-    //     if ($request->ajax() || $request->wantsJson()) {
-    //         Log::debug('PermintaanResign index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //         return view('components.table.table', compact('permintaanResign'));
-    //     }
-
-    //     Log::debug('PermintaanResign index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //     return view('permintaan-resign.index', compact('permintaanResign', 'previewKode'));
-    // }
-
     private function filter(Request $request)
     {
         $search = $request->query('search');

@@ -37,6 +37,7 @@ return new class extends Migration
 
             $table->enum('jenis_perubahan', ['promosi', 'demosi', 'rotasi', 'mutasi']);
             $table->date('tanggal_efektif');
+            $table->timestamp('diterapkan_at')->nullable();
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
             $table->softDeletes();

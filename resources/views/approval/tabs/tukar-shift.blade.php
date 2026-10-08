@@ -31,10 +31,10 @@
             <tbody>
                 @forelse ($permintaanTukarShift as $i => $row)
                     @php
-                        $pengaju = $namaKaryawan[$row->karyawan_pengaju] ?? '-';
-                        $pengganti = $namaKaryawan[$row->karyawan_pengganti] ?? '-';
-                        $shiftA = $namaShift[$row->shift_pengaju] ?? '-';
-                        $shiftB = $namaShift[$row->shift_pengganti] ?? '-';
+                        $pengaju = $row->karyawanPengaju?->nama ?? '-';
+                        $pengganti = $row->karyawanPengganti?->nama ?? '-';
+                        $shiftA = $row->shiftPengaju?->nama ?? '-';
+                        $shiftB = $row->shiftPengganti?->nama ?? '-';
                         $tanggal = \Carbon\Carbon::parse($row->tanggal_tujuan)->format('d M Y');
                     @endphp
                     <tr>

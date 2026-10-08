@@ -11,6 +11,8 @@ use App\Services\ApprovalService;
 use App\Models\SaldoCuti;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\JadwalKaryawan;
 
 class ApprovalController extends Controller
 {
@@ -28,14 +30,6 @@ class ApprovalController extends Controller
         //     'label' => $label,
         // ])->values();
 
-
-        // $tabs = [
-        //     'karyawan' => 'Karyawan',
-        //     'cuti' => 'Cuti',
-        //     'lembur' => 'Lembur',
-        //     'resign' => 'Resign',
-        //     'tukar-shift' => 'Tukar Shift',
-        // ];
         $tab = $request->get('tab', 'karyawan');
         $user = auth()->user();
 
@@ -345,10 +339,16 @@ class ApprovalController extends Controller
                 ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
-        $permintaan->processed_by = auth()->id();
-        $permintaan->approved_at = now();
-        $permintaan->rejected_at = null;
-        $permintaan->save();
+        DB::transaction(function () use ($permintaan) {
+            $permintaan->processed_by = auth()->id();
+            $permintaan->approved_at = now();
+            $permintaan->rejected_at = null;
+            $permintaan->save();
+
+            $permintaan->karyawan->update([
+                'status' => 'resign',
+            ]);
+        });
 
         return redirect()
             ->route('approval.index')
@@ -393,7 +393,7 @@ class ApprovalController extends Controller
                 ->with('error', 'Permintaan Tukar Shift sudah pernah diproses.');
         }
 
-        $pemohon = $permintaan->karyawan?->user;
+        $pemohon = $permintaan->karyawanPengaju?->user;
 
         if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
             return redirect()
@@ -401,10 +401,52 @@ class ApprovalController extends Controller
                 ->with('error', 'Kamu tidak memiliki izin untuk memproses permintaan ini.');
         }
 
-        $permintaan->processed_by = auth()->id();
-        $permintaan->approved_at = now();
-        $permintaan->rejected_at = null;
-        $permintaan->save();
+        $berhasil = DB::transaction(function () use ($permintaan) {
+            $jadwalPengaju = JadwalKaryawan::where('karyawan_id', $permintaan->karyawan_pengaju)
+                ->whereDate('tanggal', $permintaan->tanggal_tujuan)
+                ->where('status', 'aktif')
+                ->lockForUpdate()
+                ->first();
+
+            $jadwalPengganti = JadwalKaryawan::where('karyawan_id', $permintaan->karyawan_pengganti)
+                ->whereDate('tanggal', $permintaan->tanggal_tujuan)
+                ->where('status', 'aktif')
+                ->lockForUpdate()
+                ->first();
+
+            // Jadwal bisa saja berubah setelah permintaan dibuat,
+            // jadi cek ulang sebelum melakukan pertukaran.
+            if (!$jadwalPengaju || !$jadwalPengganti) {
+                return false;
+            }
+
+            // Simpan shift pengaju sebelum ditukar.
+            $shiftPengaju = $jadwalPengaju->shift_id;
+
+            // Tukar shift kedua karyawan.
+            $jadwalPengaju->shift_id = $jadwalPengganti->shift_id;
+            $jadwalPengganti->shift_id = $shiftPengaju;
+
+            $jadwalPengaju->save();
+            $jadwalPengganti->save();
+
+            // Tandai permintaan sebagai disetujui.
+            $permintaan->processed_by = auth()->id();
+            $permintaan->approved_at = now();
+            $permintaan->rejected_at = null;
+            $permintaan->save();
+
+            return true;
+        });
+
+        if (!$berhasil) {
+            return redirect()
+                ->route('approval.index')
+                ->with(
+                    'error',
+                    'Permintaan Tukar Shift tidak dapat disetujui karena jadwal aktif salah satu karyawan sudah tidak tersedia.'
+                );
+        }
 
         return redirect()
             ->route('approval.index')
@@ -421,7 +463,7 @@ class ApprovalController extends Controller
                 ->with('error', 'Permintaan Tukar Shift sudah pernah diproses.');
         }
 
-        $pemohon = $permintaan->karyawan?->user;
+        $pemohon = $permintaan->karyawanPengaju?->user;
 
         if (!$pemohon || !ApprovalService::getApprovers($pemohon)->contains('id', auth()->id())) {
             return redirect()

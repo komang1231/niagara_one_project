@@ -13,8 +13,9 @@
             data-update-url="{{ route($slug . '.update', $row->id) }}" />
 
         {{-- Batalkan (buka modal konfirmasi bersama) --}}
-        <x-button variant="icon-danger" icon="bi-x-circle" title="Batalkan" data-delete-url="{{ route($slug . '.destroy', $row->id) }}"
-            data-delete-label="{{ $label }} {{ $row->kode }}" />
+        {{-- <x-button variant="icon-danger" icon="bi-x-circle" title="Batalkan" data-delete-url="{{ route($slug . '.destroy', $row->id) }}"
+            data-delete-label="{{ $label }} {{ $row->kode }}" /> --}}
+            
         {{-- <x-button variant="icon-danger" icon="bi-x-circle" title="Batalkan" 
             data-bs-toggle="modal" data-bs-target="#modal-batalkan-permintaan"
             data-delete-url="{{ route($slug . '.destroy', $row->id) }}"

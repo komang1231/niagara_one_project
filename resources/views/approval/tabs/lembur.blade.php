@@ -46,7 +46,9 @@
                         <td><x-table.cell-stack :avatar="$pemohon" :lines="[$pemohon]" /></td>
 
                         <td>
-                            <x-table.cell-stack :lines="[$tanggal, $jamMulai . ' - ' . $jamSelesai . ' • x' . $row->pengali]" />
+                            <x-table.cell-stack :lines="[$tanggal, $jamMulai . ' - ' . $jamSelesai
+                            //  . ' • x' . $row->pengali
+                             ]" />
                         </td>
 
                         <td>@include('permintaan.partials.status', ['row' => $row])</td>

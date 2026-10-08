@@ -9,26 +9,6 @@ use App\Models\PermintaanTukarShift;
 
 class PermintaanTukarShiftController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $startIndex = microtime(true);
-    //     $previewKode = \App\Services\CodeGenerator::generate(\App\Models\PermintaanTukarShift::class, 'PMTS');
-
-    //     $permintaanTukarShift = $this->filter($request)
-    //         ->orderByDesc('kode')
-    //         // ->latest()
-    //         ->paginate(10)
-    //         ->withQueryString();
-
-    //     if ($request->ajax() || $request->wantsJson()) {
-    //         Log::debug('PermintaanTukarShift index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //         return view('components.table.table', compact('permintaanTukarShift'));
-    //     }
-
-    //     Log::debug('PermintaanTukarShift index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-    //     return view('permintaan-tukar-shift.index', compact('permintaanTukarShift', 'previewKode'));
-    // }
-
     private function filter(Request $request)
     {
         $search = $request->query('search');
@@ -47,9 +27,8 @@ class PermintaanTukarShiftController extends Controller
     public function store(PermintaanTukarShiftRequest $request)
     {
         $start = microtime(true);
-        $data = $request->validated();
 
-        $data['karyawan_pengaju'] = auth()->user()->karyawan_id;
+        $data = $request->validated();
 
         $before = microtime(true);
         $permintaanTukarShift = PermintaanTukarShift::create($data);
@@ -61,7 +40,9 @@ class PermintaanTukarShiftController extends Controller
             'id' => $permintaanTukarShift->id ?? null,
         ]);
 
-        return redirect()->route('permintaan.index')->with('success', 'Permintaan Tukar Shift berhasil ditambahkan.');
+        return redirect()
+            ->route('permintaan.index')
+            ->with('success', 'Permintaan Tukar Shift berhasil ditambahkan.');
     }
 
     public function edit(PermintaanTukarShift $permintaanTukarShift)

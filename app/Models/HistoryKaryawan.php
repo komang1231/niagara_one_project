@@ -53,6 +53,7 @@ class HistoryKaryawan extends Model
 
         'jenis_perubahan',
         'tanggal_efektif',
+        'diterapkan_at',
         'status',
     ];
 

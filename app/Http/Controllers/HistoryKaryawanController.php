@@ -59,8 +59,11 @@ class HistoryKaryawanController extends Controller
             );
         }
 
+        $user = auth()->user();
+
         $karyawanOptions = Karyawan::query()
             ->with([
+                'user',
                 'departemen',
                 'divisi',
                 'section',
@@ -68,6 +71,21 @@ class HistoryKaryawanController extends Controller
                 'jobLevel',
                 'cabangKantor',
             ])
+            ->whereHas('user', function ($query) use ($user) {
+                if ($user->role_id === 1) {
+                    // Super Admin → boleh memilih semua role
+                    $query->whereBetween('role_id', [1, 7]);
+                } elseif ($user->role_id === 2) {
+                    // Admin Tenant → hanya role di bawahnya
+                    $query->whereBetween('role_id', [3, 7]);
+                } elseif ($user->role_id === 3) {
+                    // HR Manager → hanya role di bawahnya
+                    $query->whereBetween('role_id', [4, 7]);
+                } else {
+                    // Role lainnya tidak boleh memilih karyawan
+                    $query->whereRaw('1 = 0');
+                }
+            })
             ->orderBy('nama')
             ->get();
 
@@ -286,10 +304,10 @@ class HistoryKaryawanController extends Controller
     public function toggleStatus(HistoryKaryawan $perubahanKaryawan)
     {
         dd([
-        'id' => $perubahanKaryawan->id,
-        'kode' => $perubahanKaryawan->kode,
-        'status_sebelum' => $perubahanKaryawan->status,
-    ]);
+            'id' => $perubahanKaryawan->id,
+            'kode' => $perubahanKaryawan->kode,
+            'status_sebelum' => $perubahanKaryawan->status,
+        ]);
         $perubahanKaryawan->update([
             'status' => $perubahanKaryawan->status === 'aktif'
                 ? 'nonaktif'
