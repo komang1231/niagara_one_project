@@ -1,6 +1,12 @@
-<x-offcanvas.form id="offcanvas-rekrutmen-edit" title="Edit Rekrutmen"
-    description="Perbarui informasi kandidat dan proses rekrutmen." size="xl">
-    <form id="offcanvas-rekrutmen-edit-form" method="POST" enctype="multipart/form-data" data-edit-form>
+{{--
+    Offcanvas lihat/edit Rekrutmen. Logic: resources/js/rekrutmen.js
+    Dibuka dari ikon pensil -> semua field TERKUNCI. Footer kiri: [Edit] [Lihat CV].
+    Klik Edit -> field terbuka & Simpan aktif.
+--}}
+<x-offcanvas.form id="offcanvas-rekrutmen-edit" title="Detail Rekrutmen"
+    description="Lihat CV, atau klik Edit untuk memperbarui data kandidat." size="xl">
+    <form id="offcanvas-rekrutmen-edit-form" method="POST" enctype="multipart/form-data" data-edit-form
+        data-rk-form>
         @csrf
         @method('PUT')
 
@@ -12,7 +18,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <x-form.input name="kode" label="Kode Rekrutmen" readonly />
+                <x-form.input name="kode" label="Kode Rekrutmen" readonly data-rk-locked />
             </div>
             <div class="col-md-6">
                 <x-form.input name="nama" label="Nama Kandidat" placeholder="Nama kandidat" required />
@@ -47,15 +53,15 @@
             </div>
             <div class="col-md-6"> 
                 <x-form.select name="divisi_id" id="edit_divisi_id" label="Divisi" :options="[]" nullable
-                    disabled />
+                    disabled data-rk-chained />
             </div>
             <div class="col-md-6">
                 <x-form.select name="section_id" id="edit_section_id" label="Section" :options="[]" nullable
-                    disabled />
+                    disabled data-rk-chained />
             </div>
             <div class="col-md-6">
                 <x-form.select name="job_position_id" id="edit_job_position_id" label="Posisi" :options="[]"
-                    nullable disabled />
+                    nullable disabled data-rk-chained />
             </div>
             <div class="col-md-6">
                 <x-form.select name="job_level_id" id="edit_job_level_id" label="Job Level"
@@ -81,7 +87,7 @@
         <x-form.file-upload name="file_cv" id="edit_file_cv" label="CV" accept=".pdf,.doc,.docx"
             :max-files="1" :max-size="20" />
 
-        <div class="small text-muted mb-3" id="edit-current-cv">
+        <div class="small text-muted mb-3" id="edit-current-cv" data-rk-current-cv>
             CV saat ini akan tetap digunakan jika tidak mengunggah file baru.
         </div>
 
@@ -112,6 +118,15 @@
 
         <x-form.switch name="status" label="Status Aktif" inline />
     </form>
+
+    {{-- Tombol di kiri footer, berseberangan dengan Batal & Simpan --}}
+    <x-slot:extra>
+        <div class="d-flex gap-2">
+            <x-button variant="outline" icon="bi-pencil" data-rk-action="edit">Edit</x-button>
+            <x-button variant="outline" icon="bi-file-earmark-text" href="#" target="_blank" rel="noopener"
+                data-rk-action="view-cv">Lihat CV</x-button>
+        </div>
+    </x-slot:extra>
 </x-offcanvas.form>
 
 <script>
@@ -224,6 +239,8 @@
                 console.error('Gagal mengisi chained dropdown edit rekrutmen:', err);
             } finally {
                 isPrefilling = false;
+                // Beri tahu rekrutmen.js: dropdown berantai sudah terisi -> terapkan ulang mode lihat/edit
+                form.dispatchEvent(new CustomEvent('rekrutmen:prefilled'));
             }
         });
 

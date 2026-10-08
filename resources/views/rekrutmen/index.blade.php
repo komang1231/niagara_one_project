@@ -121,15 +121,9 @@
 
                                 <div class="app-table__actions">
 
-                                    {{-- DETAIL (pakai route show -> JSON berisi nama) --}}
-                                    <x-button variant="icon" icon="bi-eye" title="Detail" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvas-rekrutmen-detail"
-                                        data-detail-url="{{ route('rekrutmen.show', $row->id) }}" />
-
-
-                                    {{-- EDIT (pakai edit-data -> JSON berisi ID) --}}
-                                    <x-button variant="icon-edit" icon="bi-pencil" title="Edit" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvas-rekrutmen-edit"
+                                    {{-- EDIT: offcanvas terbuka mode lihat (field terkunci), tombol Edit ada di footer --}}
+                                    <x-button variant="icon-edit" icon="bi-pencil" title="Lihat / edit" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvas-rekrutmen-edit" data-rk-edit
                                         data-edit-url="{{ route('rekrutmen.edit-data', $row->id) }}"
                                         data-update-url="{{ route('rekrutmen.update', $row->id) }}" />
 
@@ -186,7 +180,6 @@
     {{-- OFFCANVAS (@include biasa supaya error view tidak tersembunyi) --}}
     @include('rekrutmen.form-create')
     @include('rekrutmen.form-edit')
-    @include('rekrutmen.detail')
 
 
     {{-- STATUS TOGGLE --}}

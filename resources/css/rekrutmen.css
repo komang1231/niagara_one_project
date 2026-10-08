@@ -78,3 +78,20 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+/* ---------- Offcanvas edit: mode lihat (field terkunci) ---------- */
+[data-rk-form][data-mode="view"] .form-control:disabled,
+[data-rk-form][data-mode="view"] .form-select:disabled {
+    background-color: var(--color-bg-th);
+    color: var(--color-text-900);
+    opacity: 1; /* teks tetap terbaca, bukan pudar */
+}
+[data-rk-form][data-mode="view"] .select2-container--disabled .select2-selection {
+    background-color: var(--color-bg-th);
+}
+[data-rk-form][data-mode="view"] .file-upload {
+    display: none; /* upload hanya relevan saat edit */
+}
+[data-rk-form][data-mode="view"] .app-form-switch {
+    pointer-events: none;
+    opacity: 0.7;
+}
