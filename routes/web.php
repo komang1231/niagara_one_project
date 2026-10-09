@@ -32,6 +32,7 @@ use App\Http\Controllers\SaldoCutiController;
 use App\Http\Controllers\KontrakKaryawanController;
 use App\Models\SaldoCuti;
 use App\Http\Controllers\ClosingPeriodeAbsensiController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/test-laravel', function () {
     return 'Laravel OK';
@@ -61,9 +62,9 @@ Route::middleware(['auth', 'karyawan.aktif'])->group(function () {
         return redirect()->route('service.index');
     });
 
-    // Route khusus Dashboard (menampilkan halaman dashboard)
-    Route::view('/dashboard', 'dashboard')
-        ->name('dashboard.index');
+   // Route khusus Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard.index');
 
 
     // ========================================================================
