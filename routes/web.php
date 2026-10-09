@@ -46,7 +46,7 @@ Route::post('/login', [AuthController::class, 'login'])
     ->name('login.authenticate');
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'karyawan.aktif'])->group(function () {
 
     // ========================================================================
     // SERVICE / DASHBOARD
