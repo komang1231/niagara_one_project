@@ -14,15 +14,29 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-
-            return redirect()->route('dashboard.index');
+        if (!Auth::validate($credentials)) {
+            return back()->withErrors([
+                'email' => 'Email atau password salah.',
+            ])->onlyInput('email');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+        $user = \App\Models\User::where('email', $credentials['email'])
+            ->with('karyawan')
+            ->first();
+
+        // Tolak login jika user memiliki relasi karyawan
+        // dengan status selain aktif.
+        if ($user->karyawan && $user->karyawan->status !== 'aktif') {
+            return back()->withErrors([
+                'email' => 'Akun tidak dapat login karena status karyawan tidak aktif.',
+            ])->onlyInput('email');
+        }
+
+        Auth::login($user, $request->boolean('remember'));
+
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard.index');
     }
 
     public function logout(Request $request)

@@ -15,6 +15,20 @@ class RekrutmenDiterimaRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // 'no_tlp' => [
+            //     'required',
+            //     'string',
+            //     'max:20',
+            //     Rule::unique('karyawans', 'no_tlp'),
+            // ],
+
+            // 'email' => [
+            //     'required',
+            //     'email',
+            //     'max:255',
+            //     Rule::unique('karyawans', 'email'),
+            // ],
+
             'role_id' => [
                 'required',
                 'integer',
