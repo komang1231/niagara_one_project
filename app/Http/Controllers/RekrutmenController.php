@@ -18,6 +18,17 @@ use App\Models\SumberPelamar;
 use App\Services\CodeGenerator;
 use App\Models\Karyawan;
 use App\Models\Role;
+use App\Models\Lowongan;
+use App\Models\StatusKawin;
+use App\Models\Agama;
+use App\Models\StatusKepegawaian;
+use App\Models\Bank;
+use App\Models\User;
+use App\Models\GeneralSetting;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\RekrutmenDiterimaRequest;
+
 
 class RekrutmenController extends Controller
 {
@@ -192,9 +203,153 @@ class RekrutmenController extends Controller
         ]);
     }
 
+    // public function update(RekrutmenRequest $request, Rekrutmen $rekrutmen)
+    // {
+    //     // dd($request->all());
+    //     $data = $request->validated();
+    //     $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
+
+    //     Log::debug('Data update rekrutmen', [
+    //         'id' => $rekrutmen->id,
+    //         'data' => $data,
+    //     ]);
+
+    //     $rekrutmen->update($data);
+    //     return redirect()->route('rekrutmen.index')->with('success', 'Rekrutmen berhasil diperbarui.');
+    // }
+
+    public function lengkapiKaryawan(Rekrutmen $rekrutmen)
+    {
+        if ($rekrutmen->status_rekrutmen !== 'diterima') {
+            return redirect()
+                ->route('rekrutmen.index')
+                ->with('error', 'Rekrutmen belum berstatus diterima.');
+        }
+
+        $karyawan = Karyawan::where('rekrutmen_id', $rekrutmen->id)->first();
+
+        if ($karyawan) {
+            return redirect()
+                ->route('karyawan.index')
+                ->with('info', 'Kandidat ini sudah menjadi karyawan.');
+        }
+
+        $roles = Role::orderBy('nama')->get();
+
+        $statusKepegawaians = StatusKepegawaian::orderBy('nama')->get();
+
+        $statusKawins = StatusKawin::orderBy('nama')->get();
+
+        $agamas = Agama::orderBy('nama')->get();
+
+        $banks = Bank::orderBy('nama')->get();
+
+        //return view('rekrutmen.form-rekrutmen-diterima', compact(
+        //'rekrutmen',
+        //'roles',
+        //'statusKepegawaians',
+        //'statusKawins',
+        //'agamas',
+        //'banks'
+        //));
+        return redirect()
+            ->route('rekrutmen.index')
+            ->with(
+                'open_diterima',
+                // 'rekrutmen',
+                // 'roles',
+                // 'statusKepegawaians',
+                // 'statusKawins',
+                // 'agamas',
+                // 'banks',
+                $rekrutmen->id
+            );
+    }
+
+    public function storeKaryawanDariRekrutmen(
+        RekrutmenDiterimaRequest $request,
+        Rekrutmen $rekrutmen
+    ) {
+        if ($rekrutmen->status_rekrutmen !== 'diterima') {
+            return redirect()
+                ->route('rekrutmen.index')
+                ->with('error', 'Rekrutmen belum berstatus diterima.');
+        }
+
+        if (Karyawan::where('rekrutmen_id', $rekrutmen->id)->exists()) {
+            return redirect()
+                ->route('rekrutmen.index')
+                ->with('error', 'Kandidat ini sudah menjadi karyawan.');
+        }
+
+        $data = $request->validated();
+
+        $passwordDefault = GeneralSetting::where('key', 'default_password')
+            ->value('value');
+
+        DB::transaction(function () use ($rekrutmen, $data, $passwordDefault) {
+
+            $nip = CodeGenerator::generate(
+                Karyawan::class,
+                'NIP'
+            );
+
+            $karyawan = Karyawan::create([
+                'nip' => $nip,
+
+                'rekrutmen_id' => $rekrutmen->id,
+                'lowongan_id' => $rekrutmen->lowongan_id,
+                'departemen_id' => $rekrutmen->departemen_id,
+                'divisi_id' => $rekrutmen->divisi_id,
+                'section_id' => $rekrutmen->section_id,
+                'job_position_id' => $rekrutmen->job_position_id,
+                'job_level_id' => $rekrutmen->job_level_id,
+                'cabang_kantor_id' => $rekrutmen->cabang_kantor_id,
+
+                'gaji' => $data['gaji'],
+
+                'nama' => $rekrutmen->nama,
+                'email' => $rekrutmen->email,
+                'no_tlp' => $rekrutmen->no_tlp,
+
+                'nik' => $data['nik'],
+                'no_bpjs_ketenagakerjaan' => $data['no_bpjs_ketenagakerjaan'],
+                'no_bpjs_kesehatan' => $data['no_bpjs_kesehatan'],
+                'no_npwp' => $data['no_npwp'],
+
+                'jenjang_pendidikan_id' => $rekrutmen->jenjang_pendidikan_id,
+                'status_kawin_id' => $data['status_kawin_id'],
+                'agama_id' => $data['agama_id'],
+                'status_kepegawaian_id' => $data['status_kepegawaian_id'],
+
+                'bank_id' => $data['bank_id'],
+                'nama_bank' => $data['nama_bank'],
+                'no_rekening' => $data['no_rekening'],
+
+                'status' => $data['status'],
+            ]);
+
+            User::create([
+                'kode' => '',
+                'role_id' => $data['role_id'],
+                'karyawan_id' => $karyawan->id,
+                'nama' => $karyawan->nama,
+                'no_tlp' => $karyawan->no_tlp,
+                'email' => $karyawan->email,
+                'password' => Hash::make($passwordDefault),
+            ]);
+        });
+
+        return redirect()
+            ->route('rekrutmen.index')
+            ->with(
+                'success',
+                'Kandidat berhasil dikonversi menjadi karyawan dan akun user.'
+            );
+    }
+
     public function update(RekrutmenRequest $request, Rekrutmen $rekrutmen)
     {
-        // dd($request->all());
         $data = $request->validated();
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
 
@@ -204,7 +359,16 @@ class RekrutmenController extends Controller
         ]);
 
         $rekrutmen->update($data);
-        return redirect()->route('rekrutmen.index')->with('success', 'Rekrutmen berhasil diperbarui.');
+
+        if ($rekrutmen->status_rekrutmen === 'diterima') {
+            return redirect()
+                ->route('rekrutmen.lengkapi-karyawan', $rekrutmen)
+                ->with('success', 'Rekrutmen diterima. Lengkapi data karyawan.');
+        }
+
+        return redirect()
+            ->route('rekrutmen.index')
+            ->with('success', 'Rekrutmen berhasil diperbarui.');
     }
 
     public function toggleStatus(Rekrutmen $rekrutmen)

@@ -451,12 +451,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('rekrutmen/{id}/edit-data', [RekrutmenController::class, 'editData'])
         ->name('rekrutmen.edit-data');
-    // Route::get('rekrutmen/{rekrutmen}/lengkapi-karyawan', [RekrutmenController::class, 'lengkapiKaryawan'])
-    //     ->name('rekrutmen.lengkapi-karyawan');
-    // Route::post(
-    //     'rekrutmen/{rekrutmen}/lengkapi-karyawan',
-    //     [RekrutmenController::class, 'storeKaryawanDariRekrutmen']
-    // )->name('rekrutmen.store-karyawan');
+    Route::get('rekrutmen/{rekrutmen}/lengkapi-karyawan', [RekrutmenController::class, 'lengkapiKaryawan'])
+        ->name('rekrutmen.lengkapi-karyawan');
+    Route::post(
+        'rekrutmen/{rekrutmen}/lengkapi-karyawan',
+        [RekrutmenController::class, 'storeKaryawanDariRekrutmen']
+    )->name('rekrutmen.store-karyawan');
     Route::get('rekrutmen-trash', [RekrutmenController::class, 'trash'])
         ->name('rekrutmen.trash');
     Route::patch('rekrutmen/{id}/restore', [RekrutmenController::class, 'restore'])
