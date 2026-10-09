@@ -1,13 +1,3 @@
-// Offcanvas lihat/edit Rekrutmen (alur sama seperti Surat Peringatan).
-//
-//   - klik pensil di tabel  -> offcanvas terbuka MODE LIHAT (semua field disabled, Simpan disabled)
-//   - klik [Edit] di footer -> MODE EDIT (field terbuka, tombol Edit hilang, Simpan aktif)
-//   - [Lihat CV] selalu tampil di kedua mode (kalau kandidat punya CV)
-//
-// Pengisian field dilakukan offcanvas-edit.js. JSON edit-data harus memuat cv_name & cv_url.
-// Dropdown berantai (divisi/section/posisi) diisi async oleh script di form-edit.blade.php,
-// yang mengirim event "rekrutmen:prefilled" setelah selesai -> kunci diterapkan ulang di sini.
-
 const FORM_ID = 'offcanvas-rekrutmen-edit-form';
 
 const getForm = () => document.getElementById(FORM_ID);
@@ -119,4 +109,37 @@ document.addEventListener('click', (e) => {
         text: 'CV kandidat ini tidak dapat dibuka.',
         confirmButtonText: 'OK',
     });
+});
+
+
+// ---------------------------------------------------------------------------
+// Offcanvas "Data Karyawan Baru" (kandidat Diterima)
+//
+//   Server yang menentukan kapan dibuka: form-rekrutmen-diterima.blade.php mengisi
+//   data-open-id pada <form> kalau ada session('open_diterima') atau old('_rekrutmen_id').
+//   Di sini cukup: kalau data-open-id terisi -> isi action form -> buka offcanvas.
+// ---------------------------------------------------------------------------
+
+const DITERIMA_ID = 'offcanvas-rekrutmen-diterima';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const panel = document.getElementById(DITERIMA_ID);
+    const form = panel && panel.querySelector('form');
+    if (!form) return;
+
+    const id = form.dataset.openId;
+    if (!id) return;
+
+    // Tujuan submit = POST rekrutmen/{id}/lengkapi-karyawan
+    form.setAttribute('action', form.getAttribute('action').replace('__ID__', id));
+
+    // Buka lewat tombol bayangan (tidak bergantung window.bootstrap), sama seperti halaman Permintaan
+    const t = document.createElement('button');
+    t.type = 'button';
+    t.hidden = true;
+    t.dataset.bsToggle = 'offcanvas';
+    t.dataset.bsTarget = '#' + DITERIMA_ID;
+    document.body.appendChild(t);
+    t.click();
+    t.remove();
 });

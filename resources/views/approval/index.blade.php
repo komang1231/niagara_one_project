@@ -56,12 +56,42 @@
             });
         });
 
-        // Konfirmasi sebelum Setujui / Tolak
+        // Konfirmasi sebelum Setujui / Tolak: pakai popup SweetAlert yang sama dengan popup global (components/popup)
+        // (form approve/reject itu POST biasa tanpa method spoofing, jadi tidak ditangkap popup global)
         document.addEventListener('submit', function(e) {
             var form = e.target.closest('[data-approval-confirm]');
-            if (form && !confirm(form.dataset.approvalConfirm)) {
-                e.preventDefault();
-            }
+            if (!form) return;
+
+            e.preventDefault();
+
+            var tolak = (form.getAttribute('action') || '').includes('/reject');
+            var swalBtn = Swal.mixin({ buttonsStyling: false });
+
+            swalBtn.fire({
+                title: tolak ? 'Tolak permintaan?' : 'Setujui permintaan?',
+                text: form.dataset.approvalConfirm,
+                icon: tolak ? 'warning' : 'question',
+                showCancelButton: true,
+                confirmButtonText: tolak ? 'Ya, tolak!' : 'Ya, setujui!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: {
+                    confirmButton: 'btn btn-success popup-confirm',
+                    cancelButton: 'btn btn-danger popup-cancel'
+                }
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    form.submit(); // submit() bawaan tidak memicu event submit lagi
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalBtn.fire({
+                        title: 'Dibatalkan',
+                        text: 'Tidak ada perubahan yang dilakukan.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        customClass: { confirmButton: 'btn btn-danger popup-ok-danger' }
+                    });
+                }
+            });
         });
     </script>
 @endsection

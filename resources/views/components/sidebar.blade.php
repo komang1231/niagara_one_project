@@ -16,7 +16,7 @@
 
         [
             'label' => 'Approval',
-            'icon' => 'bi-inbox-fill',
+            'icon' => 'bi-clipboard2-check-fill',
             'slug' => 'approval',
             'children' => [],
         ],

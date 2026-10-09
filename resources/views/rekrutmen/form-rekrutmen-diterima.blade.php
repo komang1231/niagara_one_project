@@ -1,11 +1,12 @@
 <x-offcanvas.form id="offcanvas-rekrutmen-diterima" title="Data Karyawan Baru"
     description="Lengkapi data berikut untuk membuat akun karyawan dari kandidat yang diterima." size="xl">
-    <form id="offcanvas-rekrutmen-diterima-form" action="{{ route('rekrutmen.store-karyawan', $rekrutmen) }}"
-        method="POST" novalidate>
+    <form id="offcanvas-rekrutmen-diterima-form" action="{{ route('rekrutmen.store-karyawan', ['rekrutmen' => '__ID__']) }}"
+        data-open-id="{{ old('_rekrutmen_id', session('open_diterima')) }}" method="POST" novalidate>
         @csrf
 
         {{-- Penanda form mana yang disubmit (dipakai buat buka lagi offcanvas kalau validasi gagal) --}}
         <input type="hidden" name="_form" value="offcanvas-rekrutmen-diterima">
+        <input type="hidden" name="_rekrutmen_id" value="{{ old('_rekrutmen_id', session('open_diterima')) }}">
 
         {{-- ================= KEPEGAWAIAN ================= --}}
         <h6 class="mb-3">Kepegawaian</h6>

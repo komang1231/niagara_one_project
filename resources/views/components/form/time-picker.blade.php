@@ -16,7 +16,7 @@
         <div class="app-time-picker" data-time-picker data-step="{{ $step }}">
             <input type="text" id="{{ $inputId }}" name="{{ $name }}" value="{{ old($name, $value) }}"
                 class="form-control app-time-picker__input{{ $errors->has($name) ? ' is-invalid' : '' }}"
-                placeholder="--:--" autocomplete="off" inputmode="numeric" data-time-input
+                placeholder="--:--" autocomplete="off" inputmode="numeric" maxlength="5" data-time-input
                 {{ $required ? 'required' : '' }}>
 
             <ul class="app-time-picker__dropdown" data-time-dropdown></ul>

@@ -122,8 +122,8 @@
                                 <div class="app-table__actions">
 
                                     {{-- EDIT: offcanvas terbuka mode lihat (field terkunci), tombol Edit ada di footer --}}
-                                    <x-button variant="icon-edit" icon="bi-pencil" title="Lihat / edit" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvas-rekrutmen-edit" data-rk-edit
+                                    <x-button variant="icon-edit" icon="bi-pencil" title="Lihat / edit"
+                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvas-rekrutmen-edit" data-rk-edit
                                         data-edit-url="{{ route('rekrutmen.edit-data', $row->id) }}"
                                         data-update-url="{{ route('rekrutmen.update', $row->id) }}" />
 
@@ -133,8 +133,7 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        <x-button type="submit" variant="icon-danger" icon="bi-trash" title="Hapus"
-                                             />
+                                        <x-button type="submit" variant="icon-danger" icon="bi-trash" title="Hapus" />
                                     </form>
 
 
@@ -177,9 +176,9 @@
     </x-panel>
 
 
-    {{-- OFFCANVAS (@include biasa supaya error view tidak tersembunyi) --}}
     @include('rekrutmen.form-create')
     @include('rekrutmen.form-edit')
+    @include('rekrutmen.form-rekrutmen-diterima')
 
 
     {{-- STATUS TOGGLE --}}
