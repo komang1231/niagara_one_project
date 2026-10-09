@@ -18,6 +18,10 @@ use App\Models\SumberPelamar;
 use App\Services\CodeGenerator;
 use App\Models\Karyawan;
 use App\Models\Role;
+use App\Models\StatusKawin;
+use App\Models\Agama;
+use App\Models\StatusKepegawaian;
+use App\Models\Bank;
 
 class RekrutmenController extends Controller
 {
@@ -74,6 +78,16 @@ class RekrutmenController extends Controller
             ->orderBy('nama')
             ->get();
 
+        $roles = Role::orderBy('nama')->get();
+
+        $statusKepegawaians = StatusKepegawaian::orderBy('nama')->get();
+
+        $statusKawins = StatusKawin::orderBy('nama')->get();
+
+        $agamas = Agama::orderBy('nama')->get();
+
+        $banks = Bank::orderBy('nama')->get();
+
 
         if ($request->ajax() || $request->wantsJson()) {
             Log::debug('Rekrutmen index timings', ['ajax' => true, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
@@ -81,7 +95,26 @@ class RekrutmenController extends Controller
         }
 
         Log::debug('Rekrutmen index timings', ['ajax' => false, 'ms' => round((microtime(true) - $startIndex) * 1000, 2)]);
-        return view('rekrutmen.index', compact('statusOptions', 'rekrutmen', 'previewKode', 'lowongans', 'departemens', 'divisis', 'sections', 'jobPositions', 'jobLevels', 'cabangKantors', 'jenjangPendidikans', 'sumberPelamars'));
+        return view('rekrutmen.index', compact(
+            'statusOptions',
+            'rekrutmen',
+            'previewKode',
+            'lowongans',
+            'departemens',
+            'divisis',
+            'sections',
+            'jobPositions',
+            'jobLevels',
+            'cabangKantors',
+            'jenjangPendidikans',
+            'sumberPelamars',
+            'rekrutmen',
+            'roles',
+            'statusKepegawaians',
+            'statusKawins',
+            'agamas',
+            'banks'
+        ));
     }
 
     public function show(Rekrutmen $rekrutmen)
