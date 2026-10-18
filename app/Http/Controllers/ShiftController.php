@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use App\Models\Shift;
 use App\Services\CodeGenerator;
+use App\Models\GeneralSetting;
+use Carbon\Carbon;
 
 class ShiftController extends Controller
 {
@@ -59,8 +61,17 @@ class ShiftController extends Controller
     {
         $start = microtime(true);
         $data = $request->validated();
+        $waktuKerja = (int) (
+            GeneralSetting::where('key', 'waktu_kerja')->value('value') ?? 8
+        );
+
+        $jamMasuk = Carbon::createFromFormat('H:i', $data['jam_masuk']);
+
+        $jamPulang = $jamMasuk->copy()->addHours($waktuKerja);
+
+        $data['jam_pulang'] = $jamPulang->format('H:i:s');
+        $data['lintas_hari'] = $jamPulang->format('Y-m-d') !== $jamMasuk->format('Y-m-d');
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
-        $data['lintas_hari'] = $data['jam_masuk'] > $data['jam_pulang'];
 
         $before = microtime(true);
         $shift = Shift::create($data);
@@ -109,8 +120,17 @@ class ShiftController extends Controller
     public function update(ShiftRequest $request, Shift $shift)
     {
         $data = $request->validated();
+        $waktuKerja = (int) (
+            GeneralSetting::where('key', 'waktu_kerja')->value('value') ?? 8
+        );
+
+        $jamMasuk = Carbon::createFromFormat('H:i', $data['jam_masuk']);
+
+        $jamPulang = $jamMasuk->copy()->addHours($waktuKerja);
+
+        $data['jam_pulang'] = $jamPulang->format('H:i:s');
+        $data['lintas_hari'] = $jamPulang->format('Y-m-d') !== $jamMasuk->format('Y-m-d');
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
-        $data['lintas_hari'] = $data['jam_masuk'] > $data['jam_pulang'];
 
         Log::debug('Data update shift', [
             'id' => $shift->id,

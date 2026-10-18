@@ -151,7 +151,21 @@ class Karyawan extends Model
     {
         return $this->hasMany(KontrakKaryawan::class, 'karyawan_id');
     }
-    
+
+    protected static function booted(): void
+    {
+        static::created(function (Karyawan $karyawan) {
+            $tanggalMulai = now()->startOfDay();
+
+            $karyawan->kontrakKaryawan()->create([
+                'status_kepegawaian_id' => $karyawan->status_kepegawaian_id,
+                'tanggal_mulai' => $tanggalMulai->toDateString(),
+                'tanggal_berakhir' => $tanggalMulai->copy()->addYear()->toDateString(),
+                'status' => 'aktif',
+            ]);
+        });
+    }
+
     protected $table = 'karyawans';
 
     protected $fillable = [
