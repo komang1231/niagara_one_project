@@ -36,7 +36,7 @@
 
                         <!-- Email Input -->
                         <div class="mb-3">
-                            <label class="form-label" for="emailInput">Email / Username</label>
+                            <label class="form-label" for="emailInput">Email</label>
                             <input class="form-control" id="emailInput" name="email" type="email"
                                 autocomplete="username" placeholder="Masukkan email" required />
                         </div>

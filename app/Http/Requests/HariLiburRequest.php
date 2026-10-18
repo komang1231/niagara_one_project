@@ -15,16 +15,40 @@ class HariLiburRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
+     protected function prepareForValidation(): void
     {
         if ($this->filled('tanggal')) {
-            try {
+            $tanggal = $this->input('tanggal');
+
+            $bulan = [
+                'Januari' => '01',
+                'Februari' => '02',
+                'Maret' => '03',
+                'April' => '04',
+                'Mei' => '05',
+                'Juni' => '06',
+                'Juli' => '07',
+                'Agustus' => '08',
+                'September' => '09',
+                'Oktober' => '10',
+                'November' => '11',
+                'Desember' => '12',
+            ];
+
+            if (
+                preg_match('/^(\d{1,2}) ([A-Za-z]+) (\d{4})$/', $tanggal, $match)
+                && isset($bulan[$match[2]])
+            ) {
+
+                $tanggal = sprintf(
+                    '%04d-%02d-%02d',
+                    $match[3],
+                    $bulan[$match[2]],
+                    $match[1]
+                );
+
                 $this->merge([
-                    'tanggal' => \Carbon\Carbon::parse($this->tanggal)->format('Y-m-d'),
-                ]);
-            } catch (\Exception $e) {
-                throw \Illuminate\Validation\ValidationException::withMessages([
-                    'tanggal' => 'Format tanggal tidak valid.',
+                    'tanggal' => $tanggal,
                 ]);
             }
         }

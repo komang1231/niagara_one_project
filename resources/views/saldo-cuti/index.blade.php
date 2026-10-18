@@ -28,6 +28,8 @@
         <hr class="app-panel__divider">
 
         <div id="saldo-cuti-table">
+            {{-- Fragment: dipakai controller buat balikin isi tabel sajaaa pas request AJAX --}}
+            @fragment('saldo-cuti-table')
             <x-table>
                 <thead>
                     <tr>
@@ -100,6 +102,7 @@
 
                 <x-pagination :paginator="$saldoCuti" />
             </div>
+            @endfragment
         </div>
     </x-panel>
 @endsection

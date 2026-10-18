@@ -1,7 +1,7 @@
 <x-page-header eyebrow="Persetujuan" title="Cuti" description="Setujui atau tolak pengajuan cuti karyawan."
     icon="bi-calendar2-check-fill">
     <x-slot:badges>
-        <x-badge>>{{ $permintaanCuti->count() }} permintaan</x-badge>
+        <x-badge>{{ $permintaanCuti->count() }} permintaan</x-badge>
     </x-slot:badges>
 </x-page-header>
 
@@ -45,10 +45,21 @@
                         <td><x-table.cell-stack :avatar="$pemohon" :lines="[$pemohon]" /></td>
 
                         <td>
-                            <x-table.cell-stack :lines="[
-                                $row->cuti->nama ?? '-',
-                                $mulai . ' – ' . $selesai . ' • ' . $jumlahHari . ' hari',
-                            ]" />
+                            <div class="sp-surat">
+                                <x-table.cell-stack :lines="[
+                                    $row->cuti->nama ?? '-',
+                                    $mulai . ' – ' . $selesai . ' • ' . $jumlahHari . ' hari',
+                                ]" />
+
+                                {{-- Lampiran: link buka file di tab baru (pola sama dengan kolom Surat di index Surat Peringatan) --}}
+                                @if ($row->lampiran)
+                                    <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($row->lampiran) }}" target="_blank"
+                                        rel="noopener noreferrer" class="sp-surat__file" title="Buka {{ basename($row->lampiran) }}">
+                                        <i class="bi bi-paperclip"></i>
+                                        {{ basename($row->lampiran) }}
+                                    </a>
+                                @endif
+                            </div>
                         </td>
 
                         <td>@include('permintaan.partials.status', ['row' => $row])</td>

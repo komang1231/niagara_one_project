@@ -10,13 +10,9 @@
             </div>
 
             <div class="col-md-6">
-                <x-form.select 
-                    name="departemen_id" 
-                    label="Departemen" 
-                    :options="$departemens" 
-                    :selected="old('departemen_id', $divisi->departemen_id ?? null)" 
-                    nullable 
-                />
+                {{-- id unik per form (create/edit) supaya select2 tidak bentrok --}}
+                <x-form.select name="departemen_id" id="divisi_create_departemen_id" label="Departemen"
+                    :options="$departemens" :selected="old('departemen_id')" nullable />
             </div>
         </div>
 

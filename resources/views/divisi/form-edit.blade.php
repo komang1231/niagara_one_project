@@ -10,7 +10,8 @@
                 <x-form.input name="nama" label="Nama Divisi" required />
             </div>
             <div class="col-md-6">
-                <x-form.select name="departemen_id" label="Departemen" :options="$departemens" nullable />
+                <x-form.select name="departemen_id" id="divisi_edit_departemen_id" label="Departemen" :options="$departemens"
+                    nullable />
             </div>
         </div>
 

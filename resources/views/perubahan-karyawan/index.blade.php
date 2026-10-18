@@ -481,20 +481,10 @@
     @include('perubahan-karyawan.form-edit')
 
     <script>
-        // Toggle status aktif / nonaktif (pola sama dengan menu lain: PATCH lalu reload)
         document.addEventListener('change', function(e) {
             const toggle = e.target.closest('.app-table-toggle input[type="checkbox"]');
 
             if (!toggle) return;
-
-            // TODO BACKEND: hapus blok mock ini kalau route toggle-status sudah ada.
-            if (toggle.dataset.mock === '1') {
-                const badge = toggle.closest('tr').querySelector('[data-pk-status-badge]');
-                badge.classList.toggle('badge-success', toggle.checked);
-                badge.classList.toggle('badge-neutral', !toggle.checked);
-                badge.querySelector('[data-pk-status-text]').textContent = toggle.checked ? 'Aktif' : 'Nonaktif';
-                return;
-            }
 
             const id = toggle.dataset.id;
 

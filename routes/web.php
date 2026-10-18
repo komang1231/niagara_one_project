@@ -62,9 +62,9 @@ Route::middleware(['auth', 'karyawan.aktif'])->group(function () {
         return redirect()->route('service.index');
     });
 
-   // Route khusus Dashboard
+    // Route khusus Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard.index');
+        ->name('dashboard.index');
 
 
     // ========================================================================
@@ -664,9 +664,8 @@ Route::middleware(['auth', 'karyawan.aktif'])->group(function () {
         ->name('permintaan-tukar-shift.jadwal');
 
 
-    Route::patch('perubahan-karyawan/{perubahan-karyawan}/toggle-status', [HistoryKaryawanController::class, 'toggleStatus'])
+    Route::patch('perubahan-karyawan/{perubahanKaryawan}/toggle-status', [HistoryKaryawanController::class, 'toggleStatus'])
         ->name('perubahan-karyawan.toggle-status');
-
 
     // ========================================================================
     // DIVISI

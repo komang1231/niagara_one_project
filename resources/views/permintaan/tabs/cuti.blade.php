@@ -43,6 +43,7 @@
                 <th>Permohonan</th>
                 <th>Jenis Cuti</th>
                 <th>Periode & Rincian</th>
+                <th>Lampiran</th>
                 <th>Alasan</th>
                 <th>Status</th>
                 <th class="text-end">Aksi</th>
@@ -108,7 +109,11 @@
                         PERMOHONAN
                     =========================================================== --}}
                     <td>
-                        <x-table.cell-stack :avatar="$row->karyawan?->avatar" :lines="[$row->karyawan?->nama ?? 'Pemohon tidak ditemukan', $row->kode]" />
+                        <div class="sp-surat">
+                            <x-table.cell-stack :avatar="$row->karyawan?->avatar" :lines="[$row->karyawan?->nama ?? 'Pemohon tidak ditemukan', $row->kode]" />
+
+
+                        </div>
                     </td>
 
 
@@ -211,6 +216,22 @@
 
 
                     {{-- ==========================================================
+                        lmipiran
+                    =========================================================== --}}
+                    <td>
+
+                        {{-- Lampiran: link buka file di tab baru (pola sama dengan kolom Surat di index Surat Peringatan) --}}
+                        @if ($row->lampiran)
+                            <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($row->lampiran) }}"
+                                target="_blank" rel="noopener noreferrer" class="sp-surat__file"
+                                title="Buka {{ basename($row->lampiran) }}">
+                                <i class="bi bi-paperclip"></i>
+                                {{ basename($row->lampiran) }}
+                            </a>
+                        @endif
+
+                    </td>
+                    {{-- ==========================================================
                         ALASAN
                     =========================================================== --}}
                     <td>
@@ -271,4 +292,3 @@
     </div>
 
 </x-panel>
-```

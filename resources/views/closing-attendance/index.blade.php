@@ -80,6 +80,12 @@
 
         $totalClosing = $closingAttendances->total();
 
+        // Empty state "Belum Ada Rekapan Absensi" HANYA kalau memang belum ada closing sama sekali.
+        // Kalau user sudah menekan Search (ada parameter "filtered") dan hasilnya 0, tetap tampilkan
+        // filter + tabel kosong ("Tidak ada rekapan yang sesuai dengan filter"), jangan sembunyikan filter bar.
+        $sudahDifilter = request()->has('filtered');
+        $belumAdaClosing = $totalClosing === 0 && !$sudahDifilter;
+
         $tahunOptions = $tahunOptions->toArray();
 
         $dipilih = fn($name, $options) => request()->has("{$name}_state")
@@ -111,7 +117,7 @@
     </x-page-header>
 
     <x-panel>
-        @if ($totalClosing === 0)
+        @if ($belumAdaClosing)
             {{-- EMPTY STATE: belum ada periode yang di-closing sama sekali --}}
             <div class="ca-empty">
                 <div class="ca-empty__icon"><i class="bi bi-calendar-x"></i></div>
@@ -231,7 +237,7 @@
                                         <x-button variant="icon-view" icon="bi-eye" title="Lihat detail absensi"
                                             :href="route('closing-attendance.show', $row->id)" />
 
-                                             <x-button variant="icon-danger" icon="bi-file-earmark-pdf" title="Export PDF"
+                                        <x-button variant="icon-danger" icon="bi-file-earmark-pdf" title="Export PDF"
                                             :href="route('closing-attendance.export-pdf', $row->id)" />
                                     </div>
                                 </td>

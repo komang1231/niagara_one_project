@@ -4,9 +4,6 @@
         novalidate>
         @csrf
 
-        <x-form.input name="kode_preview" id="sp_create_kode" label="Kode Surat"
-            value="Dibuat otomatis sesuai jenis surat" readonly />
-
         <x-form.select name="karyawan_id" id="sp_create_karyawan_id" label="Karyawan" :options="$karyawanOptions"
             nullable required />
 

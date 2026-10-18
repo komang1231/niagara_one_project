@@ -92,19 +92,24 @@
                                 <x-table.cell-stack :avatar="$row->karyawan?->nama" :lines="$stack(
                                     $row->karyawan?->nama,
                                     $row->karyawan?->nip,
-                                    collect([$row->karyawan?->jobPosition?->nama, $row->karyawan?->departemen?->nama])->filter()->implode(' · '),
+                                    collect([$row->karyawan?->jobPosition?->nama, $row->karyawan?->departemen?->nama])
+                                        ->filter()
+                                        ->implode(' · '),
                                 )" />
                             </td>
 
                             {{-- Surat: badge jenis, kode, file --}}
                             <td>
                                 <div class="sp-surat">
-                                    <x-badge class="sp-badge sp-badge--{{ $jenis }}">{{ $row->jenis_surat }}</x-badge>
+                                    <x-badge
+                                        class="sp-badge sp-badge--{{ $jenis }}">{{ $row->jenis_surat }}</x-badge>
                                     <span class="sp-surat__kode">{{ $row->kode }}</span>
                                     @if ($row->file)
-                                        <a href="{{ $row->file_url ?? '#' }}" target="_blank" rel="noopener"
-                                            class="sp-surat__file" data-sp-file title="Buka {{ basename($row->file) }}">
-                                            <i class="bi bi-paperclip"></i>{{ basename($row->file) }}
+                                        <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($row->file) }}"
+                                            target="_blank" rel="noopener noreferrer" class="sp-surat__file" data-sp-file
+                                            title="Buka {{ basename($row->file) }}">
+                                            <i class="bi bi-paperclip"></i>
+                                            {{ basename($row->file) }}
                                         </a>
                                     @endif
                                 </div>
@@ -124,8 +129,7 @@
                             </td>
 
                             <td>
-                                <x-badge class="sp-status" :variant="$row->status === 'aktif' ? 'success' : 'neutral'"
-                                    icon="bi-circle-fill">
+                                <x-badge class="sp-status" :variant="$row->status === 'aktif' ? 'success' : 'neutral'" icon="bi-circle-fill">
                                     {{ ucfirst($row->status) }}
                                 </x-badge>
                             </td>
@@ -145,8 +149,8 @@
                                         <x-button type="submit" variant="icon-danger" icon="bi-trash" title="Hapus" />
                                     </form>
 
-                                    <x-table.status-toggle :checked="$row->status === 'aktif'"
-                                        id="status-toggle-{{ $row->id }}" data-id="{{ $row->id }}" />
+                                    <x-table.status-toggle :checked="$row->status === 'aktif'" id="status-toggle-{{ $row->id }}"
+                                        data-id="{{ $row->id }}" />
                                 </div>
                             </td>
                         </tr>

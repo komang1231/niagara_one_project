@@ -9,6 +9,10 @@
 //   2. Klik tanggal awal, lalu tanggal akhir (klik sebelum tanggal awal = jadi tanggal awal baru).
 //   3. Klik "Terapkan" -> nilai masuk ke field. Klik di luar popup / Esc = batal.
 //   4. Tekan tombol Search di filter bar untuk benar-benar memfilter.
+// Klik judul panel ("Juni 2026") untuk loncat cepat: tanggal -> pilih bulan -> pilih tahun.
+//   type date  : judul -> grid bulan -> judul -> grid tahun
+//   type month : judul -> grid tahun
+//   type year  : sudah grid tahun, gak ada loncat
 // Rentang boleh sebagian (hanya "dari" atau hanya "sampai" -> tekan Terapkan tanpa memilih tanggal akhir).
 
 const BULAN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -77,7 +81,7 @@ function initDateRange(root) {
 
     const type = TYPE_VALID.includes(root.dataset.rangeType) ? root.dataset.rangeType : 'date';
     const label = root.dataset.rangeLabel || 'Rentang';
-    const kolom = type === 'date' ? 7 : type === 'month' ? 3 : 4;
+    const kolomMode = (m) => (m === 'date' ? 7 : m === 'month' ? 3 : 4);
     const nama = type === 'date' ? 'tanggal' : type === 'month' ? 'bulan' : 'tahun';
 
     const control = root.querySelector('[data-range-control]');
@@ -93,6 +97,7 @@ function initDateRange(root) {
     let draft = { from: null, to: null, target: 'from' };
     let hover = null;
     let tampilan = new Date(); // acuan panel kiri
+    let mode = type; // tampilan grid yang sedang dilihat: 'date' | 'month' | 'year' (bisa beda dari type kalau user loncat)
 
     /* ---------- popup ---------- */
     const popup = document.createElement('div');
@@ -150,21 +155,46 @@ function initDateRange(root) {
     function geser(arah) {
         const y = tampilan.getFullYear();
         const m = tampilan.getMonth();
-        if (type === 'date') tampilan = new Date(y, m + arah, 1);
-        else if (type === 'month') tampilan = new Date(y + arah, 0, 1);
-        else tampilan = new Date(y + arah * ISI_TAHUN, 0, 1);
+        if (mode === 'date') tampilan = new Date(y, m + arah, 1);
+        else if (mode === 'month') tampilan = new Date(y + arah, m, 1);
+        else tampilan = new Date(y + arah * ISI_TAHUN, m, 1);
         render();
     }
+
+    // Klik judul panel: naik satu tingkat (tanggal -> bulan -> tahun)
+    function zoomKeluar() {
+        if (mode === 'date') mode = 'month';
+        else if (mode === 'month' && type !== 'year') mode = 'year';
+        render();
+    }
+
+    // Klik bulan / tahun di mode loncat: turun satu tingkat ke grid berikutnya
+    function loncat(ts) {
+        const d = new Date(ts);
+        if (mode === 'year') {
+            tampilan = new Date(d.getFullYear(), tampilan.getMonth(), 1);
+            mode = type === 'year' ? 'year' : 'month';
+        } else {
+            tampilan = new Date(d.getFullYear(), d.getMonth(), 1);
+            mode = 'date';
+        }
+        render();
+    }
+
+    // Judul bisa diklik selama masih ada tingkat di atasnya
+    const bisaZoom = () => mode === 'date' || (mode === 'month' && type !== 'year');
 
     /* ---------- render ---------- */
     function bangunPanel(offset) {
         const y = tampilan.getFullYear();
         const m = tampilan.getMonth();
+        const kolom = kolomMode(mode);
+        const loncatMode = mode !== type; // lagi di grid loncat, bukan grid pemilihan
         let judul = '';
         let isi = '';
         let tambahan = '';
 
-        if (type === 'date') {
+        if (mode === 'date') {
             const awal = new Date(y, m + offset, 1);
             const th = awal.getFullYear();
             const bl = awal.getMonth();
@@ -181,29 +211,33 @@ function initDateRange(root) {
                 const tepi = (kol === 0 || tgl === 1 ? ' is-edge-first' : '') + (kol === 6 || tgl === jumlah ? ' is-edge-last' : '');
                 isi += sel(ts, tgl, `${tgl} ${BULAN[bl]} ${th}`, tepi);
             }
-        } else if (type === 'month') {
+        } else if (mode === 'month') {
             const th = y + offset;
             judul = String(th);
             for (let i = 0; i < 12; i++) {
                 const ts = new Date(th, i, 1).getTime();
                 const tepi = (i % kolom === 0 ? ' is-edge-first' : '') + (i % kolom === kolom - 1 ? ' is-edge-last' : '');
-                isi += sel(ts, BULAN_PENDEK[i], `${BULAN[i]} ${th}`, tepi);
+                isi += sel(ts, BULAN_PENDEK[i], `${BULAN[i]} ${th}`, tepi, loncatMode);
             }
         } else {
-            const mulai = y + offset * ISI_TAHUN;
+            const mulai = Math.floor(y / ISI_TAHUN) * ISI_TAHUN + offset * ISI_TAHUN;
             judul = `${mulai} – ${mulai + ISI_TAHUN - 1}`;
             for (let i = 0; i < ISI_TAHUN; i++) {
                 const ts = new Date(mulai + i, 0, 1).getTime();
                 const tepi = (i % kolom === 0 ? ' is-edge-first' : '') + (i % kolom === kolom - 1 ? ' is-edge-last' : '');
-                isi += sel(ts, mulai + i, String(mulai + i), tepi);
+                isi += sel(ts, mulai + i, String(mulai + i), tepi, loncatMode);
             }
         }
+
+        const judulHtml = bisaZoom()
+            ? `<button type="button" class="app-dr__title app-dr__title--btn" data-dr-zoom aria-label="Pilih bulan atau tahun">${judul}<i class="bi bi-chevron-down"></i></button>`
+            : `<span class="app-dr__title">${judul}</span>`;
 
         return `
             <div class="app-dr__panel app-dr__panel--${offset + 1}">
                 <div class="app-dr__head">
                     <button type="button" class="app-dr__nav app-dr__nav--prev" data-dr-nav="-1" aria-label="Sebelumnya"><i class="bi bi-chevron-left"></i></button>
-                    <span class="app-dr__title">${judul}</span>
+                    ${judulHtml}
                     <button type="button" class="app-dr__nav app-dr__nav--next" data-dr-nav="1" aria-label="Berikutnya"><i class="bi bi-chevron-right"></i></button>
                 </div>
                 ${tambahan}
@@ -211,12 +245,18 @@ function initDateRange(root) {
             </div>`;
     }
 
-    function sel(ts, teksSel, labelSel, tepi) {
+    // loncatMode = true: sel cuma buat pindah tampilan (data-jump), BUKAN memilih nilai (data-ts)
+    function sel(ts, teksSel, labelSel, tepi, loncatMode = false) {
+        if (loncatMode) {
+            const ini = kunci(new Date(), mode) === ts ? ' is-today' : '';
+            return `<button type="button" class="app-dr__cell${ini}" data-jump="${ts}" aria-label="${labelSel}"><span class="app-dr__num">${teksSel}</span></button>`;
+        }
         const sekarang = ts === hariIni ? ' is-today' : '';
         return `<button type="button" class="app-dr__cell${tepi}${sekarang}" data-ts="${ts}" aria-label="${labelSel}"><span class="app-dr__num">${teksSel}</span></button>`;
     }
 
     function render() {
+        popup.className = `app-dr app-dr--${mode}`;
         wadahPanel.innerHTML = bangunPanel(0) + bangunPanel(1);
         paint();
     }
@@ -279,6 +319,7 @@ function initDateRange(root) {
         draft = { from: bacaNilai('from'), to: bacaNilai('to'), target: 'from' };
         draft.target = targetAwal(sisi);
         hover = null;
+        mode = type;
         aturTampilan();
         render();
 
@@ -314,6 +355,17 @@ function initDateRange(root) {
         const nav = e.target.closest('[data-dr-nav]');
         if (nav) {
             geser(Number(nav.dataset.drNav));
+            return;
+        }
+
+        if (e.target.closest('[data-dr-zoom]')) {
+            zoomKeluar();
+            return;
+        }
+
+        const lompat = e.target.closest('[data-jump]');
+        if (lompat) {
+            loncat(Number(lompat.dataset.jump));
             return;
         }
 

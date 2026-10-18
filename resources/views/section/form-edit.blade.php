@@ -9,10 +9,9 @@
                 <x-form.input name="nama" label="Nama Section" required />
             </div>
             <div class="col-md-6">
-                <x-form.select name="divisi_id" label="Divisi" :options="$divisis" required />
+                <x-form.select name="divisi_id" id="section_edit_divisi_id" label="Divisi" :options="$divisis" required />
             </div>
         </div>
-
 
         <x-form.switch name="status" label="Status Aktif" />
     </form>

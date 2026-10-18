@@ -107,8 +107,7 @@
             'icon' => 'bi-shield-lock-fill',
             'slug' => 'akses-pengguna',
             'children' => [
-            
-                ['label' => 'User', 'slug' => 'user'],
+                // ['label' => 'User', 'slug' => 'user'],
                 ['label' => 'Role', 'slug' => 'role'],
             ],
         ],
@@ -131,6 +130,40 @@
                 @if ($item['slug'] === 'approval' && !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
                     @continue
                 @endif
+
+                @if ($item['slug'] === 'karyawan' && !\App\Services\ApprovalService::canAccessExclusiveFeatures(auth()->user()))
+                    @continue
+                @endif
+
+                @if ($item['slug'] === 'cuti' && !\App\Services\ApprovalService::canAccessExclusiveFeatures(auth()->user()))
+                    @continue
+                @endif
+
+                @if (
+                    $item['slug'] === 'rekrutmen-menu' &&
+                        !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
+                    @continue
+                @endif
+
+                @if (
+                    $item['slug'] === 'struktur-organisasi' &&
+                        !\App\Services\ApprovalService::canAccessExclusiveFeatures(auth()->user()))
+                    @continue
+                @endif
+
+                @if ($item['slug'] === 'master-data' && !\App\Services\ApprovalService::canAccessExclusiveFeatures(auth()->user()))
+                    @continue
+                @endif
+
+                @if ($item['slug'] === 'akses-pengguna' && !\App\Services\ApprovalService::canAccessExclusiveFeatures(auth()->user()))
+                    @continue
+                @endif
+
+                @if ($item['slug'] === 'kehadiran' && !\App\Services\ApprovalService::canAccessExclusiveFeatures(auth()->user()))
+                    @continue
+                @endif
+
+
                 @if (count($item['children']) === 0)
                     @php
                         $routeName = $item['slug'] . '.index';
@@ -154,10 +187,7 @@
 
                             // 'match' (opsional) = pola route tambahan,
                             // misalnya halaman detail closing-attendance.show
-                            if (
-                                Route::is($childRouteName) ||
-                                (isset($child['match']) && Route::is($child['match']))
-                            ) {
+                            if (Route::is($childRouteName) || (isset($child['match']) && Route::is($child['match']))) {
                                 $isSectionActive = true;
                             }
                         }
@@ -168,8 +198,7 @@
                         <a href="#{{ $collapseId }}"
                             class="nav-link d-flex justify-content-between align-items-center
                                   @if ($isSectionActive) nav-link-active @else collapsed @endif"
-                            data-bs-toggle="collapse"
-                            role="button"
+                            data-bs-toggle="collapse" role="button"
                             aria-expanded="{{ $isSectionActive ? 'true' : 'false' }}"
                             aria-controls="{{ $collapseId }}">
 
@@ -189,7 +218,27 @@
                             <div class="submenu-trunk"></div>
 
                             @foreach ($item['children'] as $child)
-                                @if ($child['slug'] === 'jadwal-karyawan' && !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
+                                @if (
+                                    $child['slug'] === 'jadwal-karyawan' &&
+                                        !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
+                                    @continue
+                                @endif
+
+                                @if (
+                                    $child['slug'] === 'closing-attendance' &&
+                                        !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
+                                    @continue
+                                @endif
+
+                                @if (
+                                    $child['slug'] === 'shift' &&
+                                        !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
+                                    @continue
+                                @endif
+
+                                @if (
+                                    $child['slug'] === 'hari-libur' &&
+                                        !\App\Services\ApprovalService::canAccessApprovalAndKontrakKaryawan(auth()->user()))
                                     @continue
                                 @endif
                                 @php

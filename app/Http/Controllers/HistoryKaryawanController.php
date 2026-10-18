@@ -135,7 +135,17 @@ class HistoryKaryawanController extends Controller
             ? (array) $request->query('status', [])
             : null;
 
-        $efektif = $request->query('efektif');
+        // $efektif = $request->query('efektif');
+
+        // Filter rentang tanggal efektif: komponen date-range mengirim
+        // efektif_from & efektif_to (format Y-m-d). Salah satunya boleh kosong.
+        $efektifDari = $request->query('efektif_from');
+        $efektifSampai = $request->query('efektif_to');
+
+        // Kalau user memilih terbalik (dari > sampai), tukar saja
+        if ($efektifDari && $efektifSampai && $efektifDari > $efektifSampai) {
+            [$efektifDari, $efektifSampai] = [$efektifSampai, $efektifDari];
+        }
 
         return HistoryKaryawan::query()
             ->when($search, function ($query) use ($search) {
@@ -154,17 +164,24 @@ class HistoryKaryawanController extends Controller
             ->when(!is_null($status), function ($query) use ($status) {
                 $query->whereIn('status', $status);
             })
-            ->when($efektif, function ($query) use ($efektif) {
-                $tanggal = explode(' - ', $efektif);
+            // ->when($efektif, function ($query) use ($efektif) {
+            //     $tanggal = explode(' - ', $efektif);
 
-                if (count($tanggal) === 2) {
-                    $query->whereBetween('tanggal_efektif', [
-                        $tanggal[0],
-                        $tanggal[1],
-                    ]);
-                } else {
-                    $query->whereDate('tanggal_efektif', $efektif);
-                }
+            //     if (count($tanggal) === 2) {
+            //         $query->whereBetween('tanggal_efektif', [
+            //             $tanggal[0],
+            //             $tanggal[1],
+            //         ]);
+            //     } else {
+            //         $query->whereDate('tanggal_efektif', $efektif);
+            //     }
+            // });]
+
+            ->when($efektifDari, function ($query) use ($efektifDari) {
+                $query->whereDate('tanggal_efektif', '>=', $efektifDari);
+            })
+            ->when($efektifSampai, function ($query) use ($efektifSampai) {
+                $query->whereDate('tanggal_efektif', '<=', $efektifSampai);
             });
     }
 
@@ -303,11 +320,11 @@ class HistoryKaryawanController extends Controller
 
     public function toggleStatus(HistoryKaryawan $perubahanKaryawan)
     {
-        dd([
-            'id' => $perubahanKaryawan->id,
-            'kode' => $perubahanKaryawan->kode,
-            'status_sebelum' => $perubahanKaryawan->status,
-        ]);
+        // dd([
+        //     'id' => $perubahanKaryawan->id,
+        //     'kode' => $perubahanKaryawan->kode,
+        //     'status_sebelum' => $perubahanKaryawan->status,
+        // ]);
         $perubahanKaryawan->update([
             'status' => $perubahanKaryawan->status === 'aktif'
                 ? 'nonaktif'

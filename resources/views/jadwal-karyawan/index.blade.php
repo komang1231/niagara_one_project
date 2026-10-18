@@ -1,11 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @if (session('error'))
-        <script>
-            alert(@json(session('error')));
-        </script>
-    @endif
 
     {{-- Error validasi dari form edit (form tambah menampilkan errornya sendiri di dalam offcanvas) --}}
     @if ($errors->any() && old('_form') === 'offcanvas-jadwal-edit')

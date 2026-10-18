@@ -538,7 +538,7 @@
 
             <div class="col-md-6 col-lg-4 col-xl-3">
 
-                <a href="{{ route('karyawan.index') }}"
+                <a href="{{ route('dashboard.index') }}"
                     class="service-card">
 
                     <div class="service-icon">

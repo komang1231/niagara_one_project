@@ -60,6 +60,7 @@ class SumberPelamarController extends Controller
         $start = microtime(true);
         $data = $request->validated();
         $data['status'] = $data['status'] === '1' ? 'aktif' : 'nonaktif';
+        
 
         $before = microtime(true);
         $sumberPelamar = SumberPelamar::create($data);
@@ -119,14 +120,14 @@ class SumberPelamarController extends Controller
     {
         $sumberPelamar = SumberPelamar::findOrFail($id);
 
-        if ($sumberPelamar->rekrutmen()->exists()) {
-            return redirect()
-                ->route('sumber-pelamar.index')
-                ->with(
-                    'error',
-                    'Sumber Pelamar tidak dapat dihapus karena masih digunakan oleh data Rekrutmen.'
-                );
-        }
+        // if ($sumberPelamar->rekrutmen()->exists()) {
+        //     return redirect()
+        //         ->route('sumber-pelamar.index')
+        //         ->with(
+        //             'error',
+        //             'Sumber Pelamar tidak dapat dihapus karena masih digunakan oleh data Rekrutmen.'
+        //         );
+        // }
 
         $sumberPelamar->delete();
 
