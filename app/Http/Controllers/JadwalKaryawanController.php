@@ -404,16 +404,17 @@ class JadwalKaryawanController extends Controller
             'status' => $jadwalKaryawan->status,
         ]);
     }
-
+    
     public function destroy($id)
     {
         $jadwalKaryawan = JadwalKaryawan::findOrFail($id);
 
-        $jadwalKaryawan->delete();
+        // $jadwalKaryawan->delete();
+        $jadwalKaryawan->forceDelete();
 
         return redirect()
             ->route('jadwal-karyawan.index')
-            ->with('success', 'Jadwal karyawan berhasil dipindahkan ke Trash.');
+            ->with('success', 'Jadwal karyawan berhasil dihapus permanen.');
     }
 
     public function trash()

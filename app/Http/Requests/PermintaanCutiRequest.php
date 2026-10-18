@@ -5,12 +5,23 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\PermintaanCuti;
 use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PermintaanCutiRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        dd([
+            'pesan' => 'VALIDASI GAGAL',
+            'errors' => $validator->errors()->toArray(),
+            'data' => $this->all(),
+        ]);
     }
 
     public function rules(): array
@@ -39,7 +50,7 @@ class PermintaanCutiRequest extends FormRequest
             ],
 
             'lampiran' => [
-                'required',
+                'nullable',
                 'file',
                 'mimes:pdf,doc,docx',
                 'max:20480',
@@ -103,6 +114,10 @@ class PermintaanCutiRequest extends FormRequest
             $bentrok = PermintaanCuti::query()
                 ->where('karyawan_id', $karyawanId)
                 ->whereNull('rejected_at')
+                ->when(
+                    $this->isMethod('PUT') || $this->isMethod('PATCH'),
+                    fn($query) => $query->where('kode', '!=', $this->input('kode'))
+                )
                 ->where(function ($query) use ($tanggalMulai, $tanggalSelesai) {
                     $query
                         ->whereDate('tanggal_mulai', '<=', $tanggalSelesai)

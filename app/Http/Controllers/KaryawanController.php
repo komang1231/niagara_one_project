@@ -370,13 +370,21 @@ class KaryawanController extends Controller
 
     public function forceDelete($id)
     {
-        Karyawan::onlyTrashed()
-            ->findOrFail($id)
-            ->forceDelete();
+        DB::transaction(function () use ($id) {
+            $karyawan = Karyawan::onlyTrashed()
+                ->findOrFail($id);
+
+            // Hapus user yang berelasi dengan karyawan.
+            User::where('karyawan_id', $karyawan->id)
+                ->forceDelete();
+
+            // Hapus karyawan secara permanen.
+            $karyawan->forceDelete();
+        });
 
         return redirect()
             ->route('karyawan.index')
-            ->with('success', 'Karyawan berhasil dihapus permanen.');
+            ->with('success', 'Karyawan dan akun user berhasil dihapus permanen.');
     }
 
     public function getDivisi($departemenId)

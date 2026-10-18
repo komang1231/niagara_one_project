@@ -45,7 +45,7 @@ class PermintaanCutiController extends Controller
 
         $isCutiTahunan = $cuti
             && preg_replace('/\s+/', ' ', trim($cuti->nama)) === 'Cuti Tahunan';
-        
+
 
         /*
      * Cuti Tahunan tidak mengisi details dari form.
@@ -224,26 +224,71 @@ class PermintaanCutiController extends Controller
         ]);
     }
 
+
     public function update(PermintaanCutiRequest $request, PermintaanCuti $permintaanCuti)
     {
-        dd($request->all());
-
-        if (
-            $permintaanCuti->approved_at ||
-            $permintaanCuti->rejected_at
-        ) {
+        if ($permintaanCuti->approved_at || $permintaanCuti->rejected_at) {
             return redirect()
                 ->route('permintaan.index')
-                ->with(
-                    'error',
-                    'Permintaan Cuti yang sudah diproses tidak dapat diubah.'
-                );
+                ->with('error', 'Permintaan Cuti yang sudah diproses tidak dapat diubah.');
         }
 
         $data = $request->validated();
 
-        $details = $data['details'];
+        // Tentukan jenis cuti.
+        $cuti = Cuti::findOrFail($data['cuti_id']);
+
+        $isCutiTahunan = preg_replace('/\s+/', ' ', trim($cuti->nama)) === 'Cuti Tahunan';
+
+        // Cuti Tahunan: buat detail tanggal otomatis sebagai sehari penuh.
+        if ($isCutiTahunan) {
+            $details = [];
+
+            $tanggalMulai = Carbon::parse($data['tanggal_mulai']);
+            $tanggalSelesai = Carbon::parse($data['tanggal_selesai']);
+
+            for (
+                $tanggal = $tanggalMulai->copy();
+                $tanggal->lte($tanggalSelesai);
+                $tanggal->addDay()
+            ) {
+                $details[] = [
+                    'tanggal' => $tanggal->format('Y-m-d'),
+                    'setengah_hari' => false,
+                ];
+            }
+        } else {
+            // Jenis cuti lain tetap menggunakan detail dari form.
+            $details = $data['details'];
+        }
+
         unset($data['details']);
+
+        if ($isCutiTahunan) {
+            $tahun = Carbon::parse($data['tanggal_mulai'])->year;
+
+            $saldoCuti = SaldoCuti::where('karyawan_id', $permintaanCuti->karyawan_id)
+                ->where('tahun', $tahun)
+                ->first();
+
+            if (!$saldoCuti) {
+                throw ValidationException::withMessages([
+                    'tanggal_mulai' => 'Kamu belum memiliki saldo Cuti Tahunan untuk tahun pengajuan ini.',
+                ]);
+            }
+
+            $tanggalMulai = Carbon::parse($data['tanggal_mulai']);
+            $tanggalSelesai = Carbon::parse($data['tanggal_selesai']);
+
+            $jumlahHari = $tanggalMulai->diffInDays($tanggalSelesai) + 1;
+            $sisaSaldo = $saldoCuti->saldo - $saldoCuti->terpakai;
+
+            if ($jumlahHari > $sisaSaldo) {
+                throw ValidationException::withMessages([
+                    'tanggal_mulai' => "Sisa Cuti Tahunan kamu hanya {$sisaSaldo} hari, sedangkan pengajuan membutuhkan {$jumlahHari} hari.",
+                ]);
+            }
+        }
 
         Log::debug('Data update permintaan cuti', [
             'id' => $permintaanCuti->id,
@@ -251,13 +296,10 @@ class PermintaanCutiController extends Controller
             'details' => $details,
         ]);
 
-        DB::transaction(function () use (
-            $permintaanCuti,
-            $data,
-            $details
-        ) {
+        DB::transaction(function () use ($permintaanCuti, $data, $details) {
             $permintaanCuti->update($data);
 
+            // Ganti detail lama dengan detail terbaru.
             $permintaanCuti->details()->forceDelete();
 
             foreach ($details as $detail) {
@@ -270,11 +312,9 @@ class PermintaanCutiController extends Controller
 
         return redirect()
             ->route('permintaan.index')
-            ->with(
-                'success',
-                'Permintaan Cuti berhasil diperbarui.'
-            );
+            ->with('success', 'Permintaan Cuti berhasil diperbarui.');
     }
+
 
     public function destroy($id)
     {
