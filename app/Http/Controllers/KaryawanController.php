@@ -333,6 +333,15 @@ class KaryawanController extends Controller
 
     public function destroy(Karyawan $karyawan)
     {
+        if ($karyawan->kontrakKaryawan()->exists()) {
+            return redirect()
+                ->route('karyawan.index')
+                ->with(
+                    'error',
+                    'Karyawan tidak dapat dihapus karena masih digunakan oleh data Kontrak Karyawan.'
+                );
+        }
+        
         $karyawan->delete();
 
         return redirect()

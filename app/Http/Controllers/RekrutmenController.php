@@ -179,6 +179,11 @@ class RekrutmenController extends Controller
 
     public function store(RekrutmenRequest $request)
     {
+        if ($request->hasFile('file_cv')) {
+            $data['file_cv'] = $request->file('file_cv')
+                ->store('rekrutmen', 'public');
+        }
+
         Log::debug('Rekrutmen store dipanggil', [
             'input' => $request->all(),
             'validated' => $request->validated(),

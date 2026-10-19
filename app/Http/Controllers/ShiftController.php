@@ -153,18 +153,17 @@ class ShiftController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Shift $shift)
     {
-        $shift = Shift::findOrFail($id);
-
-        // if ($shift->divisi()->exists()) {
-        //     return redirect()
-        //         ->route('shift.index')
-        //         ->with(
-        //             'error',
-        //             'Shift tidak dapat dihapus karena masih digunakan oleh data Divisi.'
-        //         );
-        // }
+        
+        if ($shift->jadwalKaryawan()->exists()) {
+            return redirect()
+                ->route('shift.index')
+                ->with(
+                    'error',
+                    'Shift tidak dapat dihapus karena masih digunakan oleh data Jadwal dan Attendance.'
+                );
+        }
 
         $shift->delete();
 
