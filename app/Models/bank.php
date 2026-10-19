@@ -18,3 +18,4 @@ class Bank extends Model {
     protected $guarded = [];
 
 }
+

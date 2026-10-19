@@ -18,3 +18,4 @@ class Agama extends Model {
     protected $guarded = [];
 
 }
+

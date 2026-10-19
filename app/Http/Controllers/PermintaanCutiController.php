@@ -36,6 +36,11 @@ class PermintaanCutiController extends Controller
         $start = microtime(true);
         $data = $request->validated();
 
+        if ($request->hasFile('lampiran')) {
+            $data['lampiran'] = $request->file('lampiran')
+                ->store('permintaan-cuti', 'public');
+        }
+
         $data['karyawan_id'] = auth()->user()->karyawan_id;
 
         /*
@@ -234,6 +239,13 @@ class PermintaanCutiController extends Controller
         }
 
         $data = $request->validated();
+
+        if ($request->hasFile('lampiran')) {
+            $data['lampiran'] = $request->file('lampiran')
+                ->store('permintaan-cuti', 'public');
+        } else {
+            unset($data['lampiran']);
+        }
 
         // Tentukan jenis cuti.
         $cuti = Cuti::findOrFail($data['cuti_id']);
