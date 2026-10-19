@@ -10,17 +10,32 @@ use Illuminate\Http\Request;
 
 class SaldoCutiController extends Controller
 {
+
     public function index(Request $request)
     {
-        $tahun = now()->year;
+        $tahunSekarang = now()->year;
 
         // Buat saldo tahun berjalan untuk karyawan yang sudah berhak
         $this->buatSaldoTahunBerjalan();
 
+        // Ambil filter tahun dari request, default ke tahun berjalan
+        $tahunFrom = $request->filled('tahun_from')
+            ? (int) $request->tahun_from
+            : $tahunSekarang;
+
+        $tahunTo = $request->filled('tahun_to')
+            ? (int) $request->tahun_to
+            : $tahunSekarang;
+
+        // Pastikan tahun awal tidak melebihi tahun akhir
+        if ($tahunFrom > $tahunTo) {
+            [$tahunFrom, $tahunTo] = [$tahunTo, $tahunFrom];
+        }
+
         $query = SaldoCuti::with([
             'karyawan.departemen',
         ])
-            ->where('tahun', $tahun)
+            ->whereBetween('tahun', [$tahunFrom, $tahunTo])
             ->orderByDesc('tahun');
 
         // Pencarian berdasarkan nama atau NIP karyawan
@@ -37,11 +52,17 @@ class SaldoCutiController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        // Pertahankan variabel $tahun jika masih digunakan oleh Blade
+        $tahun = $tahunSekarang;
+
         return view('saldo-cuti.index', compact(
             'saldoCuti',
-            'tahun'
+            'tahun',
+            'tahunFrom',
+            'tahunTo'
         ));
     }
+
 
     private function buatSaldoTahunBerjalan(): void
     {

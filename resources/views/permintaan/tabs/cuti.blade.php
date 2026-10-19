@@ -218,19 +218,18 @@
                     {{-- ==========================================================
                         lmipiran
                     =========================================================== --}}
-                    <td>
 
-                        {{-- Lampiran: link buka file di tab baru (pola sama dengan kolom Surat di index Surat Peringatan) --}}
+                    <td>
                         @if ($row->lampiran)
-                            <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($row->lampiran) }}"
-                                target="_blank" rel="noopener noreferrer" class="sp-surat__file"
+                            <a href="{{ route('permintaan-cuti.lampiran', $row->id) }}" target="_blank"
+                                rel="noopener noreferrer" class="sp-surat__file"
                                 title="Buka {{ basename($row->lampiran) }}">
                                 <i class="bi bi-paperclip"></i>
                                 {{ basename($row->lampiran) }}
                             </a>
                         @endif
-
                     </td>
+
                     {{-- ==========================================================
                         ALASAN
                     =========================================================== --}}

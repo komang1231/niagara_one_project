@@ -47,6 +47,31 @@ Route::post('/login', [AuthController::class, 'login'])
     ->name('login.authenticate');
 
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+
+
+// Tambahkan di dalam grup route yang menggunakan middleware auth
+Route::get('/permintaan-cuti/{id}/lampiran', function ($id) {
+    $permintaanCuti = \App\Models\PermintaanCuti::findOrFail($id);
+
+    abort_unless($permintaanCuti->lampiran, 404);
+
+    $path = $permintaanCuti->lampiran;
+
+    abort_unless(Storage::disk('public')->exists($path), 404);
+
+    return Response::file(
+        Storage::disk('public')->path($path),
+        [
+            'Content-Type' => Storage::disk('public')->mimeType($path),
+            'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
+        ]
+    );
+})->middleware('auth')->name('permintaan-cuti.lampiran');
+
+
+
 Route::middleware(['auth', 'karyawan.aktif'])->group(function () {
 
     // ========================================================================
