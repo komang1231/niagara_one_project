@@ -13,7 +13,7 @@
         data-kontrak-form data-durasi-bulan="{{ $durasiBulan }}">
         @csrf
 
-        <x-form.input name="nomor_kontrak_preview" id="kt_create_nomor" label="Nomor Kontrak" value="{{ $previewNomor }}"
+        <x-form.input-code name="nomor_kontrak_preview" id="kt_create_nomor" label="Nomor Kontrak" value="{{ $previewNomor }}"
             readonly />
 
         <x-form.select name="karyawan_id" id="kt_create_karyawan_id" label="Karyawan" :options="$karyawanSelect" nullable

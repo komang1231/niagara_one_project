@@ -5,7 +5,7 @@
         @method('PUT')
 
         {{-- Kode Job Position --}}
-        <x-form.input name="kode" label="Kode Job Position" readonly />
+        <x-form.input-code name="kode" label="Kode Job Position" readonly />
 
         <div class="row">
             {{-- Nama Job Position --}}

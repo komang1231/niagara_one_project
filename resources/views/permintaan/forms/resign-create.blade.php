@@ -5,7 +5,7 @@
         @csrf
         <input type="hidden" name="_form" value="offcanvas-permintaan-resign">
 
-        <x-form.input name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeResign }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeResign }}" readonly />
 
         <x-form.input-date name="tanggal_efektif" label="Tanggal Efektif Resign" required />
 

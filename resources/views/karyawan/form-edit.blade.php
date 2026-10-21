@@ -11,7 +11,7 @@
         {{-- =========================
             KODE KARYAWAN
         ========================== --}}
-        <x-form.input name="nip" id="edit_nip" label="Kode Karyawan" readonly />
+        <x-form.input-code name="nip" id="edit_nip" label="Kode Karyawan" readonly />
 
         {{-- =========================
             INFORMASI KARYAWAN

@@ -2,7 +2,7 @@
     <form id="offcanvas-job-level-form" action="{{ route('job-level.store') }}" method="POST">
         @csrf
 
-        <x-form.input name="kode_preview" label="Kode Job Level" value="{{ $previewKode }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Job Level" value="{{ $previewKode }}" readonly />
 
         <x-form.input name="nama" label="Nama Job Level" placeholder="Contoh: Human Resources" required />
 

@@ -11,7 +11,7 @@
 
         <input type="hidden" name="_form" value="offcanvas-permintaan-tukar-shift-edit">
 
-        <x-form.input name="kode" label="Kode Permintaan" readonly />
+        <x-form.input-code name="kode" label="Kode Permintaan" readonly />
 
         <x-form.input-date
             name="tanggal_tujuan"

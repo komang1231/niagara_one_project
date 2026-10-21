@@ -5,7 +5,7 @@
         @csrf
         <input type="hidden" name="_form" value="offcanvas-permintaan-cuti">
 
-        <x-form.input name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeCuti }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeCuti }}" readonly />
 
         <h6 class="mb-3 mt-4">Informasi Cuti</h6>
         <div class="row">

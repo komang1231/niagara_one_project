@@ -8,7 +8,7 @@
         @csrf
         <input type="hidden" name="_form" value="offcanvas-permintaan-karyawan">
 
-        <x-form.input name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeKaryawan }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeKaryawan }}" readonly />
 
         <h6 class="mb-3 mt-4">Judul Permintaan</h6>
         <x-form.input name="nama" label="Judul" type="text" placeholder="Contoh: Permintaan Karyawan Departemen Head Bagian Marketing di Cabang Kantor Pusat Denpasar" required />

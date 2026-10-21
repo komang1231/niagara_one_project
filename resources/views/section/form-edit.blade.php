@@ -3,7 +3,7 @@
         @csrf
         @method('PUT')
 
-        <x-form.input name="kode" label="Kode Section" readonly />
+        <x-form.input-code name="kode" label="Kode Section" readonly />
         <div class="row">
             <div class="col-md-6">
                 <x-form.input name="nama" label="Nama Section" required />

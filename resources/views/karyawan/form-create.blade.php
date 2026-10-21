@@ -9,7 +9,7 @@
         {{-- =========================
             KODE KARYAWAN
         ========================== --}}
-        <x-form.input name="nip" id="create_nip" label="Kode Karyawan" value="{{ $previewNip }}" readonly />
+        <x-form.input-code name="nip" id="create_nip" label="Kode Karyawan" value="{{ $previewNip }}" readonly />
 
 
         {{-- =========================

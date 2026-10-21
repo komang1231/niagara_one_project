@@ -3,7 +3,7 @@
     <form id="offcanvas-tambah-shift-form" action="{{ route('shift.store') }}" method="POST">
         @csrf
 
-        <x-form.input name="kode_preview" label="Kode Shift" value="{{ $previewKode }}" readonly inline />
+        <x-form.input-code name="kode_preview" label="Kode Shift" value="{{ $previewKode }}" readonly inline />
 
         <x-form.input name="nama" label="Nama Shift" placeholder="Contoh: Shift Pagi" required inline />
 

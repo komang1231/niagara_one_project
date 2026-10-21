@@ -3,7 +3,7 @@
         @csrf
         @method('PUT')
 
-        <x-form.input name="kode" label="Kode Sumber Pelamar" readonly />
+        <x-form.input-code name="kode" label="Kode Sumber Pelamar" readonly />
         <x-form.input name="nama" label="Nama Sumber Pelamar" required />
         <x-form.switch name="status" label="Status Aktif" />
     </form>

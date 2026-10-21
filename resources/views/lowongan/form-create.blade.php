@@ -3,7 +3,7 @@
     <form id="offcanvas-lowongan-form" action="{{ route('lowongan.store') }}" method="POST">
         @csrf
 
-        <x-form.input name="kode_preview" label="Kode Lowongan" value="{{ $previewKode }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Lowongan" value="{{ $previewKode }}" readonly />
 
         <h6 class="mb-3 mt-4">Informasi Lowongan</h6>
         <div class="row">

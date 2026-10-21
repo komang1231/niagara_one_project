@@ -3,7 +3,7 @@
     <form id="offcanvas-hari-libur-form" action="{{ route('hari-libur.store') }}" method="POST">
         @csrf
 
-        <x-form.input name="kode_preview" label="Kode Hari Libur" value="{{ $previewKode }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Hari Libur" value="{{ $previewKode }}" readonly />
 
         <div class="row">
             <div class="col-md-6">

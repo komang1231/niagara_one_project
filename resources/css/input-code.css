@@ -1,0 +1,53 @@
+/* ==========================================================
+   FORM CONTROLS - Niagara One
+   ========================================================== */
+
+.form-control,
+.form-select {
+    border-color: var(--neutral-200);
+    border-radius: 8px;
+    color: var(--color-text-900);
+    background-color: #fff;
+}
+
+.form-control::placeholder {
+    color: var(--neutral-500);
+}
+
+/* default: field lain tetap ijo (primary) */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(29, 158, 117, 0.10);
+}
+
+.form-label {
+    color: var(--color-text-800);
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+/* khusus input date pakai accent, specificity dinaikin biar gak keoper sama .form-control:focus di atas */
+.input-date-wrapper .input-date:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.2rem rgba(239, 159, 39, 0.10);
+}
+
+/* ===== Input Kode (disabled, abu-abu) =====
+   Dipakai oleh <x-form.input-code>: kode departemen, section, dst. */
+.form-control-code,
+.form-control-code:disabled {
+    background-color: var(--neutral-50);
+    border-color: var(--neutral-100);
+    color: var(--neutral-700);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    opacity: 1; /* default bootstrap bikin disabled jadi pudar, kita matiin */
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.form-control-code::placeholder {
+    color: var(--neutral-400);
+}

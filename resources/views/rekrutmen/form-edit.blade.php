@@ -18,7 +18,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <x-form.input name="kode" label="Kode Rekrutmen" readonly data-rk-locked />
+                <x-form.input-code name="kode" label="Kode Rekrutmen" readonly data-rk-locked />
             </div>
             <div class="col-md-6">
                 <x-form.input name="nama" label="Nama Kandidat" placeholder="Nama kandidat" required />

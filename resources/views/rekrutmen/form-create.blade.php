@@ -12,7 +12,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <x-form.input name="kode" label="Kode Rekrutmen" value="{{ $previewKode }}" readonly />
+                <x-form.input-code name="kode" label="Kode Rekrutmen" value="{{ $previewKode }}" readonly />
             </div>
             <div class="col-md-6">
                 <x-form.input name="nama" label="Nama Kandidat" placeholder="Contoh: Komang Ayu" required />

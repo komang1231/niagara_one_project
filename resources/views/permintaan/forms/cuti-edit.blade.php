@@ -5,7 +5,7 @@
         @method('PUT')
         <input type="hidden" name="_form" value="offcanvas-permintaan-cuti-edit">
 
-        <x-form.input name="kode" label="Kode Permintaan" readonly />
+        <x-form.input-code name="kode" label="Kode Permintaan" readonly />
 
         <h6 class="mb-3 mt-4">Informasi Cuti</h6>
         <div class="row">

@@ -5,7 +5,7 @@
         @csrf
         @method('PATCH')
 
-        <x-form.input name="nomor_kontrak" id="kt_edit_nomor" label="Nomor Kontrak" disabled />
+        <x-form.input-code name="nomor_kontrak" id="kt_edit_nomor" label="Nomor Kontrak" disabled />
 
         <x-form.input name="karyawan_nama" id="kt_edit_karyawan" label="Karyawan" disabled />
 

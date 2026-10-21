@@ -2,7 +2,7 @@
     <form id="offcanvas-sumber-pelamar-form" action="{{ route('sumber-pelamar.store') }}" method="POST">
         @csrf
 
-        <x-form.input name="kode_preview" label="Kode Sumber Pelamar" value="{{ $previewKode }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Sumber Pelamar" value="{{ $previewKode }}" readonly />
 
         <x-form.input name="nama" label="Nama Sumber Pelamar" placeholder="Contoh: LinkedIn" required />
 

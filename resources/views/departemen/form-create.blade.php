@@ -2,7 +2,7 @@
     <form id="offcanvas-departemen-form" action="{{ route('departemen.store') }}" method="POST">
         @csrf
 
-        <x-form.input name="kode_preview" label="Kode Departemen" value="{{ $previewKode }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Departemen" value="{{ $previewKode }}" readonly />
 
         <x-form.input name="nama" label="Nama Departemen" placeholder="Contoh: Human Resources" required />
 

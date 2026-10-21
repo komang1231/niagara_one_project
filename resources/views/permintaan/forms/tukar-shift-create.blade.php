@@ -39,7 +39,7 @@
 
         <input type="hidden" name="_form" value="offcanvas-permintaan-tukar-shift">
 
-        <x-form.input
+        <x-form.input-code
             name="kode_preview"
             label="Kode Permintaan"
             value="{{ $previewKodeTukarShift }}"

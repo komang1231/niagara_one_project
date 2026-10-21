@@ -3,7 +3,7 @@
         @csrf
         @method('PUT')
 
-        <x-form.input name="kode" label="Kode Divisi" readonly />
+        <x-form.input-code name="kode" label="Kode Divisi" readonly />
 
         <div class="row">
             <div class="col-md-6">

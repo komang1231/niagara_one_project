@@ -5,7 +5,7 @@
         @method('PUT')
         <input type="hidden" name="_form" value="offcanvas-permintaan-resign-edit">
 
-        <x-form.input name="kode" label="Kode Permintaan" readonly />
+        <x-form.input-code name="kode" label="Kode Permintaan" readonly />
 
         <x-form.input-date name="tanggal_efektif" label="Tanggal Efektif Resign" required />
 

@@ -3,7 +3,7 @@
         @csrf
         @method('PUT')
 
-        <x-form.input name="kode" label="Kode Shift" readonly inline />
+        <x-form.input-code name="kode" label="Kode Shift" readonly inline />
 
         <x-form.input name="nama" label="Nama Shift" required inline />
 

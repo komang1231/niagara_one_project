@@ -5,7 +5,7 @@
         @csrf
         <input type="hidden" name="_form" value="offcanvas-permintaan-lembur">
 
-        <x-form.input name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeLembur }}" readonly />
+        <x-form.input-code name="kode_preview" label="Kode Permintaan" value="{{ $previewKodeLembur }}" readonly />
 
         <x-form.input-date name="tanggal_tujuan" id="pl_create_tanggal_tujuan" label="Tanggal Lembur" required />
 
