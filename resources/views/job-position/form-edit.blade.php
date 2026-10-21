@@ -15,7 +15,7 @@
 
             {{-- Section --}}
             <div class="col-md-6">
-                <x-form.select name="section_id" label="Section" :options="$sections" required />
+                <x-form.select name="section_id" id="edit_job_position_section_id" label="Section" :options="$sections" required />
             </div>
         </div>
 

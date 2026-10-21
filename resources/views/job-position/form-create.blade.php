@@ -11,7 +11,7 @@
             </div>
 
             <div class="col-md-6">
-                <x-form.select name="section_id" label="Section" :options="$sections" :selected="old('section_id', $jobPosition->section_id ?? null)" nullable/>
+                <x-form.select name="section_id" id="create_job_position_section_id" label="Section" :options="$sections" :selected="old('section_id', $jobPosition->section_id ?? null)" nullable/>
             </div>
         </div>
 
